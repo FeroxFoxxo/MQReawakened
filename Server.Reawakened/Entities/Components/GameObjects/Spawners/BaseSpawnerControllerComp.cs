@@ -19,6 +19,7 @@ using Server.Reawakened.XMLs.Bundles.Internal;
 using Server.Reawakened.XMLs.Data.Enemy.Abstractions;
 using Server.Reawakened.XMLs.Data.Enemy.Enums;
 using Server.Reawakened.XMLs.Data.Enemy.Models;
+using Server.Reawakened.XMLs.Data.Enemy.States;
 
 namespace Server.Reawakened.Entities.Components.GameObjects.Spawners;
 
@@ -160,12 +161,7 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
             return;
         }
 
-        var defaultProperties = AISyncEventHelper.CreateDefaultGlobalProperties();
-        var copier = Services.GetRequiredService<ClassCopier>();
-
-        global.MixGlobalProperties(copier, defaultProperties);
-
-        var spawnerData = new SpawnedEnemyData(global, generic, status, enemyController, hazard, defaultProperties);
+        var spawnerData = new SpawnedEnemyData(global, generic, status, enemyController, hazard, global.GetGlobalProperties());
 
         TemplateEnemyModels.TryAdd(templateId, spawnerData);
     }
@@ -257,7 +253,7 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
 
         var behaviors = new Dictionary<StateType, BaseState>
         {
-            { StateType.Idle, new BaseState([]) }
+            { StateType.Idle, new IdleState([]) }
         };
 
         Room.SendSyncEvent(

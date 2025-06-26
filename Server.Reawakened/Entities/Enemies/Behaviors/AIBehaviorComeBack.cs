@@ -4,17 +4,19 @@ using Server.Reawakened.XMLs.Data.Enemy.Enums;
 
 namespace Server.Reawakened.Entities.Enemies.Behaviors;
 
-public class AIBehaviorComeBack(ComeBackProperties properties, BehaviorEnemy enemy) : AIBaseBehavior(enemy, StateType.ComeBack)
+public class AIBehaviorComeBack(BehaviorEnemy enemy, ComeBackProperties fallback) : AIBaseBehavior(enemy.AiData, enemy.Room)
 {
     public override bool ShouldDetectPlayers => true;
 
     public override AiProperties GetProperties() =>
         new ComeBackProperties(
-            Enemy.Global.ComeBack_MoveSpeed != Enemy.Global.Default.ComeBack_MoveSpeed ? Enemy.Global.ComeBack_MoveSpeed : properties.comeBack_MoveSpeed
+            Fallback(enemy.Global.ComeBack_MoveSpeed, fallback.comeBack_MoveSpeed)
         );
 
-    public override object[] GetStartArgs() => [Enemy.Position.x, Enemy.AiData.Intern_SpawnPosY];
+    public override object[] GetStartArgs() => [enemy.Position.x, _aiData.Intern_SpawnPosY];
+
+    public override StateType GetStateType() => StateType.ComeBack;
 
     public override void NextState() =>
-        Enemy.ChangeBehavior(StateType.Patrol, Enemy.Position.x, Enemy.Position.y, Enemy.AiData.Intern_Dir);
+        enemy.ChangeBehavior(StateType.Patrol, enemy.Position.x, enemy.Position.y, _aiData.Intern_Dir);
 }

@@ -18,52 +18,6 @@ namespace Server.Reawakened.Entities.Components.GameObjects.Trigger.Abstractions
 
 public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp, IQuestTriggered where T : TriggerCoopController
 {
-    public List<string> CurrentPhysicalInteractors;
-    public int CurrentInteractions;
-
-    public List<Player> CurrentValidInteractors => [.. CurrentPhysicalInteractors.ToList().Select(ci =>
-    {
-        var player = Room.GetPlayerById(ci);
-
-        var validQuestProgress = true;
-
-        if (player == null && !ItemCatalog.GetItemFromId(int.Parse(ci)).IsPet() || ci == "0")
-        {
-            CurrentPhysicalInteractors.Remove(ci);
-            return null;
-        }
-
-        if (!string.IsNullOrEmpty(QuestCompletedRequired))
-        {
-            var requiredQuest = QuestCatalog.QuestCatalogs.FirstOrDefault(q => q.Value.Name == QuestCompletedRequired).Value;
-
-            if (requiredQuest != null)
-                if (!player.Character.CompletedQuests.Contains(requiredQuest.Id))
-                    validQuestProgress = false;
-        }
-
-        if (!string.IsNullOrEmpty(QuestInProgressRequired))
-        {
-            var requiredQuest = QuestCatalog.QuestCatalogs.FirstOrDefault(q => q.Value.Name == QuestInProgressRequired).Value;
-
-            if (requiredQuest != null)
-                if (player.Character.QuestLog.FirstOrDefault(q => q.Id == requiredQuest.Id) == null)
-                    validQuestProgress = false;
-        }
-
-        return validQuestProgress ? player : null;
-
-    }).Where(x => x != null)];
-
-    public int Interactions => CurrentInteractions + CurrentValidInteractors.Count;
-
-    public bool IsActive = false;
-    public bool IsEnabled = false;
-    public float LastActivationTime = 0;
-
-    public Dictionary<string, TriggerType> Triggers;
-    public List<ActivationType> Activations;
-
     public bool DisabledAfterActivation => ComponentData.DisabledAfterActivation;
 
     public int NbInteractionsNeeded => ComponentData.NbInteractionsNeeded;
@@ -134,6 +88,52 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
     public QuestCatalog QuestCatalog { get; set; }
     public ServerRConfig ServerRConfig { get; set; }
     public ItemCatalog ItemCatalog { get; set; }
+
+    public List<string> CurrentPhysicalInteractors;
+    public int CurrentInteractions;
+
+    public List<Player> CurrentValidInteractors => [.. CurrentPhysicalInteractors.ToList().Select(ci =>
+    {
+        var player = Room.GetPlayerById(ci);
+
+        var validQuestProgress = true;
+
+        if (player == null && !ItemCatalog.GetItemFromId(int.Parse(ci)).IsPet() || ci == "0")
+        {
+            CurrentPhysicalInteractors.Remove(ci);
+            return null;
+        }
+
+        if (!string.IsNullOrEmpty(QuestCompletedRequired))
+        {
+            var requiredQuest = QuestCatalog.QuestCatalogs.FirstOrDefault(q => q.Value.Name == QuestCompletedRequired).Value;
+
+            if (requiredQuest != null)
+                if (!player.Character.CompletedQuests.Contains(requiredQuest.Id))
+                    validQuestProgress = false;
+        }
+
+        if (!string.IsNullOrEmpty(QuestInProgressRequired))
+        {
+            var requiredQuest = QuestCatalog.QuestCatalogs.FirstOrDefault(q => q.Value.Name == QuestInProgressRequired).Value;
+
+            if (requiredQuest != null)
+                if (player.Character.QuestLog.FirstOrDefault(q => q.Id == requiredQuest.Id) == null)
+                    validQuestProgress = false;
+        }
+
+        return validQuestProgress ? player : null;
+
+    }).Where(x => x != null)];
+
+    public int Interactions => CurrentInteractions + CurrentValidInteractors.Count;
+
+    public bool IsActive = false;
+    public bool IsEnabled = false;
+    public float LastActivationTime = 0;
+
+    public Dictionary<string, TriggerType> Triggers;
+    public List<ActivationType> Activations;
 
     public override void InitializeComponent()
     {

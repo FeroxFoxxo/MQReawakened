@@ -58,10 +58,11 @@ public abstract class BaseTriggerStatueComp<T> : BaseTriggerCoopController<T> wh
     public override void SendDelayedData(Player player)
     {
         var trigger = new Trigger_SyncEvent(Id.ToString(), Room.Time, false, "now", false);
+
         if (Status == ArenaStatus.Complete)
-            new Trigger_SyncEvent(Id.ToString(), Room.Time, true, "now", false);
+            trigger = new Trigger_SyncEvent(Id.ToString(), Room.Time, true, "now", false);
         else if (Status != ArenaStatus.Complete && HasStarted)
-            new Trigger_SyncEvent(Id.ToString(), Room.Time, true, "now", true);
+            trigger = new Trigger_SyncEvent(Id.ToString(), Room.Time, true, "now", true);
 
         player.SendSyncEventToPlayer(trigger);
     }

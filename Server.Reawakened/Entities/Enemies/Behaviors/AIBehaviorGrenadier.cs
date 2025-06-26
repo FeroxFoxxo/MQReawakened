@@ -4,14 +4,16 @@ using Server.Reawakened.XMLs.Data.Enemy.Enums;
 
 namespace Server.Reawakened.Entities.Enemies.Behaviors;
 
-public class AIBehaviorGrenadier(GrenadierProperties properties, BehaviorEnemy enemy) : AIBaseBehavior(enemy, StateType.Grenadier)
+public class AIBehaviorGrenadier(BehaviorEnemy enemy, GrenadierProperties fallback) : AIBaseBehavior(enemy.AiData, enemy.Room)
 {
     public override bool ShouldDetectPlayers => false;
 
-    public override AiProperties GetProperties() => properties;
+    public override AiProperties GetProperties() => fallback;
 
     public override object[] GetStartArgs() => [];
 
+    public override StateType GetStateType() => StateType.Grenadier;
+
     public override void NextState() =>
-        Enemy.ChangeBehavior(Enemy.GenericScript.AwareBehavior, Enemy.Position.x, Enemy.Position.y, Enemy.AiData.Intern_Dir);
+        enemy.ChangeBehavior(enemy.Global.AwareBehavior, enemy.Position.x, enemy.Position.y, _aiData.Intern_Dir);
 }

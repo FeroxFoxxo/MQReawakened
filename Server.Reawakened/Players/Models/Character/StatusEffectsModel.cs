@@ -25,7 +25,7 @@ public class StatusEffectsModel(CharacterDbEntry entry)
 
     public void Remove(ItemEffectType effect) => Effects.Remove(effect);
 
-    public float Get(ItemEffectType effect)
+    public float GetEffect(ItemEffectType effect)
     {
         var output = 0f;
 
@@ -39,5 +39,19 @@ public class StatusEffectsModel(CharacterDbEntry entry)
             }
 
         return output;
+    }
+
+    public bool HasEffect(ItemEffectType effect)
+    {
+        if (Effects.TryGetValue(effect, out var statusData))
+            if (statusData.Effect == effect)
+            {
+                if (statusData.Expiry > DateTime.Now)
+                    return true;
+                else
+                    Remove(effect);
+            }
+
+        return false;
     }
 }

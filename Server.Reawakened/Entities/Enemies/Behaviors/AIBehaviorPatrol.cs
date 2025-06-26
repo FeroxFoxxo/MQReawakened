@@ -6,29 +6,29 @@ using Server.Reawakened.XMLs.Data.Enemy.Enums;
 
 namespace Server.Reawakened.Entities.Enemies.Behaviors;
 
-public class AIBehaviorPatrol(PatrolProperties properties, BehaviorEnemy enemy) : AIBaseBehavior(enemy, StateType.Patrol)
+public class AIBehaviorPatrol(BehaviorEnemy enemy, PatrolProperties fallback) : AIBaseBehavior(enemy.AiData, enemy.Room)
 {
     public override bool ShouldDetectPlayers => true;
 
     public override AiProperties GetProperties() =>
         new PatrolProperties(
-            Enemy.Global.Patrol_MoveSpeed != Enemy.Global.Default.Patrol_MoveSpeed ? Enemy.Global.Patrol_MoveSpeed : properties.patrol_MoveSpeed,
-            Enemy.Global.Patrol_SmoothMove != Enemy.Global.Default.Patrol_SmoothMove ? Enemy.Global.Patrol_SmoothMove : properties.patrol_SmoothMove,
-            Enemy.Global.Patrol_EndPathWaitTime != Enemy.Global.Default.Patrol_EndPathWaitTime ? Enemy.Global.Patrol_EndPathWaitTime : properties.patrol_EndPathWaitTime,
-            Enemy.Generic.PatrolX,
-            Enemy.Generic.PatrolY,
-            Enemy.Generic.Patrol_ForceDirectionX,
-            Enemy.Generic.Patrol_InitialProgressRatio
+            Fallback(enemy.Global.Patrol_MoveSpeed, fallback.patrol_MoveSpeed),
+            Fallback(enemy.Global.Patrol_SmoothMove, fallback.patrol_SmoothMove),
+            Fallback(enemy.Global.Patrol_EndPathWaitTime, fallback.patrol_EndPathWaitTime),
+            Fallback(enemy.Generic.PatrolX, fallback.patrolDistanceX),
+            Fallback(enemy.Generic.PatrolY, fallback.patrolDistanceY),
+            Fallback(enemy.Generic.Patrol_ForceDirectionX, fallback.patrolForceDirectionX), 
+            Fallback(enemy.Generic.Patrol_InitialProgressRatio, fallback.patrolInitialProgressRatio)
         );
 
     public override object[] GetStartArgs()
     {
-        var behavior = Behavior as AI_Behavior_Patrol;
+        var behavior = _behaviour as AI_Behavior_Patrol;
 
-        behavior.SetStats(Enemy.AiData);
+        behavior.SetStats(_aiData);
 
         var method = behavior.GetMethod("CalculateProgressRatio");
-        method.Invoke(behavior, [Enemy.AiData]);
+        method.Invoke(behavior, [_aiData]);
 
         var ratio = behavior.GetField("Patrol_InitialProgressRatio");
 
@@ -36,6 +36,8 @@ public class AIBehaviorPatrol(PatrolProperties properties, BehaviorEnemy enemy) 
 
         return [];
     }
+
+    public override StateType GetStateType() => StateType.Patrol;
 
     public override void NextState() { }
 }

@@ -26,9 +26,8 @@ public class MeleeEntity : BaseProjectile
         var meleeWidth = onGround ? config.MeleeWidth : config.MeleeAerialRange;
         var meleeHeight = onGround ? config.MeleeHeight : config.MeleeAerialRange;
 
-        player.Character.StatusEffects.Get(ItemEffectType.Detect);
         Collider = new AttackCollider(id, position, new Rect(meleeLeft, meleeTop, meleeWidth, meleeHeight),
-            PrjPlane, player, damage, type, LifeTime, onGround ? 0.1f : 0.5f, player.Character.StatusEffects.Effects.ContainsKey(ItemEffectType.Detect)
+            PrjPlane, player, damage, type, LifeTime, onGround ? 0.1f : 0.5f, player.Character.StatusEffects.HasEffect(ItemEffectType.Detect)
         );
 
         var hitEvent = new Melee_SyncEvent(

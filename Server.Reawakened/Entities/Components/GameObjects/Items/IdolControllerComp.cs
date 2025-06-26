@@ -12,6 +12,7 @@ namespace Server.Reawakened.Entities.Components.GameObjects.Items;
 public class IdolControllerComp : Component<IdolController>
 {
     public int Index => ComponentData.Index;
+
     public ILogger<HarvestControllerComp> Logger { get; set; }
     public InternalAchievement Achievement { get; set; }
     public QuestCatalog QuestCatalog { get; set; }

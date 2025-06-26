@@ -32,6 +32,7 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
     public int HurtSelfOnDamage => ComponentData.HurtSelfOnDamage;
 
     public ItemEffectType EffectType = ItemEffectType.Unknown;
+
     public bool IsActive = true;
     public bool TimedHazard = false;
 
@@ -156,8 +157,7 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
         if ((TimedHazard || EffectType == ItemEffectType.WaterBreathing) && !IsActive)
             return;
 
-        player.Character.StatusEffects.Get(ItemEffectType.Invisibility);
-        if (HitOnlyVisible && player.Character.StatusEffects.Effects.ContainsKey(ItemEffectType.Invisibility))
+        if (HitOnlyVisible && player.Character.StatusEffects.HasEffect(ItemEffectType.Invisibility))
             return;
 
         if (EffectType == ItemEffectType.SlowStatusEffect && player.TempData.IsSlowed || player.HasNullifyEffect(ItemCatalog))

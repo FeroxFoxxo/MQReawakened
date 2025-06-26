@@ -58,8 +58,6 @@ public abstract class BaseEnemy : IDestructible
     public BaseSpawnerControllerComp LinkedSpawner;
     public InterObjStatusComp Status;
 
-    public GlobalProperties GlobalProperties;
-
     public readonly BaseComponent Entity;
     public readonly IEnemyController EnemyController;
     public readonly EnemyModel EnemyModel;
@@ -114,10 +112,7 @@ public abstract class BaseEnemy : IDestructible
 
         GenerateHitbox(EnemyModel.Hitbox);
 
-        GlobalProperties = AISyncEventHelper.CreateDefaultGlobalProperties();
-
         // Temporary values
-
         HealthModifier = 1;
         ScaleModifier = 1;
         ResistanceModifier = 1;
@@ -175,7 +170,7 @@ public abstract class BaseEnemy : IDestructible
 
     public virtual void Damage(Player player, int damage)
     {
-        if (Room.IsObjectKilled(Id))
+        if (Room.IsObjectKilled(Id) || player == null)
             return;
 
         var resistance = GameFlow.StatisticData.GetValue(ItemEffectType.Defence, WorldStatisticsGroup.Enemy, Level);
@@ -193,10 +188,10 @@ public abstract class BaseEnemy : IDestructible
 
     public virtual void PetDamage(Player player)
     {
-        if (Room.IsObjectKilled(Id))
+        if (Room.IsObjectKilled(Id) || player == null)
             return;
 
-        if (player == null || !player.Character.Pets.TryGetValue(player.GetEquippedPetId(ServerRConfig), out var pet))
+        if (!player.Character.Pets.TryGetValue(player.GetEquippedPetId(ServerRConfig), out var pet))
         {
             Logger.LogError("Could not find pet that damaged {PrefabName}! Returning...", PrefabName);
             return;

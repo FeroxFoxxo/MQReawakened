@@ -4,26 +4,29 @@ using Server.Reawakened.XMLs.Data.Enemy.Enums;
 
 namespace Server.Reawakened.Entities.Enemies.Behaviors;
 
-public class AIBehaviorShooting(ShootingProperties properties, BehaviorEnemy enemy) : AIBaseBehavior(enemy, StateType.Shooting)
+public class AIBehaviorShooting(BehaviorEnemy enemy, ShootingProperties fallback) : AIBaseBehavior(enemy.AiData, enemy.Room)
 {
     public override bool ShouldDetectPlayers => false;
 
-    public override AiProperties GetProperties() => new ShootingProperties(
-        Enemy.Global.Shooting_NbBulletsPerRound != Enemy.Global.Default.Shooting_NbBulletsPerRound ? Enemy.Global.Shooting_NbBulletsPerRound : properties.shooting_NbBulletsPerRound,
-        Enemy.Global.Shooting_FireSpreadAngle != Enemy.Global.Default.Shooting_FireSpreadAngle ? Enemy.Global.Shooting_FireSpreadAngle : properties.shooting_FireSpreadAngle,
-        Enemy.Global.Shooting_DelayBetweenBullet != Enemy.Global.Default.Shooting_DelayBetweenBullet ? Enemy.Global.Shooting_DelayBetweenBullet : properties.shooting_DelayBetweenBullet,
-        Enemy.Global.Shooting_DelayShot_Anim != Enemy.Global.Default.Shooting_DelayShot_Anim ? Enemy.Global.Shooting_DelayShot_Anim : properties.shooting_DelayShoot_Anim,
-        Enemy.Global.Shooting_NbFireRounds != Enemy.Global.Default.Shooting_NbFireRounds ? Enemy.Global.Shooting_NbFireRounds : properties.shooting_NbFireRounds,
-        Enemy.Global.Shooting_DelayBetweenFireRound != Enemy.Global.Default.Shooting_DelayBetweenFireRound ? Enemy.Global.Shooting_DelayBetweenFireRound : properties.shooting_DelayBetweenFireRound,
-        Enemy.Global.Shooting_StartCoolDownTime != Enemy.Global.Default.Shooting_StartCoolDownTime ? Enemy.Global.Shooting_StartCoolDownTime : properties.shooting_StartCoolDownTime,
-        Enemy.Global.Shooting_EndCoolDownTime != Enemy.Global.Default.Shooting_EndCoolDownTime ? Enemy.Global.Shooting_EndCoolDownTime : properties.shooting_EndCoolDownTime,
-        Enemy.Global.Shooting_ProjectileSpeed != Enemy.Global.Default.Shooting_ProjectileSpeed ? Enemy.Global.Shooting_ProjectileSpeed : properties.shooting_ProjectileSpeed,
-        Enemy.Global.Shooting_FireSpreadClockwise != Enemy.Global.Default.Shooting_FireSpreadClockwise ? Enemy.Global.Shooting_FireSpreadClockwise : properties.shooting_FireSpreadClockwise,
-        Enemy.Global.Shooting_FireSpreadStartAngle != Enemy.Global.Default.Shooting_FireSpreadStartAngle ? Enemy.Global.Shooting_FireSpreadStartAngle : properties.shooting_FireSpreadStartAngle
-    );
+    public override AiProperties GetProperties() =>
+        new ShootingProperties(
+            Fallback(enemy.Global.Shooting_NbBulletsPerRound, fallback.shooting_NbBulletsPerRound),
+            Fallback(enemy.Global.Shooting_FireSpreadAngle, fallback.shooting_FireSpreadAngle),
+            Fallback(enemy.Global.Shooting_DelayBetweenBullet, fallback.shooting_DelayBetweenBullet),
+            Fallback(enemy.Global.Shooting_DelayShot_Anim, fallback.shooting_DelayShoot_Anim),
+            Fallback(enemy.Global.Shooting_NbFireRounds, fallback.shooting_NbFireRounds),
+            Fallback(enemy.Global.Shooting_DelayBetweenFireRound, fallback.shooting_DelayBetweenFireRound),
+            Fallback(enemy.Global.Shooting_StartCoolDownTime, fallback.shooting_StartCoolDownTime),
+            Fallback(enemy.Global.Shooting_EndCoolDownTime, fallback.shooting_EndCoolDownTime),
+            Fallback(enemy.Global.Shooting_ProjectileSpeed, fallback.shooting_ProjectileSpeed),
+            Fallback(enemy.Global.Shooting_FireSpreadClockwise, fallback.shooting_FireSpreadClockwise),
+            Fallback(enemy.Global.Shooting_FireSpreadStartAngle, fallback.shooting_FireSpreadStartAngle)
+        );
 
     public override object[] GetStartArgs() => [];
 
+    public override StateType GetStateType() => StateType.Shooting;
+
     public override void NextState() =>
-        Enemy.ChangeBehavior(Enemy.GenericScript.AwareBehavior, Enemy.AiData.Sync_TargetPosX, Enemy.AiData.Sync_TargetPosY, Enemy.AiData.Intern_Dir);
+        enemy.ChangeBehavior(enemy.Global.AwareBehavior, _aiData.Sync_TargetPosX, _aiData.Sync_TargetPosY, _aiData.Intern_Dir);
 }

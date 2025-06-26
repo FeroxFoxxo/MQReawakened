@@ -14,9 +14,7 @@ public abstract class BaseAIRetreatState<T> : BaseAIState<T>
     public override void StartState()
     {
         if (DoorId > 0)
-        {
             TimerThread.RunDelayed(OpenDoor, this, TimeSpan.FromSeconds(DelayUntilOpen));
-        }
     }
 
     public static void OpenDoor(ITimerData data)

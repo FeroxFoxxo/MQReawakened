@@ -77,7 +77,7 @@ public static class PlayerExtensions
         if (player == null)
             return;
 
-        reputation *= (int)(1 + player.Character.StatusEffects.Get(ItemEffectType.ExperienceMultiplier) * 0.01);
+        reputation *= (int)(1 + player.Character.StatusEffects.GetEffect(ItemEffectType.ExperienceMultiplier) * 0.01);
         reputation += player.Character.Reputation;
 
         while (reputation > player.Character.ReputationForNextLevel)
@@ -132,7 +132,7 @@ public static class PlayerExtensions
 
     public static void AddBananas(this Player player, float collectedBananas, InternalAchievement internalAchievement, Microsoft.Extensions.Logging.ILogger logger)
     {
-        collectedBananas *= (float)(1 + player.Character.StatusEffects.Get(ItemEffectType.BananaMultiplier) * 0.01);
+        collectedBananas *= (float)(1 + player.Character.StatusEffects.GetEffect(ItemEffectType.BananaMultiplier) * 0.01);
 
         player.Character.Write.Cash += collectedBananas;
         player.SendCashUpdate();

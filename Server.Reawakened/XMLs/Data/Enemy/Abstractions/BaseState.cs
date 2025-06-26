@@ -5,11 +5,11 @@ using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.XMLs.Data.Enemy.Models;
 
 namespace Server.Reawakened.XMLs.Data.Enemy.Abstractions;
-public class BaseState(List<EnemyResourceModel> resources)
+public abstract class BaseState(List<EnemyResourceModel> resources)
 {
     public List<EnemyResourceModel> Resources => resources;
 
-    public AIBaseBehavior GetBaseBehaviour(BehaviorEnemy enemy) => new AIBehaviorIdle(enemy);
+    public abstract AIBaseBehavior GetBaseBehaviour(BehaviorEnemy enemy);
 
     public string ToResourcesString()
     {

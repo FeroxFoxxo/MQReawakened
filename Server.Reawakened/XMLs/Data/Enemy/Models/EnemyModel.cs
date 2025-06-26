@@ -10,10 +10,7 @@ public class EnemyModel
     public EnemyCategory EnemyCategory { get; set; }
     public Dictionary<StateType, BaseState> BehaviorData { get; set; }
     public List<EnemyDropModel> EnemyLootTable { get; set; }
-    public GlobalPropertyModel GlobalProperties { get; set; }
-    public GenericScriptModel GenericScript { get; set; }
     public HitboxModel Hitbox { get; set; }
-    public Dictionary<string, Dictionary<string, string>> ComponentOverrides { get; set; }
 
     public void EnsureValidData(string enemyType, Microsoft.Extensions.Logging.ILogger logger)
     {
@@ -21,6 +18,21 @@ public class EnemyModel
         {
             logger.LogError("Enemy '{Name}' does not have a loot table attached!", enemyType);
             EnemyLootTable = [];
+        }
+        if (Hitbox == null)
+        {
+            logger.LogError("Enemy '{Name}' does not have a hitbox attached!", enemyType);
+            Hitbox = new HitboxModel(1, 1, 1, 1);
+        }
+        switch (AiType)
+        {
+            case AiType.Behavior:
+                if (BehaviorData == null)
+                {
+                    logger.LogError("Enemy '{Name}' does not have behavior data attached!", enemyType);
+                    BehaviorData = [];
+                }
+                break;
         }
     }
 }

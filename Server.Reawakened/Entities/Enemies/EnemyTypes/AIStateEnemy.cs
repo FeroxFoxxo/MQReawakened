@@ -45,6 +45,6 @@ public class AIStateEnemy(EnemyData data) : BaseEnemy(data)
             Id, Room,
             posX, posY, posZ, spawnX, spawnY, 0,
             Health, MaxHealth, HealthModifier, ScaleModifier, ResistanceModifier,
-            Status.Stars, Level, GlobalProperties, []
+            Status.Stars, Level, AISyncEventHelper.CreateDefaultGlobalProperties(), []
         );
 }

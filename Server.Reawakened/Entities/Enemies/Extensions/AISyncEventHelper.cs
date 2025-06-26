@@ -15,7 +15,7 @@ public static class AISyncEventHelper
             posX, posY, posZ, spawnX, spawnY, behaviorRatio,
             behaviorEnemy.Health, behaviorEnemy.MaxHealth,
             behaviorEnemy.HealthModifier, behaviorEnemy.ScaleModifier, behaviorEnemy.ResistanceModifier,
-            behaviorEnemy.Status.Stars, behaviorEnemy.Level, behaviorEnemy.GlobalProperties, behaviorEnemy.EnemyModel.BehaviorData, behaviorEnemy.Behaviors, behaviorEnemy
+            behaviorEnemy.Status.Stars, behaviorEnemy.Level, behaviorEnemy.Global.GetGlobalProperties(), behaviorEnemy.EnemyModel.BehaviorData, behaviorEnemy.Behaviors, behaviorEnemy
         );
 
     public static AIInit_SyncEvent AIInit(

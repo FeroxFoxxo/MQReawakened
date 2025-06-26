@@ -11,773 +11,1294 @@
     <!-- BlackFlame (Mini-Boss) -->
     <!-- Darkfin (Mini-Boss) -->
     <!-- Large Spinefish (Elite) -->
-    
-    <EnemyCategory name="Bombird">
-        <!-- Razorwing (Mini-Boss) -->
-        <Enemy name="PF_Critter_Bird_Boss">
-            <LootTable>
-                <Drop type="item" id="1583" chance="0.8" minLevel="5" maxLevel="65" />
-                <Drop type="item" id="1582" chance="0.5" minLevel="6" maxLevel="65" />
-                <Drop type="item" id="1581" chance="0.2" minLevel="7" maxLevel="65" />
-                <Drop type="item" id="1601" chance="0.5" minLevel="6" maxLevel="65" />
-                <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
-            </LootTable>
-        </Enemy>
-        <Enemy name="PF_Critter_Bird01">
-            <LootTable>
-                <Drop type="item" id="1583" chance="0.2" minLevel="5" maxLevel="65" />
-                <Drop type="item" id="1582" chance="0.1" minLevel="6" maxLevel="65" />
-                <Drop type="item" id="1581" chance="0.02" minLevel="7" maxLevel="65" />
-            </LootTable>
-        </Enemy>
-        <Enemy name="PF_Critter_Bird02">
-            <LootTable>
-                <Drop type="item" id="1583" chance="0.5" minLevel="5" maxLevel="65" />
-                <Drop type="item" id="1582" chance="0.2" minLevel="6" maxLevel="65" />
-                <Drop type="item" id="1581" chance="0.05" minLevel="7" maxLevel="65" />
-                <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
-            </LootTable>
-        </Enemy>
-        <Enemy name="PF_Critter_Bird03">
-            <LootTable>
-                <Drop type="item" id="1583" chance="0.2" minLevel="5" maxLevel="65" />
-                <Drop type="item" id="1582" chance="0.1" minLevel="6" maxLevel="65" />
-                <Drop type="item" id="1581" chance="0.02" minLevel="7" maxLevel="65" />
-            </LootTable>
-        </Enemy>
-        <Enemy name="PF_Critter_Bird04">
-            <LootTable>
-                <Drop type="item" id="1583" chance="0.5" minLevel="5" maxLevel="65" />
-                <Drop type="item" id="1582" chance="0.2" minLevel="6" maxLevel="65" />
-                <Drop type="item" id="1581" chance="0.05" minLevel="7" maxLevel="65" />
-                <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
-            </LootTable>
-        </Enemy>
-    </EnemyCategory>
-    <EnemyCategory name="Spinefish">
-        <!-- Shadow Spinefish (Mini-Boss) -->
-        <Enemy name="PF_Critter_Fish_Boss">
-            <LootTable>
-                <Drop type="item" id="868" chance="0.8" minLevel="5" maxLevel="65" />
-                <Drop type="item" id="1602" chance="0.5" minLevel="6" maxLevel="65" />
-                <Drop type="item" id="1603" chance="0.2" minLevel="7" maxLevel="65" />
-                <Drop type="item" id="1601" chance="0.5" minLevel="6" maxLevel="65" />
-                <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
-            </LootTable>
-        </Enemy>
-        <!-- Spinefish -->
-        <Enemy name="PF_Critter_Fish01">
-            <LootTable>
-                <Drop type="item" id="868" chance="0.2" minLevel="5" maxLevel="65" />
-                <Drop type="item" id="1602" chance="0.1" minLevel="6" maxLevel="65" />
-                <Drop type="item" id="1603" chance="0.02" minLevel="7" maxLevel="65" />
-            </LootTable>
-        </Enemy>
-        <Enemy name="PF_Critter_Fish02">
-            <LootTable>
-                <Drop type="item" id="868" chance="0.2" minLevel="5" maxLevel="65" />
-                <Drop type="item" id="1602" chance="0.1" minLevel="6" maxLevel="65" />
-                <Drop type="item" id="1603" chance="0.02" minLevel="7" maxLevel="65" />
-            </LootTable>
-        </Enemy>
-        <Enemy name="PF_Critter_Fish03">
-            <LootTable>
-                <Drop type="item" id="868" chance="0.2" minLevel="5" maxLevel="65" />
-                <Drop type="item" id="1602" chance="0.1" minLevel="6" maxLevel="65" />
-                <Drop type="item" id="1603" chance="0.02" minLevel="7" maxLevel="65" />
-            </LootTable>
-        </Enemy>
-        <Enemy name="PF_Critter_Fish04">
-            <LootTable>
-                <Drop type="item" id="868" chance="0.5" minLevel="5" maxLevel="65" />
-                <Drop type="item" id="1602" chance="0.2" minLevel="6" maxLevel="65" />
-                <Drop type="item" id="1603" chance="0.05" minLevel="7" maxLevel="65" />
-                <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
-            </LootTable>
-        </Enemy>
-    </EnemyCategory>
-    <EnemyCategory name="Rachnoid">
-        <!-- Grimfang (Mini-Boss) -->
-        <Enemy name="PF_Critter_Spider_Boss">
-            <LootTable>
-                <Drop type="item" id="1599" chance="0.8" minLevel="5" maxLevel="65" />
-                <Drop type="item" id="1065" chance="0.5" minLevel="6" maxLevel="65" />
-                <Drop type="item" id="1600" chance="0.2" minLevel="7" maxLevel="65" />
-                <Drop type="item" id="1601" chance="0.5" minLevel="6" maxLevel="65" />
-                <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
-            </LootTable>
-        </Enemy>
-        <Enemy name="PF_Critter_Spider_Boss_Ceiling_Shoot">
-            <LootTable>
-                <Drop type="item" id="1599" chance="0.8" minLevel="5" maxLevel="65" />
-                <Drop type="item" id="1065" chance="0.5" minLevel="6" maxLevel="65" />
-                <Drop type="item" id="1600" chance="0.2" minLevel="7" maxLevel="65" />
-                <Drop type="item" id="1601" chance="0.5" minLevel="6" maxLevel="65" />
-                <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
-            </LootTable>
-        </Enemy>
-        <Enemy name="PF_Critter_Spider_Boss_Shoot">
-            <LootTable>
-                <Drop type="item" id="1599" chance="0.8" minLevel="5" maxLevel="65" />
-                <Drop type="item" id="1065" chance="0.5" minLevel="6" maxLevel="65" />
-                <Drop type="item" id="1600" chance="0.2" minLevel="7" maxLevel="65" />
-                <Drop type="item" id="1601" chance="0.5" minLevel="6" maxLevel="65" />
-                <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
-            </LootTable>
-        </Enemy>
-        <!-- Shadowy Spiderling (Elite) -->
-        <Enemy name="PF_Critter_Spider_Newb">
-            <LootTable>
-            </LootTable>
-        </Enemy>
-        <!-- Poison Rachnoid -->
-        <Enemy name="PF_Critter_Spider01">
-            <LootTable>
-                <Drop type="item" id="1599" chance="0.2" minLevel="5" maxLevel="65" />
-                <Drop type="item" id="1065" chance="0.01" minLevel="6" maxLevel="65" />
-                <Drop type="item" id="1600" chance="0.02" minLevel="7" maxLevel="65" />
-            </LootTable>
-        </Enemy>
-        <Enemy name="PF_Critter_Spider01_Ceiling_Shoot">
-            <LootTable>
-                <Drop type="item" id="1599" chance="0.2" minLevel="5" maxLevel="65" />
-                <Drop type="item" id="1065" chance="0.01" minLevel="6" maxLevel="65" />
-                <Drop type="item" id="1600" chance="0.02" minLevel="7" maxLevel="65" />
-            </LootTable>
-        </Enemy>
-        <Enemy name="PF_Critter_Spider01_Shoot">
-            <LootTable>
-                <Drop type="item" id="1599" chance="0.2" minLevel="5" maxLevel="65" />
-                <Drop type="item" id="1065" chance="0.01" minLevel="6" maxLevel="65" />
-                <Drop type="item" id="1600" chance="0.02" minLevel="7" maxLevel="65" />
-            </LootTable>
-        </Enemy>
-        <Enemy name="PF_Critter_Spider02">
-            <LootTable>
-                <Drop type="item" id="1599" chance="0.5" minLevel="5" maxLevel="65" />
-                <Drop type="item" id="1065" chance="0.2" minLevel="6" maxLevel="65" />
-                <Drop type="item" id="1600" chance="0.05" minLevel="7" maxLevel="65" />
-                <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
-            </LootTable>
-        </Enemy>
-        <Enemy name="PF_Critter_Spider02_Ceiling_Shoot">
-            <LootTable>
-                <Drop type="item" id="1599" chance="0.5" minLevel="5" maxLevel="65" />
-                <Drop type="item" id="1065" chance="0.2" minLevel="6" maxLevel="65" />
-                <Drop type="item" id="1600" chance="0.05" minLevel="7" maxLevel="65" />
-                <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
-            </LootTable>
-        </Enemy>
-        <Enemy name="PF_Critter_Spider02_Shoot">
-            <LootTable>
-                <Drop type="item" id="1599" chance="0.5" minLevel="5" maxLevel="65" />
-                <Drop type="item" id="1065" chance="0.2" minLevel="6" maxLevel="65" />
-                <Drop type="item" id="1600" chance="0.05" minLevel="7" maxLevel="65" />
-                <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
-            </LootTable>
-        </Enemy>
-        <Enemy name="PF_Critter_Spider03">
-            <LootTable>
-                <Drop type="item" id="1599" chance="0.2" minLevel="5" maxLevel="65" />
-                <Drop type="item" id="1065" chance="0.1" minLevel="6" maxLevel="65" />
-                <Drop type="item" id="1600" chance="0.02" minLevel="7" maxLevel="65" />
-            </LootTable>
-        </Enemy>
-        <Enemy name="PF_Critter_Spider03_Ceiling_Shoot">
-            <LootTable>
-                <Drop type="item" id="1599" chance="0.2" minLevel="5" maxLevel="65" />
-                <Drop type="item" id="1065" chance="0.1" minLevel="6" maxLevel="65" />
-                <Drop type="item" id="1600" chance="0.02" minLevel="7" maxLevel="65" />
-            </LootTable>
-        </Enemy>
-        <Enemy name="PF_Critter_Spider03_Shoot">
-            <LootTable>
-                <Drop type="item" id="1599" chance="0.2" minLevel="5" maxLevel="65" />
-                <Drop type="item" id="1065" chance="0.1" minLevel="6" maxLevel="65" />
-                <Drop type="item" id="1600" chance="0.02" minLevel="7" maxLevel="65" />
-            </LootTable>
-        </Enemy>
-        <Enemy name="PF_Critter_Spider04">
-            <LootTable>
-                <Drop type="item" id="1599" chance="0.5" minLevel="5" maxLevel="65" />
-                <Drop type="item" id="1065" chance="0.2" minLevel="6" maxLevel="65" />
-                <Drop type="item" id="1600" chance="0.05" minLevel="7" maxLevel="65" />
-                <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
-            </LootTable>
-        </Enemy>
-        <Enemy name="PF_Critter_Spider04_Ceiling_Shoot">
-            <LootTable>
-                <Drop type="item" id="1599" chance="0.5" minLevel="5" maxLevel="65" />
-                <Drop type="item" id="1065" chance="0.2" minLevel="6" maxLevel="65" />
-                <Drop type="item" id="1600" chance="0.05" minLevel="7" maxLevel="65" />
-                <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
-            </LootTable>
-        </Enemy>
-        <Enemy name="PF_Critter_Spider04_Shoot">
-            <LootTable>
-                <Drop type="item" id="1599" chance="0.5" minLevel="5" maxLevel="65" />
-                <Drop type="item" id="1065" chance="0.2" minLevel="6" maxLevel="65" />
-                <Drop type="item" id="1600" chance="0.05" minLevel="7" maxLevel="65" />
-                <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
-            </LootTable>
-        </Enemy>
-        <Enemy name="PF_Critter_Spider01_Zombie">
-            <LootTable>
-                <Drop type="item" id="134" chance="0.5" minLevel="1" maxLevel="65" />
-                <Drop type="item" id="135" chance="0.2" minLevel="5" maxLevel="65" />
-                <Drop type="item" id="136" chance="0.05" minLevel="10" maxLevel="65" />
-                <Drop type="randomArmor" chance="0.01" minLevel="1" maxLevel="50" />
-            </LootTable>
-        </Enemy>
-        <Enemy name="PF_Critter_Spider01_Ceiling_Shoot_Zombie">
-            <LootTable>
-                <Drop type="item" id="134" chance="0.5" minLevel="1" maxLevel="65" />
-                <Drop type="item" id="135" chance="0.2" minLevel="5" maxLevel="65" />
-                <Drop type="item" id="136" chance="0.05" minLevel="10" maxLevel="65" />
-                <Drop type="randomArmor" chance="0.01" minLevel="1" maxLevel="50" />
-            </LootTable>
-        </Enemy>
-    </EnemyCategory>
-    <EnemyCategory name="Bathog">
-        <!-- Shadow Bathog (Mini-Boss) -->
-        <Enemy name="PF_Spite_Bathog_Boss">
-            <LootTable>
-                <Drop type="item" id="864" chance="0.8" minLevel="5" maxLevel="65" />
-                <Drop type="item" id="866" chance="0.5" minLevel="6" maxLevel="65" />
-                <Drop type="item" id="865" chance="0.2" minLevel="7" maxLevel="65" />
-                <Drop type="item" id="1601" chance="0.5" minLevel="6" maxLevel="65" />
-                <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
-            </LootTable>
-        </Enemy>
-        <Enemy name="PF_Spite_Bathog_Shoot_Boss">
-            <LootTable>
-                <Drop type="item" id="864" chance="0.8" minLevel="5" maxLevel="65" />
-                <Drop type="item" id="866" chance="0.5" minLevel="6" maxLevel="65" />
-                <Drop type="item" id="865" chance="0.2" minLevel="7" maxLevel="65" />
-                <Drop type="item" id="1601" chance="0.5" minLevel="6" maxLevel="65" />
-                <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
-            </LootTable>
-        </Enemy>
-        <!-- Mist Bathog (Elite) -->
-        <Enemy name="PF_Spite_Bathog_Invis">
-            <LootTable>
-                <Drop type="item" id="864" chance="0.5" minLevel="5" maxLevel="65" />
-                <Drop type="item" id="866" chance="0.2" minLevel="6" maxLevel="65" />
-                <Drop type="item" id="865" chance="0.05" minLevel="7" maxLevel="65" />
-                <Drop type="item" id="1598" chance="0.1" minLevel="6" maxLevel="65" />
-                <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65" />
-                <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
-            </LootTable>
-        </Enemy>
-        <Enemy name="PF_Spite_Bathog_Shoot_Invis">
-            <LootTable>
-                <Drop type="item" id="864" chance="0.5" minLevel="5" maxLevel="65" />
-                <Drop type="item" id="866" chance="0.2" minLevel="6" maxLevel="65" />
-                <Drop type="item" id="865" chance="0.05" minLevel="7" maxLevel="65" />
-                <Drop type="item" id="1598" chance="0.1" minLevel="6" maxLevel="65" />
-                <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65" />
-                <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
-            </LootTable>
-        </Enemy>
-        <!-- Magma Bathog (Elite) -->
-        <Enemy name="PF_Spite_Bathog_Lava">
-            <LootTable>
-                <Drop type="item" id="864" chance="0.5" minLevel="5" maxLevel="65" />
-                <Drop type="item" id="866" chance="0.2" minLevel="6" maxLevel="65" />
-                <Drop type="item" id="865" chance="0.05" minLevel="7" maxLevel="65" />
-                <Drop type="item" id="1591" chance="0.1" minLevel="6" maxLevel="65" />
-                <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65" />
-                <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
-            </LootTable>
-        </Enemy>
-        <Enemy name="PF_Spite_Bathog_Shoot_Lava">
-            <LootTable>
-                <Drop type="item" id="864" chance="0.5" minLevel="5" maxLevel="65" />
-                <Drop type="item" id="866" chance="0.2" minLevel="6" maxLevel="65" />
-                <Drop type="item" id="865" chance="0.05" minLevel="7" maxLevel="65" />
-                <Drop type="item" id="1591" chance="0.1" minLevel="6" maxLevel="65" />
-                <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65" />
-                <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
-            </LootTable>
-        </Enemy>
-        <!-- Bathog -->
-        <Enemy name="PF_Spite_Bathog_Rock">
-            <LootTable>
-                <Drop type="item" id="864" chance="0.2" minLevel="5" maxLevel="65" />
-                <Drop type="item" id="866" chance="0.1" minLevel="6" maxLevel="65" />
-                <Drop type="item" id="865" chance="0.02" minLevel="7" maxLevel="65" />
-            </LootTable>
-        </Enemy>
-        <Enemy name="PF_Spite_Bathog_Shoot_Rock">
-            <LootTable>
-                <Drop type="item" id="864" chance="0.2" minLevel="5" maxLevel="65" />
-                <Drop type="item" id="866" chance="0.1" minLevel="6" maxLevel="65" />
-                <Drop type="item" id="865" chance="0.02" minLevel="7" maxLevel="65" />
-            </LootTable>
-        </Enemy>
-        <Enemy name="PF_Spite_Bathog_Swamp">
-            <LootTable>
-                <Drop type="item" id="864" chance="0.5" minLevel="5" maxLevel="65" />
-                <Drop type="item" id="866" chance="0.2" minLevel="6" maxLevel="65" />
-                <Drop type="item" id="865" chance="0.05" minLevel="7" maxLevel="65" />
-                <Drop type="item" id="1592" chance="0.1" minLevel="6" maxLevel="65" />
-                <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65" />
-                <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
-            </LootTable>
-        </Enemy>
-        <Enemy name="PF_Spite_Bathog_Shoot_Swamp">
-            <LootTable>
-                <Drop type="item" id="864" chance="0.5" minLevel="5" maxLevel="65" />
-                <Drop type="item" id="866" chance="0.2" minLevel="6" maxLevel="65" />
-                <Drop type="item" id="865" chance="0.05" minLevel="7" maxLevel="65" />
-                <Drop type="item" id="1592" chance="0.1" minLevel="6" maxLevel="65" />
-                <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65" />
-                <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
-            </LootTable>
-        </Enemy>
-        <Enemy name="PF_Spite_Bathog_Zombie">
-            <LootTable>
-                <Drop type="item" id="107" chance="0.5" minLevel="1" maxLevel="65" />
-                <Drop type="item" id="109" chance="0.2" minLevel="5" maxLevel="65" />
-                <Drop type="item" id="108" chance="0.05" minLevel="10" maxLevel="65" />
-                <Drop type="item" id="126" chance="0.1" minLevel="5" maxLevel="65" />
-                <Drop type="item" id="137" chance="0.05" minLevel="5" maxLevel="65" />
-                <Drop type="randomArmor" chance="0.01" minLevel="1" maxLevel="50" />
-            </LootTable>
-        </Enemy>
-    </EnemyCategory>
-    <EnemyCategory name="Boombug">
-        <!-- Magma Boombug (Elite) -->
-        <Enemy name="PF_Spite_Bomber_Lava">
-            <LootTable>
-                <Drop type="item" id="3052" chance="0.5" minLevel="5" maxLevel="65" />
-            </LootTable>
-        </Enemy>
-        <!-- Rock Boombug -->
-        <Enemy name="PF_Spite_Bomber_Rock">
-            <LootTable>
-                <Drop type="item" id="3052" chance="0.2" minLevel="5" maxLevel="65" />
-            </LootTable>
-        </Enemy>
-    </EnemyCategory>
-    <EnemyCategory name="Cragcrawler">
-        <!-- Shadow Cragcrawler (Mini-Boss) -->
-        <Enemy name="PF_Spite_Crawler_Boss">
-            <LootTable>
-                <Drop type="item" id="1585" chance="0.8" minLevel="5" maxLevel="65" />
-                <Drop type="item" id="1586" chance="0.5" minLevel="6" maxLevel="65" />
-                <Drop type="item" id="1584" chance="0.2" minLevel="7" maxLevel="65" />
-                <Drop type="item" id="1601" chance="0.5" minLevel="6" maxLevel="65" />
-                <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
-            </LootTable>
-        </Enemy>
-        <!-- Magma Cragcrawler (Elite) -->
-        <Enemy name="PF_Spite_Crawler_Lava">
-            <LootTable>
-                <Drop type="item" id="1585" chance="0.5" minLevel="5" maxLevel="65" />
-                <Drop type="item" id="1586" chance="0.2" minLevel="6" maxLevel="65" />
-                <Drop type="item" id="1584" chance="0.05" minLevel="7" maxLevel="65" />
-                <Drop type="item" id="1591" chance="0.1" minLevel="6" maxLevel="65" />
-                <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65" />
-                <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
-            </LootTable>
-        </Enemy>
-        <!-- Mist Cragcrawler (Elite) -->
-        <Enemy name="PF_Spite_Crawler_Invis">
-            <LootTable>
-                <Drop type="item" id="1585" chance="0.5" minLevel="5" maxLevel="65" />
-                <Drop type="item" id="1586" chance="0.2" minLevel="6" maxLevel="65" />
-                <Drop type="item" id="1584" chance="0.05" minLevel="7" maxLevel="65" />
-                <Drop type="item" id="1598" chance="0.1" minLevel="6" maxLevel="65" />
-                <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65" />
-                <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
-            </LootTable>
-        </Enemy>
-        <!-- Swamp Cragcrawler (Elite) -->
-        <Enemy name="PF_Spite_Crawler_Swamp">
-            <LootTable>
-                <Drop type="item" id="1585" chance="0.5" minLevel="5" maxLevel="65" />
-                <Drop type="item" id="1586" chance="0.2" minLevel="6" maxLevel="65" />
-                <Drop type="item" id="1584" chance="0.05" minLevel="7" maxLevel="65" />
-                <Drop type="item" id="1592" chance="0.1" minLevel="6" maxLevel="65" />
-                <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65" />
-                <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
-            </LootTable>
-        </Enemy>
-        <!-- Cragcrawler -->
-        <Enemy name="PF_Spite_Crawler_Rock">
-            <LootTable>
-                <Drop type="item" id="1585" chance="0.2" minLevel="5" maxLevel="65" />
-                <Drop type="item" id="1586" chance="0.1" minLevel="6" maxLevel="65" />
-                <Drop type="item" id="1584" chance="0.02" minLevel="7" maxLevel="65" />
-            </LootTable>
-        </Enemy>
-    </EnemyCategory>
-    <EnemyCategory name="Dragon">
-        <!-- Shadow Dragon (Mini-Boss) -->
-        <Enemy name="PF_Spite_Dragon_Boss">
-            <LootTable>
-                <Drop type="item" id="1589" chance="0.8" minLevel="5" maxLevel="65" />
-                <Drop type="item" id="1587" chance="0.5" minLevel="6" maxLevel="65" />
-                <Drop type="item" id="1588" chance="0.2" minLevel="7" maxLevel="65" />
-                <Drop type="item" id="1601" chance="0.5" minLevel="6" maxLevel="65" />
-                <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
-            </LootTable>
-        </Enemy>
-        <!-- Moss Dragon (Elite) -->
-        <Enemy name="PF_Spite_Dragon_Swamp">
-            <LootTable>
-                <Drop type="item" id="1589" chance="0.5" minLevel="5" maxLevel="65" />
-                <Drop type="item" id="1587" chance="0.2" minLevel="6" maxLevel="65" />
-                <Drop type="item" id="1588" chance="0.05" minLevel="7" maxLevel="65" />
-                <Drop type="item" id="1592" chance="0.1" minLevel="6" maxLevel="65" />
-                <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65" />
-                <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
-            </LootTable>
-        </Enemy>
-        <!-- Magma Dragon (Elite) -->
-        <Enemy name="PF_Spite_Dragon_Lava">
-            <LootTable>
-                <Drop type="item" id="1589" chance="0.5" minLevel="5" maxLevel="65" />
-                <Drop type="item" id="1587" chance="0.2" minLevel="6" maxLevel="65" />
-                <Drop type="item" id="1588" chance="0.05" minLevel="7" maxLevel="65" />
-                <Drop type="item" id="1591" chance="0.1" minLevel="6" maxLevel="65" />
-                <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65" />
-                <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
-            </LootTable>
-        </Enemy>
-        <!-- Mist Dragon (Elite) -->
-        <Enemy name="PF_Spite_Dragon_Invis">
-            <LootTable>
-                <Drop type="item" id="1589" chance="0.5" minLevel="5" maxLevel="65" />
-                <Drop type="item" id="1587" chance="0.2" minLevel="6" maxLevel="65" />
-                <Drop type="item" id="1588" chance="0.05" minLevel="7" maxLevel="65" />
-                <Drop type="item" id="1598" chance="0.1" minLevel="6" maxLevel="65" />
-                <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65" />
-                <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
-            </LootTable>
-        </Enemy>
-        <!-- Dragon -->
-        <Enemy name="PF_Spite_Dragon_Rock">
-            <LootTable>
-                <Drop type="item" id="1589" chance="0.2" minLevel="5" maxLevel="65" />
-                <Drop type="item" id="1587" chance="0.1" minLevel="6" maxLevel="65" />
-                <Drop type="item" id="1588" chance="0.02" minLevel="7" maxLevel="65" />
-            </LootTable>
-        </Enemy>
-    </EnemyCategory>
-    <EnemyCategory name="Rumbler">
-        <!-- Fire Rumbler (Elite) -->
-        <Enemy name="PF_Spite_Grenadier_Lava">
-            <LootTable>
-            </LootTable>
-        </Enemy>
-        <!-- Rock Rumbler -->
-        <Enemy name="PF_Spite_Grenadier_Rock">
-            <LootTable>
-            </LootTable>
-        </Enemy>
-        <!-- Moss Rumbler -->
-        <Enemy name="PF_Spite_Grenadier_Swamp">
-            <LootTable>
-            </LootTable>
-        </Enemy>
-    </EnemyCategory>
-    <EnemyCategory name="Orchid">
-        <!-- Shadow Orchid (Mini-Boss) -->
-        <Enemy name="PF_Spite_Orchid_Boss">
-            <LootTable>
-                <Drop type="item" id="1593" chance="0.8" minLevel="5" maxLevel="65" />
-                <Drop type="item" id="1595" chance="0.5" minLevel="6" maxLevel="65" />
-                <Drop type="item" id="1594" chance="0.2" minLevel="7" maxLevel="65" />
-                <Drop type="item" id="1601" chance="0.5" minLevel="6" maxLevel="65" />
-                <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
-            </LootTable>
-        </Enemy>
-        <Enemy name="PF_Spite_Orchid_Ceiling_Boss">
-            <LootTable>
-                <Drop type="item" id="1593" chance="0.8" minLevel="5" maxLevel="65" />
-                <Drop type="item" id="1595" chance="0.5" minLevel="6" maxLevel="65" />
-                <Drop type="item" id="1594" chance="0.2" minLevel="7" maxLevel="65" />
-                <Drop type="item" id="1601" chance="0.5" minLevel="6" maxLevel="65" />
-                <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
-            </LootTable>
-        </Enemy>
-        <!-- Magma Orchid (Elite) -->
-        <Enemy name="PF_Spite_Orchid_Lava">
-            <LootTable>
-                <Drop type="item" id="1593" chance="0.5" minLevel="5" maxLevel="65" />
-                <Drop type="item" id="1595" chance="0.2" minLevel="6" maxLevel="65" />
-                <Drop type="item" id="1594" chance="0.05" minLevel="7" maxLevel="65" />
-                <Drop type="item" id="1591" chance="0.1" minLevel="6" maxLevel="65" />
-                <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65" />
-                <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
-            </LootTable>
-        </Enemy>
-        <Enemy name="PF_Spite_Orchid_Ceiling_Lava">
-            <LootTable>
-                <Drop type="item" id="1593" chance="0.5" minLevel="5" maxLevel="65" />
-                <Drop type="item" id="1595" chance="0.2" minLevel="6" maxLevel="65" />
-                <Drop type="item" id="1594" chance="0.05" minLevel="7" maxLevel="65" />
-                <Drop type="item" id="1591" chance="0.1" minLevel="6" maxLevel="65" />
-                <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65" />
-                <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
-            </LootTable>
-        </Enemy>
-        <!-- Moss Orchid (Elite) -->
-        <Enemy name="PF_Spite_Orchid_Swamp">
-            <LootTable>
-                <Drop type="item" id="1593" chance="0.5" minLevel="5" maxLevel="65" />
-                <Drop type="item" id="1595" chance="0.2" minLevel="6" maxLevel="65" />
-                <Drop type="item" id="1594" chance="0.05" minLevel="7" maxLevel="65" />
-                <Drop type="item" id="1592" chance="0.1" minLevel="6" maxLevel="65" />
-                <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65" />
-                <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
-            </LootTable>
-        </Enemy>
-        <Enemy name="PF_Spite_Orchid_Ceiling_Swamp">
-            <LootTable>
-                <Drop type="item" id="1593" chance="0.5" minLevel="5" maxLevel="65" />
-                <Drop type="item" id="1595" chance="0.2" minLevel="6" maxLevel="65" />
-                <Drop type="item" id="1594" chance="0.05" minLevel="7" maxLevel="65" />
-                <Drop type="item" id="1592" chance="0.1" minLevel="6" maxLevel="65" />
-                <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65" />
-                <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
-            </LootTable>
-        </Enemy>
-        <!-- Mist Orchid (Elite) -->
-        <Enemy name="PF_Spite_Orchid_Invis">
-            <LootTable>
-                <Drop type="item" id="1593" chance="0.5" minLevel="5" maxLevel="65" />
-                <Drop type="item" id="1595" chance="0.2" minLevel="6" maxLevel="65" />
-                <Drop type="item" id="1594" chance="0.05" minLevel="7" maxLevel="65" />
-                <Drop type="item" id="1591" chance="0.1" minLevel="6" maxLevel="65" />
-                <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65" />
-                <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
-            </LootTable>
-        </Enemy>
-        <!-- Rock Orchid -->
-        <Enemy name="PF_Spite_Orchid_Rock">
-            <LootTable>
-                <Drop type="item" id="1593" chance="0.2" minLevel="5" maxLevel="65" />
-                <Drop type="item" id="1595" chance="0.1" minLevel="6" maxLevel="65" />
-                <Drop type="item" id="1594" chance="0.02" minLevel="7" maxLevel="65" />
-            </LootTable>
-        </Enemy>
-        <Enemy name="PF_Spite_Orchid_Ceiling_Rock">
-            <LootTable>
-                <Drop type="item" id="1593" chance="0.2" minLevel="5" maxLevel="65" />
-                <Drop type="item" id="1595" chance="0.1" minLevel="6" maxLevel="65" />
-                <Drop type="item" id="1594" chance="0.02" minLevel="7" maxLevel="65" />
-            </LootTable>
-        </Enemy>
-    </EnemyCategory>
-    <EnemyCategory name="Pincer">
-        <!-- Shadow Pincer (Mini-Boss) -->
-        <Enemy name="PF_Spite_Pincer_Boss">
-            <LootTable>
-                <Drop type="item" id="867" chance="0.8" minLevel="5" maxLevel="65" />
-                <Drop type="item" id="1596" chance="0.5" minLevel="6" maxLevel="65" />
-                <Drop type="item" id="1597" chance="0.2" minLevel="7" maxLevel="65" />
-                <Drop type="item" id="1601" chance="0.5" minLevel="6" maxLevel="65" />
-                <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
-            </LootTable>
-        </Enemy>
-        <!-- Mist Pincer (Elite) -->
-        <Enemy name="PF_Spite_Pincer_Invis">
-            <LootTable>
-                <Drop type="item" id="867" chance="0.5" minLevel="5" maxLevel="65" />
-                <Drop type="item" id="1596" chance="0.2" minLevel="6" maxLevel="65" />
-                <Drop type="item" id="1597" chance="0.05" minLevel="7" maxLevel="65" />
-                <Drop type="item" id="1598" chance="0.1" minLevel="6" maxLevel="65" />
-                <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65" />
-                <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
-            </LootTable>
-        </Enemy>
-        <!-- Magma Pincer (Elite) -->
-        <Enemy name="PF_Spite_Pincer_Lava">
-            <LootTable>
-                <Drop type="item" id="867" chance="0.5" minLevel="5" maxLevel="65" />
-                <Drop type="item" id="1596" chance="0.2" minLevel="6" maxLevel="65" />
-                <Drop type="item" id="1597" chance="0.05" minLevel="7" maxLevel="65" />
-                <Drop type="item" id="1591" chance="0.1" minLevel="6" maxLevel="65" />
-                <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65" />
-                <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
-            </LootTable>
-        </Enemy>
-        <!-- Swamp Pincer (Elite) -->
-        <Enemy name="PF_Spite_Pincer_Swamp">
-            <LootTable>
-                <Drop type="item" id="867" chance="0.5" minLevel="5" maxLevel="65" />
-                <Drop type="item" id="1596" chance="0.2" minLevel="6" maxLevel="65" />
-                <Drop type="item" id="1597" chance="0.05" minLevel="7" maxLevel="65" />
-                <Drop type="item" id="1592" chance="0.1" minLevel="6" maxLevel="65" />
-                <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65" />
-                <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
-            </LootTable>
-        </Enemy>
-        <!-- Pincer -->
-        <Enemy name="PF_Spite_Pincer_Rock">
-            <LootTable>
-                <Drop type="item" id="867" chance="0.2" minLevel="5" maxLevel="65" />
-                <Drop type="item" id="1596" chance="0.1" minLevel="6" maxLevel="65" />
-                <Drop type="item" id="1597" chance="0.02" minLevel="7" maxLevel="65" />
-            </LootTable>
-        </Enemy>
-    </EnemyCategory>
-    <EnemyCategory name="Ograk">
-        <!-- Shadow Ograk (Mini-Boss) -->
-        <Enemy name="PF_Spite_Stomper_Boss">
-            <LootTable>
-            </LootTable>
-        </Enemy>
-        <!-- Magma Ograk (Elite) -->
-        <Enemy name="PF_Spite_Stomper_Lava">
-            <LootTable>
-            </LootTable>
-        </Enemy>
-        <!-- Moss Ograk (Elite) -->
-        <Enemy name="PF_Spite_Stomper_Swamp">
-            <LootTable>
-            </LootTable>
-        </Enemy>
-        <!-- Ograk -->
-        <Enemy name="PF_Spite_Stomper_Rock">
-            <LootTable>
-            </LootTable>
-        </Enemy>
-    </EnemyCategory>
-    <EnemyCategory name="Vespid">
-        <!-- Shadow Vespid (Boss) -->
-        <Enemy name="Spite_Wasp_Boss01">
-            <LootTable>
-            </LootTable>
-        </Enemy>
-    </EnemyCategory>
-    <EnemyCategory name="Spiderling">
-        <!-- Spiderling -->
-        <Enemy name="PF_Spite_Spiderling_Boss01">
-            <LootTable>
-            </LootTable>
-        </Enemy>
-    </EnemyCategory>
-    <EnemyCategory name="Rachnok">
-        <Enemy name="Spite_TeaserSpider_Boss">
-            <LootTable>
-            </LootTable>
-        </Enemy>
-        <!-- Rachnok (Boss) -->
-        <Enemy name="Spite_Spider_Boss">
-            <LootTable>
-            </LootTable>
-        </Enemy>
-    </EnemyCategory>
-    <EnemyCategory name="Spiker">
-        <!-- Spiker -->
-        <Enemy name="PF_Spite_Squirrel_Ice">
-            <LootTable>
-            </LootTable>
-        </Enemy>
-        <Enemy name="PF_Spite_Squirrel_Shadow">
-            <LootTable>
-            </LootTable>
-        </Enemy>
-        <Enemy name="PF_Spite_Squirrel_Rock">
-            <LootTable>
-            </LootTable>
-        </Enemy>
-    </EnemyCategory>
-    <EnemyCategory name="Draicon">
-        <Enemy name="PF_Critter_Drake_Boss01">
-            <LootTable>
-            </LootTable>
-        </Enemy>
-        <!-- Draicon -->
-        <Enemy name="PF_Critter_Drake01">
-            <LootTable>
-            </LootTable>
-        </Enemy>
-    </EnemyCategory>
-    <EnemyCategory name="Stormbeast">
-        <Enemy name="PF_Critter_Dragon_Boss01">
-            <LootTable>
-            </LootTable>
-        </Enemy>
-        <!-- Stormbeast -->
-        <Enemy name="PF_Critter_Dragon01">
-            <LootTable>
-            </LootTable>
-        </Enemy>
-    </EnemyCategory>
-    <EnemyCategory name="Stomper">
-        <Enemy name="PF_Spite_Hamster_Ice">
-            <LootTable>
-            </LootTable>
-        </Enemy>
-        <Enemy name="PF_Spite_Hamster_Rock">
-            <LootTable>
-            </LootTable>
-        </Enemy>
-        <!-- Stomper -->
-        <Enemy name="PF_Spite_Hamster_Shadow">
-            <LootTable>
-            </LootTable>
-        </Enemy>
-    </EnemyCategory>
-    <EnemyCategory name="Foulbreath">
-        <!-- Foulbreath (Boss) -->
-        <Enemy name="Spite_IceTroll_Boss01">
-            <LootTable>
-            </LootTable>
-        </Enemy>
-    </EnemyCategory>
-    <EnemyCategory name="SpngBob">
-        <!-- Uses DRAICON AI State Controller -->
-        <Enemy name="PF_Spite_BossRoboPlankton04">
-            <LootTable>
-            </LootTable>
-        </Enemy>
-        <Enemy name="PF_Spite_MiniRoboPlankton01">
-            <LootTable>
-            </LootTable>
-        </Enemy>
-        <Enemy name="PF_Spite_MiniRoboPlankton02">
-            <LootTable>
-            </LootTable>
-        </Enemy>
-    </EnemyCategory>
-    <EnemyCategory name="TMNT">
-        <!-- Uses SPIDERLING AI State Controller -->
-        <Enemy name="PF_Spite_TMNT_Shredder01">
-            <LootTable>
-            </LootTable>
-        </Enemy>
-        <Enemy name="PF_Spite_TMNT_FootJumper01">
-            <LootTable>
-            </LootTable>
-        </Enemy>
-        <Enemy name="PF_Spite_TMNT_FootPatroller01">
-            <LootTable>
-            </LootTable>
-        </Enemy>
-        <Enemy name="PF_Spite_TMNT_FootThrower01">
-            <LootTable>
-            </LootTable>
-        </Enemy>
-    </EnemyCategory>
-    <EnemyCategory name="PwrRngr">
-        <Enemy name="PF_Spite_PR_XborgBoss01">
-            <LootTable>
-            </LootTable>
-        </Enemy>
-
-        <Enemy name="PF_Spite_PR_XborgPatroller01">
-            <LootTable>
-            </LootTable>
-        </Enemy>
-        <Enemy name="PF_Spite_PR_XborgShooter01">
-            <LootTable>
-            </LootTable>
-        </Enemy>
-    </EnemyCategory>
+    <AiType name="Behavior">
+        <EnemyCategory name="Bombird">
+            <!-- Razorwing (Mini-Boss) -->
+            <Enemy name="PF_Critter_Bird_Boss">
+                <LootTable>
+                    <Drop type="item" id="1583" chance="0.8" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="1582" chance="0.5" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1581" chance="0.2" minLevel="7" maxLevel="65" />
+                    <Drop type="item" id="1601" chance="0.5" minLevel="6" maxLevel="65" />
+                    <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
+                </LootTable>
+                <Behaviors>
+                    <Patrol speed="3.6" smoothMove="false" endPathWaitTime="0" />
+                    <LookAround lookTime="1.8" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                    <Shooting nbBulletsPerRound="3" fireSpreadAngle="30" delayBetweenBullet="0.05" delayShoot_Anim="0.5" nbFireRounds="1" delayBetweenFireRound="0.6" startCoolDownTime="0.0" endCoolDownTime="0" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="-105">
+                        <Resource type="PROJ" name="COL_PRJ_WaterMelon" />
+                    </Shooting>
+                </Behaviors>
+            </Enemy>
+            <Enemy name="PF_Critter_Bird01">
+                <LootTable>
+                    <Drop type="item" id="1583" chance="0.2" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="1582" chance="0.1" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1581" chance="0.02" minLevel="7" maxLevel="65" />
+                </LootTable>
+                <Behaviors>
+                    <Patrol speed="3.2" smoothMove="false" endPathWaitTime="0" />
+                    <LookAround lookTime="1.8" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                    <Shooting nbBulletsPerRound="1" fireSpreadAngle="0" delayBetweenBullet="0.05" delayShoot_Anim="0.5" nbFireRounds="1" delayBetweenFireRound="0.6" startCoolDownTime="0.0" endCoolDownTime="0" projectileSpeed="4.0" fireSpreadClockwise="false" fireSpreadStartAngle="-90">
+                        <Resource type="PROJ" name="COL_PRJ_WaterMelon" />
+                    </Shooting>
+                </Behaviors>
+            </Enemy>
+            <Enemy name="PF_Critter_Bird02">
+                <LootTable>
+                    <Drop type="item" id="1583" chance="0.5" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="1582" chance="0.2" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1581" chance="0.05" minLevel="7" maxLevel="65" />
+                    <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
+                </LootTable>
+                <Behaviors>
+                    <Patrol speed="3.6" smoothMove="false" endPathWaitTime="0" />
+                    <LookAround lookTime="1.8" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                    <Shooting nbBulletsPerRound="2" fireSpreadAngle="15" delayBetweenBullet="0.05" delayShoot_Anim="0.5" nbFireRounds="1" delayBetweenFireRound="0.6" startCoolDownTime="0.0" endCoolDownTime="0" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="-90">
+                        <Resource type="PROJ" name="COL_PRJ_WaterMelon" />
+                    </Shooting>
+                </Behaviors>
+            </Enemy>
+            <Enemy name="PF_Critter_Bird03">
+                <LootTable>
+                    <Drop type="item" id="1583" chance="0.2" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="1582" chance="0.1" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1581" chance="0.02" minLevel="7" maxLevel="65" />
+                </LootTable>
+                <Behaviors>
+                    <Patrol speed="3.2" smoothMove="false" endPathWaitTime="0" />
+                    <LookAround lookTime="1.8" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                    <Shooting nbBulletsPerRound="2" fireSpreadAngle="15" delayBetweenBullet="0.05" delayShoot_Anim="0.5" nbFireRounds="1" delayBetweenFireRound="0.6" startCoolDownTime="0.0" endCoolDownTime="0" projectileSpeed="4.0" fireSpreadClockwise="false" fireSpreadStartAngle="-90">
+                        <Resource type="PROJ" name="COL_PRJ_WaterMelon" />
+                    </Shooting>
+                </Behaviors>
+            </Enemy>
+            <Enemy name="PF_Critter_Bird04">
+                <LootTable>
+                    <Drop type="item" id="1583" chance="0.5" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="1582" chance="0.2" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1581" chance="0.05" minLevel="7" maxLevel="65" />
+                    <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
+                </LootTable>
+                <Behaviors>
+                    <Patrol speed="3.6" smoothMove="false" endPathWaitTime="0" />
+                    <LookAround lookTime="1.8" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                    <Shooting nbBulletsPerRound="3" fireSpreadAngle="30" delayBetweenBullet="0.05" delayShoot_Anim="0.5" nbFireRounds="1" delayBetweenFireRound="0.6" startCoolDownTime="0.0" endCoolDownTime="0" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="-105">
+                        <Resource type="PROJ" name="COL_PRJ_WaterMelon" />
+                    </Shooting>
+                </Behaviors>
+            </Enemy>
+        </EnemyCategory>
+        <EnemyCategory name="Spinefish">
+            <!-- Shadow Spinefish (Mini-Boss) -->
+            <Enemy name="PF_Critter_Fish_Boss">
+                <LootTable>
+                    <Drop type="item" id="868" chance="0.8" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="1602" chance="0.5" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1603" chance="0.2" minLevel="7" maxLevel="65" />
+                    <Drop type="item" id="1601" chance="0.5" minLevel="6" maxLevel="65" />
+                    <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
+                </LootTable>
+                <Behaviors>
+                    <Patrol speed="4.0" smoothMove="false" endPathWaitTime="2" />
+                    <Aggro speed="4.0" moveBeyondTargetDistance="0" stayOnPatrolPath="false" attackBeyondPatrolLine="0" detectionRangeUpY="6" detectionRangeDownY="6" />
+                    <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                    <ComeBack speed="4.0" />
+                </Behaviors>
+            </Enemy>
+            <!-- Spinefish -->
+            <Enemy name="PF_Critter_Fish01">
+                <LootTable>
+                    <Drop type="item" id="868" chance="0.2" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="1602" chance="0.1" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1603" chance="0.02" minLevel="7" maxLevel="65" />
+                </LootTable>
+                <Behaviors>
+                    <Patrol speed="3.2" smoothMove="false" endPathWaitTime="2" />
+                    <Aggro speed="3.2" moveBeyondTargetDistance="0" stayOnPatrolPath="false" attackBeyondPatrolLine="0" detectionRangeUpY="4" detectionRangeDownY="4" />
+                    <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                    <ComeBack speed="3.2" />
+                </Behaviors>
+            </Enemy>
+            <Enemy name="PF_Critter_Fish02">
+                <LootTable>
+                    <Drop type="item" id="868" chance="0.2" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="1602" chance="0.1" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1603" chance="0.02" minLevel="7" maxLevel="65" />
+                </LootTable>
+                <Behaviors>
+                    <Patrol speed="3.2" smoothMove="false" endPathWaitTime="2" />
+                    <Aggro speed="3.2" moveBeyondTargetDistance="0" stayOnPatrolPath="false" attackBeyondPatrolLine="0" detectionRangeUpY="4" detectionRangeDownY="4" />
+                    <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                    <ComeBack speed="3.2" />
+                </Behaviors>
+            </Enemy>
+            <Enemy name="PF_Critter_Fish03">
+                <LootTable>
+                    <Drop type="item" id="868" chance="0.2" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="1602" chance="0.1" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1603" chance="0.02" minLevel="7" maxLevel="65" />
+                </LootTable>
+                <Behaviors>
+                    <Patrol speed="3.2" smoothMove="false" endPathWaitTime="2" />
+                    <Aggro speed="3.2" moveBeyondTargetDistance="0" stayOnPatrolPath="false" attackBeyondPatrolLine="0" detectionRangeUpY="4" detectionRangeDownY="4" />
+                    <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                    <ComeBack speed="3.2" />
+                </Behaviors>
+            </Enemy>
+            <Enemy name="PF_Critter_Fish04">
+                <LootTable>
+                    <Drop type="item" id="868" chance="0.5" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="1602" chance="0.2" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1603" chance="0.05" minLevel="7" maxLevel="65" />
+                    <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
+                </LootTable>
+                <Behaviors>
+                    <Patrol speed="3.6" smoothMove="false" endPathWaitTime="2" />
+                    <Aggro speed="3.6" moveBeyondTargetDistance="0" stayOnPatrolPath="false" attackBeyondPatrolLine="0" detectionRangeUpY="6" detectionRangeDownY="6" />
+                    <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                    <ComeBack speed="3.6" />
+                </Behaviors>
+            </Enemy>
+        </EnemyCategory>
+        <EnemyCategory name="Rachnoid">
+            <!-- Grimfang (Mini-Boss) -->
+            <Enemy name="PF_Critter_Spider_Boss">
+                <LootTable>
+                    <Drop type="item" id="1599" chance="0.8" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="1065" chance="0.5" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1600" chance="0.2" minLevel="7" maxLevel="65" />
+                    <Drop type="item" id="1601" chance="0.5" minLevel="6" maxLevel="65" />
+                    <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
+                </LootTable>
+                <Behaviors>
+                    <Patrol speed="5.6" smoothMove="false" endPathWaitTime="2" />
+                    <Aggro speed="6.4" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0" />
+                    <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                    <Shooting nbBulletsPerRound="5" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.8" nbFireRounds="1" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1.5" projectileSpeed="8.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
+                        <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1" />
+                    </Shooting>
+                </Behaviors>
+            </Enemy>
+            <Enemy name="PF_Critter_Spider_Boss_Ceiling_Shoot">
+                <LootTable>
+                    <Drop type="item" id="1599" chance="0.8" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="1065" chance="0.5" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1600" chance="0.2" minLevel="7" maxLevel="65" />
+                    <Drop type="item" id="1601" chance="0.5" minLevel="6" maxLevel="65" />
+                    <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
+                </LootTable>
+                <Behaviors>
+                    <Patrol speed="5.6" smoothMove="false" endPathWaitTime="2" />
+                    <Aggro speed="6.4" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0" />
+                    <LookAround lookTime="5" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                    <Shooting nbBulletsPerRound="5" fireSpreadAngle="60" delayBetweenBullet="0.05" delayShoot_Anim="0.8" nbFireRounds="1" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1.5" projectileSpeed="8.0" fireSpreadClockwise="false" fireSpreadStartAngle="-60">
+                        <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1" />
+                    </Shooting>
+                </Behaviors>
+            </Enemy>
+            <Enemy name="PF_Critter_Spider_Boss_Shoot">
+                <LootTable>
+                    <Drop type="item" id="1599" chance="0.8" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="1065" chance="0.5" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1600" chance="0.2" minLevel="7" maxLevel="65" />
+                    <Drop type="item" id="1601" chance="0.5" minLevel="6" maxLevel="65" />
+                    <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
+                </LootTable>
+                <Behaviors>
+                    <Patrol speed="5.6" smoothMove="false" endPathWaitTime="2" />
+                    <Aggro speed="6.4" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0" />
+                    <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                    <Shooting nbBulletsPerRound="5" fireSpreadAngle="60" delayBetweenBullet="0.05" delayShoot_Anim="0.8" nbFireRounds="1" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1.5" projectileSpeed="8.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
+                        <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1" />
+                    </Shooting>
+                </Behaviors>
+            </Enemy>
+            <!-- Shadowy Spiderling (Elite) -->
+            <Enemy name="PF_Critter_Spider_Newb">
+                <LootTable>
+                </LootTable>
+                <Behaviors>
+                    <Patrol speed="4.0" smoothMove="false" endPathWaitTime="2" />
+                    <Aggro speed="5.0" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0" />
+                    <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                </Behaviors>
+            </Enemy>
+            <!-- Poison Rachnoid -->
+            <Enemy name="PF_Critter_Spider01">
+                <LootTable>
+                    <Drop type="item" id="1599" chance="0.2" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="1065" chance="0.01" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1600" chance="0.02" minLevel="7" maxLevel="65" />
+                </LootTable>
+                <Behaviors>
+                    <Patrol speed="5.0" smoothMove="false" endPathWaitTime="2" />
+                    <Aggro speed="5.6" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0" />
+                    <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                    <Shooting nbBulletsPerRound="2" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.8" nbFireRounds="1" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1.5" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
+                        <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1" />
+                    </Shooting>
+                </Behaviors>
+            </Enemy>
+            <Enemy name="PF_Critter_Spider01_Ceiling_Shoot">
+                <LootTable>
+                    <Drop type="item" id="1599" chance="0.2" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="1065" chance="0.01" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1600" chance="0.02" minLevel="7" maxLevel="65" />
+                </LootTable>
+                <Behaviors>
+                    <Patrol speed="5.0" smoothMove="false" endPathWaitTime="2" />
+                    <Aggro speed="5.6" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0" />
+                    <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                    <Shooting nbBulletsPerRound="2" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.8" nbFireRounds="1" delayBetweenFireRound="0.8" startCoolDownTime="0.0" endCoolDownTime="2" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="-45">
+                        <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1" />
+                    </Shooting>
+                </Behaviors>
+            </Enemy>
+            <Enemy name="PF_Critter_Spider01_Shoot">
+                <LootTable>
+                    <Drop type="item" id="1599" chance="0.2" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="1065" chance="0.01" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1600" chance="0.02" minLevel="7" maxLevel="65" />
+                </LootTable>
+                <Behaviors>
+                    <Patrol speed="5.0" smoothMove="false" endPathWaitTime="2" />
+                    <Aggro speed="5.6" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0" />
+                    <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                    <Shooting nbBulletsPerRound="2" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.8" nbFireRounds="1" delayBetweenFireRound="0.8" startCoolDownTime="0.0" endCoolDownTime="2" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
+                        <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1" />
+                    </Shooting>
+                </Behaviors>
+            </Enemy>
+            <Enemy name="PF_Critter_Spider02">
+                <LootTable>
+                    <Drop type="item" id="1599" chance="0.5" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="1065" chance="0.2" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1600" chance="0.05" minLevel="7" maxLevel="65" />
+                    <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
+                </LootTable>
+                <Behaviors>
+                    <Patrol speed="5.0" smoothMove="false" endPathWaitTime="2" />
+                    <Aggro speed="5.6" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0" />
+                    <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                    <Shooting nbBulletsPerRound="3" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.8" nbFireRounds="1" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1.5" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
+                        <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1" />
+                    </Shooting>
+                </Behaviors>
+            </Enemy>
+            <Enemy name="PF_Critter_Spider02_Ceiling_Shoot">
+                <LootTable>
+                    <Drop type="item" id="1599" chance="0.5" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="1065" chance="0.2" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1600" chance="0.05" minLevel="7" maxLevel="65" />
+                    <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
+                </LootTable>
+                <Behaviors>
+                    <Patrol speed="5.0" smoothMove="false" endPathWaitTime="2" />
+                    <Aggro speed="5.6" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0" />
+                    <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                    <Shooting nbBulletsPerRound="3" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.8" nbFireRounds="1" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1.5" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="-45">
+                        <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1" />
+                    </Shooting>
+                </Behaviors>
+            </Enemy>
+            <Enemy name="PF_Critter_Spider02_Shoot">
+                <LootTable>
+                    <Drop type="item" id="1599" chance="0.5" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="1065" chance="0.2" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1600" chance="0.05" minLevel="7" maxLevel="65" />
+                    <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
+                </LootTable>
+                <Behaviors>
+                    <Patrol speed="5.0" smoothMove="false" endPathWaitTime="2" />
+                    <Aggro speed="5.6" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0" />
+                    <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                    <Shooting nbBulletsPerRound="3" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.8" nbFireRounds="1" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1.5" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
+                        <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1" />
+                    </Shooting>
+                </Behaviors>
+            </Enemy>
+            <Enemy name="PF_Critter_Spider03">
+                <LootTable>
+                    <Drop type="item" id="1599" chance="0.2" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="1065" chance="0.1" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1600" chance="0.02" minLevel="7" maxLevel="65" />
+                </LootTable>
+                <Behaviors>
+                    <Patrol speed="5.0" smoothMove="false" endPathWaitTime="2" />
+                    <Aggro speed="5.6" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0" />
+                    <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                    <Shooting nbBulletsPerRound="2" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.8" nbFireRounds="1" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1.5" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
+                        <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1" />
+                    </Shooting>
+                </Behaviors>
+            </Enemy>
+            <Enemy name="PF_Critter_Spider03_Ceiling_Shoot">
+                <LootTable>
+                    <Drop type="item" id="1599" chance="0.2" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="1065" chance="0.1" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1600" chance="0.02" minLevel="7" maxLevel="65" />
+                </LootTable>
+                <Behaviors>
+                    <Patrol speed="5.0" smoothMove="false" endPathWaitTime="2" />
+                    <Aggro speed="5.6" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0" />
+                    <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                    <Shooting nbBulletsPerRound="2" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.8" nbFireRounds="1" delayBetweenFireRound="0.8" startCoolDownTime="0.0" endCoolDownTime="2" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="-45">
+                        <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1" />
+                    </Shooting>
+                </Behaviors>
+            </Enemy>
+            <Enemy name="PF_Critter_Spider03_Shoot">
+                <LootTable>
+                    <Drop type="item" id="1599" chance="0.2" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="1065" chance="0.1" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1600" chance="0.02" minLevel="7" maxLevel="65" />
+                </LootTable>
+                <Behaviors>
+                    <Patrol speed="5.0" smoothMove="false" endPathWaitTime="2" />
+                    <Aggro speed="5.6" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0" />
+                    <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                    <Shooting nbBulletsPerRound="2" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.8" nbFireRounds="1" delayBetweenFireRound="0.8" startCoolDownTime="0.0" endCoolDownTime="2" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
+                        <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1" />
+                    </Shooting>
+                </Behaviors>
+            </Enemy>
+            <Enemy name="PF_Critter_Spider04">
+                <LootTable>
+                    <Drop type="item" id="1599" chance="0.5" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="1065" chance="0.2" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1600" chance="0.05" minLevel="7" maxLevel="65" />
+                    <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
+                </LootTable>
+                <Behaviors>
+                    <Patrol speed="5.6" smoothMove="false" endPathWaitTime="2" />
+                    <Aggro speed="6.4" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0" />
+                    <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                    <Shooting nbBulletsPerRound="3" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.8" nbFireRounds="1" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1.5" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
+                        <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1" />
+                    </Shooting>
+                </Behaviors>
+            </Enemy>
+            <Enemy name="PF_Critter_Spider04_Ceiling_Shoot">
+                <LootTable>
+                    <Drop type="item" id="1599" chance="0.5" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="1065" chance="0.2" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1600" chance="0.05" minLevel="7" maxLevel="65" />
+                    <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
+                </LootTable>
+                <Behaviors>
+                    <Patrol speed="5.6" smoothMove="false" endPathWaitTime="2" />
+                    <Aggro speed="6.4" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0" />
+                    <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                    <Shooting nbBulletsPerRound="3" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.8" nbFireRounds="1" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1.5" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="-45">
+                        <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1" />
+                    </Shooting>
+                </Behaviors>
+            </Enemy>
+            <Enemy name="PF_Critter_Spider04_Shoot">
+                <LootTable>
+                    <Drop type="item" id="1599" chance="0.5" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="1065" chance="0.2" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1600" chance="0.05" minLevel="7" maxLevel="65" />
+                    <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
+                </LootTable>
+                <Behaviors>
+                    <Patrol speed="5.6" smoothMove="false" endPathWaitTime="2" />
+                    <Aggro speed="6.4" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0" />
+                    <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                    <Shooting nbBulletsPerRound="3" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.5" nbFireRounds="1" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
+                        <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1" />
+                    </Shooting>
+                </Behaviors>
+            </Enemy>
+            <Enemy name="PF_Critter_Spider01_Zombie">
+                <LootTable>
+                    <Drop type="item" id="134" chance="0.5" minLevel="1" maxLevel="65" />
+                    <Drop type="item" id="135" chance="0.2" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="136" chance="0.05" minLevel="10" maxLevel="65" />
+                    <Drop type="randomArmor" chance="0.01" minLevel="1" maxLevel="50" />
+                </LootTable>
+                <Behaviors>
+                    <Patrol speed="5.6" smoothMove="false" endPathWaitTime="2" />
+                    <Aggro speed="6.4" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0" />
+                    <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                    <Shooting nbBulletsPerRound="3" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.8" nbFireRounds="1" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1.5" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
+                        <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1" />
+                    </Shooting>
+                </Behaviors>
+            </Enemy>
+            <Enemy name="PF_Critter_Spider01_Ceiling_Shoot_Zombie">
+                <LootTable>
+                    <Drop type="item" id="134" chance="0.5" minLevel="1" maxLevel="65" />
+                    <Drop type="item" id="135" chance="0.2" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="136" chance="0.05" minLevel="10" maxLevel="65" />
+                    <Drop type="randomArmor" chance="0.01" minLevel="1" maxLevel="50" />
+                </LootTable>
+                <Behaviors>
+                    <Patrol speed="5.6" smoothMove="false" endPathWaitTime="2" />
+                    <Aggro speed="6.4" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0" />
+                    <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                    <Shooting nbBulletsPerRound="3" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.8" nbFireRounds="1" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1.5" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="-45">
+                        <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1" />
+                    </Shooting>
+                </Behaviors>
+            </Enemy>
+        </EnemyCategory>
+        <EnemyCategory name="Bathog">
+            <!-- Shadow Bathog (Mini-Boss) -->
+            <Enemy name="PF_Spite_Bathog_Boss">
+                <LootTable>
+                    <Drop type="item" id="864" chance="0.8" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="866" chance="0.5" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="865" chance="0.2" minLevel="7" maxLevel="65" />
+                    <Drop type="item" id="1601" chance="0.5" minLevel="6" maxLevel="65" />
+                    <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
+                </LootTable>
+                <Behaviors>
+                    <Patrol speed="2.4" smoothMove="false" endPathWaitTime="2" />
+                    <Aggro speed="3.2" moveBeyondTargetDistance="0" stayOnPatrolPath="false" attackBeyondPatrolLine="0" detectionRangeUpY="3" detectionRangeDownY="5" />
+                    <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                    <ComeBack speed="3.2" />
+                </Behaviors>
+            </Enemy>
+            <Enemy name="PF_Spite_Bathog_Shoot_Boss">
+                <LootTable>
+                    <Drop type="item" id="864" chance="0.8" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="866" chance="0.5" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="865" chance="0.2" minLevel="7" maxLevel="65" />
+                    <Drop type="item" id="1601" chance="0.5" minLevel="6" maxLevel="65" />
+                    <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
+                </LootTable>
+                <Behaviors>
+                    <Patrol speed="2.4" smoothMove="false" endPathWaitTime="2" />
+                    <Aggro speed="3.2" moveBeyondTargetDistance="0" stayOnPatrolPath="false" attackBeyondPatrolLine="0" detectionRangeUpY="3" detectionRangeDownY="5" />
+                    <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                    <Shooting nbBulletsPerRound="5" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.5" nbFireRounds="2" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1" projectileSpeed="8.0" fireSpreadClockwise="false" fireSpreadStartAngle="-45">
+                        <Resource type="PROJ" name="COL_PRJ_DamageSuperProjectile" />
+                    </Shooting>
+                    <ComeBack speed="3.2" />
+                </Behaviors>
+            </Enemy>
+            <!-- Mist Bathog (Elite) -->
+            <Enemy name="PF_Spite_Bathog_Invis">
+                <LootTable>
+                    <Drop type="item" id="864" chance="0.5" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="866" chance="0.2" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="865" chance="0.05" minLevel="7" maxLevel="65" />
+                    <Drop type="item" id="1598" chance="0.1" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65" />
+                    <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
+                </LootTable>
+                <Behaviors>
+                    <Patrol speed="1.8" smoothMove="false" endPathWaitTime="2" />
+                    <Aggro speed="2.4" moveBeyondTargetDistance="0" stayOnPatrolPath="false" attackBeyondPatrolLine="0" detectionRangeUpY="3" detectionRangeDownY="5" />
+                    <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                    <ComeBack speed="2.4" />
+                </Behaviors>
+            </Enemy>
+            <Enemy name="PF_Spite_Bathog_Shoot_Invis">
+                <LootTable>
+                    <Drop type="item" id="864" chance="0.5" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="866" chance="0.2" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="865" chance="0.05" minLevel="7" maxLevel="65" />
+                    <Drop type="item" id="1598" chance="0.1" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65" />
+                    <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
+                </LootTable>
+                <Behaviors>
+                    <Patrol speed="1.8" smoothMove="false" endPathWaitTime="2" />
+                    <Aggro speed="2.4" moveBeyondTargetDistance="0" stayOnPatrolPath="false" attackBeyondPatrolLine="0" detectionRangeUpY="3" detectionRangeDownY="5" />
+                    <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                    <Shooting nbBulletsPerRound="2" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.5" nbFireRounds="1" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="-45">
+                        <Resource type="PROJ" name="COL_PRJ_DamageProjectile" />
+                    </Shooting>
+                    <ComeBack speed="2.4" />
+                </Behaviors>
+            </Enemy>
+            <!-- Magma Bathog (Elite) -->
+            <Enemy name="PF_Spite_Bathog_Lava">
+                <LootTable>
+                    <Drop type="item" id="864" chance="0.5" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="866" chance="0.2" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="865" chance="0.05" minLevel="7" maxLevel="65" />
+                    <Drop type="item" id="1591" chance="0.1" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65" />
+                    <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
+                </LootTable>
+                <Behaviors>
+                    <Patrol speed="1.8" smoothMove="false" endPathWaitTime="2" />
+                    <Aggro speed="2.4" moveBeyondTargetDistance="0" stayOnPatrolPath="false" attackBeyondPatrolLine="0" detectionRangeUpY="3" detectionRangeDownY="5" />
+                    <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                    <ComeBack speed="2.4" />
+                </Behaviors>
+            </Enemy>
+            <Enemy name="PF_Spite_Bathog_Shoot_Lava">
+                <LootTable>
+                    <Drop type="item" id="864" chance="0.5" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="866" chance="0.2" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="865" chance="0.05" minLevel="7" maxLevel="65" />
+                    <Drop type="item" id="1591" chance="0.1" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65" />
+                    <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
+                </LootTable>
+                <Behaviors>
+                    <Patrol speed="1.8" smoothMove="false" endPathWaitTime="2" />
+                    <Aggro speed="2.4" moveBeyondTargetDistance="0" stayOnPatrolPath="false" attackBeyondPatrolLine="0" detectionRangeUpY="3" detectionRangeDownY="5" />
+                    <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                    <Shooting nbBulletsPerRound="2" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.5" nbFireRounds="1" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="-45">
+                        <Resource type="PROJ" name="COL_PRJ_FireProjectile" />
+                    </Shooting>
+                    <ComeBack speed="2.4" />
+                </Behaviors>
+            </Enemy>
+            <!-- Bathog -->
+            <Enemy name="PF_Spite_Bathog_Rock">
+                <LootTable>
+                    <Drop type="item" id="864" chance="0.2" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="866" chance="0.1" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="865" chance="0.02" minLevel="7" maxLevel="65" />
+                </LootTable>
+                <Behaviors>
+                    <Patrol speed="1.8" smoothMove="false" endPathWaitTime="2" />
+                    <Aggro speed="2.4" moveBeyondTargetDistance="0" stayOnPatrolPath="false" attackBeyondPatrolLine="0" detectionRangeUpY="3" detectionRangeDownY="3" />
+                    <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                    <ComeBack speed="2.4" />
+                </Behaviors>
+            </Enemy>
+            <Enemy name="PF_Spite_Bathog_Shoot_Rock">
+                <LootTable>
+                    <Drop type="item" id="864" chance="0.2" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="866" chance="0.1" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="865" chance="0.02" minLevel="7" maxLevel="65" />
+                </LootTable>
+                <Behaviors>
+                    <Patrol speed="1.8" smoothMove="false" endPathWaitTime="2" />
+                    <Aggro speed="2.4" moveBeyondTargetDistance="0" stayOnPatrolPath="false" attackBeyondPatrolLine="0" detectionRangeUpY="3" detectionRangeDownY="3" />
+                    <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                    <Shooting nbBulletsPerRound="2" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.5" nbFireRounds="1" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1" projectileSpeed="4.0" fireSpreadClockwise="false" fireSpreadStartAngle="-45">
+                        <Resource type="PROJ" name="COL_PRJ_DamageProjectile" />
+                    </Shooting>
+                    <ComeBack speed="2.4" />
+                </Behaviors>
+            </Enemy>
+            <Enemy name="PF_Spite_Bathog_Swamp">
+                <LootTable>
+                    <Drop type="item" id="864" chance="0.5" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="866" chance="0.2" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="865" chance="0.05" minLevel="7" maxLevel="65" />
+                    <Drop type="item" id="1592" chance="0.1" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65" />
+                    <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
+                </LootTable>
+                <Behaviors>
+                    <Patrol speed="1.8" smoothMove="false" endPathWaitTime="2" />
+                    <Aggro speed="2.4" moveBeyondTargetDistance="0" stayOnPatrolPath="false" attackBeyondPatrolLine="0" detectionRangeUpY="3" detectionRangeDownY="5" />
+                    <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                    <ComeBack speed="2.4" />
+                </Behaviors>
+            </Enemy>
+            <Enemy name="PF_Spite_Bathog_Shoot_Swamp">
+                <LootTable>
+                    <Drop type="item" id="864" chance="0.5" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="866" chance="0.2" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="865" chance="0.05" minLevel="7" maxLevel="65" />
+                    <Drop type="item" id="1592" chance="0.1" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65" />
+                    <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
+                </LootTable>
+                <Behaviors>
+                    <Patrol speed="1.8" smoothMove="false" endPathWaitTime="2" />
+                    <Aggro speed="2.4" moveBeyondTargetDistance="0" stayOnPatrolPath="false" attackBeyondPatrolLine="0" detectionRangeUpY="3" detectionRangeDownY="5" />
+                    <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                    <Shooting nbBulletsPerRound="2" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.8" nbFireRounds="1" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1.5" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="-45">
+                        <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1" />
+                    </Shooting>
+                    <ComeBack speed="2.4" />
+                </Behaviors>
+            </Enemy>
+            <Enemy name="PF_Spite_Bathog_Zombie">
+                <LootTable>
+                    <Drop type="item" id="107" chance="0.5" minLevel="1" maxLevel="65" />
+                    <Drop type="item" id="109" chance="0.2" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="108" chance="0.05" minLevel="10" maxLevel="65" />
+                    <Drop type="item" id="126" chance="0.1" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="137" chance="0.05" minLevel="5" maxLevel="65" />
+                    <Drop type="randomArmor" chance="0.01" minLevel="1" maxLevel="50" />
+                </LootTable>
+                <Behaviors>
+                    <Patrol speed="1.8" smoothMove="false" endPathWaitTime="2" />
+                    <Aggro speed="2.4" moveBeyondTargetDistance="0" stayOnPatrolPath="false" attackBeyondPatrolLine="0" detectionRangeUpY="3" detectionRangeDownY="5" />
+                    <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                    <ComeBack speed="2.4" />
+                </Behaviors>
+            </Enemy>
+        </EnemyCategory>
+        <EnemyCategory name="Boombug">
+            <!-- Magma Boombug (Elite) -->
+            <Enemy name="PF_Spite_Bomber_Lava">
+                <LootTable>
+                    <Drop type="item" id="3052" chance="0.5" minLevel="5" maxLevel="65" />
+                </LootTable>
+                <Behaviors>
+                    <Patrol speed="2.4" smoothMove="false" endPathWaitTime="2" />
+                    <Aggro speed="5.0" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0" />
+                    <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                    <Bomber inTime="0.5" loopTime="0.5" bombRadius="1.5">
+                        <Resource type="EABIL" name="PF_EABIL_Spite_Bomber_Fire" />
+                    </Bomber>
+                </Behaviors>
+            </Enemy>
+            <!-- Rock Boombug -->
+            <Enemy name="PF_Spite_Bomber_Rock">
+                <LootTable>
+                    <Drop type="item" id="3052" chance="0.2" minLevel="5" maxLevel="65" />
+                </LootTable>
+                <Behaviors>
+                    <Patrol speed="2.4" smoothMove="false" endPathWaitTime="2" />
+                    <Aggro speed="5.0" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0" />
+                    <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                    <Bomber inTime="0.5" loopTime="0.5" bombRadius="1.5">
+                        <Resource type="EABIL" name="PF_EABIL_Spite_Bomber" />
+                    </Bomber>
+                </Behaviors>
+            </Enemy>
+        </EnemyCategory>
+        <EnemyCategory name="Cragcrawler">
+            <!-- Shadow Cragcrawler (Mini-Boss) -->
+            <Enemy name="PF_Spite_Crawler_Boss">
+                <LootTable>
+                    <Drop type="item" id="1585" chance="0.8" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="1586" chance="0.5" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1584" chance="0.2" minLevel="7" maxLevel="65" />
+                    <Drop type="item" id="1601" chance="0.5" minLevel="6" maxLevel="65" />
+                    <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
+                </LootTable>
+                <Behaviors>
+                    <Patrol speed="1.8" smoothMove="false" endPathWaitTime="3" />
+                    <Aggro speed="4.8" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0" />
+                    <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                </Behaviors>
+            </Enemy>
+            <!-- Magma Cragcrawler (Elite) -->
+            <Enemy name="PF_Spite_Crawler_Lava">
+                <LootTable>
+                    <Drop type="item" id="1585" chance="0.5" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="1586" chance="0.2" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1584" chance="0.05" minLevel="7" maxLevel="65" />
+                    <Drop type="item" id="1591" chance="0.1" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65" />
+                    <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
+                </LootTable>
+                <Behaviors>
+                    <Patrol speed="1.8" smoothMove="false" endPathWaitTime="3" />
+                    <Aggro speed="4.0" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0" />
+                    <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                </Behaviors>
+            </Enemy>
+            <!-- Mist Cragcrawler (Elite) -->
+            <Enemy name="PF_Spite_Crawler_Invis">
+                <LootTable>
+                    <Drop type="item" id="1585" chance="0.5" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="1586" chance="0.2" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1584" chance="0.05" minLevel="7" maxLevel="65" />
+                    <Drop type="item" id="1598" chance="0.1" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65" />
+                    <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
+                </LootTable>
+                <Behaviors>
+                    <Patrol speed="1.8" smoothMove="false" endPathWaitTime="3" />
+                    <Aggro speed="4.0" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0" />
+                    <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                </Behaviors>
+            </Enemy>
+            <!-- Swamp Cragcrawler (Elite) -->
+            <Enemy name="PF_Spite_Crawler_Swamp">
+                <LootTable>
+                    <Drop type="item" id="1585" chance="0.5" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="1586" chance="0.2" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1584" chance="0.05" minLevel="7" maxLevel="65" />
+                    <Drop type="item" id="1592" chance="0.1" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65" />
+                    <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
+                </LootTable>
+                <Behaviors>
+                    <Patrol speed="1.8" smoothMove="false" endPathWaitTime="3" />
+                    <Aggro speed="4.0" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0" />
+                    <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                </Behaviors>
+            </Enemy>
+            <!-- Cragcrawler -->
+            <Enemy name="PF_Spite_Crawler_Rock">
+                <LootTable>
+                    <Drop type="item" id="1585" chance="0.2" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="1586" chance="0.1" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1584" chance="0.02" minLevel="7" maxLevel="65" />
+                </LootTable>
+                <Behaviors>
+                    <Patrol speed="1.6" smoothMove="false" endPathWaitTime="3" />
+                    <Aggro speed="4.0" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0" />
+                    <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                </Behaviors>
+            </Enemy>
+        </EnemyCategory>
+        <EnemyCategory name="Dragon">
+            <!-- Shadow Dragon (Mini-Boss) -->
+            <Enemy name="PF_Spite_Dragon_Boss">
+                <LootTable>
+                    <Drop type="item" id="1589" chance="0.8" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="1587" chance="0.5" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1588" chance="0.2" minLevel="7" maxLevel="65" />
+                    <Drop type="item" id="1601" chance="0.5" minLevel="6" maxLevel="65" />
+                    <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
+                </LootTable>
+                <Behaviors>
+                    <Patrol speed="1.8" smoothMove="false" endPathWaitTime="2" />
+                    <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                    <Shooting nbBulletsPerRound="3" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.8" nbFireRounds="2" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1.5" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
+                        <Resource type="PROJ" name="COL_PRJ_FireProjectile" />
+                    </Shooting>
+                </Behaviors>
+            </Enemy>
+            <!-- Moss Dragon (Elite) -->
+            <Enemy name="PF_Spite_Dragon_Swamp">
+                <LootTable>
+                    <Drop type="item" id="1589" chance="0.5" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="1587" chance="0.2" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1588" chance="0.05" minLevel="7" maxLevel="65" />
+                    <Drop type="item" id="1592" chance="0.1" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65" />
+                    <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
+                </LootTable>
+                <Behaviors>
+                    <Patrol speed="1.8" smoothMove="false" endPathWaitTime="2" />
+                    <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                    <Shooting nbBulletsPerRound="2" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.8" nbFireRounds="2" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1.5" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
+                        <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1" />
+                    </Shooting>
+                </Behaviors>
+            </Enemy>
+            <!-- Magma Dragon (Elite) -->
+            <Enemy name="PF_Spite_Dragon_Lava">
+                <LootTable>
+                    <Drop type="item" id="1589" chance="0.5" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="1587" chance="0.2" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1588" chance="0.05" minLevel="7" maxLevel="65" />
+                    <Drop type="item" id="1591" chance="0.1" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65" />
+                    <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
+                </LootTable>
+                <Behaviors>
+                    <Patrol speed="1.8" smoothMove="false" endPathWaitTime="2" />
+                    <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                    <Shooting nbBulletsPerRound="2" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.8" nbFireRounds="2" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1.5" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
+                        <Resource type="PROJ" name="COL_PRJ_FireProjectile" />
+                    </Shooting>
+                </Behaviors>
+            </Enemy>
+            <!-- Mist Dragon (Elite) -->
+            <Enemy name="PF_Spite_Dragon_Invis">
+                <LootTable>
+                    <Drop type="item" id="1589" chance="0.5" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="1587" chance="0.2" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1588" chance="0.05" minLevel="7" maxLevel="65" />
+                    <Drop type="item" id="1598" chance="0.1" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65" />
+                    <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
+                </LootTable>
+                <Behaviors>
+                    <Patrol speed="1.8" smoothMove="false" endPathWaitTime="2" />
+                    <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                    <Shooting nbBulletsPerRound="2" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.8" nbFireRounds="2" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1.5" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
+                        <Resource type="PROJ" name="COL_PRJ_FireProjectile" />
+                    </Shooting>
+                </Behaviors>
+            </Enemy>
+            <!-- Dragon -->
+            <Enemy name="PF_Spite_Dragon_Rock">
+                <LootTable>
+                    <Drop type="item" id="1589" chance="0.2" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="1587" chance="0.1" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1588" chance="0.02" minLevel="7" maxLevel="65" />
+                </LootTable>
+                <Behaviors>
+                    <Patrol speed="1.8" smoothMove="false" endPathWaitTime="2" />
+                    <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                    <Shooting nbBulletsPerRound="1" fireSpreadAngle="0" delayBetweenBullet="0.05" delayShoot_Anim="0.8" nbFireRounds="1" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1.5" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
+                        <Resource type="PROJ" name="COL_PRJ_FireProjectile" />
+                    </Shooting>
+                </Behaviors>
+            </Enemy>
+        </EnemyCategory>
+        <EnemyCategory name="Rumbler">
+            <!-- Fire Rumbler (Elite) -->
+            <Enemy name="PF_Spite_Grenadier_Lava">
+                <LootTable>
+                </LootTable>
+                <Behaviors>
+                    <Patrol speed="1.8" smoothMove="false" endPathWaitTime="2" />
+                    <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                    <Grenadier inTime="0.5" loopTime="0.5" outTime="1" isTracking="false" projCount="3" projSpeed="5" maxHeight="5">
+                        <Resource type="EABIL" name="PF_EABIL_Spite_Grenadier_Fire" />
+                        <Resource type="PROJ" name="COL_PRJ_GrenadierLava" />
+                    </Grenadier>
+                </Behaviors>
+            </Enemy>
+            <!-- Rock Rumbler -->
+            <Enemy name="PF_Spite_Grenadier_Rock">
+                <LootTable>
+                </LootTable>
+                <Behaviors>
+                    <Patrol speed="1.8" smoothMove="false" endPathWaitTime="2" />
+                    <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                    <Grenadier inTime="0.5" loopTime="0.5" outTime="1" isTracking="false" projCount="2" projSpeed="1" maxHeight="3">
+                        <Resource type="EABIL" name="PF_EABIL_Spite_Grenadier" />
+                        <Resource type="PROJ" name="COL_PRJ_GrenadierRock" />
+                    </Grenadier>
+                </Behaviors>
+            </Enemy>
+            <!-- Moss Rumbler -->
+            <Enemy name="PF_Spite_Grenadier_Swamp">
+                <LootTable>
+                </LootTable>
+                <Behaviors>
+                    <Patrol speed="1.8" smoothMove="false" endPathWaitTime="2" />
+                    <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                    <Grenadier inTime="0.5" loopTime="0.5" outTime="1" isTracking="true" projCount="3" projSpeed="5" maxHeight="5">
+                        <Resource type="EABIL" name="PF_EABIL_Spite_Grenadier_Poison" />
+                        <Resource type="PROJ" name="COL_PRJ_GrenadierSwamp" />
+                    </Grenadier>
+                </Behaviors>
+            </Enemy>
+        </EnemyCategory>
+        <EnemyCategory name="Orchid">
+            <!-- Shadow Orchid (Mini-Boss) -->
+            <Enemy name="PF_Spite_Orchid_Boss">
+                <LootTable>
+                    <Drop type="item" id="1593" chance="0.8" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="1595" chance="0.5" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1594" chance="0.2" minLevel="7" maxLevel="65" />
+                    <Drop type="item" id="1601" chance="0.5" minLevel="6" maxLevel="65" />
+                    <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
+                </LootTable>
+                <Behaviors>
+                    <Patrol speed="0" smoothMove="false" endPathWaitTime="0" />
+                    <LookAround lookTime="4" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                    <Shooting nbBulletsPerRound="10" fireSpreadAngle="180" delayBetweenBullet="0.05" delayShoot_Anim="1.3" nbFireRounds="2" delayBetweenFireRound="1.5" startCoolDownTime="1.0" endCoolDownTime="1.0" projectileSpeed="8.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
+                        <Resource type="PROJ" name="COL_PRJ_DamageSuperProjectile" />
+                    </Shooting>
+                </Behaviors>
+            </Enemy>
+            <Enemy name="PF_Spite_Orchid_Ceiling_Boss">
+                <LootTable>
+                    <Drop type="item" id="1593" chance="0.8" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="1595" chance="0.5" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1594" chance="0.2" minLevel="7" maxLevel="65" />
+                    <Drop type="item" id="1601" chance="0.5" minLevel="6" maxLevel="65" />
+                    <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
+                </LootTable>
+                <Behaviors>
+                    <Patrol speed="0" smoothMove="false" endPathWaitTime="0" />
+                    <LookAround lookTime="4" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                    <Shooting nbBulletsPerRound="10" fireSpreadAngle="180" delayBetweenBullet="0.05" delayShoot_Anim="1.3" nbFireRounds="2" delayBetweenFireRound="1.5" startCoolDownTime="1.0" endCoolDownTime="1.0" projectileSpeed="8.0" fireSpreadClockwise="false" fireSpreadStartAngle="-45">
+                        <Resource type="PROJ" name="COL_PRJ_DamageSuperProjectile" />
+                    </Shooting>
+                </Behaviors>
+            </Enemy>
+            <!-- Magma Orchid (Elite) -->
+            <Enemy name="PF_Spite_Orchid_Lava">
+                <LootTable>
+                    <Drop type="item" id="1593" chance="0.5" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="1595" chance="0.2" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1594" chance="0.05" minLevel="7" maxLevel="65" />
+                    <Drop type="item" id="1591" chance="0.1" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65" />
+                    <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
+                </LootTable>
+                <Behaviors>
+                    <Patrol speed="0" smoothMove="false" endPathWaitTime="0" />
+                    <LookAround lookTime="4" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                    <Shooting nbBulletsPerRound="2" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="1.3" nbFireRounds="2" delayBetweenFireRound="1.5" startCoolDownTime="1.0" endCoolDownTime="1.0" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
+                        <Resource type="PROJ" name="COL_PRJ_FireProjectile" />
+                    </Shooting>
+                </Behaviors>
+            </Enemy>
+            <Enemy name="PF_Spite_Orchid_Ceiling_Lava">
+                <LootTable>
+                    <Drop type="item" id="1593" chance="0.5" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="1595" chance="0.2" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1594" chance="0.05" minLevel="7" maxLevel="65" />
+                    <Drop type="item" id="1591" chance="0.1" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65" />
+                    <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
+                </LootTable>
+                <Behaviors>
+                    <Patrol speed="0" smoothMove="false" endPathWaitTime="0" />
+                    <LookAround lookTime="4" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                    <Shooting nbBulletsPerRound="2" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="1.3" nbFireRounds="2" delayBetweenFireRound="1.5" startCoolDownTime="1.0" endCoolDownTime="1.0" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="-45">
+                        <Resource type="PROJ" name="COL_PRJ_FireProjectile" />
+                    </Shooting>
+                </Behaviors>
+            </Enemy>
+            <!-- Moss Orchid (Elite) -->
+            <Enemy name="PF_Spite_Orchid_Swamp">
+                <LootTable>
+                    <Drop type="item" id="1593" chance="0.5" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="1595" chance="0.2" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1594" chance="0.05" minLevel="7" maxLevel="65" />
+                    <Drop type="item" id="1592" chance="0.1" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65" />
+                    <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
+                </LootTable>
+                <Behaviors>
+                    <Patrol speed="0" smoothMove="false" endPathWaitTime="0" />
+                    <LookAround lookTime="4" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                    <Shooting nbBulletsPerRound="2" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="1.3" nbFireRounds="2" delayBetweenFireRound="1.5" startCoolDownTime="1.0" endCoolDownTime="1.0" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
+                        <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1" />
+                    </Shooting>
+                </Behaviors>
+            </Enemy>
+            <Enemy name="PF_Spite_Orchid_Ceiling_Swamp">
+                <LootTable>
+                    <Drop type="item" id="1593" chance="0.5" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="1595" chance="0.2" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1594" chance="0.05" minLevel="7" maxLevel="65" />
+                    <Drop type="item" id="1592" chance="0.1" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65" />
+                    <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
+                </LootTable>
+                <Behaviors>
+                    <Patrol speed="0" smoothMove="false" endPathWaitTime="0" />
+                    <LookAround lookTime="4" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                    <Shooting nbBulletsPerRound="2" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="1.3" nbFireRounds="2" delayBetweenFireRound="1.5" startCoolDownTime="1.0" endCoolDownTime="1.0" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="-45">
+                        <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1" />
+                    </Shooting>
+                </Behaviors>
+            </Enemy>
+            <!-- Mist Orchid (Elite) -->
+            <Enemy name="PF_Spite_Orchid_Invis">
+                <LootTable>
+                    <Drop type="item" id="1593" chance="0.5" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="1595" chance="0.2" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1594" chance="0.05" minLevel="7" maxLevel="65" />
+                    <Drop type="item" id="1591" chance="0.1" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65" />
+                    <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
+                </LootTable>
+                <Behaviors>
+                    <Patrol speed="0" smoothMove="false" endPathWaitTime="0" />
+                    <LookAround lookTime="4" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                    <Shooting nbBulletsPerRound="2" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="1.3" nbFireRounds="2" delayBetweenFireRound="1.5" startCoolDownTime="1.0" endCoolDownTime="1.0" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
+                        <Resource type="PROJ" name="COL_PRJ_DamageProjectile" />
+                    </Shooting>
+                </Behaviors>
+            </Enemy>
+            <!-- Rock Orchid -->
+            <Enemy name="PF_Spite_Orchid_Rock">
+                <LootTable>
+                    <Drop type="item" id="1593" chance="0.2" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="1595" chance="0.1" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1594" chance="0.02" minLevel="7" maxLevel="65" />
+                </LootTable>
+                <Behaviors>
+                    <Patrol speed="0" smoothMove="false" endPathWaitTime="0" />
+                    <LookAround lookTime="4" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                    <Shooting nbBulletsPerRound="2" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="1.3" nbFireRounds="1" delayBetweenFireRound="1.5" startCoolDownTime="1.0" endCoolDownTime="1.0" projectileSpeed="4.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
+                        <Resource type="PROJ" name="COL_PRJ_DamageProjectile" />
+                    </Shooting>
+                </Behaviors>
+            </Enemy>
+            <Enemy name="PF_Spite_Orchid_Ceiling_Rock">
+                <LootTable>
+                    <Drop type="item" id="1593" chance="0.2" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="1595" chance="0.1" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1594" chance="0.02" minLevel="7" maxLevel="65" />
+                </LootTable>
+                <Behaviors>
+                    <Patrol speed="0" smoothMove="false" endPathWaitTime="0" />
+                    <LookAround lookTime="4" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                    <Shooting nbBulletsPerRound="2" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="1.3" nbFireRounds="1" delayBetweenFireRound="1.5" startCoolDownTime="1.0" endCoolDownTime="1.0" projectileSpeed="4.0" fireSpreadClockwise="false" fireSpreadStartAngle="-45">
+                        <Resource type="PROJ" name="COL_PRJ_DamageProjectile" />
+                    </Shooting>
+                </Behaviors>
+            </Enemy>
+        </EnemyCategory>
+        <EnemyCategory name="Pincer">
+            <!-- Shadow Pincer (Mini-Boss) -->
+            <Enemy name="PF_Spite_Pincer_Boss">
+                <LootTable>
+                    <Drop type="item" id="867" chance="0.8" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="1596" chance="0.5" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1597" chance="0.2" minLevel="7" maxLevel="65" />
+                    <Drop type="item" id="1601" chance="0.5" minLevel="6" maxLevel="65" />
+                    <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
+                </LootTable>
+                <Behaviors>
+                    <Patrol speed="2.4" smoothMove="false" endPathWaitTime="0" />
+                    <Aggro speed="4.0" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0" />
+                    <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                </Behaviors>
+            </Enemy>
+            <!-- Mist Pincer (Elite) -->
+            <Enemy name="PF_Spite_Pincer_Invis">
+                <LootTable>
+                    <Drop type="item" id="867" chance="0.5" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="1596" chance="0.2" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1597" chance="0.05" minLevel="7" maxLevel="65" />
+                    <Drop type="item" id="1598" chance="0.1" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65" />
+                    <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
+                </LootTable>
+                <Behaviors>
+                    <Patrol speed="2.4" smoothMove="false" endPathWaitTime="0" />
+                    <Aggro speed="4.0" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0" />
+                    <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                </Behaviors>
+            </Enemy>
+            <!-- Magma Pincer (Elite) -->
+            <Enemy name="PF_Spite_Pincer_Lava">
+                <LootTable>
+                    <Drop type="item" id="867" chance="0.5" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="1596" chance="0.2" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1597" chance="0.05" minLevel="7" maxLevel="65" />
+                    <Drop type="item" id="1591" chance="0.1" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65" />
+                    <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
+                </LootTable>
+                <Behaviors>
+                    <Patrol speed="2.4" smoothMove="false" endPathWaitTime="0" />
+                    <Aggro speed="4.0" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0" />
+                    <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                </Behaviors>
+            </Enemy>
+            <!-- Swamp Pincer (Elite) -->
+            <Enemy name="PF_Spite_Pincer_Swamp">
+                <LootTable>
+                    <Drop type="item" id="867" chance="0.5" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="1596" chance="0.2" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1597" chance="0.05" minLevel="7" maxLevel="65" />
+                    <Drop type="item" id="1592" chance="0.1" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65" />
+                    <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
+                </LootTable>
+                <Behaviors>
+                    <Patrol speed="2.4" smoothMove="false" endPathWaitTime="0" />
+                    <Aggro speed="4.0" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0" />
+                    <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                </Behaviors>
+            </Enemy>
+            <!-- Pincer -->
+            <Enemy name="PF_Spite_Pincer_Rock">
+                <LootTable>
+                    <Drop type="item" id="867" chance="0.2" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="1596" chance="0.1" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1597" chance="0.02" minLevel="7" maxLevel="65" />
+                </LootTable>
+                <Behaviors>
+                    <Patrol speed="2.4" smoothMove="false" endPathWaitTime="0" />
+                    <Aggro speed="4.0" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0" />
+                    <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                </Behaviors>
+            </Enemy>
+        </EnemyCategory>
+        <EnemyCategory name="Ograk">
+            <!-- Shadow Ograk (Mini-Boss) -->
+            <Enemy name="PF_Spite_Stomper_Boss">
+                <LootTable>
+                </LootTable>
+                <Behaviors>
+                    <Patrol speed="1.5" smoothMove="false" endPathWaitTime="4" />
+                    <Aggro speed="3.2" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0" />
+                    <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                    <Stomper attackTime="4" impactTime="2" damageDistance="2" damageOffset="3">
+                        <Resource type="EABIL" name="PF_EABIL_Spite_Stomper_Miniboss" />
+                    </Stomper>
+                </Behaviors>
+            </Enemy>
+            <!-- Magma Ograk (Elite) -->
+            <Enemy name="PF_Spite_Stomper_Lava">
+                <LootTable>
+                </LootTable>
+                <Behaviors>
+                    <Patrol speed="1.5" smoothMove="false" endPathWaitTime="4" />
+                    <Aggro speed="3.2" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0" />
+                    <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                    <Stomper attackTime="4" impactTime="2" damageDistance="2" damageOffset="3">
+                        <Resource type="EABIL" name="PF_EABIL_Spite_Stomper_Fire" />
+                    </Stomper>
+                </Behaviors>
+            </Enemy>
+            <!-- Moss Ograk (Elite) -->
+            <Enemy name="PF_Spite_Stomper_Swamp">
+                <LootTable>
+                </LootTable>
+                <Behaviors>
+                    <Patrol speed="1.5" smoothMove="false" endPathWaitTime="4" />
+                    <Aggro speed="3.2" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0" />
+                    <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                    <Stomper attackTime="4" impactTime="2" damageDistance="2" damageOffset="3">
+                        <Resource type="EABIL" name="PF_EABIL_Spite_Stomper_Poison" />
+                    </Stomper>
+                </Behaviors>
+            </Enemy>
+            <!-- Ograk -->
+            <Enemy name="PF_Spite_Stomper_Rock">
+                <LootTable>
+                </LootTable>
+                <Behaviors>
+                    <Patrol speed="1.5" smoothMove="false" endPathWaitTime="4" />
+                    <Aggro speed="3.2" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0" />
+                    <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                    <Stomper attackTime="4" impactTime="2" damageDistance="2" damageOffset="3">
+                        <Resource type="EABIL" name="PF_EABIL_Spite_Stomper" />
+                    </Stomper>
+                </Behaviors>
+            </Enemy>
+        </EnemyCategory>
+        <EnemyCategory name="Vespid">
+            <!-- Shadow Vespid (Boss) -->
+            <Enemy name="Spite_Wasp_Boss01">
+                <LootTable>
+                </LootTable>
+                <Behaviors>
+                    <Patrol speed="0" smoothMove="false" endPathWaitTime="0" />
+                    <Stinger speedForward="12" speedBackward="4" inDurationForward="0.43" attackDuration="2.67" damageAttackTimeOffset="1" inDurationBackward="1.29" damageDistance="2">
+                        <Resource type="EABIL" name="PF_EABIL_Spite_Vespid_StingerAttack" />
+                    </Stinger>
+                    <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                    <ComeBack speed="2.4" />
+                </Behaviors>
+            </Enemy>
+        </EnemyCategory>
+        <EnemyCategory name="SpngBob">
+            <Enemy name="PF_Spite_MiniRoboPlankton01">
+                <LootTable>
+                </LootTable>
+            </Enemy>
+            <Enemy name="PF_Spite_MiniRoboPlankton02">
+                <LootTable>
+                </LootTable>
+            </Enemy>
+        </EnemyCategory>
+        <EnemyCategory name="TMNT">
+            <Enemy name="PF_Spite_TMNT_FootJumper01">
+                <LootTable>
+                </LootTable>
+            </Enemy>
+            <Enemy name="PF_Spite_TMNT_FootPatroller01">
+                <LootTable>
+                </LootTable>
+            </Enemy>
+            <Enemy name="PF_Spite_TMNT_FootThrower01">
+                <LootTable>
+                </LootTable>
+            </Enemy>
+        </EnemyCategory>
+        <EnemyCategory name="PwrRngr">
+            <Enemy name="PF_Spite_PR_XborgBoss01">
+                <LootTable>
+                </LootTable>
+            </Enemy>
+            <Enemy name="PF_Spite_PR_XborgPatroller01">
+                <LootTable>
+                </LootTable>
+            </Enemy>
+            <Enemy name="PF_Spite_PR_XborgShooter01">
+                <LootTable>
+                </LootTable>
+            </Enemy>
+        </EnemyCategory>
+    </AiType>
+    <AiType name="State">
+        <EnemyCategory name="Spiderling">
+            <!-- Spiderling -->
+            <Enemy name="PF_Spite_Spiderling_Boss01">
+                <LootTable>
+                </LootTable>
+            </Enemy>
+        </EnemyCategory>
+        <EnemyCategory name="Rachnok">
+            <Enemy name="Spite_TeaserSpider_Boss">
+                <LootTable>
+                </LootTable>
+            </Enemy>
+            <!-- Rachnok (Boss) -->
+            <Enemy name="Spite_Spider_Boss">
+                <LootTable>
+                </LootTable>
+            </Enemy>
+        </EnemyCategory>
+        <EnemyCategory name="Spiker">
+            <!-- Spiker -->
+            <Enemy name="PF_Spite_Squirrel_Ice">
+                <LootTable>
+                </LootTable>
+            </Enemy>
+            <Enemy name="PF_Spite_Squirrel_Shadow">
+                <LootTable>
+                </LootTable>
+            </Enemy>
+            <Enemy name="PF_Spite_Squirrel_Rock">
+                <LootTable>
+                </LootTable>
+            </Enemy>
+        </EnemyCategory>
+        <EnemyCategory name="Draicon">
+            <Enemy name="PF_Critter_Drake_Boss01">
+                <LootTable>
+                </LootTable>
+            </Enemy>
+            <!-- Draicon -->
+            <Enemy name="PF_Critter_Drake01">
+                <LootTable>
+                </LootTable>
+            </Enemy>
+        </EnemyCategory>
+        <EnemyCategory name="Stormbeast">
+            <Enemy name="PF_Critter_Dragon_Boss01">
+                <LootTable>
+                </LootTable>
+            </Enemy>
+            <!-- Stormbeast -->
+            <Enemy name="PF_Critter_Dragon01">
+                <LootTable>
+                </LootTable>
+            </Enemy>
+        </EnemyCategory>
+        <EnemyCategory name="Stomper">
+            <Enemy name="PF_Spite_Hamster_Ice">
+                <LootTable>
+                </LootTable>
+            </Enemy>
+            <Enemy name="PF_Spite_Hamster_Rock">
+                <LootTable>
+                </LootTable>
+            </Enemy>
+            <!-- Stomper -->
+            <Enemy name="PF_Spite_Hamster_Shadow">
+                <LootTable>
+                </LootTable>
+            </Enemy>
+        </EnemyCategory>
+        <EnemyCategory name="Foulbreath">
+            <!-- Foulbreath (Boss) -->
+            <Enemy name="Spite_IceTroll_Boss01">
+                <LootTable>
+                </LootTable>
+            </Enemy>
+        </EnemyCategory>
+        <EnemyCategory name="SpngBob">
+            <!-- Uses DRAICON AI State Controller -->
+            <Enemy name="PF_Spite_BossRoboPlankton04">
+                <LootTable>
+                </LootTable>
+            </Enemy>
+        </EnemyCategory>
+        <EnemyCategory name="TMNT">
+            <!-- Uses SPIDERLING AI State Controller -->
+            <Enemy name="PF_Spite_TMNT_Shredder01">
+                <LootTable>
+                </LootTable>
+            </Enemy>
+        </EnemyCategory>
+    </AiType>
 </InternalEnemyData>

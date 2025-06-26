@@ -20,14 +20,13 @@ public class AIStatsGenericComp : Component<AI_Stats_Generic>
         PatrolY = Patrol_DistanceY;
     }
 
-    public override void NotifyCollision(NotifyCollision_SyncEvent notifyCollisionEvent, Player player)
-    {
-        return;
-    }
-
     public void SetPatrolRange(Vector3 patrol)
     {
         PatrolX = patrol.x;
         PatrolY = patrol.y;
+    }
+
+    public override void NotifyCollision(NotifyCollision_SyncEvent notifyCollisionEvent, Player player)
+    {
     }
 }

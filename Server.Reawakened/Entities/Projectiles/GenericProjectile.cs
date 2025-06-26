@@ -26,8 +26,7 @@ public class GenericProjectile : BaseProjectile
         _hitboxPosition = new Vector3 { x = Position.x, y = Position.y - config.ProjectileHeight, z = Position.z };
         _hitboxPosition.x -= direction > 0 ? 0 : config.ProjectileWidth;
 
-        player.Character.StatusEffects.Get(ItemEffectType.Detect);
-        Collider = new AttackCollider(id, _hitboxPosition, new Rect(0, 0, config.ProjectileWidth, config.ProjectileHeight), PrjPlane, player, damage, damageType, LifeTime, 0, player.Character.StatusEffects.Effects.ContainsKey(ItemEffectType.Detect));
+        Collider = new AttackCollider(id, _hitboxPosition, new Rect(0, 0, config.ProjectileWidth, config.ProjectileHeight), PrjPlane, player, damage, damageType, LifeTime, 0, player.Character.StatusEffects.HasEffect(ItemEffectType.Detect));
 
         var prj = new LaunchItem_SyncEvent(_gameObjectId, StartTime, Position.x, Position.y, Position.z, Speed.x, Speed.y, LifeTime, int.Parse(ProjectileId), item.PrefabName);
         Room.SendSyncEvent(prj);

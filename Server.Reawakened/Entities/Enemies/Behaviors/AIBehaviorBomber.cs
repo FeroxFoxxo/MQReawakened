@@ -4,13 +4,15 @@ using Server.Reawakened.XMLs.Data.Enemy.Enums;
 
 namespace Server.Reawakened.Entities.Enemies.Behaviors;
 
-public class AIBehaviorBomber(BomberProperties properties, BehaviorEnemy enemy) : AIBaseBehavior(enemy, StateType.Bomber)
+public class AIBehaviorBomber(BehaviorEnemy enemy, BomberProperties fallback) : AIBaseBehavior(enemy.AiData, enemy.Room)
 {
     public override bool ShouldDetectPlayers => false;
 
-    public override AiProperties GetProperties() => properties;
+    public override AiProperties GetProperties() => fallback;
 
     public override object[] GetStartArgs() => [];
+
+    public override StateType GetStateType() => StateType.Bomber;
 
     public override void NextState() { }
 }

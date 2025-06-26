@@ -36,6 +36,7 @@ public class TriggerArenaComp : BaseTriggerStatueComp<TriggerArena>
     public override ArenaStatus GetArenaStatus()
     {
         var outStatus = Status == ArenaStatus.Complete ? ArenaStatus.Complete : ArenaStatus.Incomplete;
+
         if (HasStarted)
         {
             if (ArenaEntities.All(Room.IsObjectKilled) && Room.Time >= _minClearTime)
@@ -43,6 +44,7 @@ public class TriggerArenaComp : BaseTriggerStatueComp<TriggerArena>
             else if (Room.Time >= _timer)
                 outStatus = ArenaStatus.Lose;
         }
+
         return outStatus;
     }
 

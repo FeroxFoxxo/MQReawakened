@@ -4,32 +4,34 @@ using Server.Reawakened.XMLs.Data.Enemy.Enums;
 
 namespace Server.Reawakened.Entities.Enemies.Behaviors;
 
-public class AIBehaviorLookAround(LookAroundProperties properties, BehaviorEnemy enemy) : AIBaseBehavior(enemy, StateType.LookAround)
+public class AIBehaviorLookAround(BehaviorEnemy enemy, LookAroundProperties fallback) : AIBaseBehavior(enemy.AiData, enemy.Room)
 {
     public override bool ShouldDetectPlayers => true;
 
     public override AiProperties GetProperties() =>
         new LookAroundProperties(
-            Enemy.Global.LookAround_LookTime != Enemy.Global.Default.LookAround_LookTime ? Enemy.Global.LookAround_LookTime : properties.lookAround_LookTime,
-            Enemy.Global.LookAround_StartDirection != Enemy.Global.Default.LookAround_StartDirection ? Enemy.Global.LookAround_StartDirection : properties.lookAround_StartDirection,
-            Enemy.Global.LookAround_ForceDirection != Enemy.Global.Default.LookAround_ForceDirection ? Enemy.Global.LookAround_ForceDirection : properties.lookAround_ForceDirection,
-            Enemy.Global.LookAround_InitialProgressRatio != Enemy.Global.Default.LookAround_InitialProgressRatio ? Enemy.Global.LookAround_InitialProgressRatio : properties.lookAround_InitialProgressRatio,
-            Enemy.Global.LookAround_SnapOnGround != Enemy.Global.Default.LookAround_SnapOnGround ? Enemy.Global.LookAround_SnapOnGround : properties.lookAround_SnapOnGround
+            Fallback(enemy.Global.LookAround_LookTime, fallback.lookAround_LookTime),
+            Fallback(enemy.Global.LookAround_StartDirection, fallback.lookAround_StartDirection),
+            Fallback(enemy.Global.LookAround_ForceDirection, fallback.lookAround_ForceDirection),
+            Fallback(enemy.Global.LookAround_InitialProgressRatio, fallback.lookAround_InitialProgressRatio),
+            Fallback(enemy.Global.LookAround_SnapOnGround, fallback.lookAround_SnapOnGround)
         );
 
     public override object[] GetStartArgs() => [];
 
+    public override StateType GetStateType() => StateType.LookAround;
+
     public override void NextState()
     {
-        Enemy.ChangeBehavior(
-            Enemy.GenericScript.UnawareBehavior,
-            Enemy.Position.x,
-            Enemy.GenericScript.UnawareBehavior == StateType.ComeBack ? Enemy.AiData.Intern_SpawnPosY : Enemy.Position.y,
-            Enemy.AiData.Intern_Dir
+        enemy.ChangeBehavior(
+            enemy.Global.UnawareBehavior,
+            enemy.Position.x,
+            enemy.Global.UnawareBehavior == StateType.ComeBack ? _aiData.Intern_SpawnPosY : enemy.Position.y,
+            _aiData.Intern_Dir
         );
 
-        Enemy.CurrentBehavior.MustDoComeback();
+        enemy.CurrentBehavior.MustDoComeback();
     }
 
-    public override float GetBehaviorTime() => Enemy.Global.LookAround_LookTime != Enemy.Global.Default.LookAround_LookTime ? Enemy.Global.LookAround_LookTime : properties.lookAround_LookTime;
+    public override float GetBehaviorTime() => enemy.Global.LookAround_LookTime;
 }
