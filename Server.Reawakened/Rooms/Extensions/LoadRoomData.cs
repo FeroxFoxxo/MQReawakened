@@ -187,6 +187,14 @@ public static class LoadRoomData
 
         unknownComponents = [];
 
+        if (prefabOverrides != null)
+            foreach (var entry in prefabOverrides)
+                if (!entity.ObjectInfo.Components.ContainsKey(entry.Key))
+                    entity.ObjectInfo.Components.Add(entry.Key, new ComponentModel
+                    {
+                        ComponentAttributes = []
+                    });
+
         foreach (var component in entity.ObjectInfo.Components)
         {
             if (!vars.Room.World.ProcessableComponents.TryGetValue(component.Key, out var mqType))

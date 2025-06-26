@@ -9,6 +9,7 @@ using Server.Reawakened.Entities.Components.GameObjects.InterObjs.Interfaces;
 using Server.Reawakened.Entities.Components.GameObjects.Spawners;
 using Server.Reawakened.Entities.Components.GameObjects.Trigger;
 using Server.Reawakened.Entities.Components.GameObjects.Trigger.Enums;
+using Server.Reawakened.Entities.Components.PrefabInfos;
 using Server.Reawakened.Entities.Enemies.Extensions;
 using Server.Reawakened.Entities.Enemies.Models;
 using Server.Reawakened.Players;
@@ -57,6 +58,7 @@ public abstract class BaseEnemy : IDestructible
 
     public BaseSpawnerControllerComp LinkedSpawner;
     public InterObjStatusComp Status;
+    public ServerObjectSizeInfoComp Box;
 
     public readonly BaseComponent Entity;
     public readonly IEnemyController EnemyController;
@@ -84,6 +86,7 @@ public abstract class BaseEnemy : IDestructible
         Position = new Vector3(EnemyController.Position.X, EnemyController.Position.Y, EnemyController.Position.Z);
 
         Status = Room.GetEntityFromId<InterObjStatusComp>(Id);
+        Box = Room.GetEntityFromId<ServerObjectSizeInfoComp>(Id);
 
         switch (ParentPlane)
         {
@@ -110,7 +113,7 @@ public abstract class BaseEnemy : IDestructible
 
         Health = MaxHealth;
 
-        GenerateHitbox(EnemyModel.Hitbox);
+        GenerateHitbox();
 
         // Temporary values
         HealthModifier = 1;
@@ -153,13 +156,13 @@ public abstract class BaseEnemy : IDestructible
         ParentPlane = LinkedSpawner.ParentPlane;
     }
 
-    public void GenerateHitbox(HitboxModel box)
+    public void GenerateHitbox()
     {
-        var width = box.Width * EnemyController.Scale.X * (EnemyController.Scale.X < 0 ? -1 : 1);
-        var height = box.Height * EnemyController.Scale.Y * (EnemyController.Scale.Y < 0 ? -1 : 1);
+        var width = Box.Size.x * EnemyController.Scale.X * (EnemyController.Scale.X < 0 ? -1 : 1);
+        var height = Box.Size.y * EnemyController.Scale.Y * (EnemyController.Scale.Y < 0 ? -1 : 1);
 
-        var offsetX = box.XOffset * EnemyController.Scale.X - width / 2 * (EnemyController.Scale.X < 0 ? -1 : 1);
-        var offsetY = box.YOffset * EnemyController.Scale.Y - height / 2 * (EnemyController.Scale.Y < 0 ? -1 : 1);
+        var offsetX = Box.Offset.x * EnemyController.Scale.X - width / 2 * (EnemyController.Scale.X < 0 ? -1 : 1);
+        var offsetY = Box.Offset.y * EnemyController.Scale.Y - height / 2 * (EnemyController.Scale.Y < 0 ? -1 : 1);
 
         var position = new Vector3(Position.x, Position.y, Position.z);
 

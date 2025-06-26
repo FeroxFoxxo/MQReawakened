@@ -25,6 +25,10 @@ public class Logout : SystemProtocol
                     pet.LastTimePetWasEquipped = DateTime.Now;
                     pet.HasGainedOfflineEnergy = false;
                 }
+                if (Player.Character.CurrentLife >= 0)
+                {
+                    Player.Character.Write.CurrentLife = Player.Character.MaxLife;
+                }
             }
 
             Player.Remove(Logger);
