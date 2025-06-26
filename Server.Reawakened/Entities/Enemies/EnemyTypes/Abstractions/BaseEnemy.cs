@@ -158,6 +158,12 @@ public abstract class BaseEnemy : IDestructible
 
     public void GenerateHitbox()
     {
+        if (Box == null || EnemyController.Scale == null)
+        {
+            Logger.LogError("Box or Scale is null for enemy {PrefabName} with ID {Id}. Cannot generate hitbox.", PrefabName, Id);
+            return;
+        }
+
         var width = Box.Size.x * EnemyController.Scale.X * (EnemyController.Scale.X < 0 ? -1 : 1);
         var height = Box.Size.y * EnemyController.Scale.Y * (EnemyController.Scale.Y < 0 ? -1 : 1);
 
