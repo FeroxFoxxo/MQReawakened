@@ -29,11 +29,20 @@ public class AIStateSpiderVenomComp : BaseAIState<AIStateSpiderVenom>
     public override void StartState()
     {
         var firstShot = TimeDelayBetweenShotPerPhase.FirstOrDefault();
-        var secondShot = TimeDelayBetweenEverySalvoPerPhase.FirstOrDefault();
 
-        TimerThread.RunDelayed(LaunchProjectile, new SpiderProjectile() { IsFirstProjectile = true, Component = this }, TimeSpan.FromSeconds(firstShot));
-        TimerThread.RunDelayed(LaunchProjectile, new SpiderProjectile() { IsFirstProjectile = false, Component = this }, TimeSpan.FromSeconds(firstShot + secondShot));
-        TimerThread.RunDelayed(RunDropState, this, TimeSpan.FromSeconds(0.5));
+        var firstProjectileTime = TimeSpan.FromSeconds(firstShot);
+
+        if (firstProjectileTime > TimeSpan.Zero)
+            TimerThread.RunDelayed(LaunchProjectile, new SpiderProjectile() { IsFirstProjectile = true, Component = this }, firstProjectileTime);
+
+        var secondProjectileTime = firstProjectileTime.Add(TimeSpan.FromSeconds(firstShot));
+
+        if (secondProjectileTime > TimeSpan.Zero)
+            TimerThread.RunDelayed(LaunchProjectile, new SpiderProjectile() { IsFirstProjectile = false, Component = this }, secondProjectileTime);
+
+        var dropTime = secondProjectileTime.Add(TimeSpan.FromSeconds(CooldownTime));
+
+        TimerThread.RunDelayed(RunDropState, this, dropTime);
     }
 
     public class SpiderProjectile() : ITimerData
