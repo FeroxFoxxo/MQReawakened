@@ -4,8 +4,18 @@ using Server.Reawakened.Entities.Components.Characters.Controllers.Spiker.States
 using Server.Reawakened.Entities.DataComponentAccessors.Spiker;
 
 namespace Server.Reawakened.Entities.Components.Characters.Controllers.Spiker;
-public class SpikerComponentComp : BaseAIStateMachine<SpikerControllerMQR>, IAIDamageEnemy
+public class SpikerComponentComp : DamagableAiStateMachine<SpikerControllerMQR>
 {
+    /* 
+     * -- AI STATES --
+     * AIStateSpikerAttackComp
+     * 
+     * AIStatePatrol
+     * AIStateIdle
+     * AIStateWait
+     * AIStateStunned
+    */
+
     public bool StartIdle => ComponentData.StartIdle;
     public float TimeToDirtFXInTaunt => ComponentData.TimeToDirtFXInTaunt;
 
@@ -33,23 +43,5 @@ public class SpikerComponentComp : BaseAIStateMachine<SpikerControllerMQR>, IAID
 
         if (patrolComp != null && attackComp != null)
             patrolComp.DetectionAiState = attackComp;
-    }
-
-    public void EnemyDamaged(bool isDead)
-    {
-        AddNextState<AIStateStunnedComp>();
-
-        if (!isDead)
-        {
-            foreach (var aiState in CurrentStates)
-            {
-                if (typeof(AIStateStunnedComp).IsInstanceOfType(aiState))
-                    continue;
-
-                AddNextState(aiState.GetType());
-            }
-        }
-        
-        GoToNextState();
     }
 }

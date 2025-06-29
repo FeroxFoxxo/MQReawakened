@@ -14,5 +14,5 @@ public class AIStateDrakeAttackComp : BaseAIState<AIStateDrakeAttack>
     public float TauntAnimDuration => ComponentData.TauntAnimDuration;
 
     // Provide Initial, Placement And Target Positions
-    public override ExtLevelEditor.ComponentSettings GetSettings() => throw new NotImplementedException();
+    public override ExtLevelEditor.ComponentSettings GetSettings() => [];
 }

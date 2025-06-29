@@ -17,5 +17,5 @@ public class AIStateDraiconAttackComp : BaseAIState<AIStateDraiconAttack>
     public ProjectilePatternType ProjectileAmount => ComponentData.ProjectileAmount;
 
     // Provide Initial And Target Positions
-    public override ExtLevelEditor.ComponentSettings GetSettings() => throw new NotImplementedException();
+    public override ExtLevelEditor.ComponentSettings GetSettings() => [];
 }

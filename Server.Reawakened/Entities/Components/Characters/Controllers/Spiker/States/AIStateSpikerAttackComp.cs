@@ -23,28 +23,16 @@ public class AIStateSpikerAttackComp : BaseAIState<AIStateSpikerAttackMQR>, ITim
     public int NumberOfProjectiles => ComponentData.NumberOfProjectiles;
     public float AngleBetweenProjectiles => ComponentData.AngleBetweenProjectiles;
 
-    private int _forceDirectionX = 0;
-
     private AIStatePatrolComp _patrolComp;
 
     public TimerThread TimerThread { get; set; }
 
-    public override ExtLevelEditor.ComponentSettings GetSettings() => [_forceDirectionX.ToString()];
+    public override ExtLevelEditor.ComponentSettings GetSettings() => [_patrolComp.ForceDirectionX.ToString()];
 
     public override void DelayedComponentInitialization() => _patrolComp = Room.GetEntityFromId<AIStatePatrolComp>(Id);
 
     public override void StartState()
     {
-        var closestPlayer = Room.GetClosetPlayer(Position.ToUnityVector3(), float.MaxValue);
-
-        if (closestPlayer == null)
-        {
-            _forceDirectionX = 0;
-            return;
-        }
-
-        _forceDirectionX = Convert.ToInt32(GetDirectionToPlayer(closestPlayer).x);
-
         TimerThread.RunDelayed(FireProjectilesCallback, this, TimeSpan.FromSeconds(ShootTime));
         TimerThread.RunDelayed(ReturnToPatrolCallback, this, TimeSpan.FromSeconds(ProjectileTime));
     }

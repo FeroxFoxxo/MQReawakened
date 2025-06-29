@@ -13,5 +13,5 @@ public class AIStateHamsterAttackComp : BaseAIState<AIStateHamsterAttackMQR>
     public float JumpHeight => ComponentData.JumpHeight;
 
     // Provide Initial And Target Positions
-    public override ExtLevelEditor.ComponentSettings GetSettings() => throw new NotImplementedException();
+    public override ExtLevelEditor.ComponentSettings GetSettings() => [];
 }
