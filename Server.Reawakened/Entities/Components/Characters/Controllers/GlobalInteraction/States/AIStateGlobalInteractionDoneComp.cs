@@ -1,7 +1,6 @@
 ﻿using GlobalInteractionEvents;
 using Microsoft.Extensions.Logging;
 using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Abstractions;
-using UnityEngine;
 
 namespace Server.Reawakened.Entities.Components.Characters.Controllers.GlobalInteraction.States;
 public class AIStateGlobalInteractionDoneComp : BaseAIState<AIStateGlobalInteractionDone, AI_State>

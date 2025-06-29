@@ -1,7 +1,4 @@
-﻿using Server.Base.Core.Abstractions;
-using Server.Base.Timers.Extensions;
-using Server.Base.Timers.Services;
-using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Abstractions;
+﻿using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Abstractions;
 using Server.Reawakened.Entities.Components.Characters.Controllers.SpiderBoss.States;
 using Server.Reawakened.Entities.Components.GameObjects.InterObjs.Interfaces;
 using Server.Reawakened.Entities.Components.GameObjects.Trigger.Interfaces;
@@ -45,8 +42,6 @@ public class SpiderBossControllerComp : BaseAIStateMachine<SpiderBossController>
     public int CurrentPhase = 0;
     public bool OnGround = true;
 
-    public TimerThread TimerThread { get; set; }
-
     public void RecievedTrigger(bool triggered)
     {
         if (Room == null)
@@ -54,26 +49,13 @@ public class SpiderBossControllerComp : BaseAIStateMachine<SpiderBossController>
 
         if (triggered)
         {
-            var delay = Teaser ?
-                Room.GetEntityFromId<AIStateSpiderTeaserEntranceComp>(Id)?.DelayBeforeEntranceDuration :
-                Room.GetEntityFromId<AIStateSpiderEntranceComp>(Id)?.DelayBeforeEntranceDuration;
+            if (Teaser)
+                AddNextState<AIStateSpiderTeaserEntranceComp>();
+            else
+                AddNextState<AIStateSpiderEntranceComp>();
 
-            if (delay.HasValue)
-                TimerThread.RunDelayed(RunEntrance, this, TimeSpan.FromSeconds(delay.Value));
+            GoToNextState();
         }
-    }
-
-    public static void RunEntrance(ITimerData data)
-    {
-        if (data is not SpiderBossControllerComp spider)
-            return;
-
-        if (spider.Teaser)
-            spider.AddNextState<AIStateSpiderTeaserEntranceComp>();
-        else
-            spider.AddNextState<AIStateSpiderEntranceComp>();
-
-        spider.GoToNextState();
     }
 
     public void Destroy(Room room, string id)

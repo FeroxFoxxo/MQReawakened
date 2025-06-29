@@ -1,5 +1,4 @@
-﻿using Server.Reawakened.Entities.Enemies.Behaviors;
-using Server.Reawakened.Entities.Enemies.Behaviors.Abstractions;
+﻿using Server.Reawakened.Entities.Enemies.Behaviors.Abstractions;
 using Server.Reawakened.Entities.Enemies.EnemyTypes;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.XMLs.Data.Enemy.Models;

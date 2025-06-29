@@ -1,5 +1,4 @@
-﻿using A2m.Server;
-using Server.Reawakened.Players.Helpers;
+﻿using Server.Reawakened.Players.Helpers;
 
 namespace Server.Reawakened.Players.Models.System;
 public class EmailMessageModel

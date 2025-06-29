@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Logging;
 using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Abstractions;
 using Server.Reawakened.Entities.DataComponentAccessors.Hampster.States;
-using UnityEngine;
 
 namespace Server.Reawakened.Entities.Components.Characters.Controllers.Hamster.States;
 public class AIStateHamsterAttackComp : BaseAIState<AIStateHamsterAttackMQR, AI_State_HamsterAttack>
