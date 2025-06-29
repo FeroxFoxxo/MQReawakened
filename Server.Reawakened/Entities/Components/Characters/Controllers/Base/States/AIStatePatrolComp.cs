@@ -3,7 +3,6 @@ using Microsoft.Extensions.Logging;
 using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Abstractions;
 using Server.Reawakened.Players;
 using Server.Reawakened.Rooms.Extensions;
-using System;
 using UnityEngine;
 
 namespace Server.Reawakened.Entities.Components.Characters.Controllers.Base.States;
@@ -29,7 +28,7 @@ public class AIStatePatrolComp : BaseAIState<AIStatePatrol>
     public Vector2 Patrol2;
 
     private AI_State_Patrol _state;
-    private static Vector3 _dampingVelocity = new (0, 0, 0);
+    private static Vector3 _dampingVelocity = new(0, 0, 0);
 
     public ILogger<AIStatePatrolComp> Logger { get; set; }
 
@@ -38,12 +37,16 @@ public class AIStatePatrolComp : BaseAIState<AIStatePatrol>
 
     private float _lastUpdateTime = 0f;
     private float _deltaTime = 0f;
+    private float _detectionStartTime = 0f;
+    private bool _isDetecting = false;
 
     public override void StartState()
     {
         Position.SetPositionViaPlane(ParentPlane, PrefabName, Logger);
 
         _lastUpdateTime = Room.Time;
+        _detectionStartTime = 0f;
+        _isDetecting = false;
 
         Patrol1 = StartPatrol1;
         Patrol2 = StartPatrol2;
@@ -102,10 +105,53 @@ public class AIStatePatrolComp : BaseAIState<AIStatePatrol>
         if (DetectionAiState == null)
             return;
 
-        if (GetClosestPlayer() == null)
-            return;
-        
-        AddNextState(DetectionAiState.GetType());
-        GoToNextState();
+        var hasDetectedPlayer = Room.GetPlayers().Any(CanDetectPlayer);
+
+        if (hasDetectedPlayer)
+        {
+            if (!_isDetecting)
+            {
+                _isDetecting = true;
+                _detectionStartTime = Room.Time;
+            }
+            else if (Room.Time - _detectionStartTime >= MinimumTimeBeforeDetection)
+            {
+                AddNextState(DetectionAiState.GetType());
+                GoToNextState();
+            }
+        } else {
+            _isDetecting = false;
+            _detectionStartTime = 0f;
+        }
+    }
+
+    private bool CanDetectPlayer(Player player)
+    {
+        var playerPos = player.TempData.Position;
+        var enemyPos = Position.ToUnityVector3();
+
+        if (Mathf.Abs(playerPos.y - enemyPos.y) > MaximumYDifferenceOnDetection)
+            return false;
+
+        var distance = Vector3.Distance(enemyPos, playerPos);
+
+        if (distance < MinimumRange || distance > DetectionRange)
+            return false;
+
+        if (DetectOnlyInPatrolZone && !IsPlayerInPatrolZone(player))
+            return false;
+
+        return true;
+    }
+
+    private bool IsPlayerInPatrolZone(Player player)
+    {
+        var playerPos = player.TempData.Position;
+        var minX = Mathf.Min(Position.X + Patrol1.x, Position.X + Patrol2.x) - PatrolZoneSizeOffset;
+        var maxX = Mathf.Max(Position.X + Patrol1.x, Position.X + Patrol2.x) + PatrolZoneSizeOffset;
+        var minY = Mathf.Min(Position.Y + Patrol1.y, Position.Y + Patrol2.y) - PatrolZoneSizeOffset;
+        var maxY = Mathf.Max(Position.Y + Patrol1.y, Position.Y + Patrol2.y) + PatrolZoneSizeOffset;
+
+        return playerPos.x >= minX && playerPos.x <= maxX && playerPos.y >= minY && playerPos.y <= maxY;
     }
 }
