@@ -29,6 +29,8 @@ public class GlobalInteractionControllerComp : BaseAIStateMachine<GlobalInteract
 
     public override void InitializeComponent()
     {
+        base.InitializeComponent();
+
         _nextPollTime = 0;
 
         var counter = Room.GetEntityFromId<GlobalCounterInteractableControllerComp>(Id);

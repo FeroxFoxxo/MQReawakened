@@ -26,6 +26,7 @@ public class AIStateSpiderEntranceComp : BaseAIState<AIStateSpiderEntrance, AI_S
 
     public override void InitializeComponent()
     {
+        base.InitializeComponent();
         _spiderBossController = Room.GetEntityFromId<SpiderBossControllerComp>(Id);
         _entranceEndY = Room.GetEntityFromId<AIStateSpiderPatrolComp>(Id).FromY;
         _entranceStartY = Room.GetEntityFromId<AIStateSpiderMoveComp>(Id).CeilingY;
