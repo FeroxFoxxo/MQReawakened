@@ -1,16 +1,12 @@
 ﻿using A2m.Server;
-using Server.Base.Core.Abstractions;
-using Server.Base.Timers.Extensions;
-using Server.Base.Timers.Services;
+using Microsoft.Extensions.Logging;
 using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Abstractions;
 using Server.Reawakened.Entities.Components.Characters.Controllers.Base.States;
-using Server.Reawakened.Entities.Components.Characters.Controllers.Spiker.States;
 using Server.Reawakened.Entities.DataComponentAccessors.Spiderling.States;
-using Server.Reawakened.Players;
 using UnityEngine;
 
 namespace Server.Reawakened.Entities.Components.Characters.Controllers.Spiderling.States;
-public class AIStateSpiderlingAttackComp : BaseAIState<AIStateSpiderlingAttackMQR>
+public class AIStateSpiderlingAttackComp : BaseAIState<AIStateSpiderlingAttackMQR, AI_State>
 {
     public override string StateName => "AIStateSpiderlingAttack";
 
@@ -25,37 +21,26 @@ public class AIStateSpiderlingAttackComp : BaseAIState<AIStateSpiderlingAttackMQ
 
     private AIStatePatrolComp _patrolComp;
 
-    public TimerThread TimerThread { get; set; }
+    public override AI_State GetInitialAIState() => new(
+        [
+            new (ShootTime, "Shoot")
+        ], loop: false);
 
-    public override ExtLevelEditor.ComponentSettings GetSettings() => [_patrolComp.ForceDirectionX.ToString()];
+    public override ExtLevelEditor.ComponentSettings GetSettings() => [StateMachine.GetForceDirectionX().ToString()];
 
-    public override void DelayedComponentInitialization() => _patrolComp = Room.GetEntityFromId<AIStatePatrolComp>(Id);
-
-    public override void StartState()
+    public override void InitializeComponent()
     {
-        TimerThread.RunDelayed(FireProjectilesCallback, this, TimeSpan.FromSeconds(ShootDelay));
-        TimerThread.RunDelayed(ReturnToPatrolCallback, this, TimeSpan.FromSeconds(ShootDelay + ShootTime));
+        base.InitializeComponent();
+        _patrolComp = Room.GetEntityFromId<AIStatePatrolComp>(Id);
     }
 
-    public static void FireProjectilesCallback(ITimerData data)
+    public void Shoot()
     {
-        if (data is not AIStateSpiderlingAttackComp spiderlingAttack)
-            return;
+        Logger.LogTrace("Shoot called for {StateName} on {PrefabName}", StateName, PrefabName);
 
-        if (spiderlingAttack._patrolComp == null)
-            return;
+        var targetPlayer = _patrolComp.GetClosestPlayer();
 
-        var closestPlayer = spiderlingAttack._patrolComp.GetClosestPlayer();
-
-        if (closestPlayer != null)
-            spiderlingAttack.FireProjectiles(closestPlayer);
-    }
-
-    private void FireProjectiles(Player targetPlayer)
-    {
-        var aiState = StateMachine.GetAiStateEnemy();
-
-        if (aiState == null)
+        if (targetPlayer == null)
             return;
 
         var directionToPlayer = GetDirectionToPlayer(targetPlayer);
@@ -75,20 +60,11 @@ public class AIStateSpiderlingAttackComp : BaseAIState<AIStateSpiderlingAttackMQ
 
             var projectileSpeed = projectileDirection * ProjectileSpeed;
 
-            aiState.FireProjectile(
+            EnemyController.FireProjectile(
                 Position.ToUnityVector3(),
                 projectileSpeed,
                 false
             );
         }
-    }
-
-    public static void ReturnToPatrolCallback(ITimerData data)
-    {
-        if (data is not AIStateSpikerAttackComp spikerAttack)
-            return;
-
-        spikerAttack.AddNextState<AIStatePatrolComp>();
-        spikerAttack.GoToNextState();
     }
 }

@@ -1,7 +1,42 @@
-﻿using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Abstractions;
+﻿using GlobalInteractionEvents;
+using Microsoft.Extensions.Logging;
+using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Abstractions;
+using UnityEngine;
 
 namespace Server.Reawakened.Entities.Components.Characters.Controllers.GlobalInteraction.States;
-public class AIStateGlobalInteractionInactiveComp : BaseAIState<AIStateGlobalInteractionInactive>
+public class AIStateGlobalInteractionDoneComp : BaseAIState<AIStateGlobalInteractionDone, AI_State>
 {
-    public override string StateName => "AIStateGlobalInteractionInactive";
+    public override string StateName => "AIStateGlobalInteractionDone";
+
+    private readonly GlobalInteractionEventState _globalInteractionEventState = new();
+
+    public override AI_State GetInitialAIState() => new([], loop: true);
+
+    public override void InitializeComponent()
+    {
+        base.InitializeComponent();
+        GlobalInteractionController.PercentageOfRequiredInteractions = 0;
+    }
+
+    public override void OnAIStateIn()
+    {
+        Logger.LogTrace("OnAIStateIn called for {StateName} on {PrefabName}", StateName, PrefabName);
+
+        _globalInteractionEventState.CurrentState = GlobalInteractionStateMachineState.Done;
+        _globalInteractionEventState.CurrentInteractionStatus = CurrentGlobalInteractionStateStatus.In;
+    }
+
+    public override void Execute()
+    {
+        _globalInteractionEventState.CurrentState = GlobalInteractionStateMachineState.Done;
+        _globalInteractionEventState.CurrentInteractionStatus = CurrentGlobalInteractionStateStatus.Execute;
+    }
+
+    public override void OnAIStateOut()
+    {
+        Logger.LogTrace("OnAIStateOut called for {StateName} on {PrefabName}", StateName, PrefabName);
+
+        _globalInteractionEventState.CurrentState = GlobalInteractionStateMachineState.Done;
+        _globalInteractionEventState.CurrentInteractionStatus = CurrentGlobalInteractionStateStatus.Out;
+    }
 }

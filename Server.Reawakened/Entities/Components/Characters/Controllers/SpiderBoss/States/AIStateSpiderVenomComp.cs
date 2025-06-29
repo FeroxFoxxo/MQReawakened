@@ -1,14 +1,13 @@
 ﻿using A2m.Server;
+using Microsoft.Extensions.Logging;
 using Server.Base.Core.Abstractions;
 using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
-using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Abstractions;
-using Server.Reawakened.XMLs.Bundles.Base;
 using UnityEngine;
 
 namespace Server.Reawakened.Entities.Components.Characters.Controllers.SpiderBoss.States;
-public class AIStateSpiderVenomComp : BaseAIState<AIStateSpiderVenom>
+public class AIStateSpiderVenomComp : BaseAIState<AIStateSpiderVenom, AI_State>
 {
     public override string StateName => "AIStateSpiderVenom";
 
@@ -22,12 +21,17 @@ public class AIStateSpiderVenomComp : BaseAIState<AIStateSpiderVenom>
     public float CooldownTime => ComponentData.CooldownTime;
 
     public TimerThread TimerThread { get; set; }
-    public ServerRConfig ServerRConfig { get; set; }
-    public ItemCatalog ItemCatalog { get; set; }
-    public ItemRConfig ItemRConfig { get; set; }
 
-    public override void StartState()
+    public override AI_State GetInitialAIState() => new(
+        [
+            new (0f, "Shooting"),
+            new (CooldownTime, "Cooldown")
+        ], loop: false);
+
+    public void Shooting()
     {
+        Logger.LogTrace("Shooting called for {StateName} on {PrefabName}", StateName, PrefabName);
+
         var firstShot = TimeDelayBetweenShotPerPhase.FirstOrDefault();
 
         var firstProjectileTime = TimeSpan.FromSeconds(firstShot);
@@ -39,10 +43,6 @@ public class AIStateSpiderVenomComp : BaseAIState<AIStateSpiderVenom>
 
         if (secondProjectileTime > TimeSpan.Zero)
             TimerThread.RunDelayed(LaunchProjectile, new SpiderProjectile() { IsFirstProjectile = false, Component = this }, secondProjectileTime);
-
-        var dropTime = secondProjectileTime.Add(TimeSpan.FromSeconds(CooldownTime));
-
-        TimerThread.RunDelayed(RunDropState, this, dropTime);
     }
 
     public class SpiderProjectile() : ITimerData
@@ -67,12 +67,11 @@ public class AIStateSpiderVenomComp : BaseAIState<AIStateSpiderVenom>
         component.Room.AddRangedProjectile(component.Id, component.Position.ToUnityVector3(), speed, component.CooldownTime, 1, ItemEffectType.BluntDamage, false);
     }
 
-    public static void RunDropState(ITimerData data)
+    public void Cooldown()
     {
-        if (data is not AIStateSpiderVenomComp spider)
-            return;
+        Logger.LogTrace("Cooldown called for {StateName} on {PrefabName}", StateName, PrefabName);
 
-        spider.AddNextState<AIStateSpiderDropComp>();
-        spider.GoToNextState();
+        AddNextState<AIStateSpiderDropComp>();
+        GoToNextState();
     }
 }

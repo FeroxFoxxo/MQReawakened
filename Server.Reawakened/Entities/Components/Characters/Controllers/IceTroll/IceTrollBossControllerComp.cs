@@ -28,6 +28,9 @@ public class IceTrollBossControllerComp : BaseAIStateMachine<IceTrollBossControl
     * AIStateTrollVacuum
     */
 
+    public int CurrentPhase = 0;
+    public bool Broken = false;
+
     public TimerThread TimerThread { get; set; }
 
     public void RecievedTrigger(bool triggered)

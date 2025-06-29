@@ -42,6 +42,9 @@ public class SpiderBossControllerComp : BaseAIStateMachine<SpiderBossController>
     public string NPCId => ComponentData.NPCId;
     public string NPCTriggerId => ComponentData.NPCTriggerId;
 
+    public int CurrentPhase = 0;
+    public bool OnGround = true;
+
     public TimerThread TimerThread { get; set; }
 
     public void RecievedTrigger(bool triggered)

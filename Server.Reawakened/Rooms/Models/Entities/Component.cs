@@ -1,4 +1,6 @@
-﻿namespace Server.Reawakened.Rooms.Models.Entities;
+﻿using UnityEngine;
+
+namespace Server.Reawakened.Rooms.Models.Entities;
 
 public abstract class Component<T> : BaseComponent
 {

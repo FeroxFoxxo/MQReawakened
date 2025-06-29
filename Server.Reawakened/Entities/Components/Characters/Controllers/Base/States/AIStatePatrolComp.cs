@@ -1,12 +1,11 @@
 ﻿using A2m.Server;
-using Microsoft.Extensions.Logging;
 using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Abstractions;
 using Server.Reawakened.Players;
 using Server.Reawakened.Rooms.Extensions;
 using UnityEngine;
 
 namespace Server.Reawakened.Entities.Components.Characters.Controllers.Base.States;
-public class AIStatePatrolComp : BaseAIState<AIStatePatrol>
+public class AIStatePatrolComp : BaseAIState<AIStatePatrol, AI_State_Patrol>
 {
     public override string StateName => "AIStatePatrol";
 
@@ -26,28 +25,14 @@ public class AIStatePatrolComp : BaseAIState<AIStatePatrol>
 
     public Vector2 Patrol1;
     public Vector2 Patrol2;
-
-    private AI_State_Patrol _state;
-    private static Vector3 _dampingVelocity = new(0, 0, 0);
-
-    public ILogger<AIStatePatrolComp> Logger { get; set; }
+    private Vector3 _dampingVelocity = new(0, 0, 0);
 
     public IAIState DetectionAiState;
-    public int ForceDirectionX = 0;
-
-    private float _lastUpdateTime = 0f;
-    private float _deltaTime = 0f;
     private float _detectionStartTime = 0f;
     private bool _isDetecting = false;
 
-    public override void StartState()
+    public override AI_State_Patrol GetInitialAIState()
     {
-        Position.SetPositionViaPlane(ParentPlane, PrefabName, Logger);
-
-        _lastUpdateTime = Room.Time;
-        _detectionStartTime = 0f;
-        _isDetecting = false;
-
         Patrol1 = StartPatrol1;
         Patrol2 = StartPatrol2;
 
@@ -67,7 +52,7 @@ public class AIStatePatrolComp : BaseAIState<AIStatePatrol>
         var movementY = (Mathf.Abs(Patrol1.y) + Mathf.Abs(Patrol2.y)) * ((!(Patrol1.y > Patrol2.y)) ? (-1f) : 1f);
         var length = new Vector2(movementX, movementY).magnitude / MovementSpeed;
 
-        _state = new AI_State_Patrol(
+        return new AI_State_Patrol(
         [
             new (IdleDurationAtTurnAround, "Idle"),
             new (length, "Move"),
@@ -75,32 +60,35 @@ public class AIStatePatrolComp : BaseAIState<AIStatePatrol>
             new (length, "Move2"),
             new (0f, "Attack")
         ], movementX, movementY, SinusPathNbHalfPeriod);
-
-        _state.Init(Position.ToVector3());
     }
 
     public override ExtLevelEditor.ComponentSettings GetSettings() =>
         [Position.X.ToString(), Position.Y.ToString(), Position.Z.ToString()];
 
+    public override void OnAIStateIn()
+    {
+        _detectionStartTime = 0f;
+        _isDetecting = false;
+
+        State.Init(Position.ToVector3());
+    }
+
     public Player GetClosestPlayer() => Room.GetClosetPlayer(Position.ToUnityVector3(), DetectionRange);
 
-    public override void UpdateState()
+    public override void Execute()
     {
-        _deltaTime = Room.Time - _lastUpdateTime;
-        _lastUpdateTime = Room.Time;
-
         var inPosition = Position.ToVector3();
-        var currentPosition = _state.GetCurrentPosition();
+        var currentPosition = State.GetCurrentPosition();
         var dampenedPosition = new vector3(0f, 0f, 0f);
         var springK = 200f;
 
-        MathUtils.CriticallyDampedSpring1D(springK, inPosition.x, currentPosition.x, ref _dampingVelocity.x, ref dampenedPosition.x, _deltaTime);
-        MathUtils.CriticallyDampedSpring1D(springK, inPosition.y, currentPosition.y, ref _dampingVelocity.y, ref dampenedPosition.y, _deltaTime);
-        MathUtils.CriticallyDampedSpring1D(springK, inPosition.z, currentPosition.z, ref _dampingVelocity.z, ref dampenedPosition.z, _deltaTime);
+        MathUtils.CriticallyDampedSpring1D(springK, inPosition.x, currentPosition.x, ref _dampingVelocity.x, ref dampenedPosition.x, Room.DeltaTime);
+        MathUtils.CriticallyDampedSpring1D(springK, inPosition.y, currentPosition.y, ref _dampingVelocity.y, ref dampenedPosition.y, Room.DeltaTime);
+        MathUtils.CriticallyDampedSpring1D(springK, inPosition.z, currentPosition.z, ref _dampingVelocity.z, ref dampenedPosition.z, Room.DeltaTime);
 
         Position.SetPosition(dampenedPosition);
 
-        ForceDirectionX = _state.GetDirection();
+        StateMachine.SetForceDirectionX(State.GetDirection());
 
         if (DetectionAiState == null)
             return;

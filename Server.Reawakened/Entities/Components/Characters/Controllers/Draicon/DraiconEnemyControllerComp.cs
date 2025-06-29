@@ -14,6 +14,8 @@ public class DraiconEnemyControllerComp : DamagableAiStateMachine<DraiconEnemyCo
      * AIStateStunned
     */
 
+    public bool IsImmune = false;
+
     public override void DelayedComponentInitialization()
     {
         SetupStateVariables();

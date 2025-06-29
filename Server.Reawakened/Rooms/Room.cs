@@ -75,6 +75,9 @@ public class Room : Timer
 
     public long TimeOffset { get; set; }
     public float Time => (float)((GetTime.GetCurrentUnixMilliseconds() - TimeOffset) / 1000.0);
+    public float _lastTickTime;
+
+    public float DeltaTime => Time - _lastTickTime;
 
     public bool IsOpen;
 
@@ -86,6 +89,7 @@ public class Room : Timer
         _roomId = roomId;
         _config = config;
         _timerThread = timerThread;
+        _lastTickTime = Time;
 
         IsOpen = true;
 
@@ -165,7 +169,7 @@ public class Room : Timer
             if (GetTime.GetCurrentUnixMilliseconds() - player.TempData.CurrentPing > _config.KickAfterTime)
             {
                 player.Remove(Logger);
-                return;
+                continue;
             }
             else
             {
@@ -173,6 +177,8 @@ public class Room : Timer
                 playerCollider.IsColliding(false);
             }
         }
+
+        _lastTickTime = Time;
     }
 
     public void AddClient(Player currentPlayer, out JoinReason reason)

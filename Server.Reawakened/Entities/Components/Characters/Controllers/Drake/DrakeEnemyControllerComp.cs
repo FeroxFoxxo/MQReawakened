@@ -16,6 +16,9 @@ public class DrakeEnemyControllerComp : DamagableAiStateMachine<DrakeEnemyContro
      * AIStateStunned
     */
 
+    public bool IsImmune = false;
+    public bool IsSpinning = false;
+
     public override void DelayedComponentInitialization()
     {
         SetupStateVariables();

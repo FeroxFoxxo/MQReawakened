@@ -15,9 +15,23 @@ public abstract class BaseAIStateMachine<T> : Component<T>, IAIStateMachine
     public ILogger<T> Logger { get; set; }
 
     public AIStateEnemy EnemyData;
+    public int ForceDirectionX;
 
-    public void SetAIStateEnemy(AIStateEnemy enemy) => EnemyData = enemy;
-    public AIStateEnemy GetAiStateEnemy() => EnemyData;
+    public void SetAIStateEnemy(AIStateEnemy enemy)
+    {
+        EnemyData = enemy;
+
+        foreach (var state in Room.GetEntitiesFromId<IAIState>(Id))
+            state.SetEnemyController(enemy);
+    }
+
+    public override void InitializeComponent()
+    {
+        foreach (var state in Room.GetEntitiesFromId<IAIState>(Id))
+            state.SetStateMachine(this);
+
+        ForceDirectionX = 0;
+    }
 
     public void AddNextState<AiState>() where AiState : class, IAIState
     {
@@ -36,7 +50,6 @@ public abstract class BaseAIStateMachine<T> : Component<T>, IAIStateMachine
             return;
         }
 
-        state.SetStateMachine(this);
         NextStates.Add(state);
     }
 
@@ -66,7 +79,6 @@ public abstract class BaseAIStateMachine<T> : Component<T>, IAIStateMachine
             return;
         }
 
-        aiState.SetStateMachine(this);
         NextStates.Add(aiState);
     }
 
@@ -123,4 +135,7 @@ public abstract class BaseAIStateMachine<T> : Component<T>, IAIStateMachine
     }
 
     public override void NotifyCollision(NotifyCollision_SyncEvent notifyCollisionEvent, Player player) { }
+
+    public int GetForceDirectionX() => ForceDirectionX;
+    public void SetForceDirectionX(int directionX) => ForceDirectionX = directionX;
 }

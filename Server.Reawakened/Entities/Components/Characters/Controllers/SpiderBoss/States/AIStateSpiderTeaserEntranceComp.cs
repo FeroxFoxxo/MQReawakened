@@ -1,11 +1,9 @@
-﻿using Server.Base.Core.Abstractions;
-using Server.Base.Timers.Extensions;
-using Server.Base.Timers.Services;
+﻿using Microsoft.Extensions.Logging;
 using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Abstractions;
 
 namespace Server.Reawakened.Entities.Components.Characters.Controllers.SpiderBoss.States;
 
-public class AIStateSpiderTeaserEntranceComp : BaseAIState<AIStateSpiderTeaserEntrance>
+public class AIStateSpiderTeaserEntranceComp : BaseAIState<AIStateSpiderTeaserEntrance, AI_State>
 {
     public override string StateName => "AIStateSpiderTeaserEntrance";
 
@@ -15,17 +13,30 @@ public class AIStateSpiderTeaserEntranceComp : BaseAIState<AIStateSpiderTeaserEn
     public float MinimumLifeRatioAccepted => ComponentData.MinimumLifeRatioAccepted;
     public float LifeRatioAtHeal => ComponentData.LifeRatioAtHeal;
 
-    public TimerThread TimerThread { get; set; }
+    public override AI_State GetInitialAIState() => new(
+         [
+            new (DelayBeforeEntranceDuration, "Delay"),
+            new (EntranceDuration, "Entrance"),
+            new (IntroDuration - EntranceDuration - DelayBeforeEntranceDuration, "Talk"),
+            new (1f, "Transition")
+        ], loop: false);
 
-    public override void StartState() =>
-        TimerThread.RunDelayed(RunExitEntrance, this, TimeSpan.FromSeconds(IntroDuration));
+    public void Delay() => Logger.LogTrace("Delay called for {StateName} on {PrefabName}", StateName, PrefabName);
 
-    private static void RunExitEntrance(ITimerData data)
+    public void Entrance() => Logger.LogTrace("Entrance called for {StateName} on {PrefabName}", StateName, PrefabName);
+
+    public void Talk() => Logger.LogTrace("Talk called for {StateName} on {PrefabName}", StateName, PrefabName);
+
+    public void Transition()
     {
-        if (data is not AIStateSpiderTeaserEntranceComp spider)
-            return;
+        Logger.LogTrace("Transition called for {StateName} on {PrefabName}", StateName, PrefabName);
 
-        spider.AddNextState<AIStateSpiderDropComp>();
-        spider.GoToNextState();
+        RunExitEntrance();
+    }
+
+    private void RunExitEntrance()
+    {
+        AddNextState<AIStateSpiderDropComp>();
+        GoToNextState();
     }
 }

@@ -2,7 +2,7 @@
 using Server.Reawakened.Entities.DataComponentAccessors.Base.States;
 
 namespace Server.Reawakened.Entities.Components.Characters.Controllers.Base.States;
-public class AIStateWaitComp : BaseAIState<AIStateWaitMQR>
+public class AIStateWaitComp : BaseAIState<AIStateWaitMQR, AI_State>
 {
     public override string StateName => "AIStateWait";
 
@@ -11,9 +11,11 @@ public class AIStateWaitComp : BaseAIState<AIStateWaitMQR>
 
     private float _waitTime = 0;
 
-    public override void StartState() => _waitTime = Room.Time + WaitDuration;
+    public override AI_State GetInitialAIState() => new([], loop: false);
 
-    public override void UpdateState()
+    public override void OnAIStateIn() => _waitTime = Room.Time + WaitDuration;
+
+    public override void Execute()
     {
         if (Room.Time < _waitTime)
             return;

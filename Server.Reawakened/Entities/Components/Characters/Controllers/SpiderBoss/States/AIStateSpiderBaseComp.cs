@@ -1,7 +1,7 @@
 ﻿using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Abstractions;
 
 namespace Server.Reawakened.Entities.Components.Characters.Controllers.SpiderBoss.States;
-public class AIStateSpiderBaseComp : BaseAIState<AIStateSpiderBase>
+public class AIStateSpiderBaseComp : BaseAIState<AIStateSpiderBase, AI_State>
 {
     public override string StateName => "AIStateSpiderBase";
 
@@ -9,4 +9,6 @@ public class AIStateSpiderBaseComp : BaseAIState<AIStateSpiderBase>
     public float HealthRatioPhase02Trans => ComponentData.HealthRatioPhase02Trans;
     public float TeaserEndLifeRatio => ComponentData.TeaserEndLifeRatio;
     public float TeaserEndTimeLimit => ComponentData.TeaserEndTimeLimit;
+
+    public override AI_State GetInitialAIState() => new([], loop: false);
 }

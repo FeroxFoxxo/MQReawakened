@@ -1,27 +1,27 @@
-﻿using Server.Base.Core.Abstractions;
-using Server.Base.Timers.Extensions;
-using Server.Base.Timers.Services;
-using Server.Reawakened.Core.Configs;
+﻿using Microsoft.Extensions.Logging;
 using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Abstractions;
 
 namespace Server.Reawakened.Entities.Components.Characters.Controllers.SpiderBoss.States;
-public class AIStateSpiderIdleComp : BaseAIState<AIStateSpiderIdle>
+public class AIStateSpiderIdleComp : BaseAIState<AIStateSpiderIdle, AI_State>
 {
     public override string StateName => "AIStateSpiderIdle";
 
     public float[] Durations => ComponentData.Durations;
 
-    public TimerThread TimerThread { get; set; }
+    public override AI_State GetInitialAIState() => new (
+        [
+            new(Durations[0], "Done")
+        ], loop: false);
 
-    public override void StartState() =>
-        TimerThread.RunDelayed(RunVenomState, this, TimeSpan.FromSeconds(Durations.FirstOrDefault()));
-
-    public static void RunVenomState(ITimerData data)
+    public void Done()
     {
-        if (data is not AIStateSpiderIdleComp spider)
-            return;
+        Logger.LogTrace("Done called for {StateName} on {PrefabName}", StateName, PrefabName);
+        RunVenomState();
+    }
 
-        spider.AddNextState<AIStateSpiderVenomComp>();
-        spider.GoToNextState();
+    public void RunVenomState()
+    {
+        AddNextState<AIStateSpiderVenomComp>();
+        GoToNextState();
     }
 }
