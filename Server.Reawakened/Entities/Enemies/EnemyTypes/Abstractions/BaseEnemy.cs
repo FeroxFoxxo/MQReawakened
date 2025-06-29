@@ -319,4 +319,12 @@ public abstract class BaseEnemy : IDestructible
 
         Room.SendSyncEvent(new AiHealth_SyncEvent(Id.ToString(), Room.Time, Health, healPoints, 0, 0, string.Empty, false, true));
     }
+
+    public void FireProjectile(Vector3 position, Vector2 speed, bool isGrenade) =>
+        Room.AddRangedProjectile(Id, position, speed, 3, GetDamage(), EnemyController.EnemyEffectType, isGrenade);
+
+    public int GetDamage() =>
+        GameFlow.StatisticData.GetValue(
+            ItemEffectType.AbilityPower, WorldStatisticsGroup.Enemy, Level
+        );
 }

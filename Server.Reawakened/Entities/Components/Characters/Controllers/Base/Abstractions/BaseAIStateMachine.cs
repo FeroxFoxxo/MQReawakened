@@ -17,6 +17,7 @@ public abstract class BaseAIStateMachine<T> : Component<T>, IAIStateMachine
     public AIStateEnemy EnemyData;
 
     public void SetAIStateEnemy(AIStateEnemy enemy) => EnemyData = enemy;
+    public AIStateEnemy GetAiStateEnemy() => EnemyData;
 
     public void AddNextState<AiState>() where AiState : class, IAIState
     {

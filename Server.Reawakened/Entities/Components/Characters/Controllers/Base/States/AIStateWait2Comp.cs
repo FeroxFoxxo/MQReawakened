@@ -6,5 +6,19 @@ public class AIStateWait2Comp : BaseAIState<AIStateWait2MQR>
 {
     public override string StateName => "AIStateWait2";
 
-    public float WaitDuration => ComponentData.WaitDuration;
+    public float FxWaitDuration = 0;
+    public float WaitDuration => ComponentData.WaitDuration + FxWaitDuration;
+
+    private float _waitTime = 0;
+
+    public override void StartState() => _waitTime = Room.Time + WaitDuration;
+
+    public override void UpdateState()
+    {
+        if (Room.Time < _waitTime)
+            return;
+
+        AddNextState<AIStatePatrolComp>();
+        GoToNextState();
+    }
 }

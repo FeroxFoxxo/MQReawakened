@@ -27,6 +27,9 @@ public static class RoomExtensions
 
         foreach (var player in room.GetPlayers())
         {
+            if (player.Character.CurrentLife <= 0)
+                continue;
+
             var distance = Vector3.Distance(player.TempData.Position, currentPosition);
 
             if (distance <= radius && distance <= closestDistance)

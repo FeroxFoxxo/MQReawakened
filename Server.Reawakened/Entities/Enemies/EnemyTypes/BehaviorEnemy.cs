@@ -179,15 +179,7 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
 
         AiData.Intern_FireProjectile = false;
     }
-
-    public void FireProjectile(Vector3 position, Vector2 speed, bool isGrenade) =>
-        Room.AddRangedProjectile(Id, position, speed, 3, GetDamage(), EnemyController.EnemyEffectType, isGrenade);
-
-    public int GetDamage() =>
-        GameFlow.StatisticData.GetValue(
-            ItemEffectType.AbilityPower, WorldStatisticsGroup.Enemy, Level
-        );
-
+    
     public void ChangeBehavior(StateType behaviourType, float targetX, float targetY, int direction)
     {
         lock (_enemyLock)

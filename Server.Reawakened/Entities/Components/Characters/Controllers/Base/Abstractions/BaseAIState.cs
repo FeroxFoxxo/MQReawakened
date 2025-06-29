@@ -1,5 +1,6 @@
 ﻿using Server.Reawakened.Players;
 using Server.Reawakened.Rooms.Models.Entities;
+using UnityEngine;
 using static A2m.Server.ExtLevelEditor;
 
 namespace Server.Reawakened.Entities.Components.Characters.Controllers.Base.Abstractions;
@@ -38,4 +39,12 @@ public abstract class BaseAIState<T> : Component<T>, IAIState
     public void SetStateMachine(IAIStateMachine machine) => StateMachine = machine;
 
     public override void NotifyCollision(NotifyCollision_SyncEvent notifyCollisionEvent, Player player) { }
+
+    public Vector3 GetDirectionToPlayer(Player player)
+    {
+        var spikerPosition = Position.ToUnityVector3();
+        var playerPosition = player.TempData.Position;
+
+        return (playerPosition - spikerPosition).normalized;
+    }
 }

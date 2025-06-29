@@ -331,7 +331,7 @@ public static class LoadRoomData
                             {
                                 case var t when t == typeof(GameObject) || t == typeof(AnimationClip) || t == typeof(Transform) ||
                                     t == typeof(Mesh) || t == typeof(Texture2D) || t == typeof(Material) || t == typeof(AudioSource) ||
-                                    t == typeof(AudioClip):
+                                    t == typeof(AudioClip) || t == typeof(BoxCollider):
                                     continue;
                                 case var t when t == typeof(Vector2):
                                     var v2Props = element.EnumerateObject().ToDictionary(x => x.Name, x => x.Value.GetSingle());
@@ -364,7 +364,7 @@ public static class LoadRoomData
                             {
                                 case var t when t == typeof(GameObject[]) || t == typeof(AnimationClip[]) || t == typeof(Transform[]) ||
                                     t == typeof(Mesh[]) || t == typeof(Texture2D[]) || t == typeof(Material[]) || t == typeof(AudioSource[]) ||
-                                    t == typeof(List<AnimationClip>) || t == typeof(AudioClip[]):
+                                    t == typeof(List<AnimationClip>) || t == typeof(AudioClip[]) || t == typeof(BoxCollider[]):
                                     continue;
                                 case var t when t == typeof(List<string>):
                                     field.SetValue(dataObj, element.EnumerateArray().Select(x => x.GetString()).ToList());
