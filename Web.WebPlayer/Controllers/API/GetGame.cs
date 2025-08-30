@@ -14,7 +14,7 @@ public class GetGame(LoadGameClients loadGameClients, ILogger<GetGame> logger) :
         if (loadGameClients.ClientFiles.TryGetValue(gameVersion, out var path))
         {
             logger.LogInformation("Returning game version: {GameVersion} at path {Path}", gameVersion, path);
-            return new FileContentResult(FileIO.ReadAllBytes(path), "application/octet-stream");
+            return PhysicalFile(path, "application/octet-stream", enableRangeProcessing: true);
         }
 
         return new NotFoundResult();

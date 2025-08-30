@@ -19,9 +19,18 @@ public static class Proxy
             requestMessage.Content = streamContent;
         }
 
-        // Copy the request headers
+        // Copy the request headers, excluding hop-by-hop headers
+        var hopByHop = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+        {
+            "Connection", "Keep-Alive", "Proxy-Authenticate", "Proxy-Authorization",
+            "TE", "Trailer", "Transfer-Encoding", "Upgrade"
+        };
+
         foreach (var header in request.Headers)
         {
+            if (hopByHop.Contains(header.Key))
+                continue;
+
             if (!requestMessage.Headers.TryAddWithoutValidation(header.Key, header.Value.ToArray()) && requestMessage.Content != null)
                 requestMessage.Content?.Headers.TryAddWithoutValidation(header.Key, header.Value.ToArray());
         }
@@ -40,11 +49,26 @@ public static class Proxy
 
         response.StatusCode = (int)responseMessage.StatusCode;
 
+        // Copy response headers excluding hop-by-hop
+        var hopByHop = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+        {
+            "Connection", "Keep-Alive", "Proxy-Authenticate", "Proxy-Authorization",
+            "TE", "Trailer", "Transfer-Encoding", "Upgrade"
+        };
+
         foreach (var header in responseMessage.Headers)
+        {
+            if (hopByHop.Contains(header.Key))
+                continue;
             response.Headers[header.Key] = header.Value.ToArray();
+        }
 
         foreach (var header in responseMessage.Content.Headers)
+        {
+            if (hopByHop.Contains(header.Key))
+                continue;
             response.Headers[header.Key] = header.Value.ToArray();
+        }
 
         // SendAsync removes chunking from the response.
         // This removes the header so it doesn't expect a chunked response.

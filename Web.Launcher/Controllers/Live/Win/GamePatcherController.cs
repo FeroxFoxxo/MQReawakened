@@ -14,15 +14,8 @@ public class GamePatcherController(LoadUpdates loadUpdates, ILogger<GamePatcherC
 
         if (loadUpdates.WinClientFiles.TryGetValue(gameVersion, out var path))
         {
-            var memory = new MemoryStream();
-
-            using (var stream = new FileStream(path, FileMode.Open))
-                await stream.CopyToAsync(memory);
-
-            memory.Position = 0;
-
             logger.LogInformation("Downloading patch version: {GameVersion} at path {Path}", gameVersion, path);
-            return File(memory, "application/octet-stream", gameVersion + ".zip");
+            return PhysicalFile(path, "application/octet-stream", enableRangeProcessing: true);
         }
         else
             return NotFound();
