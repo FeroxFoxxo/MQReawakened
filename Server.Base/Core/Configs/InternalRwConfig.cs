@@ -27,6 +27,9 @@ public class InternalRwConfig : IRwConfig
         ServerName = "MQReawakened";
         IsHttps = false;
         DiscordServerId = string.Empty;
+
+        if (int.TryParse(Environment.GetEnvironmentVariable("GAME_PORT"), out var p))
+            Port = p;
     }
 
     public string GetHostName() => $"{ServerAddress}:{Port}";

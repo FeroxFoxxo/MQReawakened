@@ -44,9 +44,8 @@ public class AssetBundleRConfig : IRConfig
         BundleSaveDirectory = InternalDirectory.GetDirectory("Assets/Bundles");
         RemovedDuplicateDirectory = InternalDirectory.GetDirectory("Assets/RemovedDuplicates");
         CopiedCurrentBundles = InternalDirectory.GetDirectory("Assets/CopiedCurrentBundles");
-        ScriptsConfigDirectory = InternalDirectory.GetInternalDirectory("Assets/Scripts");
-
-        LocalAssetsDirectory = InternalDirectory.GetInternalDirectory("Assets/LocalAssets");
+        ScriptsConfigDirectory = InternalDirectory.GetDirectory("Assets/Scripts");
+        LocalAssetsDirectory = InternalDirectory.GetDirectory("Assets/LocalAssets");
 
         AlwaysRecreateBundle = false;
         DebugInfo = false;

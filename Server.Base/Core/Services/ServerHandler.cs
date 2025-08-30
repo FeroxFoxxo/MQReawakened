@@ -53,8 +53,10 @@ public class ServerHandler(EventSink sink, ILogger<ServerHandler> logger, IHostA
 
         if (!doClose)
         {
-            logger.LogCritical("This exception is fatal, press return to exit.");
-            Console.ReadLine();
+            logger.LogCritical("This exception is fatal.");
+            
+            if (!EnvironmentExt.IsContainerOrNonInteractive())
+                ConsoleExt.ReadLineOrDefault(logger, null);
         }
 
         KillServer(false);

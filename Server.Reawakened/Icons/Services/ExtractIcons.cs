@@ -20,6 +20,13 @@ public class ExtractIcons(IconsRConfig rConfig, IconsRwConfig rwConfig, AssetBun
 
     public void ExtractAllIcons(Dictionary<string, InternalAssetInfo> internalAssets)
     {
+        if (EnvironmentExt.IsContainerOrNonInteractive())
+        {
+            logger.LogInformation("Skipping icon extraction in non-interactive/container environment.");
+            _knownIconNames = [];
+            return;
+        }
+
         var outOfDateCache = 0;
         var assets = new List<InternalAssetInfo>();
 

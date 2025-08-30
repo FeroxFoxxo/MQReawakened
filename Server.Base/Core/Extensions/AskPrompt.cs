@@ -9,7 +9,7 @@ public static class AskPrompt
         logger.LogWarning("{Message}", message);
         logger.LogError("Are you sure you want to continue? (y/n) (Default: {DefaultValue})", defaultValue ? 'Y' : 'N');
 
-        var reqLine = Console.ReadLine();
+        var reqLine = ConsoleExt.ReadLineOrDefault(logger, null);
 
         if (string.IsNullOrEmpty(reqLine))
         {

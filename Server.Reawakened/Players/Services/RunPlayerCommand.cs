@@ -9,6 +9,7 @@ using Server.Reawakened.Chat.Services;
 using Server.Reawakened.Database.Characters;
 using Server.Reawakened.Database.Users;
 using Server.Reawakened.Players.Extensions;
+using Server.Base.Core.Extensions;
 
 namespace Server.Reawakened.Players.Services;
 
@@ -42,7 +43,13 @@ public class RunPlayerCommand(ServerConsole console, EventSink sink,
 
         logger.LogInformation("Enter command and arguments:");
 
-        var command = Console.ReadLine()?.Trim();
+        if (EnvironmentExt.IsContainerOrNonInteractive())
+        {
+            logger.LogWarning("Non-interactive mode; skipping manual player command input.");
+            return;
+        }
+
+        var command = ConsoleExt.ReadLineOrDefault(logger, null)?.Trim();
 
         slashCommands.RunCommand(player, command.Split(' ')[0], command.Split(' '));
     }

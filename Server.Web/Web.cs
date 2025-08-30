@@ -18,6 +18,8 @@ public class Web(ILogger<Web> logger) : WebModule(logger)
         services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo { Title = "MQR API", Version = "v1" }));
         services.AddRazorPages();
+
+        services.AddHealthChecks();
     }
 
     public override void InitializeWeb(WebApplicationBuilder builder)
@@ -55,5 +57,7 @@ public class Web(ILogger<Web> logger) : WebModule(logger)
 
         app.MapRazorPages();
         app.MapControllers();
+
+        app.MapHealthChecks("/healthz");
     }
 }

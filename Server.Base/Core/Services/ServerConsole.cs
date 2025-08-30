@@ -77,6 +77,12 @@ public class ServerConsole : IService
 
         DisplayHelp();
 
+        if (EnvironmentExt.IsContainerOrNonInteractive())
+        {
+            _logger.LogInformation("Console input disabled (non-interactive/container). Use signals.");
+            return;
+        }
+
         _consoleThread.Start();
     }
 
@@ -96,10 +102,10 @@ public class ServerConsole : IService
         {
             while (!_handler.IsClosing && !_handler.HasCrashed)
             {
-                var input = Console.ReadLine();
+                var input = ConsoleExt.ReadLineOrDefault(_logger, null);
 
                 if (input != null)
-                    ProcessCommand(input);
+                    RunCommand(input);
 
                 Thread.Sleep(100);
             }
@@ -110,7 +116,7 @@ public class ServerConsole : IService
         }
     }
 
-    private void ProcessCommand(string input)
+    public void RunCommand(string input)
     {
         if (_handler.IsClosing || _handler.HasCrashed)
             return;
@@ -160,4 +166,6 @@ public class ServerConsole : IService
             _logger.LogError("Could not find any commands! Are you sure you are running the correct operational type? " +
                              "Current flags: {Flags}", _rwConfig.NetworkType);
     }
+
+    public IReadOnlyCollection<ConsoleCommand> GetCommands() => _commands.Values;
 }

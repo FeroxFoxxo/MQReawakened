@@ -52,7 +52,7 @@ public static class GetInfoFile
             if (string.IsNullOrEmpty(defaultFile) || !defaultFile.EndsWith("__info"))
             {
                 logger.LogError("Please enter the absolute file path for the {Type} '__info' cache file.", lowerName);
-                defaultFile = ConsoleExt.ReadOrEnv("CACHE_INFO_LOCATION", logger) ?? string.Empty;
+                defaultFile = EnvironmentExt.IsContainerOrNonInteractive() ? "/caches/__info" : ConsoleExt.ReadOrEnv("CACHE_INFO_LOCATION", logger) ?? string.Empty;
                 logger.LogInformation("Found cache file: {Path}", defaultFile);
                 continue;
             }

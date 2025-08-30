@@ -2,6 +2,7 @@
 using Server.Base.Core.Configs;
 using Server.Base.Logging.Internal;
 using System.Text;
+using Server.Base.Core.Extensions;
 
 namespace Server.Base.Logging;
 
@@ -9,6 +10,8 @@ public class FileLogger(ILoggerFactory loggerFactory, InternalRConfig config, IL
 {
     private readonly Dictionary<string, ConsoleFileLogger> _fileLoggers = [];
     private readonly object _lock = new();
+    
+    private static readonly bool LogToFile = !EnvironmentExt.IsContainerOrNonInteractive();
 
     public void WriteGenericLog<T>(string logFileName, string title, string message, LoggerType type)
     {
@@ -37,13 +40,14 @@ public class FileLogger(ILoggerFactory loggerFactory, InternalRConfig config, IL
 
         try
         {
-            lock (_lock)
-            {
-                if (!_fileLoggers.ContainsKey(fileName))
-                    _fileLoggers.Add(fileName, new ConsoleFileLogger(fileName, config));
+            if (LogToFile)
+                lock (_lock)
+                {
+                    if (!_fileLoggers.ContainsKey(fileName))
+                        _fileLoggers.Add(fileName, new ConsoleFileLogger(fileName, config));
 
-                _fileLoggers[fileName].WriteLine($"# {DateTime.UtcNow} @ " + message);
-            }
+                    _fileLoggers[fileName].WriteLine($"# {DateTime.UtcNow} @ " + message);
+                }
         }
         catch (Exception ex)
         {

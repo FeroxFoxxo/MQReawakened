@@ -18,6 +18,19 @@ public class OperationMode(EventSink eventSink, ServerConsole console, InternalR
         console.AddCommand("changeOperationalMode", "Changes the mode the game is set to (client/server/both)",
             NetworkType.Unknown | NetworkType.Server | NetworkType.Client, _ => ChangeNetworkType());
 
+        var networkTypeEnv = Environment.GetEnvironmentVariable("NETWORK_TYPE");
+
+        if (!string.IsNullOrWhiteSpace(networkTypeEnv) && Enum.TryParse<NetworkType>(networkTypeEnv, true, out var parsed))
+            config.NetworkType = parsed;
+
+        var serverAddressEnv = Environment.GetEnvironmentVariable("SERVER_ADDRESS");
+        
+        if (!string.IsNullOrWhiteSpace(serverAddressEnv))
+            config.ServerAddress = serverAddressEnv;
+
+        if (int.TryParse(Environment.GetEnvironmentVariable("GAME_PORT"), out var p))
+            config.Port = p;
+
         if (config.NetworkType == NetworkType.Unknown)
             ChangeNetworkType();
 

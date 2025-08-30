@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -24,6 +25,10 @@ public class Program
             logger.LogInformation("============ Launching =============");
 
             var builder = WebApplication.CreateBuilder();
+
+            builder.Configuration
+                .AddEnvironmentVariables()
+                .AddJsonFile("/settings/appsettings.json", optional: true, reloadOnChange: true);
 
             logger.LogDebug("Getting modules");
             var modules = GetModules(logger);
