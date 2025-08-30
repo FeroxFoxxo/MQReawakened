@@ -53,7 +53,7 @@ public class AssetHostController(BuildAssetList buildAssetList, ILogger<AssetHos
         if (config.LogAssetLoadInfo)
             logger.LogDebug("Getting asset {Name} from {File} ({Folder})", asset.Name, path, folder);
 
-        return new FileContentResult(await FileIO.ReadAllBytesAsync(path), "application/octet-stream");
+        return PhysicalFile(path, "application/octet-stream", enableRangeProcessing: true);
     }
 
     private async Task<string> WriteFixedBundleAsync(InternalAssetInfo asset)
