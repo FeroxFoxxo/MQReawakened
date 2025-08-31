@@ -126,8 +126,12 @@ if [[ ! -f "$CACHES_DIR/__info" ]]; then
     echo "[entrypoint] Extracting caches from $cache_archive to $CACHES_DIR"
     case "$cache_archive" in
       *.7z)
-        echo "[entrypoint] 7z extraction in progress..."
-        7z x -bsp1 -bso0 -y -o"$CACHES_DIR" "$cache_archive" ;;
+        printf "[entrypoint] 7z extraction in progress"
+        7z x -bso0 -y -o"$CACHES_DIR" "$cache_archive" >/dev/null &
+        z_pid=$!
+        while kill -0 "$z_pid" 2>/dev/null; do printf "."; sleep 1; done
+        wait "$z_pid"
+        printf "\n" ;;
       *.zip)
         printf "[entrypoint] unzip in progress"
         unzip -oq "$cache_archive" -d "$CACHES_DIR" &
