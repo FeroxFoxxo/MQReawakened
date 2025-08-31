@@ -12,6 +12,9 @@
         <a href="https://github.com/FeroxFoxxo/MQReawakened/wiki">
             <img alt="Wiki" src="https://img.shields.io/badge/Wiki-View%20Docs-purple?style=for-the-badge">
         </a>
+        <a href="SETUP.md">
+            <img alt="Setup" src="https://img.shields.io/badge/Setup-Read%20Guide-brightgreen?style=for-the-badge">
+        </a>
         <a href="https://github.com/FeroxFoxxo/MQReawakened/projects">
             <img alt="Wiki" src="https://img.shields.io/badge/To%20Do-View%20Projects-darkgreen?style=for-the-badge">
         </a>
@@ -23,6 +26,9 @@
     <h5>None of the repo, the tool, nor the repo owner is affiliated with or sponsored by any affiliates of the original game.</h4>
     <h1></h1>
 </div>
+
+> [!IMPORTANT]
+> Looking to host your own server? Read the new step‑by‑step setup guide: [SETUP.md](SETUP.md)
 
 ### Information
 
@@ -42,6 +48,8 @@ If you'd like to contribute to this project, please read [CONTRIBUTING.md](CONTR
 ## How to set up MQReawakened
 
 Please read the [developer guide here on how to set up MQReawakened](https://github.com/FeroxFoxxo/MQReawakened/wiki/Setting-Up-The-Development-Environment).
+
+For hosting with Docker and getting a server online, see the step‑by‑step guide: [SETUP.md](SETUP.md).
 
 If you want to play 2012 or earlier (NOT RECOMMENDED), please use the *new and improved!* [MQClient found here](https://github.com/FeroxFoxxo/MQClient).
 
