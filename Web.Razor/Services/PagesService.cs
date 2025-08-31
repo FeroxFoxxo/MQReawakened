@@ -32,7 +32,7 @@ public class PagesService(InternalRwConfig iConfig, ServerRConfig sConfig,
             File.Delete(file);
 
         if (string.IsNullOrEmpty(config.DownloadName))
-            config.DownloadName = $"Play{iConfig.ServerName}.zip";
+            config.DownloadName = $"Play {iConfig.ServerName}.zip";
 
         var name = config.DownloadName;
 
