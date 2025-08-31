@@ -48,9 +48,7 @@ public class PagesService(InternalRwConfig iConfig, ServerRConfig sConfig,
 
         try
         {
-            var force = string.Equals(Environment.GetEnvironmentVariable("FORCE_REBUILD"), "1", StringComparison.Ordinal);
-
-            if (!force && File.Exists(ZipPath))
+            if (File.Exists(ZipPath))
             {
                 logger.LogDebug("Download zip already exists at '{ZipPath}'. Skipping rebuild.", ZipPath);
                 return;

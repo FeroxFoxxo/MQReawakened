@@ -142,7 +142,7 @@ public class Listener : IDisposable
         }
         catch (SocketException ex)
         {
-            if (ex.ErrorCode != 995)
+            if (ex.ErrorCode != 995 && ex.ErrorCode != 89 && ex.ErrorCode != 125)
                 TraceListenerError(ex, _listener);
         }
         catch (ObjectDisposedException)
@@ -162,7 +162,8 @@ public class Listener : IDisposable
         }
         catch (SocketException ex)
         {
-            TraceListenerError(ex, _listener);
+            if (ex.ErrorCode != 995 && ex.ErrorCode != 89 && ex.ErrorCode != 125)
+                TraceListenerError(ex, _listener);
         }
         catch (ObjectDisposedException)
         {

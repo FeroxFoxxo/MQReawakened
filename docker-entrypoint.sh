@@ -126,6 +126,12 @@ if [[ "$did_build" == "1" || "${FORCE_REBUILD:-0}" == "1" ]]; then
   SRC_THRIFT_NOTICE="$APP_DIR/Server.Reawakened/Thrift/NOTICE"
   DEST_THRIFT_DIR="/data/Thrift/NOTICE"
   sync_file "$SRC_THRIFT_NOTICE" "$DEST_THRIFT_DIR" "Thrift NOTICE"
+
+  DOWNLOADS_DIR="/data/Downloads"
+  if compgen -G "$DOWNLOADS_DIR/*.zip" > /dev/null; then
+    echo "[entrypoint] Removing existing download zip(s) in $DOWNLOADS_DIR due to build/update"
+    rm -f "$DOWNLOADS_DIR"/*.zip
+  fi
 fi
 
 echo "[entrypoint] Launching application..."
