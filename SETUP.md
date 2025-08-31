@@ -17,16 +17,16 @@ If you’re ready to swing into Ook and host your own server emulator, this guid
 
 - Copy over the [docker compose](https://github.com/FeroxFoxxo/MQReawakened/blob/main/compose.yaml) file
 - Create a `.env` file based on the [example env file](https://github.com/FeroxFoxxo/MQReawakened/blob/main/.env.example) (all variables you need to edit live there)
-- Place the original client zip under `./Game/archives/Client/` (alternatively use the mount you detailed in the env file)
-- Place the caches archive (UniqueBundles.7z) under `./Game/archives/Caches/` (alternatively use the mount you detailed in the env file)
+- Place the original client zip under `./Build/Archives/Client/...` (alternatively use the mount you detailed in the env file)
+- Place the caches archive (UniqueBundles.7z) under `./Build/Archives/Caches/...` (alternatively use the mount you detailed in the env file)
 - Start the Docker Compose file
-- Adjust JSON configs under `./Game/data/Configs` after first start
+- Adjust JSON configs under `./Game/Data/Configs` after first start
 
 ## Folder layout used by Docker
 
-- `./Game/archives/Client` → mounted to `/archives/Client` inside the container
-- `./Game/archives/Caches` → mounted to `/archives/Caches` inside the container
-- `./Game/data` → mounted to `/data` (persisted server data and configs)
+- `./Build/Archives/Client` → mounted to `/archives/Client` inside the container
+- `./Build/Archives/Caches` → mounted to `/archives/Caches` inside the container
+- `./Game/Data` → mounted to `/data` (persisted server data and configs)
 
 ## Prerequisites
 
@@ -49,8 +49,8 @@ If you’re ready to swing into Ook and host your own server emulator, this guid
 
 Place them as follows on the host in your server folder:
 
-- `./Game/archives/Client/<client>.zip`
-- `./Game/archives/Caches/UniqueBundles.7z`
+- `./Build/Archives/Client/<client>.zip`
+- `./Build/Archives/Caches/UniqueBundles.7z`
 
 Tip: The docker entrypoint will automatically extract the latest zip/7z it finds in those folders.
 
@@ -76,8 +76,8 @@ GAME_PORT=9339               # TCP game/shard port exposed by container
 HTTP_PORT=80                 # web/api port mapped to container
 
 # Data & archives locations (host paths)
-DATA_HOST_PATH=./Game/data
-GAME_ARCHIVES_PATH=./Game/archives
+DATA_HOST_PATH=./Game/Data
+GAME_ARCHIVES_PATH=./Build/Archives
 
 # Optional toggles
 FORCE_REBUILD=0              # set 1 to force clean rebuild/re-extract
