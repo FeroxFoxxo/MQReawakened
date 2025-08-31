@@ -178,5 +178,17 @@ These JSONs are auto‑created with sensible defaults if missing. You can safely
   - Put `UniqueBundles.7z` under `./Game/archives/Caches/` and restart. If memory‑constrained, set `SEVEN_Z_THREADS=1`.
 - Need a clean rebuild
   - Set `FORCE_REBUILD=1` in `.env` and start again.
+- Server restarting in Docker
+  - Run ``docker logs mqreawakened``. If still confusing, forward these logs into the Discord.
+- Patcher/launcher cannot retrieve patch information
+  - Make sure the domain is set correctly in the .env file
+- Game loading bar does not fill
+  - Make sure the game port 9339 is port forwarded
+- Cannot click on "Play" in the launcher
+  - Open the game first to pass Windows smart-screen, then retry.
+- Game crashes after loading into Clock Tower Square
+  - You're likely using an Intel IGPU. There is no fix for this.
+- Game stops loading after playing for a while
+  - Clear the cache files in LocalLow
 
 ## Happy hosting — and see you in Ook.
