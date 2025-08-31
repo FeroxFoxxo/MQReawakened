@@ -13,6 +13,9 @@
 
 If you’re ready to swing into Ook and host your own server emulator, this guide walks you through a clean Docker‑based setup.
 
+> [!IMPORTANT]
+> Since we aren't modifying the installer, you should start the game from ``/pa/pa.exe`` (the patcher) directly. Most clients come with an InstallMQ.exe and uninstall.exe file that you may want to remove from the archive to not confuse players before uploading it to your server - adding a text file to direct them to run ``/pa/pa.exe``.
+
 ## TL;DR
 
 - Copy over the [docker compose](https://github.com/FeroxFoxxo/MQReawakened/blob/main/compose.yaml) file
