@@ -22,6 +22,12 @@ If you’re ready to swing into Ook and host your own server emulator, this guid
 - Start the Docker Compose file
 - Adjust JSON configs under `./Game/data/Configs` after first start
 
+## Folder layout used by Docker
+
+- `./Game/archives/Client` → mounted to `/archives/Client` inside the container
+- `./Game/archives/Caches` → mounted to `/archives/Caches` inside the container
+- `./Game/data` → mounted to `/data` (persisted server data and configs)
+
 ## Prerequisites
 
 - Docker Desktop (or compatible Docker Engine) with [Docker Compose](https://docs.docker.com/compose/install/linux/)
@@ -33,12 +39,6 @@ If you’re ready to swing into Ook and host your own server emulator, this guid
   - Save as `.env` in the repository root before running Docker Compose
 - Docker Compose: [View](https://github.com/FeroxFoxxo/MQReawakened/blob/main/compose.yaml) • [Download raw](https://raw.githubusercontent.com/FeroxFoxxo/MQReawakened/main/compose.yaml)
   - Save as `compose.yaml` in your project folder
-
-## Folder layout used by Docker
-
-- `./Game/archives/Client` → mounted to `/archives/Client` inside the container
-- `./Game/archives/Caches` → mounted to `/archives/Caches` inside the container
-- `./Game/data` → mounted to `/data` (persisted server data and configs)
 
 ## Obtain required files
 
