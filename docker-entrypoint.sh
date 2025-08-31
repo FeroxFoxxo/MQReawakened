@@ -52,7 +52,9 @@ if ! compgen -G "$DEPS_DIR/*.dll" > /dev/null; then need_prepare=true; fi
 
 if [[ "$need_prepare" == "true" ]]; then
   echo "[entrypoint] Preparing game files from archive in $CLIENT_ARCHIVES_DIR"
-  mkdir -p "$CLIENT_ARCHIVES_DIR"
+  if [[ ! -d "$CLIENT_ARCHIVES_DIR" ]]; then
+    echo "[entrypoint] WARNING: Client archives directory not found at $CLIENT_ARCHIVES_DIR"
+  fi
   latest_zip="$(find "$CLIENT_ARCHIVES_DIR" -type f -name '*.zip' -printf '%T@\t%p\n' 2>/dev/null | sort -nr | head -n 1 | cut -f2-)"
   if [[ -z "$latest_zip" || ! -f "$latest_zip" ]]; then
     if compgen -G "$DEPS_DIR/*.dll" > /dev/null; then
@@ -109,7 +111,9 @@ if [[ "$need_prepare" == "true" ]]; then
 fi
 
 mkdir -p "$CACHES_DIR"
-mkdir -p "$CACHES_ARCHIVES_DIR"
+if [[ ! -d "$CACHES_ARCHIVES_DIR" ]]; then
+  echo "[entrypoint] WARNING: Caches archives directory not found at $CACHES_ARCHIVES_DIR"
+fi
 if [[ ! -f "$CACHES_DIR/__info" ]]; then
   cache_archive=""
   if compgen -G "$CACHES_ARCHIVES_DIR/*.7z" > /dev/null; then
@@ -122,9 +126,15 @@ if [[ ! -f "$CACHES_DIR/__info" ]]; then
     echo "[entrypoint] Extracting caches from $cache_archive to $CACHES_DIR"
     case "$cache_archive" in
       *.7z)
-        7z x -y -o"$CACHES_DIR" "$cache_archive" >/dev/null ;;
+        echo "[entrypoint] 7z extraction in progress..."
+        7z x -bsp1 -bso0 -y -o"$CACHES_DIR" "$cache_archive" ;;
       *.zip)
-        unzip -oq "$cache_archive" -d "$CACHES_DIR" ;;
+        printf "[entrypoint] unzip in progress"
+        unzip -oq "$cache_archive" -d "$CACHES_DIR" &
+        unzip_pid=$!
+        while kill -0 "$unzip_pid" 2>/dev/null; do printf "."; sleep 1; done
+        wait "$unzip_pid"
+        printf "\n" ;;
     esac
     top_children=("$CACHES_DIR"/*)
     if [[ ${#top_children[@]} -eq 1 && -d "${top_children[0]}" ]]; then
