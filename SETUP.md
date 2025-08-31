@@ -33,14 +33,14 @@ If you’re ready to swing into Ook and host your own server emulator, this guid
 - Docker Desktop (or compatible Docker Engine) with [Docker Compose](https://docs.docker.com/compose/install/linux/)
 - Optional: A domain and an NGINX reverse proxy
 
-## Download starter files
+## Download MQReawakened docker files
 
 - .env example: [View](https://github.com/FeroxFoxxo/MQReawakened/blob/main/.env.example) • [Download raw](https://raw.githubusercontent.com/FeroxFoxxo/MQReawakened/main/.env.example)
   - Save as `.env` in the repository root before running Docker Compose
 - Docker Compose: [View](https://github.com/FeroxFoxxo/MQReawakened/blob/main/compose.yaml) • [Download raw](https://raw.githubusercontent.com/FeroxFoxxo/MQReawakened/main/compose.yaml)
   - Save as `compose.yaml` in your project folder
 
-## Obtain required files
+## Obtain required game files
 
 - Client (zip): Internet Archive link to the original installer download
   - https://archive.org/download/InstallMonkeyQuest/Monkey%20Quest.zip
