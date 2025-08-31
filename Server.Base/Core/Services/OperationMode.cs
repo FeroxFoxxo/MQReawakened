@@ -46,6 +46,20 @@ public class OperationMode(EventSink eventSink, ServerConsole console, InternalR
 
     private void AskForChange()
     {
+        if (EnvironmentExt.IsContainer())
+        {
+            config.NetworkType = NetworkType.Server;
+
+            if (string.IsNullOrWhiteSpace(config.ServerAddress))
+            {
+                var envAddr = Environment.GetEnvironmentVariable("SERVER_ADDRESS");
+                config.ServerAddress = string.IsNullOrWhiteSpace(envAddr) ? "localhost" : envAddr;
+            }
+
+            logger.LogInformation("Set IP Address to: {Address}", config.ServerAddress);
+            return;
+        }
+
         // This should not be changed as the default values should be set to run a server via docker.
         if (logger.Ask(
                 "Are you wanting to play the game, rather than host one?",

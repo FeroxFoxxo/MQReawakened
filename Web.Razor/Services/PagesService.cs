@@ -5,6 +5,7 @@ using MimeKit;
 using RazorLight;
 using Server.Base.Core.Extensions;
 using System.IO.Compression;
+using System.Collections.Generic;
 using Server.Base.Core.Abstractions;
 using Server.Base.Core.Configs;
 using Server.Base.Core.Events;
@@ -78,12 +79,56 @@ public class PagesService(InternalRwConfig iConfig, ServerRConfig sConfig,
                 File.Delete(ZipPath);
 
             logger.LogInformation("Creating downloadable game archive at '{ZipPath}' from '{GameRoot}'.", ZipPath, gameRoot);
-            ZipFile.CreateFromDirectory(gameRoot, ZipPath, CompressionLevel.Optimal, false);
+            ZipDirectoryFiltered(gameRoot, ZipPath);
             logger.LogDebug("Game archive created successfully.");
         }
         catch (Exception ex)
         {
             logger.LogError(ex, "Failed to create downloadable game archive.");
+        }
+    }
+
+    private static void ZipDirectoryFiltered(string sourceDir, string destinationZip)
+    {
+        var excludedFiles = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+        {
+            "Thumbs.db",
+            ".DS_Store",
+            "desktop.ini"
+        };
+
+        using var archive = ZipFile.Open(destinationZip, ZipArchiveMode.Create);
+
+        foreach (var file in Directory.EnumerateFiles(sourceDir, "*", SearchOption.AllDirectories))
+        {
+            var fileName = Path.GetFileName(file);
+            if (excludedFiles.Contains(fileName))
+                continue;
+            if (fileName.StartsWith("._"))
+                continue;
+
+            var entryName = Path.GetRelativePath(sourceDir, file).Replace('\\', '/');
+
+            var exclude = false;
+            var idx = 0;
+            while (idx < entryName.Length)
+            {
+                var next = entryName.IndexOf('/', idx);
+                var segment = next == -1 ? entryName.Substring(idx) : entryName.Substring(idx, next - idx);
+                if (segment.Equals("__MACOSX", StringComparison.OrdinalIgnoreCase) ||
+                    segment.Equals(".git", StringComparison.OrdinalIgnoreCase) ||
+                    segment.Equals(".svn", StringComparison.OrdinalIgnoreCase))
+                {
+                    exclude = true;
+                    break;
+                }
+                if (next == -1) break;
+                idx = next + 1;
+            }
+            if (exclude)
+                continue;
+
+            archive.CreateEntryFromFile(file, entryName, CompressionLevel.Optimal);
         }
     }
 
