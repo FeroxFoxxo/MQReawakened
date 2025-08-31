@@ -6,6 +6,8 @@ OUT_DIR="$APP_DIR/out"
 SOLUTION_FILE="$APP_DIR/MQReawaken.sln"
 INIT_PROJ="$APP_DIR/Init/Init.csproj"
 DEPS_DIR="$APP_DIR/Server.Reawakened/Dependencies"
+SETTINGS_DIR="/settings"
+WIN_GAME_DIR="/archives"
 
 sync_dir() {
   local src="$1"; local dest="$2"; local label="$3"
@@ -39,21 +41,52 @@ if [[ "${FORCE_REBUILD:-0}" == "1" ]]; then
   rm -rf "$OUT_DIR"
 fi
 
-wait_timeout=60
-elapsed=0
+if [[ "${FORCE_REBUILD:-0}" == "1" || ! -f "$SETTINGS_DIR/settings.txt" || ! compgen -G "$DEPS_DIR/*.dll" > /dev/null ]]; then
+  echo "[entrypoint] Preparing game files from archive in $WIN_GAME_DIR"
+  latest_zip="$(find "$WIN_GAME_DIR" -type f -name "*.zip" -print0 2>/dev/null | xargs -0 ls -1t 2>/dev/null | head -n 1 || true)"
+  if [[ -z "$latest_zip" ]]; then
+    if compgen -G "$DEPS_DIR/*.dll" > /dev/null; then
+      echo "[entrypoint] No game zip found in $WIN_GAME_DIR, but dependencies exist. Skipping extraction."
+    else
+      echo "[entrypoint] ERROR: No game zip found in $WIN_GAME_DIR and no dependencies present at $DEPS_DIR. Cannot build."
+      echo "[entrypoint] Please place a game .zip under $WIN_GAME_DIR on the host (mapped to /data)."
+      exit 1
+    fi
+  else
+    echo "[entrypoint] Using game archive: $latest_zip"
+    rm -rf "$SETTINGS_DIR"
+    mkdir -p "$SETTINGS_DIR"
+    unzip -oq "$latest_zip" -d "$SETTINGS_DIR"
 
-while [[ $elapsed -lt $wait_timeout ]]; do
-  if compgen -G "$DEPS_DIR/*.dll" > /dev/null; then
-    echo "[entrypoint] Found dependency DLLs in $DEPS_DIR"
-    break
+    if [[ ! -f "$SETTINGS_DIR/settings.txt" ]]; then
+      top_children=("$SETTINGS_DIR"/*)
+      if [[ ${#top_children[@]} -eq 1 && -d "${top_children[0]}" ]]; then
+        echo "[entrypoint] Flattening extracted directory structure"
+        tmp_dir="${top_children[0]}"
+        shopt -s dotglob
+        cp -a "$tmp_dir"/* "$SETTINGS_DIR"/
+        shopt -u dotglob
+        rm -rf "$tmp_dir"
+      fi
+    fi
+
+    if [[ ! -f "$SETTINGS_DIR/settings.txt" ]]; then
+      echo "[entrypoint] WARNING: settings.txt not found in extracted archive at $SETTINGS_DIR"
+    fi
+
+    mkdir -p "$DEPS_DIR"
+    managed_dir="$(find "$SETTINGS_DIR" -type d -name Managed 2>/dev/null | head -n 1 || true)"
+    if [[ -z "$managed_dir" ]]; then
+      echo "[entrypoint] ERROR: Could not locate Managed in extracted archive"
+      exit 1
+    fi
+    if ! compgen -G "$managed_dir/*.dll" > /dev/null; then
+      echo "[entrypoint] ERROR: Managed directory at $managed_dir contains no DLLs"
+      exit 1
+    fi
+    echo "[entrypoint] Copying DLLs from $managed_dir to $DEPS_DIR"
+    cp -f "$managed_dir"/*.dll "$DEPS_DIR"/
   fi
-  echo "[entrypoint] Waiting for dependency DLLs to be mounted in $DEPS_DIR... ($elapsed/${wait_timeout}s)"
-  sleep 1
-  elapsed=$((elapsed+1))
-done
-
-if ! compgen -G "$DEPS_DIR/*.dll" > /dev/null; then
-  echo "[entrypoint] WARNING: No DLLs found in $DEPS_DIR after ${wait_timeout}s. Proceeding to build anyway."
 fi
 
 did_build=0

@@ -3,6 +3,8 @@ using MailKit.Security;
 using Microsoft.Extensions.Logging;
 using MimeKit;
 using RazorLight;
+using Server.Base.Core.Extensions;
+using System.IO.Compression;
 using Server.Base.Core.Abstractions;
 using Server.Base.Core.Configs;
 using Server.Base.Core.Events;
@@ -17,7 +19,11 @@ public class PagesService(InternalRwConfig iConfig, ServerRConfig sConfig,
 {
     public string ZipPath { get; set; }
 
-    public void Initialize() => sink.WorldLoad += SetupDownload;
+    public void Initialize()
+    {
+        sink.WorldLoad += SetupDownload;
+        sink.ServerHosted += BuildDownloadIfNeeded;
+    }
 
     public void SetupDownload()
     {
@@ -32,6 +38,53 @@ public class PagesService(InternalRwConfig iConfig, ServerRConfig sConfig,
         File.Create(Path.Join(sConfig.DownloadDirectory, $"__Place {name} Here__"));
 
         ZipPath = Path.Join(sConfig.DownloadDirectory, name);
+    }
+
+    private void BuildDownloadIfNeeded()
+    {
+        if (!EnvironmentExt.IsContainer())
+            return;
+
+        try
+        {
+            var force = string.Equals(Environment.GetEnvironmentVariable("FORCE_REBUILD"), "1", StringComparison.Ordinal);
+
+            if (!force && File.Exists(ZipPath))
+            {
+                logger.LogDebug("Download zip already exists at '{ZipPath}'. Skipping rebuild.", ZipPath);
+                return;
+            }
+
+            var gameRoot = "/settings";
+            var configFile = Path.Join(gameRoot, "game", "LocalBuildConfig.xml");
+            var launcherExe = Path.Join(gameRoot, "launcher", "launcher.exe");
+
+            var waitUntil = DateTime.UtcNow.AddSeconds(120);
+            while (DateTime.UtcNow < waitUntil)
+            {
+                if (File.Exists(configFile) && File.Exists(launcherExe))
+                    break;
+                Task.Delay(1000).GetAwaiter().GetResult();
+            }
+
+            if (!File.Exists(configFile) || !File.Exists(launcherExe))
+            {
+                logger.LogWarning("Could not find required game files to build zip. Config: '{ConfigFile}', Launcher: '{LauncherExe}'.", configFile, launcherExe);
+                return;
+            }
+
+            Directory.CreateDirectory(Path.GetDirectoryName(ZipPath)!);
+            if (File.Exists(ZipPath))
+                File.Delete(ZipPath);
+
+            logger.LogInformation("Creating downloadable game archive at '{ZipPath}' from '{GameRoot}'.", ZipPath, gameRoot);
+            ZipFile.CreateFromDirectory(gameRoot, ZipPath, CompressionLevel.Optimal, false);
+            logger.LogDebug("Game archive created successfully.");
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Failed to create downloadable game archive.");
+        }
     }
 
     public async Task SendPasswordResetEmailAsync(string toEmail, string resetLink, string username)

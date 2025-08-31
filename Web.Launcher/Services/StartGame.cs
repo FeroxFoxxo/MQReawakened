@@ -151,6 +151,9 @@ public class StartGame(EventSink sink, ILogger<StartGame> logger, ServerConsole 
 
     public bool ShouldRun()
     {
+        if (EnvironmentExt.IsContainer())
+            return false;
+
         if (iWConfig.NetworkType.HasFlag(NetworkType.Client))
             return true;
 
@@ -163,8 +166,7 @@ public class StartGame(EventSink sink, ILogger<StartGame> logger, ServerConsole 
         if (!_appStart || !_dirSet)
             return;
 
-        if (!ShouldRun())
-            return;
+        var inContainer = EnvironmentExt.IsContainer();
 
         if (Logger.HasCriticallyErrored())
         {
@@ -173,13 +175,13 @@ public class StartGame(EventSink sink, ILogger<StartGame> logger, ServerConsole 
             return;
         }
 
-        if (lRConfig.OverwriteGameConfig)
+        if (lRConfig.OverwriteGameConfig && (inContainer || ShouldRun()))
         {
             SetSettings();
             WriteConfig();
         }
 
-        if (!world.Crashed)
+        if (ShouldRun() && !world.Crashed)
             LaunchGame();
     }
 
@@ -198,6 +200,11 @@ public class StartGame(EventSink sink, ILogger<StartGame> logger, ServerConsole 
 
     public void LaunchGame()
     {
+        if (EnvironmentExt.IsContainer())
+        {
+            logger.LogInformation("Skipping launcher in container.");
+            return;
+        }
         _game = Process.Start(Path.Join(_directory, "launcher", "launcher.exe"));
         logger.LogInformation("Running game on process: {GamePath}", _game?.ProcessName);
     }

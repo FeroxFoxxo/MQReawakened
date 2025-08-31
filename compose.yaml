@@ -12,12 +12,13 @@ services:
       - FORCE_REBUILD=${FORCE_REBUILD:-0}
       - SERVER_ADDRESS=${SERVER_ADDRESS:-localhost}
       - GAME_PORT=${GAME_PORT:-9339}
+      - DOTNET_RUNNING_IN_CONTAINER=true
     ports:
       - "80:80"
       - "9339:9339"
     volumes:
       - ${DATA_HOST_PATH:-./Game/data}:/data
       - ${CACHES_HOST_PATH:-./Game/caches}:/caches
-      - ${SETTINGS_HOST_PATH:-./Game/settings}:/settings
-      - ${BUNDLES_HOST_PATH:-./Game/bundles}:/data/Assets/Bundles
-      - ${DEPENDENCIES_HOST_PATH:-./Dependencies}:/app/Server.Reawakened/Dependencies:ro
+      - ${GAME_ARCHIVES_PATH:-./Game/archives}:/archives
+    tmpfs:
+      - /data/Assets/Bundles
