@@ -41,7 +41,13 @@ if [[ "${FORCE_REBUILD:-0}" == "1" ]]; then
   rm -rf "$OUT_DIR"
 fi
 
-if [[ "${FORCE_REBUILD:-0}" == "1" || ! -f "$SETTINGS_DIR/settings.txt" || ! compgen -G "$DEPS_DIR/*.dll" > /dev/null ]]; then
+need_prepare=false
+
+if [[ "${FORCE_REBUILD:-0}" == "1" ]]; then need_prepare=true; fi
+if [[ ! -f "$SETTINGS_DIR/settings.txt" ]]; then need_prepare=true; fi
+if ! compgen -G "$DEPS_DIR/*.dll" > /dev/null; then need_prepare=true; fi
+
+if [[ "$need_prepare" == "true" ]]; then
   echo "[entrypoint] Preparing game files from archive in $WIN_GAME_DIR"
   latest_zip="$(find "$WIN_GAME_DIR" -type f -name "*.zip" -print0 2>/dev/null | xargs -0 ls -1t 2>/dev/null | head -n 1 || true)"
   if [[ -z "$latest_zip" ]]; then
@@ -49,7 +55,7 @@ if [[ "${FORCE_REBUILD:-0}" == "1" || ! -f "$SETTINGS_DIR/settings.txt" || ! com
       echo "[entrypoint] No game zip found in $WIN_GAME_DIR, but dependencies exist. Skipping extraction."
     else
       echo "[entrypoint] ERROR: No game zip found in $WIN_GAME_DIR and no dependencies present at $DEPS_DIR. Cannot build."
-      echo "[entrypoint] Please place a game .zip under $WIN_GAME_DIR on the host (mapped to /data)."
+      echo "[entrypoint] Please place a game .zip under $WIN_GAME_DIR on the host (mapped to /archives)."
       exit 1
     fi
   else
