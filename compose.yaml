@@ -18,6 +18,6 @@ services:
       - "${GAME_PORT:-9339}:9339"
     volumes:
       - ${DATA_HOST_PATH:-./Game/data}:/data
-      - ${GAME_ARCHIVES_PATH:-./Game/archives}:/archives:ro
+      - ${GAME_ARCHIVES_PATH:-./Build/archives}:/archives:ro
     tmpfs:
       - /data/Assets/Bundles
