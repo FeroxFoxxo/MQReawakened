@@ -10,6 +10,8 @@ SETTINGS_DIR="/settings"
 CLIENT_ARCHIVES_DIR="/archives/Client"
 CACHES_ARCHIVES_DIR="/archives/Caches"
 CACHES_DIR="/data/Caches"
+# Control 7z threads to reduce memory usage; can be overridden via env
+SEVEN_Z_THREADS="${SEVEN_Z_THREADS:-1}"
 
 sync_dir() {
   local src="$1"; local dest="$2"; local label="$3"
@@ -127,10 +129,17 @@ if [[ ! -f "$CACHES_DIR/__info" ]]; then
     case "$cache_archive" in
       *.7z)
         printf "[entrypoint] 7z extraction in progress"
-        7z x -bso0 -y -o"$CACHES_DIR" "$cache_archive" >/dev/null &
+        7z x -mmt="$SEVEN_Z_THREADS" -bso0 -bse0 -y -o"$CACHES_DIR" "$cache_archive" >/dev/null &
         z_pid=$!
         while kill -0 "$z_pid" 2>/dev/null; do printf "."; sleep 1; done
-        wait "$z_pid"
+        if ! wait "$z_pid"; then
+          status=$?
+          echo "\n[entrypoint] ERROR: 7z extraction failed with exit code $status"
+          if [[ "$status" == "137" ]]; then
+            echo "[entrypoint] Hint: The container was likely OOMKilled. Try setting SEVEN_Z_THREADS=1 (default) or increasing container memory."
+          fi
+          exit "$status"
+        fi
         printf "\n" ;;
       *.zip)
         printf "[entrypoint] unzip in progress"
