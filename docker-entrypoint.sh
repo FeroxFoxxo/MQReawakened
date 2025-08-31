@@ -49,8 +49,8 @@ if ! compgen -G "$DEPS_DIR/*.dll" > /dev/null; then need_prepare=true; fi
 
 if [[ "$need_prepare" == "true" ]]; then
   echo "[entrypoint] Preparing game files from archive in $WIN_GAME_DIR"
-  latest_zip="$(find "$WIN_GAME_DIR" -type f -name "*.zip" -print0 2>/dev/null | xargs -0 ls -1t 2>/dev/null | head -n 1 || true)"
-  if [[ -z "$latest_zip" ]]; then
+  latest_zip="$(find "$WIN_GAME_DIR" -type f -name '*.zip' -printf '%T@\t%p\n' 2>/dev/null | sort -nr | head -n 1 | cut -f2-)"
+  if [[ -z "$latest_zip" || ! -f "$latest_zip" ]]; then
     if compgen -G "$DEPS_DIR/*.dll" > /dev/null; then
       echo "[entrypoint] No game zip found in $WIN_GAME_DIR, but dependencies exist. Skipping extraction."
     else
