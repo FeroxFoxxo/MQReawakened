@@ -36,9 +36,9 @@ If you’re ready to swing into Ook and host your own server emulator, this guid
 ## Download MQReawakened docker files
 
 - .env example: [View](https://github.com/FeroxFoxxo/MQReawakened/blob/main/.env.example) • [Download raw](https://raw.githubusercontent.com/FeroxFoxxo/MQReawakened/main/.env.example)
-  - Save as `.env` in the repository root before running Docker Compose
+  - Save as `.env` in the folder you plan to use for the server
 - Docker Compose: [View](https://github.com/FeroxFoxxo/MQReawakened/blob/main/compose.yaml) • [Download raw](https://raw.githubusercontent.com/FeroxFoxxo/MQReawakened/main/compose.yaml)
-  - Save as `compose.yaml` in your project folder
+  - Save as `compose.yaml` in the folder
 
 ## Obtain required game files
 
@@ -47,16 +47,16 @@ If you’re ready to swing into Ook and host your own server emulator, this guid
 - Caches: Community archives folder (look for `UniqueBundles.7z`)
   - https://drive.google.com/drive/folders/17ic6S2brJNI9HlFqnue38zFJAv5nqxIU
 
-Place them as follows on the host:
+Place them as follows on the host in your server folder:
 
 - `./Game/archives/Client/<client>.zip`
 - `./Game/archives/Caches/UniqueBundles.7z`
 
-Tip: The entrypoint will automatically extract the latest zip/7z it finds in those folders.
+Tip: The docker entrypoint will automatically extract the latest zip/7z it finds in those folders.
 
-## Configure via .env (edit me first)
+## Configure via .env
 
-All variables you need to edit are in the `.env` file at the repository root. Create it if it doesn’t exist.
+All variables you need to edit are in the `.env` file. Create it if it doesn’t exist.
 
 ```env
 # Image source (override if you publish to your own GHCR)
@@ -110,7 +110,7 @@ Visit your server at `http://localhost` (or your domain) and check `/healthz` fo
 
 ## Reverse proxy (NGINX)
 
-The client will not work over modern HTTPS unless you force an older TLS configuration. To keep things simple, ensure you also expose a plain HTTP server. Here’s an example NGINX config to proxy both HTTPS and HTTP to your container:
+The client will not work over modern HTTPS unless you use an older TLS version. To keep things simple, ensure you also expose a plain HTTP server. Here’s an example NGINX config to proxy both HTTPS and HTTP to your container:
 
 ```nginx
 server {
@@ -148,7 +148,7 @@ Replace `IP` and `HTTP_PORT` with your Docker host and the host port you mapped 
 
 ## Post‑start configuration (JSON under /data/Configs)
 
-After the first run, JSON configuration files are available under the host path `./Game/data/Configs` (inside the container: `/data/Configs`). Edit them and restart the container to apply changes.
+After the first run, the JSON configuration files are available under the host path `./Game/data/Configs` (inside the container: `/data/Configs`). Edit them and restart the container to apply changes.
 
 Commonly adjusted files:
 
@@ -156,7 +156,7 @@ Commonly adjusted files:
   - `ServerName`: Display name for your server
   - `ServerAddress`: Hostname or IP
   - `Port`: Game TCP port (usually `9339`)
-  - `IsHttps`: Whether generated URLs should use https (client prefers http)
+  - `IsHttps`: Whether generated URLs should use https (game client uses http)
   - `DiscordServerId`: Optional server/community widget id
 
 - `Discord.json` (from `DiscordRwConfig`)
