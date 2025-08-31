@@ -87,7 +87,7 @@ SEVEN_Z_THREADS=1            # 7z CPU threads; 1 is conservative on memory
 Notes:
 
 - `SERVER_ADDRESS` should be the public name clients will reach (domain or IP). This is written into various config files and URLs the client consumes.
-- `FORCE_REBUILD=1` clears build output and cached data on next start (use when changing DLLs or archives).
+- `FORCE_REBUILD=1` clears build output and cached data on next start.
 - `SEVEN_Z_THREADS=1` is recommended on low‑memory systems when extracting large caches.
 
 ## Start the server (Docker Compose)
