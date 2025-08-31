@@ -7,7 +7,9 @@ SOLUTION_FILE="$APP_DIR/MQReawaken.sln"
 INIT_PROJ="$APP_DIR/Init/Init.csproj"
 DEPS_DIR="$APP_DIR/Server.Reawakened/Dependencies"
 SETTINGS_DIR="/settings"
-WIN_GAME_DIR="/archives"
+CLIENT_ARCHIVES_DIR="/archives/Client"
+CACHES_ARCHIVES_DIR="/archives/Caches"
+CACHES_DIR="/data/Caches"
 
 sync_dir() {
   local src="$1"; local dest="$2"; local label="$3"
@@ -37,8 +39,9 @@ sync_file() {
 echo "[entrypoint] Starting container for MQReawakened"
 
 if [[ "${FORCE_REBUILD:-0}" == "1" ]]; then
-  echo "[entrypoint] FORCE_REBUILD=1, clearing previous build output"
+  echo "[entrypoint] FORCE_REBUILD=1, clearing previous build output and caches"
   rm -rf "$OUT_DIR"
+  rm -rf "/data/Caches"
 fi
 
 need_prepare=false
@@ -48,14 +51,15 @@ if [[ ! -f "$SETTINGS_DIR/settings.txt" ]]; then need_prepare=true; fi
 if ! compgen -G "$DEPS_DIR/*.dll" > /dev/null; then need_prepare=true; fi
 
 if [[ "$need_prepare" == "true" ]]; then
-  echo "[entrypoint] Preparing game files from archive in $WIN_GAME_DIR"
-  latest_zip="$(find "$WIN_GAME_DIR" -type f -name '*.zip' -printf '%T@\t%p\n' 2>/dev/null | sort -nr | head -n 1 | cut -f2-)"
+  echo "[entrypoint] Preparing game files from archive in $CLIENT_ARCHIVES_DIR"
+  mkdir -p "$CLIENT_ARCHIVES_DIR"
+  latest_zip="$(find "$CLIENT_ARCHIVES_DIR" -type f -name '*.zip' -printf '%T@\t%p\n' 2>/dev/null | sort -nr | head -n 1 | cut -f2-)"
   if [[ -z "$latest_zip" || ! -f "$latest_zip" ]]; then
     if compgen -G "$DEPS_DIR/*.dll" > /dev/null; then
-      echo "[entrypoint] No game zip found in $WIN_GAME_DIR, but dependencies exist. Skipping extraction."
+      echo "[entrypoint] No game zip found in $CLIENT_ARCHIVES_DIR, but dependencies exist. Skipping extraction."
     else
-      echo "[entrypoint] ERROR: No game zip found in $WIN_GAME_DIR and no dependencies present at $DEPS_DIR. Cannot build."
-      echo "[entrypoint] Please place a game .zip under $WIN_GAME_DIR on the host (mapped to /archives)."
+      echo "[entrypoint] ERROR: No game zip found in $CLIENT_ARCHIVES_DIR and no dependencies present at $DEPS_DIR. Cannot build."
+      echo "[entrypoint] Please place a game .zip under $CLIENT_ARCHIVES_DIR on the host (mapped to /archives/Client)."
       exit 1
     fi
   else
@@ -102,6 +106,31 @@ if [[ "$need_prepare" == "true" ]]; then
     echo "[entrypoint] Copying DLLs from $managed_dir to $DEPS_DIR"
     cp -f "$managed_dir"/*.dll "$DEPS_DIR"/
   fi
+fi
+
+mkdir -p "$CACHES_DIR"
+mkdir -p "$CACHES_ARCHIVES_DIR"
+if [[ ! -f "$CACHES_DIR/__info" ]]; then
+  if compgen -G "$CACHES_ARCHIVES_DIR/*.zip" > /dev/null; then
+    cache_zip="$(find "$CACHES_ARCHIVES_DIR" -type f -name '*.zip' -printf '%T@\t%p\n' 2>/dev/null | sort -nr | head -n 1 | cut -f2-)"
+    echo "[entrypoint] Extracting caches from $cache_zip to $CACHES_DIR"
+    unzip -oq "$cache_zip" -d "$CACHES_DIR"
+    top_children=("$CACHES_DIR"/*)
+    if [[ ${#top_children[@]} -eq 1 && -d "${top_children[0]}" ]]; then
+      tmp_dir="${top_children[0]}"
+      shopt -s dotglob
+      cp -a "$tmp_dir"/* "$CACHES_DIR"/
+      shopt -u dotglob
+      rm -rf "$tmp_dir"
+    fi
+  else
+    echo "[entrypoint] No caches .zip found in $CACHES_ARCHIVES_DIR. If first run, place a caches .zip there."
+  fi
+fi
+
+if [[ ! -f "$CACHES_DIR/__info" ]]; then
+  echo "[entrypoint] Creating caches marker file at $CACHES_DIR/__info"
+  : > "$CACHES_DIR/__info"
 fi
 
 did_build=0
