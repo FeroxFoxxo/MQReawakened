@@ -17,14 +17,14 @@ If you’re ready to swing into Ook and host your own server emulator, this guid
 
 - Place the original client zip under `Game/archives/Client/`
 - Place the caches archive (UniqueBundles.7z) under `Game/archives/Caches/`
-- Copy over the docker compose file
-- Create a `.env` file based on the example env file (all variables you need to edit live there)
-- Start with Docker Compose
+- Copy over the [docker compose](https://github.com/FeroxFoxxo/MQReawakened/blob/main/compose.yaml) file
+- Create a `.env` file based on the [example env file](https://github.com/FeroxFoxxo/MQReawakened/blob/main/.env.example) (all variables you need to edit live there)
+- Start the Docker Compose file
 - Adjust JSON configs under `./Game/data/Configs` after first start
 
 ## Prerequisites
 
-- Docker Desktop (or compatible Docker Engine)
+- Docker Desktop (or compatible Docker Engine) with [Docker Compose](https://docs.docker.com/compose/install/linux/)
 - Optional: A domain and an NGINX reverse proxy
 
 ## Folder layout used by Docker
