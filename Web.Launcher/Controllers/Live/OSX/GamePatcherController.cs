@@ -8,7 +8,7 @@ namespace Web.Launcher.Controllers.Live.OSX;
 public class GamePatcherController(LoadUpdates loadUpdates, ILogger<GamePatcherController> logger) : Controller
 {
     [HttpGet]
-    public async Task<IActionResult> GetFile([FromRoute] string gameVersion)
+    public IActionResult GetFile([FromRoute] string gameVersion)
     {
         gameVersion = gameVersion.Replace(".zip", "");
 
