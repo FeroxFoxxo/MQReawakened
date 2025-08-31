@@ -81,13 +81,22 @@ if [[ "$need_prepare" == "true" ]]; then
     fi
 
     mkdir -p "$DEPS_DIR"
-    managed_dir="$(find "$SETTINGS_DIR" -type d -name Managed 2>/dev/null | head -n 1 || true)"
-    if [[ -z "$managed_dir" ]]; then
-      echo "[entrypoint] ERROR: Could not locate Managed in extracted archive"
+    game_root="$SETTINGS_DIR/game"
+    if [[ ! -d "$game_root" ]]; then
+      echo "[entrypoint] ERROR: Expected 'game' directory under '/settings' not found after extraction."
+      exit 1
+    fi
+    managed_dir="$(find "$game_root" -type d -name Managed -print -quit 2>/dev/null || true)"
+    if [[ -z "$managed_dir" || ! -d "$managed_dir" ]]; then
+      echo "[entrypoint] ERROR: Could not locate a 'Managed' directory under '$game_root'"
       exit 1
     fi
     if ! compgen -G "$managed_dir/*.dll" > /dev/null; then
-      echo "[entrypoint] ERROR: Managed directory at $managed_dir contains no DLLs"
+      echo "[entrypoint] ERROR: No DLLs found in '$managed_dir'"
+      exit 1
+    fi
+    if [[ ! -f "$managed_dir/UnityEngine.dll" || ! -f "$managed_dir/Assembly-CSharp.dll" ]]; then
+      echo "[entrypoint] ERROR: Required game DLLs not found in '$managed_dir' (expected UnityEngine.dll and Assembly-CSharp.dll)"
       exit 1
     fi
     echo "[entrypoint] Copying DLLs from $managed_dir to $DEPS_DIR"
