@@ -7,7 +7,7 @@ COPY . /app
 RUN chmod +x /app/docker-entrypoint.sh \
  	&& sed -i 's/\r$//' /app/docker-entrypoint.sh
 
-RUN apt-get update && apt-get install -y --no-install-recommends curl unzip \
+RUN apt-get update && apt-get install -y --no-install-recommends curl unzip p7zip-full \
     && rm -rf /var/lib/apt/lists/*
 
 EXPOSE 80

@@ -111,10 +111,21 @@ fi
 mkdir -p "$CACHES_DIR"
 mkdir -p "$CACHES_ARCHIVES_DIR"
 if [[ ! -f "$CACHES_DIR/__info" ]]; then
-  if compgen -G "$CACHES_ARCHIVES_DIR/*.zip" > /dev/null; then
-    cache_zip="$(find "$CACHES_ARCHIVES_DIR" -type f -name '*.zip' -printf '%T@\t%p\n' 2>/dev/null | sort -nr | head -n 1 | cut -f2-)"
-    echo "[entrypoint] Extracting caches from $cache_zip to $CACHES_DIR"
-    unzip -oq "$cache_zip" -d "$CACHES_DIR"
+  cache_archive=""
+  if compgen -G "$CACHES_ARCHIVES_DIR/*.7z" > /dev/null; then
+    cache_archive="$(find "$CACHES_ARCHIVES_DIR" -type f -name '*.7z' -printf '%T@\t%p\n' 2>/dev/null | sort -nr | head -n 1 | cut -f2-)"
+  elif compgen -G "$CACHES_ARCHIVES_DIR/*.zip" > /dev/null; then
+    cache_archive="$(find "$CACHES_ARCHIVES_DIR" -type f -name '*.zip' -printf '%T@\t%p\n' 2>/dev/null | sort -nr | head -n 1 | cut -f2-)"
+  fi
+
+  if [[ -n "$cache_archive" ]]; then
+    echo "[entrypoint] Extracting caches from $cache_archive to $CACHES_DIR"
+    case "$cache_archive" in
+      *.7z)
+        7z x -y -o"$CACHES_DIR" "$cache_archive" >/dev/null ;;
+      *.zip)
+        unzip -oq "$cache_archive" -d "$CACHES_DIR" ;;
+    esac
     top_children=("$CACHES_DIR"/*)
     if [[ ${#top_children[@]} -eq 1 && -d "${top_children[0]}" ]]; then
       tmp_dir="${top_children[0]}"
@@ -124,7 +135,7 @@ if [[ ! -f "$CACHES_DIR/__info" ]]; then
       rm -rf "$tmp_dir"
     fi
   else
-    echo "[entrypoint] No caches .zip found in $CACHES_ARCHIVES_DIR. If first run, place a caches .zip there."
+    echo "[entrypoint] No caches archive (.7z or .zip) found in $CACHES_ARCHIVES_DIR. If first run, place a caches archive there."
   fi
 fi
 
