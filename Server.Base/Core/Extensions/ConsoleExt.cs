@@ -22,8 +22,7 @@ public static class ConsoleExt
     {
         if (EnvironmentExt.IsContainerOrNonInteractive())
         {
-            if (logger != null)
-                logger.LogDebug("Non-interactive; returning default for ReadLine: {DefaultValue}", defaultVal);
+            logger?.LogDebug("Non-interactive; returning default for ReadLine: {DefaultValue}", defaultVal);
             return defaultVal;
         }
 
