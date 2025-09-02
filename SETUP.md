@@ -28,6 +28,8 @@ If you’re ready to swing into Ook and host your own server emulator, this guid
 ## Folder layout used by Docker
 
 - `./Build/Archives/Client` → mounted to `/archives/Client` inside the container
+  - **2014 client archive** (required): Contains DLLs needed for server compilation
+  - **Override client archive** (optional): Alternative game client (i.e. 2013)
 - `./Build/Archives/Caches` → mounted to `/archives/Caches` inside the container
 - `./Game/Data` → mounted to `/data` (persisted server data and configs)
 
@@ -45,21 +47,39 @@ If you’re ready to swing into Ook and host your own server emulator, this guid
 
 ## Obtain required game files
 
-- Client (zip): Internet Archive link to the original installer download
+**Important**: This server can use **two different client versions**:
+
+1. **2014 Client (Required for server compilation)**: Contains the DLLs needed to compile the server
+2. **2013 Client (Optional for game hosting)**: Can be used for actual game hosting if preferred
+
+### Client Downloads
+
+- **2014 Client (Required)**: Any client archive that contains the required 2014 version DLLs
   - https://archive.org/download/InstallMonkeyQuest/Monkey%20Quest.zip
-- Caches: Community archives folder (look for `UniqueBundles.7z`)
+- **Override Client (Optional)**: Any alternative client archive for hosting
+  - https://drive.google.com/drive/folders/1AuNMaNqbszUzWBgT3d_xolSuH_IINJf-
+- **Caches**: View the community archives (look for `UniqueBundles.7z`)
   - https://drive.google.com/drive/folders/17ic6S2brJNI9HlFqnue38zFJAv5nqxIU
 
-Place them as follows on the host in your server folder:
+### File Placement
 
-- `./Build/Archives/Client/<client>.zip`
+Place the client archives as follows in your server folder:
+
+- `./Build/Archives/Client/` - Place your 2014 client archive here (any .zip or .7z file) - required as used for compilation of the server
+- `./Build/Archives/ClientOverride/` - Place alternative client archive here (optional, any .zip or .7z file) - i.e. 2013
 - `./Build/Archives/Caches/UniqueBundles.7z`
+
+**Note**: The 2014 client is **mandatory** as it provides the DLLs needed for server compilation. The override client is optional and will only be used for game hosting if present in the `ClientOverride` folder.
+
+**Automatic Fallback**: If no override client is found in the `ClientOverride` folder, the system will automatically use the 2014 client for both dependencies and hosting.
 
 Tip: The docker entrypoint will automatically extract the latest zip/7z it finds in those folders.
 
 ## Configure via .env
 
-All variables you need to edit are in the `.env` file. Create it if it doesn’t exist.
+All variables you need to edit are in the `.env` file. Create it if it doesn't exist.
+
+### Example .env Configuration
 
 ```env
 # Image source (override if you publish to your own GHCR)
@@ -87,11 +107,20 @@ FORCE_REBUILD=0              # set 1 to force clean rebuild/re-extract
 SEVEN_Z_THREADS=1            # 7z CPU threads; 1 is conservative on memory
 ```
 
+### Client Version Behavior
+
+The system automatically detects and uses the best available client version:
+- **2014 client is always required** for server compilation (provides DLLs)
+- **Override client is automatically used for hosting** if present in the `ClientOverride` folder
+- **2014 client is used for hosting** if no override client is found
+- **No configuration needed** - the system chooses automatically based on folder structure
+
 Notes:
 
 - `SERVER_ADDRESS` should be the public name clients will reach (domain or IP). This is written into various config files and URLs the client consumes.
 - `FORCE_REBUILD=1` clears build output and cached data on next start.
 - `SEVEN_Z_THREADS=1` is recommended on low‑memory systems when extracting large caches.
+- **Client version selection is automatic**: The system will use override client for hosting if available, otherwise fall back to 2014 client.
 
 ## Start the server (Docker Compose)
 
@@ -103,8 +132,10 @@ docker compose up -d
 
 What happens:
 
-- The entrypoint builds and publishes the app if needed
-- It extracts the client DLLs from the client zip (once)
+- The entrypoint extracts the **2014 client** first to obtain required DLLs for server compilation
+- It **automatically detects** which client version to use for game hosting:
+  - If **override client is found** in `ClientOverride` folder, it uses that for hosting
+  - If **no override client is found**, it automatically uses the 2014 client for hosting
 - It extracts caches from `UniqueBundles.7z` (once)
 - It synchronizes default assets to `/data`
 - It starts the server on port 80 (HTTP) and `GAME_PORT` (TCP)
@@ -113,7 +144,7 @@ Visit your server at `http://localhost` (or your domain) and check `/healthz` fo
 
 ## Reverse proxy (NGINX)
 
-The client will not work over modern HTTPS unless you use an older TLS version. To keep things simple, ensure you also expose a plain HTTP server. Here’s an example NGINX config to proxy both HTTPS and HTTP to your container:
+The client will not work over modern HTTPS unless you use an older TLS version. To keep things simple, ensure you also expose a plain HTTP server. Here's an example NGINX config to proxy both HTTPS and HTTP to your container:
 
 ```nginx
 server {
@@ -175,10 +206,14 @@ These JSONs are auto‑created with sensible defaults if missing. You can safely
 
 ## Troubleshooting
 
-- Missing client zip or DLLs
-  - Ensure a client `.zip` is present under `./Game/archives/Client/` and contains a `game/…/Managed/` folder with DLLs like `UnityEngine.dll` and `Assembly-CSharp.dll`.
-- Caches didn’t extract
-  - Put `UniqueBundles.7z` under `./Game/archives/Caches/` and restart. If memory‑constrained, set `SEVEN_Z_THREADS=1`.
+- Missing 2014 client or DLLs
+  - Ensure a client archive (.zip or .7z) is present under `./Build/Archives/Client/` and contains a `game/…/Managed/` folder with DLLs like `UnityEngine.dll` and `Assembly-CSharp.dll`.
+  - The 2014 client is **required** for server compilation regardless of which version you want to host.
+- Missing override client for hosting
+  - If you want to use an alternative client for hosting, ensure it's present under `./Build/Archives/ClientOverride/`.
+  - If no override client is found, the system will automatically use the 2014 client for hosting.
+- Caches didn't extract
+  - Put `UniqueBundles.7z` under `./Build/Archives/Caches/` and restart. If memory‑constrained, set `SEVEN_Z_THREADS=1`.
 - Need a clean rebuild
   - Set `FORCE_REBUILD=1` in `.env` and start again.
 - Server restarting in Docker
