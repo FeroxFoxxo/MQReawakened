@@ -10,7 +10,7 @@ public class EventInfo : ExternalProtocol
 
     public override void Run(string[] message)
     {
-        if (EventPrefabs.EventInfo != null)
+        if (EventPrefabs.EventInfo != null && Player.TempData.FirstLogin)
             SendXt("de", EventPrefabs.EventInfo.ToString());
     }
 }

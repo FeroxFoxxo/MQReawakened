@@ -1,5 +1,7 @@
 ﻿using LitJson;
 using Server.Base.Accounts.Enums;
+using Server.Base.Accounts.Extensions;
+using Server.Base.Database.Accounts;
 using Server.Reawakened.Chat.Models;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players;
@@ -17,39 +19,52 @@ public class UnMute : SlashCommand
     [
         new ParameterModel()
         {
-            Name = "playerId",
-            Description = "The player character id",
+            Name = "accountId",
+            Description = "The player account id",
             Optional = false
         }
     ];
 
     public override AccessLevel AccessLevel => AccessLevel.Moderator;
 
+    public AccountHandler AccountHandler { get; set; }
     public PlayerContainer PlayerContainer { get; set; }
 
     public override void Execute(Player player, string[] args)
     {
         if (!int.TryParse(args[1], out var id))
         {
-            Log("Invalid player id provided.", player);
+            Log("Invalid player account id provided.", player);
             return;
         }
 
-        var target = PlayerContainer.GetPlayerByAccountId(id);
+        var online = PlayerContainer.GetPlayerByAccountId(id);
 
-        if (target == null)
+        if (online != null)
         {
-            Log("The provided player account is null.", player);
-            return;
+            online.Account.SetMuted(false);
+
+            var type = new JsonData()
+            {
+                ["type"] = "UNSILENCE"
+            };
+
+            online.SendXt("yM", type.ToJson());
+
+            Log($"Unmuted player {online.Account.Username}.", player);
         }
-
-        var type = new JsonData()
+        else
         {
-            ["type"] = "UNSILENCE"
-        };
+            var target = AccountHandler.GetAccountFromId(id);
 
-        target.SendXt("yM", type.ToJson());
+            if (target != null)
+            {
+                target.SetMuted(false);
 
-        Log($"Unmuted player {target.Account.Username}.", player);
+                AccountHandler.Update(target.Write);
+
+                Log($"Unmuted player {target.Username}.", player);
+            }
+        }
     }
 }

@@ -1,8 +1,9 @@
-﻿using LitJson;
-using Server.Base.Accounts.Enums;
+﻿using Server.Base.Accounts.Enums;
+using Server.Base.Accounts.Extensions;
+using Server.Base.Database.Accounts;
 using Server.Reawakened.Chat.Models;
-using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players;
+using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.XMLs.Data.Commands;
 
@@ -17,20 +18,21 @@ public class Mute : SlashCommand
     [
         new ParameterModel()
         {
-            Name = "playerId",
-            Description = "The player character id",
+            Name = "accountId",
+            Description = "The player account id",
             Optional = false
         },
         new ParameterModel()
         {
             Name = "duration",
-            Description = "The mute duration in seconds.",
-            Optional = false
+            Description = "The mute duration in a format similar to 1d1h1m1s etc.",
+            Optional = true
         }
     ];
 
     public override AccessLevel AccessLevel => AccessLevel.Moderator;
 
+    public AccountHandler AccountHandler { get; set; }
     public PlayerContainer PlayerContainer { get; set; }
 
     public override void Execute(Player player, string[] args)
@@ -41,25 +43,38 @@ public class Mute : SlashCommand
             return;
         }
 
-        var target = PlayerContainer.GetPlayerByAccountId(id);
+        var online = PlayerContainer.GetPlayerByAccountId(id);
+        TimeSpan time;
 
-        if (target == null)
+        if (online != null)
         {
-            Log("The provided player account is null.", player);
+            time = args.Length < 3 ? TimeSpan.MaxValue : online.Account.ParseTime(args[2]);
+
+            online.Account.SetMuted(true);
+            online.Account.SetMuteTags(null, DateTime.Now, time);
+
+            Log($"Muted {online.Account.Username}'s account{online.Account.FormatMuteTime()}.", player);
+
+            online.SendWarningMessage("mute");
+
+            Log($"You have been muted{online.Account.FormatMuteTime()}.", online);
             return;
         }
-
-        if (!int.TryParse(args[2], out var duration))
-            duration = 3600;
-
-        var type = new JsonData()
+        else
         {
-            ["type"] = "SILENCE",
-            ["duration"] = duration
-        };
+            var target = AccountHandler.GetAccountFromId(id);
 
-        target.SendXt("yM", type.ToJson());
+            if (target != null)
+            {
+                time = args.Length < 3 ? TimeSpan.MaxValue : target.ParseTime(args[2]);
 
-        Log($"Muted player {target.Account.Username}.", player);
+                target.SetMuted(true);
+                target.SetMuteTags(null, DateTime.Now, time);
+
+                AccountHandler.Update(target.Write);
+
+                Log($"Muted {target.Username}'s account{target.FormatMuteTime()}.", player);
+            }
+        }
     }
 }

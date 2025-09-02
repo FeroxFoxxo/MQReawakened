@@ -33,6 +33,9 @@ public static class PetAbilityExtensions
         pet.InCoopSwitchState = false;
         pet.AbilityCooldown = petOwner.Room.Time + pet.AbilityParams.CooldownTime;
 
+        if (petOwner.TempData.IsKnockedOut)
+            return;
+
         petOwner.Room.SendSyncEvent(new PetState_SyncEvent(petOwner.GameObjectId, petOwner.Room.Time,
             PetInformation.StateSyncType.Ability, petOwner.GetSyncParams(pet.AbilityParams)));
 
@@ -72,6 +75,9 @@ public static class PetAbilityExtensions
 
         var player = timer.Player;
 
+        if (player.TempData.IsKnockedOut)
+            return;
+
         if (!player.Character.Pets.TryGetValue(player.GetEquippedPetId(new ServerRConfig()), out var pet))
         {
             player.SendDeactivateState();
@@ -88,6 +94,9 @@ public static class PetAbilityExtensions
             return;
 
         var player = timer.Player;
+
+        if (player.TempData.IsKnockedOut)
+            return;
 
         if (!player.Character.Pets.TryGetValue(player.GetEquippedPetId
             (new ServerRConfig()), out var pet) || !pet.AbilityParams.IsAttackAbility())
@@ -117,6 +126,9 @@ public static class PetAbilityExtensions
 
         var player = timer.Player;
 
+        if (player.TempData.IsKnockedOut)
+            return;
+
         if (!player.Character.Pets.ContainsKey
             (player.GetEquippedPetId(new ServerRConfig())))
         {
@@ -133,6 +145,9 @@ public static class PetAbilityExtensions
             return;
 
         var player = timer.Player;
+
+        if (player.TempData.IsKnockedOut)
+            return;
 
         if (!player.Character.Pets.ContainsKey
             (player.GetEquippedPetId(new ServerRConfig())))

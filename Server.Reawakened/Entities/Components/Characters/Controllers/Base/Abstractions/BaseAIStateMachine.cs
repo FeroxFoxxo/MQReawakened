@@ -130,6 +130,9 @@ public abstract class BaseAIStateMachine<T> : Component<T>, IAIStateMachine
 
     public override void Update()
     {
+        if (Room == null)
+            return;
+
         foreach (var state in CurrentStates)
             state.UpdateState();
     }

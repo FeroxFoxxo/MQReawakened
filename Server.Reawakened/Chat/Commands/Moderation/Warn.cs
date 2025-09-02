@@ -17,8 +17,8 @@ public class Warn : SlashCommand
     [
         new ParameterModel()
         {
-            Name = "playerId",
-            Description = "The player character id",
+            Name = "accountId",
+            Description = "The player account id",
             Optional = false
         }
     ];
@@ -31,13 +31,13 @@ public class Warn : SlashCommand
     {
         if (!int.TryParse(args[1], out var id))
         {
-            Log("Invalid player id provided.", player);
+            Log("Invalid player account id provided.", player);
             return;
         }
 
-        var target = PlayerContainer.GetPlayerByAccountId(id);
+        var online = PlayerContainer.GetPlayerByAccountId(id);
 
-        if (target == null)
+        if (online == null)
         {
             Log("The provided player account is null.", player);
             return;
@@ -48,8 +48,8 @@ public class Warn : SlashCommand
             ["type"] = "WARN"
         };
 
-        target.SendXt("yM", type.ToJson());
+        online.SendXt("yM", type.ToJson());
 
-        Log($"Warned player {target.Account.Username}.", player);
+        Log($"Warned player {online.Account.Username}.", player);
     }
 }

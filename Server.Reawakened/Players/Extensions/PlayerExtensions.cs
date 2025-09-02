@@ -454,4 +454,19 @@ public static class PlayerExtensions
         )
             player.SendXt("iq", sentPlayer.UserId, sentPlayer.Character.Equipment);
     }
+
+    public static void SendWarningMessage(this Player player, string code)
+    {
+        code = code switch
+        {
+            "vendor" or "trading" or "gifting" => "523",
+            "chat" => "320",
+            "shutdown" => "514",
+            "mute" => "505",
+            _ => "514",
+        };
+
+        if (int.TryParse(code, out var result))
+            player.SendXt("wm", result);
+    }
 }

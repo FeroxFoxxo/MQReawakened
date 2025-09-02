@@ -1,7 +1,8 @@
 ﻿using Server.Base.Accounts.Enums;
+using Server.Base.Database.Accounts;
 using Server.Reawakened.Chat.Models;
+using Server.Reawakened.Database.Characters;
 using Server.Reawakened.Players;
-using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.XMLs.Data.Commands;
 
 namespace Server.Reawakened.Chat.Commands.Misc;
@@ -13,7 +14,7 @@ public class FindPlayer : SlashCommand
 
     public override List<ParameterModel> Parameters =>
     [
-        new ParameterModel() 
+        new ParameterModel()
         {
             Name = "name",
             Description = "Find a player's id by name.",
@@ -24,13 +25,14 @@ public class FindPlayer : SlashCommand
 
     public override AccessLevel AccessLevel => AccessLevel.Moderator;
 
-    public PlayerContainer PlayerContainer { get; set; }
+    public CharacterHandler CharacterHandler { get; set; }
+    public AccountHandler AccountHandler { get; set; }
 
     public override void Execute(Player player, string[] args)
     {
         var name = string.Join(" ", args.Skip(1));
 
-        var target = PlayerContainer.GetPlayerByName(name);
+        var target = CharacterHandler.GetCharacterFromName(name);
 
         if (target == null)
         {
@@ -38,6 +40,6 @@ public class FindPlayer : SlashCommand
             return;
         }
 
-        Log($"{target.CharacterName}'s id is {target.Account.Id}", player);
+        Log($"{target.CharacterName}'s id is {target.UserUuid}", player);
     }
 }
