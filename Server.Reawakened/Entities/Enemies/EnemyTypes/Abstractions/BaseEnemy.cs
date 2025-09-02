@@ -185,7 +185,7 @@ public abstract class BaseEnemy : IDestructible
 
         var rect = new Rect(offsetX, offsetY, width, height);
 
-        Logger.LogTrace("Created enemy hitbox at {Position} of size {Size}", position, rect.size);
+        Logger.LogTrace("Created enemy hitbox at {Position} of size {Size}", position, rect);
 
         Hitbox = new EnemyCollider(Id, position, rect, ParentPlane, Room);
 
