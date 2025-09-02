@@ -124,7 +124,10 @@ public class InternalVendor : InternalXml
                                 }
 
                                 if (!ItemCatalog.CanAddItem(itemDescription))
+                                {
+                                    Logger.LogError("Can't add item with prefab name: '{item}'", itemAttribute.Value);
                                     continue;
+                                }
 
                                 items.Add(itemDescription.ItemId);
                                 break;

@@ -191,10 +191,10 @@ public class ExtractIcons(IconsRConfig rConfig, IconsRwConfig rwConfig, AssetBun
 
                 File.WriteAllBytes(path, stream.ToArray());
             }
-            catch (TypeInitializationException e)
+            catch (TypeInitializationException)
             {
                 defaultBar.Dispose();
-                logger.LogError(e, "Texture DLL files did not initialise! This is a known bug for linux users.");
+                logger.LogError("Texture DLL files did not initialise! This is a known bug for linux users.");
                 return;
             }
             catch (IOException e)
