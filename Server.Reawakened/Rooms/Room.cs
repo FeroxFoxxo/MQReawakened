@@ -118,6 +118,8 @@ public class Room : Timer
             return;
         }
 
+        Logger.LogTrace("Creating room with room id: {RoomId}", roomId);
+
         Planes = LevelInfo.LoadPlanes(this, _config);
         _entities = this.LoadEntities(services);
         _colliders = this.LoadTerrainColliders();
@@ -136,14 +138,20 @@ public class Room : Timer
         foreach (var component in _entities.Values.SelectMany(x => x))
             component.InitializeComponent();
 
+        Logger.LogTrace("Initialized components");
+
         foreach (var component in _entities.Values.SelectMany(x => x))
             component.DelayedComponentInitialization();
+
+        Logger.LogTrace("Initialized delayed components");
 
         if (_defaultSpawn == null)
             Logger.LogError("Could not find default spawn for level: {RoomId} ({RoomName})",
                 LevelInfo.LevelId, LevelInfo.Name);
 
         TimeOffset = GetTime.GetCurrentUnixMilliseconds();
+
+        Logger.LogTrace("Starting room with room id: {RoomId}", roomId);
 
         Start();
     }
@@ -183,6 +191,8 @@ public class Room : Timer
 
     public void AddClient(Player currentPlayer, out JoinReason reason)
     {
+        Logger.LogTrace("Adding player to room {RoomId}", _roomId);
+
         reason = _players.Count > _config.PlayerCap ? JoinReason.Full : JoinReason.Accepted;
 
         if (LevelInfo.LevelId == -1)
@@ -235,6 +245,8 @@ public class Room : Timer
 
     public void RemoveClient(Player player)
     {
+        Logger.LogTrace("Removing player from room {RoomId}", _roomId);
+
         lock (_roomLock)
         {
             _players.Remove(player.GameObjectId);
