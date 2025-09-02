@@ -1,4 +1,5 @@
-﻿using A2m.Server;
+﻿using System;
+using A2m.Server;
 using Microsoft.Extensions.Logging;
 using Server.Base.Core.Abstractions;
 using Server.Base.Timers.Extensions;
@@ -30,19 +31,20 @@ public class AIStateSpiderVenomComp : BaseAIState<AIStateSpiderVenom, AI_State>
 
     public override void OnAIStateIn()
     {
-        var controller = StateMachine as SpiderBossControllerComp;
-        var phase = controller?.CurrentPhase ?? 0;
-
+        var (phase, shotDelay, salvoCount, betweenSalvoDelay) = ResolveVenomParams();
         Logger.LogTrace("Enter Venom: phase={Phase}, salvos={Salvos}, shotDelay={ShotDelay}, betweenSalvo={Between}",
-            phase,
-            (phase < NumberOfSalvoPerPhase.Length) ? NumberOfSalvoPerPhase[phase] : NumberOfSalvoPerPhase.FirstOrDefault(),
-            (phase < TimeDelayBetweenShotPerPhase.Length) ? TimeDelayBetweenShotPerPhase[phase] : TimeDelayBetweenShotPerPhase.FirstOrDefault(),
-            (phase < TimeDelayBetweenEverySalvoPerPhase.Length) ? TimeDelayBetweenEverySalvoPerPhase[phase] : TimeDelayBetweenEverySalvoPerPhase.FirstOrDefault());
+            phase, salvoCount, shotDelay, betweenSalvoDelay);
     }
 
     public void Shooting()
     {
         Logger.LogTrace("Shooting called for {StateName} on {PrefabName}", StateName, PrefabName);
+        var (_, shotDelay, salvoCount, betweenSalvoDelay) = ResolveVenomParams();
+        ScheduleVenom(shotDelay, salvoCount, betweenSalvoDelay);
+    }
+
+    private (int phase, float shotDelay, int salvoCount, float betweenSalvoDelay) ResolveVenomParams()
+    {
         var controller = StateMachine as SpiderBossControllerComp;
         var phase = controller?.CurrentPhase ?? 0;
 
@@ -50,6 +52,11 @@ public class AIStateSpiderVenomComp : BaseAIState<AIStateSpiderVenom, AI_State>
         var salvoCount = (phase < NumberOfSalvoPerPhase.Length) ? NumberOfSalvoPerPhase[phase] : NumberOfSalvoPerPhase.FirstOrDefault();
         var betweenSalvoDelay = (phase < TimeDelayBetweenEverySalvoPerPhase.Length) ? TimeDelayBetweenEverySalvoPerPhase[phase] : TimeDelayBetweenEverySalvoPerPhase.FirstOrDefault();
 
+        return (phase, shotDelay, salvoCount, betweenSalvoDelay);
+    }
+
+    private void ScheduleVenom(float shotDelay, int salvoCount, float betweenSalvoDelay)
+    {
         var t = TimeSpan.Zero;
 
         for (var i = 0; i < salvoCount; i++)
@@ -74,7 +81,7 @@ public class AIStateSpiderVenomComp : BaseAIState<AIStateSpiderVenom, AI_State>
         }
     }
 
-    public class SpiderProjectile() : ITimerData
+    public class SpiderProjectile : ITimerData
     {
         public AIStateSpiderVenomComp Component { get; set; }
         public bool IsFirstProjectile { get; set; }
