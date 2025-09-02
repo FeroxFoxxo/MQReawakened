@@ -9,10 +9,20 @@ public class AIStateSpiderIdleComp : BaseAIState<AIStateSpiderIdle, AI_State>
 
     public float[] Durations => ComponentData.Durations;
 
-    public override AI_State GetInitialAIState() => new (
-        [
-            new(Durations[0], "Done")
-        ], loop: false);
+    public override AI_State GetInitialAIState()
+    {
+        var durs = Durations;
+
+        var dur = (durs != null && durs.Length > 0 && durs[0] > 0f) ? durs[0] : 1f;
+
+        if (durs == null || durs.Length == 0 || durs[0] <= 0f)
+            Logger.LogTrace("Idle duration missing/invalid; defaulting to {Duration}s for {Prefab}", dur, PrefabName);
+
+        return new AI_State(
+            [
+                new(dur, "Done")
+            ], loop: false);
+    }
 
     public void Done()
     {
