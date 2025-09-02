@@ -22,7 +22,7 @@ public class SearchOnlineUsers : ExternalProtocol
         var sb = new SeparatedStringBuilder('|');
 
         foreach (var player in PlayerContainer.GetAllPlayers())
-            if (player.CharacterName.Contains(name) || player.CharacterName.Equals(name))
+            if (player.CharacterName.Contains(name, StringComparison.CurrentCultureIgnoreCase) || player.CharacterName.Equals(name))
                 sb.Append(GetPlayerData(player));
 
         return sb.ToString();
