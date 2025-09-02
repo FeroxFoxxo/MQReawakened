@@ -1,4 +1,5 @@
-﻿using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Abstractions;
+﻿using Microsoft.Extensions.Logging;
+using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Abstractions;
 using Server.Reawakened.Entities.Components.Characters.Controllers.SpiderBoss.States;
 using Server.Reawakened.Entities.Components.GameObjects.InterObjs.Interfaces;
 using Server.Reawakened.Entities.Components.GameObjects.Trigger.Interfaces;
@@ -72,12 +73,18 @@ public class SpiderBossControllerComp : BaseAIStateMachine<SpiderBossController>
         {
             if (Teaser)
             {
+                Logger.LogTrace("SpiderBoss trigger received. Teaser={Teaser}", Teaser);
                 _teaserStartTime = Room.Time;
+
+                Logger.LogTrace("Queued states: PhaseTeaser -> TeaserEntrance");
+                
                 AddNextState<AIStateSpiderPhaseTeaserComp>();
                 AddNextState<AIStateSpiderTeaserEntranceComp>();
             }
             else
             {
+                Logger.LogTrace("Queued states: Phase1 -> Entrance");
+
                 AddNextState<AIStateSpiderPhase1Comp>();
                 AddNextState<AIStateSpiderEntranceComp>();
             }
@@ -112,9 +119,12 @@ public class SpiderBossControllerComp : BaseAIStateMachine<SpiderBossController>
 
         var ratio = (float)EnemyData.Health / EnemyData.MaxHealth;
         var target = GetTargetPhase(ratio, Phase01Trans, Phase02Trans);
+        Logger.LogTrace("Damage event: ratio={Ratio:F2}, currentPhase={Current}, targetPhase={Target}", ratio, CurrentPhase, target);
 
         if (target > CurrentPhase)
         {
+            Logger.LogTrace("Enqueue PhaseTrans (current={Current} -> target={Target})", CurrentPhase, target);
+
             AddNextState<AIStateSpiderPhaseTransComp>();
             GoToNextState();
         }
@@ -144,6 +154,8 @@ public class SpiderBossControllerComp : BaseAIStateMachine<SpiderBossController>
 
         if (_teaserStartTime >= 0 && TeaserEndTimeLimit > 0 && Room.Time - _teaserStartTime >= TeaserEndTimeLimit)
         {
+            Logger.LogInformation("Teaser time limit reached -> TeaserRetreat");
+
             AddNextState<AIStateSpiderTeaserRetreatComp>();
             GoToNextState();
             return;
@@ -154,6 +166,8 @@ public class SpiderBossControllerComp : BaseAIStateMachine<SpiderBossController>
             var ratio = (float)EnemyData.Health / EnemyData.MaxHealth;
             if (TeaserEndLifeRatio > 0 && ratio <= TeaserEndLifeRatio)
             {
+                Logger.LogInformation("Teaser health threshold met (ratio={Ratio:F2} <= {Thresh:F2}) -> TeaserRetreat", ratio, TeaserEndLifeRatio);
+
                 AddNextState<AIStateSpiderTeaserRetreatComp>();
                 GoToNextState();
             }

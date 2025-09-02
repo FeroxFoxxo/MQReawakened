@@ -29,28 +29,50 @@ public class AIStateSpiderIdleComp : BaseAIState<AIStateSpiderIdle, AI_State>
         switch (controller.CurrentPhase)
         {
             case 0:
+                Logger.LogTrace("Idle pick: Venom (phase=0)");
                 RunVenomState();
                 break;
             case 1:
                 if (System.Random.Shared.Next(0, 4) == 0)
+                {
+                    Logger.LogTrace("Idle pick: VineThrow (phase=1)");
                     RunVineThrowState();
+                }
                 else if (System.Random.Shared.Next(0, 2) == 0)
+                {
+                    Logger.LogTrace("Idle pick: Webs (phase=1)");
                     RunWebsState();
+                }
                 else
+                {
+                    Logger.LogTrace("Idle pick: Venom (phase=1)");
                     RunVenomState();
+                }
 
                 break;
             default:
                 var roll = System.Random.Shared.Next(0, 5);
                 
                 if (roll == 0)
+                {
+                    Logger.LogTrace("Idle pick: SwitchSide (phase=2)");
                     RunSwitchSide();
+                }
                 else if (roll <= 2)
+                {
+                    Logger.LogTrace("Idle pick: Webs (phase=2)");
                     RunWebsState();
+                }
                 else if (roll == 3)
+                {
+                    Logger.LogTrace("Idle pick: VineThrow (phase=2)");
                     RunVineThrowState();
+                }
                 else
+                {
+                    Logger.LogTrace("Idle pick: Venom (phase=2)");
                     RunVenomState();
+                }
 
                 break;
         }

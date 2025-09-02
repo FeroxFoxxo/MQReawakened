@@ -28,6 +28,18 @@ public class AIStateSpiderVenomComp : BaseAIState<AIStateSpiderVenom, AI_State>
             new (CooldownTime, "Cooldown")
         ], loop: false);
 
+    public override void OnAIStateIn()
+    {
+        var controller = StateMachine as SpiderBossControllerComp;
+        var phase = controller?.CurrentPhase ?? 0;
+
+        Logger.LogTrace("Enter Venom: phase={Phase}, salvos={Salvos}, shotDelay={ShotDelay}, betweenSalvo={Between}",
+            phase,
+            (phase < NumberOfSalvoPerPhase.Length) ? NumberOfSalvoPerPhase[phase] : NumberOfSalvoPerPhase.FirstOrDefault(),
+            (phase < TimeDelayBetweenShotPerPhase.Length) ? TimeDelayBetweenShotPerPhase[phase] : TimeDelayBetweenShotPerPhase.FirstOrDefault(),
+            (phase < TimeDelayBetweenEverySalvoPerPhase.Length) ? TimeDelayBetweenEverySalvoPerPhase[phase] : TimeDelayBetweenEverySalvoPerPhase.FirstOrDefault());
+    }
+
     public void Shooting()
     {
         Logger.LogTrace("Shooting called for {StateName} on {PrefabName}", StateName, PrefabName);
@@ -37,9 +49,6 @@ public class AIStateSpiderVenomComp : BaseAIState<AIStateSpiderVenom, AI_State>
         var shotDelay = (phase < TimeDelayBetweenShotPerPhase.Length) ? TimeDelayBetweenShotPerPhase[phase] : TimeDelayBetweenShotPerPhase.FirstOrDefault();
         var salvoCount = (phase < NumberOfSalvoPerPhase.Length) ? NumberOfSalvoPerPhase[phase] : NumberOfSalvoPerPhase.FirstOrDefault();
         var betweenSalvoDelay = (phase < TimeDelayBetweenEverySalvoPerPhase.Length) ? TimeDelayBetweenEverySalvoPerPhase[phase] : TimeDelayBetweenEverySalvoPerPhase.FirstOrDefault();
-
-        if (TimerThread == null)
-            return;
 
         var t = TimeSpan.Zero;
 
@@ -82,7 +91,7 @@ public class AIStateSpiderVenomComp : BaseAIState<AIStateSpiderVenom, AI_State>
 
     public void Cooldown()
     {
-        Logger.LogTrace("Cooldown called for {StateName} on {PrefabName}", StateName, PrefabName);
+        Logger.LogTrace("Exit Venom -> Drop");
 
         AddNextState<AIStateSpiderDropComp>();
         GoToNextState();
