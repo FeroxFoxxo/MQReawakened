@@ -56,6 +56,8 @@ public class ChestControllerComp : BaseChestControllerComp<ChestController>
 
         Room.SendSyncEvent(triggerEvent);
         Room.SendSyncEvent(triggerReceiver);
+
+        player.SendUpdatedInventory();
     }
 
     //Temporary for chests without loot tables. Could be used for banana rewards in the future.
