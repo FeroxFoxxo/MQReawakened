@@ -17,7 +17,7 @@ public class AIStateSpiderVenomComp : BaseAIState<AIStateSpiderVenom, AI_State>
     public float SecondProjectileSpeedY => ComponentData.SecondProjectileSpeedY;
     public float[] TimeDelayBetweenShotPerPhase => ComponentData.TimeDelayBetweenShotPerPhase;
     public int[] NumberOfSalvoPerPhase => ComponentData.NumberOfSalvoPerPhase;
-    public float[] TimeDelayBetweenEverySalvoPerPhase => TimeDelayBetweenEverySalvoPerPhase;
+    public float[] TimeDelayBetweenEverySalvoPerPhase => ComponentData.TimeDelayBetweenEverySalvoPerPhase;
     public float CooldownTime => ComponentData.CooldownTime;
 
     public TimerThread TimerThread { get; set; }
