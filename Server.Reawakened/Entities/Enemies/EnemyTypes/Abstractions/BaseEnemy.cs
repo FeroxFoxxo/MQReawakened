@@ -187,7 +187,7 @@ public abstract class BaseEnemy : IDestructible
 
         Logger.LogTrace("Created enemy hitbox at {Position} of size {Size}", position, rect.size);
 
-        Hitbox = new EnemyCollider(Id, position, size, ParentPlane, Room);
+        Hitbox = new EnemyCollider(Id, position, rect, ParentPlane, Room);
 
         Room.AddCollider(Hitbox);
     }
