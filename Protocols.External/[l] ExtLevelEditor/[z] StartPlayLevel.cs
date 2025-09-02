@@ -22,5 +22,7 @@ public class StartPlayRoom : ExternalProtocol
         Player.DiscoverTribe(tribe);
 
         Player.Room.AddCollider(new PlayerCollider(Player));
+
+        Player.TempData.Invincible = true;
     }
 }

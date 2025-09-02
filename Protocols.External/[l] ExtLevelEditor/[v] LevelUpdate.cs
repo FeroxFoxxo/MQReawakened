@@ -1,5 +1,8 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
+using Server.Base.Core.Abstractions;
+using Server.Base.Timers.Extensions;
+using Server.Base.Timers.Services;
 using Server.Reawakened.Chat.Services;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Core.Enums;
@@ -11,6 +14,7 @@ using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Models.Entities;
+using Server.Reawakened.Rooms.Models.Timers;
 using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.Bundles.Base;
 using Server.Reawakened.XMLs.Bundles.Internal;
@@ -29,6 +33,7 @@ public class RoomUpdate : ExternalProtocol
     public PetAbilities PetAbilities { get; set; }
     public ItemCatalog ItemCatalog { get; set; }
     public ILogger<RoomUpdate> Logger { get; set; }
+    public TimerThread TimerThread { get; set; }
 
     public override void Run(string[] message)
     {
@@ -71,6 +76,15 @@ public class RoomUpdate : ExternalProtocol
         if (Player.Character.Pets.TryGetValue(Player.GetEquippedPetId(ServerRConfig), out var pet) &&
             pet != null && pet.IsEquipped && PetAbilities.PetAbilityData.TryGetValue(int.Parse(pet.PetId), out var petAbility))
             Player.EquipPet(petAbility, WorldStatistics, ServerRConfig, ItemCatalog);
+
+        TimerThread.RunDelayed(DisableInvincibility, new PlayerTimer { Player = Player }, TimeSpan.FromSeconds(3));
+    }
+
+    private void DisableInvincibility(ITimerData data)
+    {
+        var room = (RoomUpdate)data;
+
+        room.Player.TempData.Invincible = false;
     }
 
     private string GetGameObjectStore(Room room)
