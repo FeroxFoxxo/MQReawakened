@@ -1,6 +1,7 @@
 ﻿using LitJson;
 using Server.Base.Accounts.Enums;
 using Server.Base.Accounts.Extensions;
+using Server.Base.Database.Accounts;
 using Server.Reawakened.Chat.Models;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players;
@@ -18,41 +19,67 @@ public class Ban : SlashCommand
     [
         new ParameterModel()
         {
-            Name = "playerId",
-            Description = "The player character id",
+            Name = "accountId",
+            Description = "The player account id",
             Optional = false
+        },
+        new ParameterModel()
+        {
+            Name = "duration",
+            Description = "The ban duration in a format similar to 1d1h1m1s etc.",
+            Optional = true
         }
     ];
 
     public override AccessLevel AccessLevel => AccessLevel.Moderator;
 
+    public AccountHandler AccountHandler { get; set; }
     public PlayerContainer PlayerContainer { get; set; }
 
     public override void Execute(Player player, string[] args)
     {
         if (!int.TryParse(args[1], out var id))
         {
-            Log("Invalid player id provided.", player);
+            Log("Invalid player account id provided.", player);
             return;
         }
 
-        var target = PlayerContainer.GetPlayerByAccountId(id);
+        var online = PlayerContainer.GetPlayerByAccountId(id);
+        TimeSpan time;
 
-        if (target == null)
+        if (online != null)
         {
-            Log("The provided player account is null.", player);
+            time = args.Length < 3 ? TimeSpan.MaxValue : online.Account.ParseTime(args[2]);
+
+            var type = new JsonData()
+            {
+                ["type"] = "BAN"
+            };
+
+            online.SendXt("yM", type.ToJson());
+
+            online.Account.SetBanned(true);
+            online.Account.SetBanTags(null, DateTime.Now, time);
+
+            Log($"Banned {online.Account.Username}'s account{online.Account.FormatBanTime()}.", player);
             return;
         }
-
-        target.Account.SetBanned(true);
-
-        var type = new JsonData()
+        else
         {
-            ["type"] = "BAN"
-        };
+            var target = AccountHandler.GetAccountFromId(id);
 
-        target.SendXt("yM", type.ToJson());
+            if (target != null)
+            {
+                time = args.Length < 3 ? TimeSpan.MaxValue : target.ParseTime(args[2]);
 
-        Log($"Banned player {target.Account.Username}.", player);
+                target.SetBanned(true);
+                target.SetBanTags(null, DateTime.Now, time);
+
+                AccountHandler.Update(target.Write);
+
+                Log($"Banned {target.Username}'s account{target.FormatBanTime()}.", player);
+                return;
+            }
+        }
     }
 }

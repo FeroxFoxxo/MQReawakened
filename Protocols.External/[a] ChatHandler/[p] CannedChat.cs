@@ -1,5 +1,6 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
+using Server.Base.Accounts.Extensions;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Core.Services;
 using Server.Reawakened.Network.Extensions;
@@ -26,6 +27,12 @@ public class CannedChat : ExternalProtocol
         var secondaryPhraseId = int.Parse(message[7]); // named 'specifics' in the client protocol/xml
         var itemId = int.Parse(message[8]);
         var recipientName = message[9];
+
+        if (Player.Account.IsMuted())
+        {
+            Player.Chat(CannedChatChannel.Tell, "Console", "You are muted" + Player.Account.FormatMuteTime() + ".");
+            return;
+        }
 
         var sb = new SeparatedStringBuilder(' ');
 

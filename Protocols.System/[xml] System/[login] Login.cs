@@ -52,6 +52,16 @@ public class Login : SystemProtocol
             reason = AlrReason.PlayerLoggedIn;
         }
 
-        SendXml("logKO", $"<login e='{reason.GetErrorValue()}' />");
+        var error = reason.GetErrorValue();
+
+        if (reason == AlrReason.Blocked)
+        {
+            var account = AccountHandler.GetAccountFromUsername(username);
+            var banTime = account.FormatBanTime();
+
+            error += banTime;
+        }
+
+        SendXml("logKO", $"<login e='{error}' />");
     }
 }

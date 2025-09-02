@@ -1,17 +1,19 @@
-﻿using LitJson;
-using Server.Base.Accounts.Enums;
+﻿using Server.Base.Accounts.Enums;
+using Server.Base.Accounts.Extensions;
+using Server.Base.Database.Accounts;
 using Server.Reawakened.Chat.Models;
-using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.XMLs.Data.Commands;
+using System.Security.Principal;
+using UnityEngine;
 
 namespace Server.Reawakened.Chat.Commands.Moderation;
-public class Kick : SlashCommand
+public class UnBan : SlashCommand
 {
-    public override string CommandName => "/kick";
+    public override string CommandName => "/unban";
 
-    public override string CommandDescription => "Kick a player for bad behavior.";
+    public override string CommandDescription => "Unban a player";
 
     public override List<ParameterModel> Parameters =>
     [
@@ -25,6 +27,7 @@ public class Kick : SlashCommand
 
     public override AccessLevel AccessLevel => AccessLevel.Moderator;
 
+    public AccountHandler AccountHandler { get; set; }
     public PlayerContainer PlayerContainer { get; set; }
 
     public override void Execute(Player player, string[] args)
@@ -37,19 +40,24 @@ public class Kick : SlashCommand
 
         var online = PlayerContainer.GetPlayerByAccountId(id);
 
-        if (online == null)
+        if (online != null)
         {
-            Log("The provided player account is null.", player);
-            return;
+            online.Account.SetBanned(false);
+
+            Log($"Unbanned player {online.Account.Username}.", player);
         }
-
-        var type = new JsonData()
+        else
         {
-            ["type"] = "KICK"
-        };
+            var target = AccountHandler.GetAccountFromId(id);
 
-        online.SendXt("yM", type.ToJson());
+            if (target != null)
+            {
+                target.SetBanned(false);
 
-        Log($"Kicked player {online.Account.Username}.", player);
+                AccountHandler.Update(target.Write);
+
+                Log($"Unbanned player {target.Username}.", player);
+            }
+        }
     }
 }
