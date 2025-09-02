@@ -60,6 +60,12 @@ public abstract class BaseEnemyControllerComp<T> : Component<T>, IEnemyControlle
 
         var enemyData = new EnemyData(Room, id, prefabName, this, enemyModel, ServiceProvider);
 
+        if (enemyModel.AiType == AiType.Unknown)
+        {
+            Logger.LogError("{EnemyPrefab} type was unknown!", prefabName);
+            return null;
+        }
+
         BaseEnemy enemy = enemyModel.AiType switch
         {
             AiType.Behavior => new BehaviorEnemy(enemyData),

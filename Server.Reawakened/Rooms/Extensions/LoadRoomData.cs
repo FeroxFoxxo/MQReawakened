@@ -187,13 +187,7 @@ public static class LoadRoomData
 
         unknownComponents = [];
 
-        if (prefabOverrides != null)
-            foreach (var entry in prefabOverrides)
-                if (!entity.ObjectInfo.Components.ContainsKey(entry.Key))
-                    entity.ObjectInfo.Components.Add(entry.Key, new ComponentModel
-                    {
-                        ComponentAttributes = []
-                    });
+        EnsurePrefabComponentsPresent(entity, prefabOverrides);
 
         foreach (var component in entity.ObjectInfo.Components)
         {
@@ -212,8 +206,13 @@ public static class LoadRoomData
             var fields = newEntity.Value;
 
             if (prefabOverrides != null)
-                if (prefabOverrides.TryGetValue(mqType.Name, out var value))
+            {
+                if (!prefabOverrides.TryGetValue(component.Key, out var value))
+                    prefabOverrides.TryGetValue(mqType.Name, out value);
+
+                if (value != null)
                     ApplyPrefabOverrides(value, dataObj, vars.Room.Logger);
+            }
 
             var componentAttributes = component.Value.ComponentAttributes;
 
@@ -244,6 +243,20 @@ public static class LoadRoomData
         }
 
         return componentList;
+    }
+
+    private static void EnsurePrefabComponentsPresent(GameObjectModel entity, Dictionary<string, OrderedDictionary> prefabOverrides)
+    {
+        if (prefabOverrides == null || prefabOverrides.Count == 0)
+            return;
+
+        foreach (var entry in prefabOverrides)
+        {
+            if (!entity.ObjectInfo.Components.ContainsKey(entry.Key))
+            {
+                entity.ObjectInfo.Components.Add(entry.Key, new ComponentModel { ComponentAttributes = [] });
+            }
+        }
     }
 
     private static void ApplyPrefabOverrides(OrderedDictionary prefabOverrides, object dataObj, Microsoft.Extensions.Logging.ILogger logger)
