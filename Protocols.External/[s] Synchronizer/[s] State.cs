@@ -224,6 +224,8 @@ public class State : ExternalProtocol
 
         if (playerTimer.Player.TempData.Invincible)
             playerTimer.Player.TempData.Invincible = false;
+
+        playerTimer.Player.TempData.IsKnockedOut = false;
     }
 
     public void LogEvent(SyncEvent syncEvent, string entityId, Room room)

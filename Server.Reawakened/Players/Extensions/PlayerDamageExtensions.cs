@@ -84,8 +84,11 @@ public static class PlayerDamageExtensions
 
         player.Character.Write.CurrentLife -= (int)damage;
 
-        if (player.Character.CurrentLife < 0)
+        if (player.Character.CurrentLife < 0 && !player.TempData.IsKnockedOut)
+        {
             player.Character.Write.CurrentLife = 0;
+            KnockoutPlayer(player);
+        }
 
         player.Room.SendSyncEvent(new Health_SyncEvent(player.GameObjectId.ToString(), player.Room.Time,
             player.Character.CurrentLife, player.Character.MaxLife, originId));
@@ -103,5 +106,20 @@ public static class PlayerDamageExtensions
         var damage = Convert.ToSingle(Math.Ceiling(health * percentage));
 
         ApplyCharacterDamage(player, damage, hazardId, duration, serverRConfig, timerThread);
+    }
+
+    public static void KnockoutPlayer(this Player player)
+    {
+        player.TempData.IsSlowed = false;
+        player.TempData.IsSuperStomping = false;
+        player.TempData.Underwater = false;
+        player.TempData.Invincible = true;
+        player.TempData.IsKnockedOut = true;
+
+        if (player.TempData.UnderwaterTimer != null)
+        {
+            player.TempData.UnderwaterTimer.Stop();
+            player.TempData.UnderwaterTimer = null;
+        }
     }
 }

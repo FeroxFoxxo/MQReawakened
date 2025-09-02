@@ -25,6 +25,7 @@ public class TemporaryDataModel
     public bool IsSuperStomping { get; set; } = false;
     public bool IsSlowed { get; set; } = false;
     public BaseComponent CurrentArena { get; set; } = null;
+    public bool IsKnockedOut { get; set; } = false;
 
     public List<string> CollidingHazards { get; set; } = [];
     public Dictionary<int, bool> VotedForItem { get; set; } = [];
