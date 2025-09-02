@@ -77,7 +77,7 @@ public class SpiderBossControllerComp : BaseAIStateMachine<SpiderBossController>
                 _teaserStartTime = Room.Time;
 
                 Logger.LogTrace("Queued states: PhaseTeaser -> TeaserEntrance");
-                
+
                 AddNextState<AIStateSpiderPhaseTeaserComp>();
                 AddNextState<AIStateSpiderTeaserEntranceComp>();
             }
@@ -136,29 +136,33 @@ public class SpiderBossControllerComp : BaseAIStateMachine<SpiderBossController>
 
     public override void Update()
     {
-        base.Update();
-
         if (Room == null)
             return;
 
-        if (Teaser)
-            UpdateTeaserEndLogic();
-        else
+        var shouldTeaserRetreat = Teaser && ShouldTriggerTeaserRetreat();
+
+        base.Update();
+
+        if (shouldTeaserRetreat)
+        {
+            AddNextState<AIStateSpiderTeaserRetreatComp>();
+            Logger.LogTrace("Teaser retreat queued after Update");
+            GoToNextState();
+        }
+
+        if (!Teaser)
             UpdateNonTeaserLoop();
     }
 
-    private void UpdateTeaserEndLogic()
+    private bool ShouldTriggerTeaserRetreat()
     {
         if (CurrentStates.Any(s => s is AIStateSpiderTeaserRetreatComp))
-            return;
+            return false;
 
         if (_teaserStartTime >= 0 && TeaserEndTimeLimit > 0 && Room.Time - _teaserStartTime >= TeaserEndTimeLimit)
         {
-            Logger.LogInformation("Teaser time limit reached -> TeaserRetreat");
-
-            AddNextState<AIStateSpiderTeaserRetreatComp>();
-            GoToNextState();
-            return;
+            Logger.LogTrace("Teaser time limit reached");
+            return true;
         }
 
         if (EnemyData != null && EnemyData.MaxHealth > 0)
@@ -166,12 +170,12 @@ public class SpiderBossControllerComp : BaseAIStateMachine<SpiderBossController>
             var ratio = (float)EnemyData.Health / EnemyData.MaxHealth;
             if (TeaserEndLifeRatio > 0 && ratio <= TeaserEndLifeRatio)
             {
-                Logger.LogInformation("Teaser health threshold met (ratio={Ratio:F2} <= {Thresh:F2}) -> TeaserRetreat", ratio, TeaserEndLifeRatio);
-
-                AddNextState<AIStateSpiderTeaserRetreatComp>();
-                GoToNextState();
+                Logger.LogTrace("Teaser health threshold met (ratio={Ratio:F2} <= {Thresh:F2})", ratio, TeaserEndLifeRatio);
+                return true;
             }
         }
+
+        return false;
     }
 
     private void UpdateNonTeaserLoop()
