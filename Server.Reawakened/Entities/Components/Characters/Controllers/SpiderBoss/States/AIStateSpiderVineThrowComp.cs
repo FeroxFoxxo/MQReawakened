@@ -22,5 +22,10 @@ public class AIStateSpiderVineThrowComp : BaseAIState<AIStateSpiderVineThrow, AI
 
     public void ShotVine() => Logger.LogTrace("ShotVine called for {StateName} on {PrefabName}", StateName, PrefabName);
 
-    public void Finish() => Logger.LogTrace("Finish called for {StateName} on {PrefabName}", StateName, PrefabName);
+    public void Finish()
+    {
+        Logger.LogTrace("Finish called for {StateName} on {PrefabName}", StateName, PrefabName);
+        AddNextState<AIStateSpiderDropComp>();
+        GoToNextState();
+    }
 }

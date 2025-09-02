@@ -32,5 +32,24 @@ public class AIStateSpiderPhaseTransComp : BaseAIState<AIStateSpiderPhaseTrans, 
 
     public void PlayAnimLoop() => Logger.LogTrace("PlayAnimLoop called for {StateName} on {PrefabName}", StateName, PrefabName);
 
-    public void PlayAnimOut() => Logger.LogTrace("PlayAnimOut called for {StateName} on {PrefabName}", StateName, PrefabName);
+    public void PlayAnimOut()
+    {
+        Logger.LogTrace("PlayAnimOut called for {StateName} on {PrefabName}", StateName, PrefabName);
+
+        if (StateMachine is not SpiderBossControllerComp controller)
+            return;
+
+        if (controller.EnemyData == null || controller.EnemyData.MaxHealth <= 0)
+            return;
+
+        var ratio = (float)controller.EnemyData.Health / controller.EnemyData.MaxHealth;
+
+        if (controller.Phase02Trans > 0 && ratio <= controller.Phase02Trans)
+            AddNextState<AIStateSpiderPhase3Comp>();
+        else if (controller.Phase01Trans > 0 && ratio <= controller.Phase01Trans)
+            AddNextState<AIStateSpiderPhase2Comp>();
+
+        AddNextState<AIStateSpiderIdleComp>();
+        GoToNextState();
+    }
 }

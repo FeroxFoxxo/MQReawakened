@@ -31,18 +31,31 @@ public class AIStateSpiderVenomComp : BaseAIState<AIStateSpiderVenom, AI_State>
     public void Shooting()
     {
         Logger.LogTrace("Shooting called for {StateName} on {PrefabName}", StateName, PrefabName);
+        var controller = StateMachine as SpiderBossControllerComp;
+        var phase = controller?.CurrentPhase ?? 0;
 
-        var firstShot = TimeDelayBetweenShotPerPhase.FirstOrDefault();
+        var shotDelay = (phase < TimeDelayBetweenShotPerPhase.Length) ? TimeDelayBetweenShotPerPhase[phase] : TimeDelayBetweenShotPerPhase.FirstOrDefault();
+        var salvoCount = (phase < NumberOfSalvoPerPhase.Length) ? NumberOfSalvoPerPhase[phase] : NumberOfSalvoPerPhase.FirstOrDefault();
+        var betweenSalvoDelay = (phase < TimeDelayBetweenEverySalvoPerPhase.Length) ? TimeDelayBetweenEverySalvoPerPhase[phase] : TimeDelayBetweenEverySalvoPerPhase.FirstOrDefault();
 
-        var firstProjectileTime = TimeSpan.FromSeconds(firstShot);
+        if (TimerThread == null)
+            return;
 
-        if (firstProjectileTime > TimeSpan.Zero)
-            TimerThread.RunDelayed(LaunchProjectile, new SpiderProjectile() { IsFirstProjectile = true, Component = this }, firstProjectileTime);
+        var t = TimeSpan.Zero;
 
-        var secondProjectileTime = firstProjectileTime.Add(TimeSpan.FromSeconds(firstShot));
+        for (var i = 0; i < salvoCount; i++)
+        {
+            var firstT = t + TimeSpan.FromSeconds(shotDelay);
+            var secondT = firstT + TimeSpan.FromSeconds(shotDelay);
 
-        if (secondProjectileTime > TimeSpan.Zero)
-            TimerThread.RunDelayed(LaunchProjectile, new SpiderProjectile() { IsFirstProjectile = false, Component = this }, secondProjectileTime);
+            if (firstT > TimeSpan.Zero)
+                TimerThread.RunDelayed(LaunchProjectile, new SpiderProjectile { IsFirstProjectile = true, Component = this }, firstT);
+
+            if (secondT > TimeSpan.Zero)
+                TimerThread.RunDelayed(LaunchProjectile, new SpiderProjectile { IsFirstProjectile = false, Component = this }, secondT);
+
+            t = secondT + TimeSpan.FromSeconds(betweenSalvoDelay);
+        }
     }
 
     public class SpiderProjectile() : ITimerData

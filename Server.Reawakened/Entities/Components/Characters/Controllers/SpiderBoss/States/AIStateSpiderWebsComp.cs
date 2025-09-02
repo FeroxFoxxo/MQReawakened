@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Abstractions;
+using Server.Base.Core.Abstractions;
+using UnityEngine;
 
 namespace Server.Reawakened.Entities.Components.Characters.Controllers.SpiderBoss.States;
 public class AIStateSpiderWebsComp : BaseAIState<AIStateSpiderWebs, AI_State>
@@ -36,14 +38,22 @@ public class AIStateSpiderWebsComp : BaseAIState<AIStateSpiderWebs, AI_State>
     }
 
     public void WebIn() => Logger.LogTrace("WebIn called for {StateName} on {PrefabName}", StateName, PrefabName);
+    public void Shoot1() { Logger.LogTrace("Shoot1 called for {StateName} on {PrefabName}", StateName, PrefabName); LaunchWebProjectile(); }
+    public void Shoot2() { Logger.LogTrace("Shoot2 called for {StateName} on {PrefabName}", StateName, PrefabName); LaunchWebProjectile(); }
+    public void Shoot3() { Logger.LogTrace("Shoot3 called for {StateName} on {PrefabName}", StateName, PrefabName); LaunchWebProjectile(); }
+    public void Shoot4() { Logger.LogTrace("Shoot4 called for {StateName} on {PrefabName}", StateName, PrefabName); LaunchWebProjectile(); }
 
-    public void Shoot1() => Logger.LogTrace("Shoot1 called for {StateName} on {PrefabName}", StateName, PrefabName);
+    private void LaunchWebProjectile()
+    {
+        var randX = (float)(Random.Shared.NextDouble() * 2 - 1) * ProjectileSpeedMaxX;
+        var speed = new Vector2(randX, ProjectileSpeedY);
+        Room.AddRangedProjectile(Id, Position.ToUnityVector3(), speed, 3, 1, ItemEffectType.BluntDamage, false);
+    }
 
-    public void Shoot2() => Logger.LogTrace("Shoot2 called for {StateName} on {PrefabName}", StateName, PrefabName);
-
-    public void Shoot3() => Logger.LogTrace("Shoot3 called for {StateName} on {PrefabName}", StateName, PrefabName);
-
-    public void Shoot4() => Logger.LogTrace("Shoot4 called for {StateName} on {PrefabName}", StateName, PrefabName);
-
-    public void WebOut() => Logger.LogTrace("WebOut called for {StateName} on {PrefabName}", StateName, PrefabName);
+    public void WebOut()
+    {
+        Logger.LogTrace("WebOut called for {StateName} on {PrefabName}", StateName, PrefabName);
+        AddNextState<AIStateSpiderDropComp>();
+        GoToNextState();
+    }
 }

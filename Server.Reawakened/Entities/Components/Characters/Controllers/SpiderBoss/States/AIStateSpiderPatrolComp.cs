@@ -30,7 +30,7 @@ public class AIStateSpiderPatrolComp : BaseAIState<AIStateSpiderPatrol, AI_State
 
     public override void StateIn()
     {
-        var spiderBossController = (SpiderBossController)StateMachine;
+        var spiderBossController = (SpiderBossControllerComp)StateMachine;
         var length = Mathf.Abs(ToY - FromY) / MovementSpeed[spiderBossController.CurrentPhase];
         State.SetTime("Move", length);
         State.SetTime("Move2", length);
