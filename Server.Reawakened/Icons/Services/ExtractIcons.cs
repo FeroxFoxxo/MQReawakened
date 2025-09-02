@@ -16,7 +16,7 @@ public class ExtractIcons(IconsRConfig rConfig, IconsRwConfig rwConfig, AssetBun
 {
     private string[] _knownIconNames = [];
 
-    public bool HasIcon(string name) => _knownIconNames.Contains(name.ToUpper());
+    public bool HasIcon(string name) => _knownIconNames.Length > 0 && _knownIconNames.Contains(name.ToUpper());
 
     public void ExtractAllIcons(Dictionary<string, InternalAssetInfo> internalAssets)
     {
