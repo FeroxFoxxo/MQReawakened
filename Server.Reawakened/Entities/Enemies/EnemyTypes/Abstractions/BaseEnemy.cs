@@ -183,9 +183,9 @@ public abstract class BaseEnemy : IDestructible
 
         var position = new Vector3(Position.x, Position.y, Position.z);
 
-        var size = new Rect(offsetX, offsetY, width, height);
+        var rect = new Rect(offsetX, offsetY, width, height);
 
-        Logger.LogTrace("Created enemy hitbox at {Position} of size {Size}", position, size);
+        Logger.LogTrace("Created enemy hitbox at {Position} of size {Size}", position, rect.size);
 
         Hitbox = new EnemyCollider(Id, position, size, ParentPlane, Room);
 
