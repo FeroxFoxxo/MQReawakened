@@ -145,7 +145,14 @@ public class Room : Timer
         foreach (var component in _entities.Values.SelectMany(x => x))
         {
             Logger.LogTrace("Initializing: {Component}", component.Name);
-            component.InitializeComponent();
+            try
+            {
+                component.InitializeComponent();
+            }
+            catch (Exception e)
+            {
+                Logger.LogError(e, "Ran into an issue initializing component: {component}", component.Name);
+            }
         }
 
         Logger.LogTrace("Initialized components");
@@ -153,7 +160,14 @@ public class Room : Timer
         foreach (var component in _entities.Values.SelectMany(x => x))
         {
             Logger.LogTrace("Delayed initialization: {Component}", component.Name);
-            component.DelayedComponentInitialization();
+            try
+            {
+                component.DelayedComponentInitialization();
+            }
+            catch (Exception e)
+            {
+                Logger.LogError(e, "Ran into an issue initializing component: {component}", component.Name);
+            }
         }
 
         Logger.LogTrace("Initialized delayed components");
