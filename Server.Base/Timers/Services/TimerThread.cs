@@ -115,7 +115,7 @@ public class TimerThread : IService
                 }
                 catch (Exception e)
                 {
-                    _logger.LogError("Timer {TIMER} threw an exception {Message}.", t.Index, e.Message);
+                    _logger.LogError(e, "Timer {TIMER} threw an exception {Message}.", t.Index, e.Message);
                 }
 
                 t.Queued = false;

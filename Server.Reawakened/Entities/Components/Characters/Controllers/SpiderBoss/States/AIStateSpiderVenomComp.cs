@@ -57,11 +57,18 @@ public class AIStateSpiderVenomComp : BaseAIState<AIStateSpiderVenom, AI_State>
             var firstT = t + TimeSpan.FromSeconds(shotDelay);
             var secondT = firstT + TimeSpan.FromSeconds(shotDelay);
 
-            if (firstT > TimeSpan.Zero)
-                TimerThread.RunDelayed(LaunchProjectile, new SpiderProjectile { IsFirstProjectile = true, Component = this }, firstT);
+            var firstData = new SpiderProjectile { IsFirstProjectile = true, Component = this };
+            var secondData = new SpiderProjectile { IsFirstProjectile = false, Component = this };
 
-            if (secondT > TimeSpan.Zero)
-                TimerThread.RunDelayed(LaunchProjectile, new SpiderProjectile { IsFirstProjectile = false, Component = this }, secondT);
+            if (firstT <= TimeSpan.Zero)
+                TimerThread.RunInstantly(LaunchProjectile, firstData);
+            else
+                TimerThread.RunDelayed(LaunchProjectile, firstData, firstT);
+
+            if (secondT <= TimeSpan.Zero)
+                TimerThread.RunInstantly(LaunchProjectile, secondData);
+            else
+                TimerThread.RunDelayed(LaunchProjectile, secondData, secondT);
 
             t = secondT + TimeSpan.FromSeconds(betweenSalvoDelay);
         }
@@ -72,7 +79,7 @@ public class AIStateSpiderVenomComp : BaseAIState<AIStateSpiderVenom, AI_State>
         public AIStateSpiderVenomComp Component { get; set; }
         public bool IsFirstProjectile { get; set; }
 
-        public bool IsValid() => Component != null && Component.IsValid();
+        public bool IsValid() => Component != null && Component.IsValid() && Component.Room != null && !Component.Room.IsObjectKilled(Component.Id);
     }
 
     public static void LaunchProjectile(ITimerData data)
@@ -82,11 +89,19 @@ public class AIStateSpiderVenomComp : BaseAIState<AIStateSpiderVenom, AI_State>
 
         var component = projectile.Component;
 
+        if (component?.Room == null)
+            return;
+
         var first = projectile.IsFirstProjectile;
 
         var speed = new Vector2(first ? component.FirstProjectileSpeedX : component.SecondProjectileSpeedX, component.SecondProjectileSpeedY);
 
-        component.Room.AddRangedProjectile(component.Id, component.Position.ToUnityVector3(), speed, component.CooldownTime, 1, ItemEffectType.BluntDamage, false);
+        var pos = component.Position;
+        
+        if (pos == null)
+            return;
+
+        component.Room.AddRangedProjectile(component.Id, pos.ToUnityVector3(), speed, component.CooldownTime, 1, ItemEffectType.BluntDamage, false);
     }
 
     public void Cooldown()
