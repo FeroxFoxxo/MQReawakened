@@ -140,13 +140,21 @@ public class Room : Timer
                 )
             _gameObjectIds.Add(gameObjectId);
 
+        Logger.LogTrace("Loaded spawn point");
+
         foreach (var component in _entities.Values.SelectMany(x => x))
+        {
+            Logger.LogTrace("Initializing: {Component}", component.Name);
             component.InitializeComponent();
+        }
 
         Logger.LogTrace("Initialized components");
 
         foreach (var component in _entities.Values.SelectMany(x => x))
+        {
+            Logger.LogTrace("Delayed initialization: {Component}", component.Name);
             component.DelayedComponentInitialization();
+        }
 
         Logger.LogTrace("Initialized delayed components");
 
