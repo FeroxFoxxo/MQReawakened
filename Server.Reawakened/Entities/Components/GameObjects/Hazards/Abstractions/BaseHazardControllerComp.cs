@@ -67,6 +67,10 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
             {
                 EffectType = ItemEffectType.PoisonDamage;
             }
+            else if (PrefabName.Contains("Deathplane"))
+            {
+                EffectType = ItemEffectType.BluntDamage;
+            }
             else
             {
                 switch (HurtEffect)
@@ -171,6 +175,9 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
                      player.Character.CalculateDefense(EffectType, ItemCatalog);
 
         Logger.LogTrace("Applying {statusEffect} to {characterName} from {prefabName}", EffectType, player.CharacterName, PrefabName);
+
+        if (PrefabName.Contains("Deathplane"))
+            Damage = 99999;
 
         switch (EffectType)
         {
