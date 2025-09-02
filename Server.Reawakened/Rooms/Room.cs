@@ -121,8 +121,13 @@ public class Room : Timer
         Logger.LogTrace("Creating room with room id: {RoomId}", roomId);
 
         Planes = LevelInfo.LoadPlanes(this, _config);
+        Logger.LogTrace("Loaded planes");
+
         _entities = this.LoadEntities(services);
+        Logger.LogTrace("Loaded entities");
+        
         _colliders = this.LoadTerrainColliders();
+        Logger.LogTrace("Loaded colliders");
 
         _defaultSpawn = GetEntitiesFromType<SpawnPointComp>().MinBy(p => p.Index);
 

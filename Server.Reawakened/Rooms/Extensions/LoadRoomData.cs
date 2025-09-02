@@ -195,6 +195,8 @@ public static class LoadRoomData
                         ComponentAttributes = []
                     });
 
+        vars.Room.Logger.LogTrace("Creating entity: {Entity}", entity.ObjectInfo.PrefabName);
+
         foreach (var component in entity.ObjectInfo.Components)
         {
             if (!vars.Room.World.ProcessableComponents.TryGetValue(component.Key, out var mqType))
