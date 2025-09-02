@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using A2m.Server;
+using Microsoft.Extensions.Logging;
 using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Abstractions;
 using Server.Base.Core.Abstractions;
 using UnityEngine;
@@ -45,7 +46,7 @@ public class AIStateSpiderWebsComp : BaseAIState<AIStateSpiderWebs, AI_State>
 
     private void LaunchWebProjectile()
     {
-        var randX = (float)(Random.Shared.NextDouble() * 2 - 1) * ProjectileSpeedMaxX;
+    var randX = (float)(System.Random.Shared.NextDouble() * 2 - 1) * ProjectileSpeedMaxX;
         var speed = new Vector2(randX, ProjectileSpeedY);
         Room.AddRangedProjectile(Id, Position.ToUnityVector3(), speed, 3, 1, ItemEffectType.BluntDamage, false);
     }

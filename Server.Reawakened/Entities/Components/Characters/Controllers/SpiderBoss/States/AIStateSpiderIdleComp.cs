@@ -32,16 +32,16 @@ public class AIStateSpiderIdleComp : BaseAIState<AIStateSpiderIdle, AI_State>
                 RunVenomState();
                 break;
             case 1:
-                if (Random.Shared.Next(0, 4) == 0)
+                if (System.Random.Shared.Next(0, 4) == 0)
                     RunVineThrowState();
-                else if (Random.Shared.Next(0, 2) == 0)
+                else if (System.Random.Shared.Next(0, 2) == 0)
                     RunWebsState();
                 else
                     RunVenomState();
 
                 break;
             default:
-                var roll = Random.Shared.Next(0, 5);
+                var roll = System.Random.Shared.Next(0, 5);
                 
                 if (roll == 0)
                     RunSwitchSide();
