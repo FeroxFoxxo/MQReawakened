@@ -82,7 +82,8 @@ public class RoomUpdate : ExternalProtocol
 
     private void DisableInvincibility(ITimerData data)
     {
-        var room = (RoomUpdate)data;
+        if (data is not PlayerTimer room)
+            return;
 
         room.Player.TempData.Invincible = false;
     }
