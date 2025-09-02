@@ -144,7 +144,6 @@ public class Room : Timer
 
         foreach (var component in _entities.Values.SelectMany(x => x))
         {
-            Logger.LogTrace("Initializing: {Component}", component.Name);
             try
             {
                 component.InitializeComponent();
@@ -159,7 +158,6 @@ public class Room : Timer
 
         foreach (var component in _entities.Values.SelectMany(x => x))
         {
-            Logger.LogTrace("Delayed initialization: {Component}", component.Name);
             try
             {
                 component.DelayedComponentInitialization();
