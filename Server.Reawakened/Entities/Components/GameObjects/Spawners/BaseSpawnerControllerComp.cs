@@ -13,6 +13,7 @@ using Server.Reawakened.Entities.Components.GameObjects.Trigger;
 using Server.Reawakened.Entities.Enemies.EnemyTypes.Abstractions;
 using Server.Reawakened.Entities.Enemies.Extensions;
 using Server.Reawakened.Entities.Enemies.Models;
+using Server.Reawakened.Entities.Components.PrefabInfos;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Rooms.Services;
@@ -244,7 +245,9 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
 
         // TODO: Change to spawn correct enemy; not just first.
         var enemyToSpawn = EnemyModels.Values.FirstOrDefault();
-        var templateToSpawnAt = TemplateEnemyModels.Values.FirstOrDefault();
+        var templateEntry = TemplateEnemyModels.FirstOrDefault();
+        var templateId = templateEntry.Key;
+        var templateToSpawnAt = templateEntry.Value;
 
         if (enemyToSpawn is null || templateToSpawnAt is null)
         {
@@ -277,13 +280,14 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
 
         Room.SendSyncEvent(new Spawn_SyncEvent(Id, Room.Time, _spawnedEntityCount));
 
-        TimerThread.RunDelayed(DelayedSpawnData, new DelayedEnemySpawn() { Data = templateToSpawnAt, Spawner = this }, TimeSpan.FromSeconds(delay));
+        TimerThread.RunDelayed(DelayedSpawnData, new DelayedEnemySpawn() { Data = templateToSpawnAt, Spawner = this, TemplateId = templateId }, TimeSpan.FromSeconds(delay));
     }
 
     public class DelayedEnemySpawn() : ITimerData
     {
         public SpawnedEnemyData Data;
         public BaseSpawnerControllerComp Spawner;
+        public string TemplateId;
 
         public bool IsValid() => Data != null && Spawner != null && Spawner.IsValid();
     }
@@ -295,6 +299,7 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
 
         var spawner = spawn.Spawner;
         var enemy = spawn.Data;
+        var templateId = spawn.TemplateId;
 
         spawner._nextSpawnRequestTime = 0;
 
@@ -316,6 +321,14 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
             enemyComponent,
             enemy.Hazard
         };
+
+        var serverSize = spawner.Room.GetEntityFromId<ServerObjectSizeInfoComp>(templateId);
+        var objectSize = spawner.Room.GetEntityFromId<ObjectSizeInfoComp>(templateId);
+
+        if (serverSize != null)
+            newEntity.Add(serverSize);
+        else if (objectSize != null)
+            newEntity.Add(objectSize);
 
         var _spawnedEntityId = $"{spawner.Id}_{spawner._spawnedEntityCount}";
 
