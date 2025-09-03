@@ -6,6 +6,7 @@ using Server.Base.Timers.Services;
 using Server.Reawakened.Entities.Components.AI.Stats;
 using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Controller;
 using Server.Reawakened.Entities.Components.GameObjects.Breakables;
+using Server.Reawakened.Entities.Enemies.Behaviors.Abstractions;
 using Server.Reawakened.Entities.Components.GameObjects.Hazards;
 using Server.Reawakened.Entities.Components.GameObjects.InterObjs;
 using Server.Reawakened.Entities.Components.GameObjects.Trigger;
@@ -251,17 +252,15 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
             return;
         }
 
-        var behaviors = new Dictionary<StateType, BaseState>
-        {
-            { StateType.Idle, new IdleState([]) }
-        };
+        var states = new Dictionary<StateType, BaseState>();
+        var behaviorsMap = new Dictionary<StateType, AIBaseBehavior>();
 
         Room.SendSyncEvent(
             AISyncEventHelper.AIInit(
                 Id, Room,
                 Position.X, Position.Y, Position.Z, Position.X, Position.Y,
                 templateToSpawnAt.Generic.Patrol_InitialProgressRatio, CurrentHealth, MaxHealth,
-                _healthMod, _scaleMod, _resMod, Stars, Level, templateToSpawnAt.GlobalProperties, behaviors
+                _healthMod, _scaleMod, _resMod, Stars, Level, templateToSpawnAt.GlobalProperties, states, behaviorsMap
             )
         );
 
