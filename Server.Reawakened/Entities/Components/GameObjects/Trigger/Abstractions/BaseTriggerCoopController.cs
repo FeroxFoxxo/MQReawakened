@@ -520,10 +520,10 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
                 var shouldRun = QuestInProgressRequired == quest.Name;
 
                 var sb = new StringBuilder();
-                sb.AppendLine($"Callback: QuestAdded")
-                    .AppendLine($"TriggerId: {Id}")
-                    .AppendLine($"Quest: {quest?.Name} ({quest?.Id})")
-                    .AppendLine($"Player: {player?.Character?.Name}")
+                        sb.AppendLine($"Callback: QuestAdded")
+                            .AppendLine($"TriggerId: {Id}")
+                            .AppendLine($"Quest: {quest?.Name} ({quest?.Id})")
+                            .AppendLine($"Player: {player?.CharacterName}")
                     .AppendLine($"MatchesInProgressRequired: {shouldRun}");
 
                 FileLogger?.WriteGenericLog<TriggerCoopController>(
@@ -543,10 +543,10 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
         var matchesInProgress = QuestInProgressRequired == quest.Name;
 
         var sb = new StringBuilder();
-        sb.AppendLine($"Callback: QuestCompleted")
-            .AppendLine($"TriggerId: {Id}")
-            .AppendLine($"Quest: {quest?.Name} ({quest?.Id})")
-            .AppendLine($"Player: {player?.Character?.Name}")
+                sb.AppendLine($"Callback: QuestCompleted")
+                    .AppendLine($"TriggerId: {Id}")
+                    .AppendLine($"Quest: {quest?.Name} ({quest?.Id})")
+                    .AppendLine($"Player: {player?.CharacterName}")
             .AppendLine($"MatchesCompletedRequired: {matchesCompleted}")
             .AppendLine($"MatchesInProgressRequired: {matchesInProgress}");
 
