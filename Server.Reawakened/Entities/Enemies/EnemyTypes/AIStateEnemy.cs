@@ -22,14 +22,14 @@ public class AIStateEnemy(EnemyData data) : BaseEnemy(data)
         else
             stateMachine.SetAIStateEnemy(this);
 
+        base.Initialize();
+        
         Room.SendSyncEvent(
             GetBlankEnemyInit(
                 Position.x, Position.y, Position.z,
                 Position.x, Position.y
             )
         );
-
-        base.Initialize();
     }
 
     public override void SendAiData(Player player) =>

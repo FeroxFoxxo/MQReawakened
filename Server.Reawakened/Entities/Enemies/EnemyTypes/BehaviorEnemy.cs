@@ -71,6 +71,8 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
 
         Behaviors = EnemyModel.BehaviorData.ToDictionary(s => s.Key, s => s.Value.GetBaseBehaviour(this));
 
+        base.Initialize();
+        
         Room.SendSyncEvent(
             AISyncEventHelper.AIInit(
                 Position.x, Position.y, Position.z,
@@ -80,8 +82,6 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
         );
 
         ChangeBehavior(StateType.Patrol, Position.x, Position.y, Generic.Patrol_ForceDirectionX);
-
-        base.Initialize();
     }
 
     public override void CheckForSpawner()
