@@ -165,9 +165,9 @@ public class SpiderBossControllerComp : BaseAIStateMachine<SpiderBossController>
         {
             var ratio = (float)EnemyData.Health / EnemyData.MaxHealth;
 
-            if (TeaserEndLifeRatio > 0 && ratio <= TeaserEndLifeRatio)
+            if (TeaserEndLifeRatio > 0 && TeaserEndLifeRatio < 1f && ratio < TeaserEndLifeRatio && ratio < 0.9999f)
             {
-                Logger.LogTrace("Teaser health threshold met (ratio={Ratio:F2} <= {Thresh:F2})", ratio, TeaserEndLifeRatio);
+                Logger.LogTrace("Teaser health threshold met (ratio={Ratio:F3} < {Thresh:F3})", ratio, TeaserEndLifeRatio);
                 return true;
             }
         }
