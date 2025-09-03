@@ -253,19 +253,44 @@ public class WorldHandler(EventSink sink, ServerRConfig config, WorldGraph world
 
     public Dictionary<string, OrderedDictionary> GetPrefabOverloads(AssetBundleRConfig rConfig, string prefabName)
     {
-        if (PrefabOverrides.TryGetValue(prefabName, out var foundValue))
+        if (PrefabOverrides.TryGetValue(prefabName, out var foundValue) && foundValue != null)
             return foundValue;
 
-        var prefabPath = Path.Combine(rConfig.ScriptsConfigDirectory, $"{prefabName.ToLower()}.json");
-        Dictionary<string, OrderedDictionary> prefabOverrides = null;
-
-        if (File.Exists(prefabPath))
+        static string TryReadOverrides(string path)
         {
-            var prefabText = File.ReadAllText(prefabPath);
-            prefabOverrides = JsonSerializer.Deserialize<Dictionary<string, OrderedDictionary>>(prefabText);
+            return File.Exists(path) ? File.ReadAllText(path) : null;
         }
 
-        PrefabOverrides.Add(prefabName, prefabOverrides);
+        var exactPath = Path.Combine(rConfig.ScriptsConfigDirectory, $"{prefabName}.json");
+        var lowerPath = Path.Combine(rConfig.ScriptsConfigDirectory, $"{prefabName.ToLower()}.json");
+
+        var prefabText = TryReadOverrides(exactPath) ?? TryReadOverrides(lowerPath);
+
+        if (prefabText == null)
+        {
+            try
+            {
+                var match = Directory.EnumerateFiles(rConfig.ScriptsConfigDirectory, "*.json")
+                    .FirstOrDefault(f => string.Equals(
+                        Path.GetFileNameWithoutExtension(f),
+                        prefabName,
+                        StringComparison.OrdinalIgnoreCase));
+
+                if (match != null)
+                    prefabText = File.ReadAllText(match);
+            }
+            catch
+            {
+            }
+        }
+
+        Dictionary<string, OrderedDictionary> prefabOverrides = null;
+
+        if (!string.IsNullOrEmpty(prefabText))
+            prefabOverrides = JsonSerializer.Deserialize<Dictionary<string, OrderedDictionary>>(prefabText);
+
+        if (!PrefabOverrides.TryAdd(prefabName, prefabOverrides))
+            PrefabOverrides[prefabName] = prefabOverrides;
 
         return prefabOverrides;
     }
