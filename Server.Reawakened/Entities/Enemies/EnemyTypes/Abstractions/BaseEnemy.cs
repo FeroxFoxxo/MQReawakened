@@ -86,16 +86,6 @@ public abstract class BaseEnemy : IDestructible
         ParentPlane = EnemyController.ParentPlane;
         Position = new Vector3(EnemyController.Position.X, EnemyController.Position.Y, EnemyController.Position.Z);
 
-        Status = Room.GetEntityFromId<InterObjStatusComp>(Id);
-
-        var serverObjectSize = Room.GetEntityFromId<ServerObjectSizeInfoComp>(Id);
-        var objectSize = Room.GetEntityFromId<ObjectSizeInfoComp>(Id);
-
-        if (serverObjectSize != null)
-            Box = serverObjectSize;
-        else if (objectSize != null)
-            Box = objectSize;
-
         switch (ParentPlane)
         {
             case "TemplatePlane":
@@ -129,7 +119,11 @@ public abstract class BaseEnemy : IDestructible
         ResistanceModifier = 1;
     }
 
-    public virtual void Initialize() => Init = true;
+    public virtual void Initialize() {
+        GenerateHitbox();
+        
+        Init = true;
+    }
 
     public void Update()
     {
@@ -166,6 +160,16 @@ public abstract class BaseEnemy : IDestructible
 
     public void GenerateHitbox()
     {
+        Status = Room.GetEntityFromId<InterObjStatusComp>(Id);
+
+        var serverObjectSize = Room.GetEntityFromId<ServerObjectSizeInfoComp>(Id);
+        var objectSize = Room.GetEntityFromId<ObjectSizeInfoComp>(Id);
+
+        if (serverObjectSize != null)
+            Box = serverObjectSize;
+        else if (objectSize != null)
+            Box = objectSize;
+
         if (Box == null || EnemyController.Scale == null)
         {
             Logger.LogError("Box or Scale is null for enemy {PrefabName} with ID {Id}. Cannot generate hitbox.", PrefabName, Id);
