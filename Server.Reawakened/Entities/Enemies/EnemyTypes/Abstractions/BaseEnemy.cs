@@ -83,6 +83,8 @@ public abstract class BaseEnemy : IDestructible
         ItemCatalog = Services.GetRequiredService<ItemCatalog>();
         ServerRConfig = Services.GetRequiredService<ServerRConfig>();
 
+        Logger.LogDebug("Creating enemy {PrefabName} with ID {Id}", PrefabName, Id);
+
         ParentPlane = EnemyController.ParentPlane;
         Position = new Vector3(EnemyController.Position.X, EnemyController.Position.Y, EnemyController.Position.Z);
 
@@ -111,8 +113,6 @@ public abstract class BaseEnemy : IDestructible
 
         Health = MaxHealth;
 
-        GenerateHitbox();
-
         // Temporary values
         HealthModifier = 1;
         ScaleModifier = 1;
@@ -120,6 +120,7 @@ public abstract class BaseEnemy : IDestructible
     }
 
     public virtual void Initialize() {
+        Logger.LogDebug("Initializing enemy {PrefabName} (ID: {Id})", PrefabName, Id);
         GenerateHitbox();
         
         Init = true;
@@ -165,6 +166,11 @@ public abstract class BaseEnemy : IDestructible
         var serverObjectSize = Room.GetEntityFromId<ServerObjectSizeInfoComp>(Id);
         var objectSize = Room.GetEntityFromId<ObjectSizeInfoComp>(Id);
 
+        Logger.LogDebug("Generating hitbox for enemy {PrefabName} (ID: {Id})", PrefabName, Id);
+        
+        Logger.LogDebug("Found components - Status: {Status}, ServerObjectSizeInfo: {ServerSize}, ObjectSizeInfo: {ObjectSize}", 
+            Status != null ? "Yes" : "No", serverObjectSize != null ? "Yes" : "No", objectSize != null ? "Yes" : "No");
+
         if (serverObjectSize != null)
             Box = serverObjectSize;
         else if (objectSize != null)
@@ -173,6 +179,13 @@ public abstract class BaseEnemy : IDestructible
         if (Box == null || EnemyController.Scale == null)
         {
             Logger.LogError("Box or Scale is null for enemy {PrefabName} with ID {Id}. Cannot generate hitbox.", PrefabName, Id);
+            Logger.LogError("Box: {Box}, Scale: {Scale}", Box != null ? "Present" : "Null", EnemyController.Scale != null ? "Present" : "Null");
+            
+            var allComponents = Room.GetEntitiesFromId<BaseComponent>(Id);
+            
+            Logger.LogError("Available components for enemy {Id}: {Components}", Id, 
+                string.Join(", ", allComponents.Select(c => c.GetType().Name)));
+            
             return;
         }
 
