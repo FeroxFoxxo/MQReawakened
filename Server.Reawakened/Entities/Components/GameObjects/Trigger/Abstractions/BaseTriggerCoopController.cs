@@ -517,13 +517,47 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
 
     public void QuestAdded(QuestDescription quest, Player player)
     {
-        if (QuestInProgressRequired == quest.Name)
-            RunTrigger(player);
+                var shouldRun = QuestInProgressRequired == quest.Name;
+
+                var sb = new StringBuilder();
+                sb.AppendLine($"Callback: QuestAdded")
+                    .AppendLine($"TriggerId: {Id}")
+                    .AppendLine($"Quest: {quest?.Name} ({quest?.Id})")
+                    .AppendLine($"Player: {player?.Character?.Name}")
+                    .AppendLine($"MatchesInProgressRequired: {shouldRun}");
+
+                FileLogger?.WriteGenericLog<TriggerCoopController>(
+                        "quest-callbacks",
+                        $"[QuestAdded]",
+                        sb.ToString(),
+                        LoggerType.Trace
+                );
+
+                if (shouldRun)
+                        RunTrigger(player);
     }
 
     public void QuestCompleted(QuestDescription quest, Player player)
     {
-        if (QuestCompletedRequired == quest.Name || QuestInProgressRequired == quest.Name)
-            RunTrigger(player);
+        var matchesCompleted = QuestCompletedRequired == quest.Name;
+        var matchesInProgress = QuestInProgressRequired == quest.Name;
+
+        var sb = new StringBuilder();
+        sb.AppendLine($"Callback: QuestCompleted")
+            .AppendLine($"TriggerId: {Id}")
+            .AppendLine($"Quest: {quest?.Name} ({quest?.Id})")
+            .AppendLine($"Player: {player?.Character?.Name}")
+            .AppendLine($"MatchesCompletedRequired: {matchesCompleted}")
+            .AppendLine($"MatchesInProgressRequired: {matchesInProgress}");
+
+        FileLogger?.WriteGenericLog<TriggerCoopController>(
+                "quest-callbacks",
+                $"[QuestCompleted]",
+                sb.ToString(),
+                LoggerType.Trace
+        );
+
+        if (matchesCompleted || matchesInProgress)
+                RunTrigger(player);
     }
 }
