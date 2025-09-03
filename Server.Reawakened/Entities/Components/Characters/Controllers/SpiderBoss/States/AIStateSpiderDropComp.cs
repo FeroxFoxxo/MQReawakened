@@ -48,7 +48,9 @@ public class AIStateSpiderDropComp : BaseAIState<AIStateSpiderDrop, AI_State_Dro
     {
         Logger.LogTrace("Dropped called for {StateName} on {PrefabName}", StateName, PrefabName);
 
-        Room.GetEntityFromId<SpiderBossControllerComp>(Id).OnGround = true;
+        var controller = Room.GetEntityFromId<SpiderBossControllerComp>(Id);
+        controller.OnGround = true;
+        controller.MarkTeaserFightStart();
 
         RunIdleState();
     }

@@ -9,33 +9,6 @@ namespace Server.Reawakened.Entities.Components.Characters.Controllers.SpiderBos
 
 public class SpiderBossControllerComp : BaseAIStateMachine<SpiderBossController>, IRecieverTriggered, IDestructible, IAIDamageEnemy
 {
-    /* 
-     * -- AI STATES --
-     * AIStateSpiderBase
-     * AIStateSpiderDeactivated
-     * AIStateSpiderDrop
-     * AIStateSpiderIdle
-     * AIStateSpiderMove
-     * AIStateSpiderPatrol
-     * AIStateSpiderPhase1
-     * AIStateSpiderPhase2
-     * AIStateSpiderPhase3
-     * AIStateSpiderPhaseTeaser
-     * AIStateSpiderPhaseTrans
-     * AIStateSpiderRetreat
-     * AIStateSpiderVenom
-     * AIStateSpiderVineThrow
-     * AIStateSpiderWebs
-     * 
-     * -- BOSS ONLY --
-     * AIStateSpiderEntrance
-     * AIStateSpiderSwichSide
-     * 
-     * -- TEASER ONLY --
-     * AIStateSpiderTeaserEntrance
-     * AIStateSpiderTeaserRetreat
-    */
-
     public bool Teaser => ComponentData.Teaser;
     public string NPCId => ComponentData.NPCId;
     public string NPCTriggerId => ComponentData.NPCTriggerId;
@@ -71,8 +44,6 @@ public class SpiderBossControllerComp : BaseAIStateMachine<SpiderBossController>
             if (Teaser)
             {
                 Logger.LogTrace("SpiderBoss trigger received. Teaser={Teaser}", Teaser);
-
-                _teaserStartTime = Room.Time;
 
                 Logger.LogTrace("Queued states: PhaseTeaser -> TeaserEntrance");
 
@@ -173,5 +144,17 @@ public class SpiderBossControllerComp : BaseAIStateMachine<SpiderBossController>
         }
 
         return false;
+    }
+
+    public void MarkTeaserFightStart()
+    {
+        if (!Teaser || Room == null)
+            return;
+
+        if (_teaserStartTime < 0f)
+        {
+            _teaserStartTime = Room.Time;
+            Logger.LogTrace("Teaser fight timer started (t={Time:F2})", _teaserStartTime);
+        }
     }
 }
