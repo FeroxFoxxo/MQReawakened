@@ -112,6 +112,7 @@ public abstract class BaseEnemy : IDestructible
         MaxHealth = GameFlow.StatisticData.GetValue(ItemEffectType.IncreaseHitPoints, WorldStatisticsGroup.Enemy, Level);
 
         Health = MaxHealth;
+        Logger.LogTrace("Spawn health for {PrefabName} (ID: {Id}) => {Health}/{Max}", PrefabName, Id, Health, MaxHealth);
 
         // Temporary values
         HealthModifier = 1;
@@ -167,7 +168,7 @@ public abstract class BaseEnemy : IDestructible
         var objectSize = Room.GetEntityFromId<ObjectSizeInfoComp>(Id);
 
         Logger.LogDebug("Generating hitbox for enemy {PrefabName} (ID: {Id})", PrefabName, Id);
-        
+
         Logger.LogDebug("Found components - Status: {Status}, ServerObjectSizeInfo: {ServerSize}, ObjectSizeInfo: {ObjectSize}", 
             Status != null ? "Yes" : "No", serverObjectSize != null ? "Yes" : "No", objectSize != null ? "Yes" : "No");
 

@@ -32,8 +32,16 @@ public class AIStateSpiderVenomComp : BaseAIState<AIStateSpiderVenom, AI_State>
     public override void OnAIStateIn()
     {
         var (phase, shotDelay, salvoCount, betweenSalvoDelay) = ResolveVenomParams();
-        Logger.LogTrace("Enter Venom: phase={Phase}, salvos={Salvos}, shotDelay={ShotDelay}, betweenSalvo={Between}",
-            phase, salvoCount, shotDelay, betweenSalvoDelay);
+
+        var shootingDuration = (salvoCount > 0)
+            ? 2f * shotDelay * salvoCount + betweenSalvoDelay * (salvoCount - 1)
+            : 0f;
+
+        State.SetTime("Shooting", shootingDuration);
+        State.RecalculateTimes();
+
+        Logger.LogTrace("Enter Venom: phase={Phase}, salvos={Salvos}, shotDelay={ShotDelay}, betweenSalvo={Between}, shootingDuration={ShootDur}",
+            phase, salvoCount, shotDelay, betweenSalvoDelay, shootingDuration);
     }
 
     public void Shooting()
