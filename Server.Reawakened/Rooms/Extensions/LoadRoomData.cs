@@ -192,10 +192,14 @@ public static class LoadRoomData
         foreach (var component in entity.ObjectInfo.Components)
         {
             if (!vars.Room.World.ProcessableComponents.TryGetValue(component.Key, out var mqType))
+            {
+                vars.Room.Logger.LogTrace("Could not find processable type for {ComponentKey}", component.Key);
                 continue;
+            }
 
             if (!vars.Room.World.EntityComponents.TryGetValue(component.Key, out var internalType))
             {
+                vars.Room.Logger.LogTrace("Could not find internal type for {ComponentKey}", component.Key);
                 unknownComponents.Add(mqType.Name);
                 continue;
             }
