@@ -142,6 +142,29 @@ What happens:
 
 Visit your server at `http://localhost` (or your domain) and check `/healthz` for a simple health check.
 
+## Update the container (Docker)
+
+Keeping up to date is simple and non‑destructive. Your data and configs live under `./Game/Data` and are mounted into the container, so pulling a new image will not wipe them.
+
+Typical update flow:
+
+```bash
+# 1) Fetch the latest image(s)
+docker compose pull
+
+# 2) Recreate and start with the new version
+docker compose up -d
+
+# 3) (Optional) Watch logs to ensure a clean start
+docker compose logs -f --tail=100 mqreawakened
+```
+
+Notes:
+
+- Clean rebuild/extract: set `FORCE_REBUILD=1` in `.env`, then `docker compose up -d`. Set it back to `0` afterwards to avoid repeated rebuilds.
+- Breaking change recovery: if something seems stuck after an update, try `docker compose down` followed by `docker compose up -d`.
+- Compose file changes: if the upstream `compose.yaml` changes, re‑download it and merge any local edits (like ports) before running the steps above.
+
 ## Reverse proxy (NGINX)
 
 The client will not work over modern HTTPS unless you use an older TLS version. To keep things simple, ensure you also expose a plain HTTP server. Here's an example NGINX config to proxy both HTTPS and HTTP to your container:
