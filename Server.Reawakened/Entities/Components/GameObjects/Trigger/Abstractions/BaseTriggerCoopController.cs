@@ -523,7 +523,7 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
 
     public void QuestCompleted(QuestDescription quest, Player player)
     {
-        if (QuestCompletedRequired == quest.Name)
+        if (QuestCompletedRequired == quest.Name || QuestInProgressRequired == quest.Name)
             RunTrigger(player);
     }
 }
