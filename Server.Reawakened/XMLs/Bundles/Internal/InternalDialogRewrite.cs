@@ -1,4 +1,7 @@
-﻿using Server.Reawakened.XMLs.Abstractions.Enums;
+﻿using Microsoft.Extensions.Logging;
+using Server.Reawakened.Core.Enums;
+using Server.Reawakened.XMLs.Abstractions.Enums;
+using Server.Reawakened.XMLs.Abstractions.Extensions;
 using Server.Reawakened.XMLs.Abstractions.Interfaces;
 using System.Xml;
 
@@ -9,7 +12,9 @@ public class InternalDialogRewrite : InternalXml
     public override string BundleName => "InternalDialogRewrite";
     public override BundlePriority Priority => BundlePriority.Medium;
 
-    public Dictionary<string, string> Rewrites;
+    public ILogger<InternalDialogRewrite> Logger { get; set; }
+
+    public Dictionary<GameVersion, Dictionary<string, string>> Rewrites;
 
     public override void InitializeVariables() => Rewrites = [];
 
@@ -19,28 +24,42 @@ public class InternalDialogRewrite : InternalXml
         {
             if (dialogRewriteXml.Name != "DialogRewrites") continue;
 
-            foreach (XmlNode dialogRewrite in dialogRewriteXml.ChildNodes)
+            var gameVersion = GameVersion.Unknown;
+
+            foreach (XmlNode gVXml in dialogRewriteXml.ChildNodes)
             {
-                if (dialogRewrite.Name != "Dialog") continue;
+                if (!(gVXml.Name == "GameVersion")) continue;
 
-                var oldDialogName = string.Empty;
-                var newDialogName = string.Empty;
-
-                foreach (XmlAttribute dialogRewriteAttribute in dialogRewrite.Attributes)
-                    switch (dialogRewriteAttribute.Name)
+                foreach (XmlAttribute gVAttribute in gVXml.Attributes)
+                    switch (gVAttribute.Name)
                     {
-                        case "oldDialogName":
-                            oldDialogName = dialogRewriteAttribute.Value;
-                            continue;
-                        case "newDialogName":
-                            newDialogName = dialogRewriteAttribute.Value;
-                            continue;
+                        case "version":
+                            gameVersion = gameVersion.GetEnumValue(gVAttribute.Value, Logger);
+                            break;
                     }
 
-                if (Rewrites.ContainsKey(oldDialogName))
-                    continue;
+                Rewrites.Add(gameVersion, []);
 
-                Rewrites.Add(oldDialogName, newDialogName);
+                foreach (XmlNode dialogRewrite in gVXml.ChildNodes)
+                {
+                    if (dialogRewrite.Name != "Dialog") continue;
+
+                    var oldDialogName = string.Empty;
+                    var newDialogName = string.Empty;
+
+                    foreach (XmlAttribute dialogRewriteAttribute in dialogRewrite.Attributes)
+                        switch (dialogRewriteAttribute.Name)
+                        {
+                            case "oldDialogName":
+                                oldDialogName = dialogRewriteAttribute.Value;
+                                continue;
+                            case "newDialogName":
+                                newDialogName = dialogRewriteAttribute.Value;
+                                continue;
+                        }
+
+                    Rewrites[gameVersion].Add(oldDialogName, newDialogName);
+                }
             }
         }
     }
