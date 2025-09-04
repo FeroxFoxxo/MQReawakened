@@ -133,7 +133,7 @@
 		<Dialog oldDialogName="T1CF_02_00" newDialogName="T0CR_10_00validator" />
 		<Dialog oldDialogName="T2SD_02_00" newDialogName="T0CR_12_00validator" />
 		<Dialog oldDialogName="T3OM_02_00" newDialogName="T0CR_14_00validator" />
-		<Dialog oldDialogName="T4IR_00_00" newDialogName="T0CR_11_00validator" />
+		<Dialog oldDialogName="T4IR_00_00" newDialogName="T4IR_00_01" />
     </GameVersion>
     <GameVersion version="vEarly2013">
 		<Dialog oldDialogName="DAY_CRS_TS01" newDialogName="Daily_CRS_TS01" />
@@ -162,10 +162,11 @@
 		<Dialog oldDialogName="DAY_BON04_1" newDialogName="Daily_BON04" />
 		<Dialog oldDialogName="DAY_BON05_1" newDialogName="Daily_scoreArena01" />
 		<Dialog oldDialogName="DAY_BON06_1" newDialogName="Daily_Score01 dup_145" />
+		<Dialog oldDialogName="T0CR_10_00" newDialogName="T0CR_10_00validator" />
 		<Dialog oldDialogName="T0CR_14_00" newDialogName="T0CR_14_00validator" />
-		<Dialog oldDialogName="T1CF_02_00" newDialogName="T1CF_02_01" />
-		<Dialog oldDialogName="T2SD_02_00" newDialogName="T2SD_02_01" />
-		<Dialog oldDialogName="T3OM_02_00" newDialogName="T3OM_02_01" />
+		<Dialog oldDialogName="T1CF_02_00" newDialogName="T0CR_10_00validator" />
+		<Dialog oldDialogName="T2SD_02_00" newDialogName="T0CR_12_00validator" />
+		<Dialog oldDialogName="T3OM_02_00" newDialogName="T0CR_14_00validator" />
 		<Dialog oldDialogName="T4IR_00_00" newDialogName="T4IR_00_01" />
     </GameVersion>
     <GameVersion version="vLate2012">
@@ -195,11 +196,12 @@
 		<Dialog oldDialogName="DAY_BON04_1" newDialogName="Daily_BON04" />
 		<Dialog oldDialogName="DAY_BON05_1" newDialogName="Daily_scoreArena01" />
 		<Dialog oldDialogName="DAY_BON06_1" newDialogName="Daily_Score01 dup_145" />
+		<Dialog oldDialogName="T0CR_10_00" newDialogName="T0CR_10_00validator" />
 		<Dialog oldDialogName="T0CR_14_00" newDialogName="T0CR_14_00validator" />
 		<Dialog oldDialogName="T1CF_02_00" newDialogName="T0CR_10_00validator" />
 		<Dialog oldDialogName="T2SD_02_00" newDialogName="T0CR_12_00validator" />
 		<Dialog oldDialogName="T3OM_02_00" newDialogName="T0CR_14_00validator" />
-		<Dialog oldDialogName="T4IR_00_00" newDialogName="T0CR_11_00validator" />
+		<Dialog oldDialogName="T4IR_00_00" newDialogName="T4IR_00_01" />
     </GameVersion>
     <GameVersion version="vMinigames2012">
     </GameVersion>
