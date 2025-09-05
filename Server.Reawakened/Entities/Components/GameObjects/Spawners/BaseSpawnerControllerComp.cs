@@ -291,11 +291,6 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
 
         var room = spawner.Room;
 
-        var enemyController = room.GetEnemyFromId(templateId);
-
-        var generic = room.GetEntityFromId<AIStatsGenericComp>(templateId);
-        var hazard = room.GetEntityFromId<HazardControllerComp>(templateId);
-
         var _spawnedEntityId = $"{spawner.Id}_{spawner._spawnedEntityCount}";
 
         var components = room.GetEntitiesFromId<BaseComponent>(templateId).ToList();
@@ -307,7 +302,11 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
             spawner.Room.RemoveKilledEnemy(component.Id);
         }
 
-        //Fix some things before setting the enemy
+        var enemyController = room.GetEnemyFromId(_spawnedEntityId);
+        var generic = room.GetEntityFromId<AIStatsGenericComp>(_spawnedEntityId);
+        var hazard = room.GetEntityFromId<HazardControllerComp>(_spawnedEntityId);
+
+        // Fix some things before setting the enemy
         hazard?.SetId(_spawnedEntityId);
         generic?.SetPatrolRange(spawner.PatrolDistance);
 
