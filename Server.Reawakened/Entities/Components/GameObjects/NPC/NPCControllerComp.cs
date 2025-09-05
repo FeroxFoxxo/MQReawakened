@@ -560,7 +560,7 @@ public class NPCControllerComp : Component<NPCController>
         if ((quest.ValidatorName != quest.QuestgGiverName || quest.ValidatorGoId != quest.QuestGiverGoId && quest.QuestGiverGoId > 0) && quest.ValidatorGoId.ToString() == Id)
             questName += "validator";
 
-        if (DialogRewrites.Rewrites.TryGetValue(questName, out var rewrittenName))
+        if (DialogRewrites.Rewrites[Config.GameVersion].TryGetValue(questName, out var rewrittenName))
             questName = rewrittenName;
 
         if (!Dialog.QuestDialog.TryGetValue(questName, out var questDialog))
