@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Entities.Colliders;
 using Server.Reawakened.Entities.Components.AI.Stats;
+using Server.Reawakened.Entities.Components.GameObjects.InterObjs;
 using Server.Reawakened.Entities.Enemies.Behaviors.Abstractions;
 using Server.Reawakened.Entities.Enemies.EnemyTypes.Abstractions;
 using Server.Reawakened.Entities.Enemies.Extensions;
@@ -91,18 +92,17 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
         if (LinkedSpawner == null)
             return;
 
-        // Should use apt template rather than first
-        var spawnerTemplate = LinkedSpawner.TemplateEnemyModels.FirstOrDefault().Value;
+        var templateId = LinkedSpawner.TemplateIds.FirstOrDefault();
 
-        if (spawnerTemplate is null)
+        if (string.IsNullOrEmpty(templateId))
         {
             Logger.LogError("Spawner with {Id} has invalid templates! Returning...", LinkedSpawner.Id);
             return;
         }
 
-        Global = spawnerTemplate.Global;
-        Generic = spawnerTemplate.Generic;
-        Status = spawnerTemplate.Status;
+        Global = Room.GetEntityFromId<AIStatsGlobalComp>(templateId);
+        Generic = Room.GetEntityFromId<AIStatsGenericComp>(templateId);
+        Status = Room.GetEntityFromId<InterObjStatusComp>(templateId);
     }
 
     public override void InternalUpdate()
