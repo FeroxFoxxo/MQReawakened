@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Entities.Colliders;
 using Server.Reawakened.Entities.Components.AI.Stats;
+using Server.Reawakened.Entities.Components.GameObjects.InterObjs;
 using Server.Reawakened.Entities.Enemies.Behaviors.Abstractions;
 using Server.Reawakened.Entities.Enemies.EnemyTypes.Abstractions;
 using Server.Reawakened.Entities.Enemies.Extensions;
@@ -41,8 +42,23 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
         _enemyLock = new object();
         TimerThread = Services.GetRequiredService<TimerThread>();
 
-        Global = Room.GetEntityFromId<AIStatsGlobalComp>(Id);
-        Generic = Room.GetEntityFromId<AIStatsGenericComp>(Id);
+        // Try by spawned Id first; if not present, keep values set during CheckForSpawner (template), or fallback to template now
+        var globalById = Room.GetEntityFromId<AIStatsGlobalComp>(Id);
+        var genericById = Room.GetEntityFromId<AIStatsGenericComp>(Id);
+
+        if (globalById != null) Global = globalById;
+        if (genericById != null) Generic = genericById;
+
+        if ((Global == null || Generic == null) && LinkedSpawner != null)
+        {
+            var templateId = LinkedSpawner.TemplateIds.FirstOrDefault();
+            if (!string.IsNullOrEmpty(templateId))
+            {
+                Global ??= Room.GetEntityFromId<AIStatsGlobalComp>(templateId);
+                Generic ??= Room.GetEntityFromId<AIStatsGenericComp>(templateId);
+                Status ??= Room.GetEntityFromId<InterObjStatusComp>(templateId);
+            }
+        }
 
         var classCopier = Services.GetRequiredService<ClassCopier>();
 
@@ -55,10 +71,11 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
             Sync_PosY = Position.y,
             Sync_PosZ = Position.z,
             SyncInit_Dir = 0,
-            SyncInit_ProgressRatio = Generic.Patrol_InitialProgressRatio
+            SyncInit_ProgressRatio = Generic?.Patrol_InitialProgressRatio ?? 0f
         };
 
-        AiData.SetStats(Global.GetGlobalProperties());
+        if (Global != null)
+            AiData.SetStats(Global.GetGlobalProperties());
 
         AiData.services = new AIServices
         {
@@ -77,11 +94,11 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
             AISyncEventHelper.AIInit(
                 Position.x, Position.y, Position.z,
                 Position.x, Position.y,
-                Generic.Patrol_InitialProgressRatio, this
+        Generic?.Patrol_InitialProgressRatio ?? 0f, this
             )
         );
 
-        ChangeBehavior(StateType.Patrol, Position.x, Position.y, Generic.Patrol_ForceDirectionX);
+    ChangeBehavior(StateType.Patrol, Position.x, Position.y, Generic?.Patrol_ForceDirectionX ?? 0);
     }
 
     public override void CheckForSpawner()
@@ -91,18 +108,17 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
         if (LinkedSpawner == null)
             return;
 
-        // Should use apt template rather than first
-        var spawnerTemplate = LinkedSpawner.TemplateEnemyModels.FirstOrDefault().Value;
+        var templateId = LinkedSpawner.TemplateIds.FirstOrDefault();
 
-        if (spawnerTemplate is null)
+        if (string.IsNullOrEmpty(templateId))
         {
             Logger.LogError("Spawner with {Id} has invalid templates! Returning...", LinkedSpawner.Id);
             return;
         }
 
-        Global = spawnerTemplate.Global;
-        Generic = spawnerTemplate.Generic;
-        Status = spawnerTemplate.Status;
+        Global = Room.GetEntityFromId<AIStatsGlobalComp>(templateId);
+        Generic = Room.GetEntityFromId<AIStatsGenericComp>(templateId);
+        Status = Room.GetEntityFromId<InterObjStatusComp>(templateId);
     }
 
     public override void InternalUpdate()
@@ -118,22 +134,32 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
                 if (AiData.Intern_FireProjectile)
                     FireProjectile(false);
 
-            if (CurrentState == Global.AwareBehavior || CurrentState == StateType.LookAround)
+            if (Global != null && (CurrentState == Global.AwareBehavior || CurrentState == StateType.LookAround))
                 if (Room.Time >= _lastUpdate + CurrentBehavior.GetBehaviorTime())
                     CurrentBehavior.NextState();
         }
 
         Position = new Vector3(AiData.Sync_PosX, AiData.Sync_PosY, Position.z);
 
-        Hitbox.Position = new Vector3(
-            AiData.Sync_PosX,
-            AiData.Sync_PosY - (EnemyController.Scale.Y < 0 ? Hitbox.BoundingBox.height : 0),
-            Position.z
-        );
+        if (Hitbox != null && Hitbox.BoundingBox != null)
+        {
+            Hitbox.Position = new Vector3(
+                AiData.Sync_PosX,
+                AiData.Sync_PosY - (EnemyController.Scale.Y < 0 ? Hitbox.BoundingBox.height : 0),
+                Position.z
+            );
+        }
     }
 
     public bool HasDetectedPlayers()
     {
+        if (Hitbox == null || Hitbox.BoundingBox == null || Global == null)
+        {
+            Logger.LogTrace("Skipping detection for {Id}: Hitbox or Global not ready (Hitbox={HasHitbox}, BoundingBox={HasBB}, Global={HasGlobal})",
+                Id, Hitbox != null, Hitbox?.BoundingBox != null, Global != null);
+            return false;
+        }
+
         var rect = new Rect(
             Hitbox.Position.x - (AiData.Intern_Dir < 0 ? Global.Global_FrontDetectionRangeX : Global.Global_BackDetectionRangeX) - Hitbox.BoundingBox.width / 2,
             Hitbox.Position.y - (AiData.Intern_Dir < 0 ? Global.Global_FrontDetectionRangeDownY : Global.Global_BackDetectionRangeDownY) - Hitbox.BoundingBox.height / 2,
@@ -145,14 +171,22 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
 
         foreach (var player in Room.GetPlayers())
         {
-            if (
-                enemyCollider.CheckCollision(new PlayerCollider(player)) &&
-                (!Global.Global_DetectionLimitedByPatrolLine || player.TempData.Position.x > AiData.Intern_MinPointX && player.TempData.Position.x < AiData.Intern_MaxPointX) &&
-                ParentPlane == player.GetPlayersPlaneString() && !player.Character.StatusEffects.HasEffect(ItemEffectType.Invisibility) &&
-                player.Character.CurrentLife > 0)
+            if (player == null)
+                continue;
+
+            var temp = player.TempData;
+            var character = player.Character;
+            var statusEffects = character?.StatusEffects;
+
+            var collides = enemyCollider.CheckCollision(new PlayerCollider(player));
+            var withinPatrol = !Global.Global_DetectionLimitedByPatrolLine || (temp != null && temp.Position.x > AiData.Intern_MinPointX && temp.Position.x < AiData.Intern_MaxPointX);
+            var samePlane = ParentPlane == player.GetPlayersPlaneString();
+            var invisible = statusEffects?.HasEffect(ItemEffectType.Invisibility) ?? false;
+            var alive = (character?.CurrentLife ?? 0) > 0;
+
+            if (collides && withinPatrol && samePlane && !invisible && alive)
             {
                 EnemyAggroPlayer(player);
-
                 return true;
             }
         }
@@ -204,10 +238,10 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
 
             _lastUpdate = Room.Time;
 
-            Room.SendSyncEvent(
+        Room.SendSyncEvent(
                 AISyncEventHelper.AIDo(
                     Position.x, Position.y, 1.0f,
-                    targetX, targetY, direction, CurrentState == Global.AwareBehavior,
+            targetX, targetY, direction, Global != null && CurrentState == Global.AwareBehavior,
                     this
                 )
             );
@@ -239,7 +273,7 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
         player.SendSyncEventToPlayer(
             AISyncEventHelper.AIDo(
                 AiData.Sync_PosX, AiData.Sync_PosY, 1.0f,
-                AiData.Sync_TargetPosX, AiData.Sync_TargetPosY, AiData.Intern_Dir, CurrentState == Global.AwareBehavior,
+                AiData.Sync_TargetPosX, AiData.Sync_TargetPosY, AiData.Intern_Dir, Global != null && CurrentState == Global.AwareBehavior,
                 this
             )
         );
@@ -250,6 +284,12 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
         if (player == null)
         {
             Logger.LogError("Could not find player that damaged {PrefabName}! Returning...", PrefabName);
+            return;
+        }
+
+        if (Global == null || Generic == null)
+        {
+            Logger.LogTrace("Deferring aggro: Global or Generic not initialized yet for {Id}", Id);
             return;
         }
 
