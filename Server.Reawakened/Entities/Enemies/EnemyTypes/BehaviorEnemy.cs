@@ -134,6 +134,13 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
 
     public bool HasDetectedPlayers()
     {
+        if (Hitbox == null || Global == null)
+        {
+            Logger.LogDebug("Skipping detection for {Id}: Hitbox or Global not ready (Hitbox={HasHitbox}, Global={HasGlobal})",
+                Id, Hitbox != null, Global != null);
+            return false;
+        }
+
         var rect = new Rect(
             Hitbox.Position.x - (AiData.Intern_Dir < 0 ? Global.Global_FrontDetectionRangeX : Global.Global_BackDetectionRangeX) - Hitbox.BoundingBox.width / 2,
             Hitbox.Position.y - (AiData.Intern_Dir < 0 ? Global.Global_FrontDetectionRangeDownY : Global.Global_BackDetectionRangeDownY) - Hitbox.BoundingBox.height / 2,
