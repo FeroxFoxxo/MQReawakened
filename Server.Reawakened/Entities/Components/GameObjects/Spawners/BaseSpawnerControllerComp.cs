@@ -60,6 +60,7 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
 
     public Dictionary<string, BaseEnemy> LinkedEnemies;
     public Dictionary<string, EnemyModel> EnemyModels;
+    public IEnumerable<string> TemplateIds => _spawnOptions?.Select(o => o.template) ?? Enumerable.Empty<string>();
 
     private int _spawnedEntityCount;
     private float _nextSpawnRequestTime;
@@ -247,7 +248,7 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
             AISyncEventHelper.AIInit(
                 Id, Room,
                 Position.X, Position.Y, Position.Z, Position.X, Position.Y,
-                genericComp?.Patrol_InitialProgressRatio, CurrentHealth, MaxHealth,
+                genericComp?.Patrol_InitialProgressRatio ?? 0f, CurrentHealth, MaxHealth,
                 _healthMod, _scaleMod, _resMod, Stars, Level, globalComp?.GetGlobalProperties(), states, behaviorsMap
             )
         );
