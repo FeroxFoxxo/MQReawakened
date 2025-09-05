@@ -244,6 +244,8 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
         var genericComp = Room.GetEntityFromId<AIStatsGenericComp>(templateId);
         var globalComp = Room.GetEntityFromId<AIStatsGlobalComp>(templateId);
 
+        Logger.LogInformation("Spawner '{Id}' is spawning enemy '{Enemy}' with template '{Template}' and prefab '{Prefab}'", Id, selectedPrefab, templateId, genericComp?.PrefabName);
+
         Room.SendSyncEvent(
             AISyncEventHelper.AIInit(
                 Id, Room,
