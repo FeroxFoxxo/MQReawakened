@@ -185,8 +185,6 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
 
             if (CanSpawnMoreThisCycle() && LinkedEnemies.Count < MaxSimultanousSpawned)
                 _spawnRequested = true;
-            else if (!CanSpawnMoreThisCycle())
-                Logger.LogDebug("Spawn request ignored: cycle exhausted (count={Spawned}, limit={Limit})", _spawnedEntityCount, _updatedSpawnCycle);
         }
     }
 
@@ -428,25 +426,34 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
 
     public void NotifyEnemyDefeat(string id)
     {
+        bool waveCleared;
+        bool moreThisCycle;
+
         lock (_sync)
         {
             LinkedEnemies.Remove(id);
+
+            waveCleared = LinkedEnemies.Count == 0;
+            moreThisCycle = CanSpawnMoreThisCycle();
+
+            if (waveCleared)
+            {
+                if (moreThisCycle)
+                {
+                    _spawnRequested = true;
+                    _nextSpawnRequestTime = MinSpawnInterval <= 0 ? Room.Time : Room.Time + MinSpawnInterval;
+                }
+                else
+                {
+                    if (SpawnCycleCount > 0)
+                        _updatedSpawnCycle += SpawnCycleCount;
+                    
+                    _nextSpawnRequestTime = 0;
+                }
+            }
         }
+
         _protectArenaComp?.AddDefeat();
-
-        bool allCleared;
-
-        lock (_sync)
-        {
-            allCleared = LinkedEnemies.Count == 0;
-        }
-
-        if (allCleared && CanSpawnMoreThisCycle() == false)
-        {
-            if (SpawnCycleCount > 0)
-                _updatedSpawnCycle += SpawnCycleCount;
-            _nextSpawnRequestTime = 0;
-        }
     }
 
     private bool CanSpawnMoreThisCycle() => SpawnCycleCount <= 0 || _spawnedEntityCount < _updatedSpawnCycle;
