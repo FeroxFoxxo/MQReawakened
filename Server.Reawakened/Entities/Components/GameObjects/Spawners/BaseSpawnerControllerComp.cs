@@ -4,16 +4,12 @@ using Server.Base.Core.Abstractions;
 using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Entities.Components.AI.Stats;
-using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Controller;
 using Server.Reawakened.Entities.Components.GameObjects.Breakables;
 using Server.Reawakened.Entities.Enemies.Behaviors.Abstractions;
 using Server.Reawakened.Entities.Components.GameObjects.Hazards;
-using Server.Reawakened.Entities.Components.GameObjects.InterObjs;
 using Server.Reawakened.Entities.Components.GameObjects.Trigger;
 using Server.Reawakened.Entities.Enemies.EnemyTypes.Abstractions;
 using Server.Reawakened.Entities.Enemies.Extensions;
-using Server.Reawakened.Entities.Enemies.Models;
-using Server.Reawakened.Entities.Components.PrefabInfos;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Rooms.Services;
@@ -21,12 +17,16 @@ using Server.Reawakened.XMLs.Bundles.Internal;
 using Server.Reawakened.XMLs.Data.Enemy.Abstractions;
 using Server.Reawakened.XMLs.Data.Enemy.Enums;
 using Server.Reawakened.XMLs.Data.Enemy.Models;
-using Server.Reawakened.XMLs.Data.Enemy.States;
+using Server.Reawakened.Rooms.Models.Planes;
+using UnityEngine;
 
 namespace Server.Reawakened.Entities.Components.GameObjects.Spawners;
 
 public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
 {
+    private const int FinalizeSpawnDelaySeconds = 4; // BaseSpawnerController constant mirror
+    private const float NotScheduled = -1f;
+
     public int SpawnCycleCount => ComponentData.SpawnCycleCount;
     public int MaxSimultanousSpawned => ComponentData.MaxSimultanousSpawned;
     public float InitialSpawnDelay => ComponentData.InitialSpawnDelay;
@@ -48,7 +48,7 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
     public bool SpawnFromStart => ComponentData.SpawnFromStart;
     public bool SpawnOnDetection => ComponentData.SpawnOnDetection;
     public float DetectionRadius => ComponentData.DetectionRadius;
-    public UnityEngine.Vector3 PatrolDistance => ComponentData.PatrolDistance;
+    public Vector3 PatrolDistance => ComponentData.PatrolDistance;
     public string OnDeathTargetID => ComponentData.OnDeathTargetID;
 
     public ILogger<BaseSpawnerControllerComp> Logger { get; set; }
@@ -66,7 +66,6 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
     private float _nextSpawnRequestTime;
     private bool _spawnRequested;
     private bool _activated;
-    private float _activeDetectionRadius;
     private int _updatedSpawnCycle;
 
     private TriggerArenaComp _arenaComp;
@@ -76,6 +75,8 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
     private int _healthMod, _scaleMod, _resMod;
     private int _stars, _currentHealth, _maxHealth;
     private List<(string prefab, string template)> _spawnOptions;
+
+    private readonly object _sync = new();
 
     public bool HasLinkedArena => _arenaComp != null;
     public int Difficulty => _breakableComp != null ? _breakableComp.Damageable.DifficultyLevel : Room.LevelInfo.Difficulty;
@@ -94,15 +95,10 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
         _currentHealth = _maxHealth;
 
         _breakableComp = Room.GetEntityFromId<BreakableEventControllerComp>(Id);
-
-        _spawnedEntityCount = 0;
-        _nextSpawnRequestTime = -1;
-        _spawnRequested = false;
-        _activeDetectionRadius = DetectionRadius;
-        _updatedSpawnCycle = SpawnCycleCount;
-
         LinkedEnemies = [];
         EnemyModels = [];
+
+        ResetSpawnCycle();
 
         Position.SetPositionViaPlane(ParentPlane, PrefabName, Logger);
 
@@ -125,7 +121,7 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
 
     public override void DelayedComponentInitialization()
     {
-        Level = Room.LevelInfo.Difficulty + LevelOffset;
+        Level = Math.Max(1, Room.LevelInfo.Difficulty + LevelOffset);
         SetActive(_arenaComp is null);
     }
 
@@ -150,92 +146,128 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
 
     public override void Update()
     {
-        if (_activated)
+        if (!_activated)
+            return;
+
+        var position = new Vector3(Position.X, Position.Y, Position.Z);
+
+        if (Room == null)
+            return;
+
+        var triggerSpawn = false;
+        var triggerFinalize = false;
+
+        lock (_sync)
         {
-            var position = new UnityEngine.Vector3(Position.X, Position.Y, Position.Z);
-
-            if (Room == null)
-                return;
-
-            if (Room.IsPlayerNearby(position, _activeDetectionRadius) && LinkedEnemies.Count < 1 && _nextSpawnRequestTime <= 0)
-                Spawn();
+            if (Room.IsPlayerNearby(position, DetectionRadius) &&
+                LinkedEnemies.Count < MaxSimultanousSpawned &&
+                _nextSpawnRequestTime <= 0)
+            {
+                triggerSpawn = true;
+            }
 
             if (_spawnRequested && _nextSpawnRequestTime <= Room.Time)
-                //NOT A MAGIC NUMBER. This is a constant defined in BaseSpawnerController
-                SpawnEventCalled(4);
+                triggerFinalize = true;
         }
+
+        if (triggerSpawn)
+            Spawn();
+        
+        if (triggerFinalize)
+            SpawnEventCalled(FinalizeSpawnDelaySeconds);
     }
 
     public void Spawn()
     {
-        _nextSpawnRequestTime = _nextSpawnRequestTime == -1 ? Room.Time + InitialSpawnDelay : Room.Time + MinSpawnInterval;
+        lock (_sync)
+        {
+            _nextSpawnRequestTime = _nextSpawnRequestTime == NotScheduled ? Room.Time + InitialSpawnDelay : Room.Time + MinSpawnInterval;
 
-        if (_spawnedEntityCount < _updatedSpawnCycle)
-            _spawnRequested = true;
+            if (CanSpawnMoreThisCycle() && LinkedEnemies.Count < MaxSimultanousSpawned)
+                _spawnRequested = true;
+        }
     }
 
-    public void Spawn(TriggerArenaComp arena)
+    private void ActivateArenaSpawn(Action setArena)
     {
-        SetArena(arena);
-
-        _activeDetectionRadius = 100;
+        setArena();
         SetActive(true);
-
         Spawn();
     }
 
-    public void Spawn(TriggerProtectionArenaComp arena)
-    {
-        SetArena(arena);
-
-        _activeDetectionRadius = 100;
-        SetActive(true);
-
-        Spawn();
-    }
+    public void Spawn(TriggerArenaComp arena) => ActivateArenaSpawn(() => SetArena(arena));
+    public void Spawn(TriggerProtectionArenaComp arena) => ActivateArenaSpawn(() => SetArena(arena));
 
     public void Despawn()
     {
-        foreach (var enemy in LinkedEnemies)
-            enemy.Value.DespawnEnemy();
+        List<BaseEnemy> enemies;
+        
+        lock (_sync)
+        {
+            enemies = [.. LinkedEnemies.Values];
+        }
+
+        foreach (var enemy in enemies)
+        {
+            try { enemy.DespawnEnemy(); }
+            catch (Exception e) { Logger.LogError(e, "Error during DespawnEnemy for {EnemyId}", enemy?.Id); }
+        }
     }
 
     public void SetArena(TriggerArenaComp arena) => _arenaComp = arena;
     public void SetArena(TriggerProtectionArenaComp arena) => _protectArenaComp = arena;
-    public void RemoveFromArena() => _arenaComp.ArenaEntities.Remove(Id);
+    
+    public void RemoveFromArena()
+    {
+        if (_arenaComp == null)
+            return;
+
+        var toRemove = _arenaComp.ArenaEntities
+            .Where(e => e == Id || e.StartsWith(Id + "_", StringComparison.Ordinal))
+            .ToList();
+
+        foreach (var e in toRemove)
+            _arenaComp.ArenaEntities.Remove(e);
+    }
 
     public void Revive()
     {
         _breakableComp?.Respawn();
         SetActive(false);
 
-        _activeDetectionRadius = DetectionRadius;
-        _nextSpawnRequestTime = -1;
-        _spawnRequested = false;
-        _updatedSpawnCycle = _spawnedEntityCount + SpawnCycleCount;
-        LinkedEnemies.Clear();
+        ResetSpawnCycle();
 
         Room.ToggleCollider(Id, true);
     }
 
     private void SpawnEventCalled(int delay)
     {
-        _spawnedEntityCount++;
-        _spawnRequested = false;
+        string selectedPrefab;
+        string templateId;
+        int nextSpawnNumber;
+        EnemyModel enemyToSpawn;
 
-        if (_spawnOptions == null || _spawnOptions.Count == 0)
+        lock (_sync)
         {
-            Logger.LogError("No valid prefab/template pairs configured for spawner with id: {Id}. Returning...", Id);
-            return;
-        }
+            _spawnRequested = false;
 
-        var index = (_spawnedEntityCount - 1) % _spawnOptions.Count;
-        var (selectedPrefab, templateId) = _spawnOptions[index];
+            if (_spawnOptions == null || _spawnOptions.Count == 0)
+            {
+                Logger.LogError("No valid prefab/template pairs configured for spawner with id: {Id}. Returning...", Id);
+                return;
+            }
 
-        if (!EnemyModels.TryGetValue(selectedPrefab, out var enemyToSpawn) || enemyToSpawn is null)
-        {
-            Logger.LogError("Enemy model for prefab '{Prefab}' not found for spawner id: {Id}. Returning...", selectedPrefab, Id);
-            return;
+            nextSpawnNumber = _spawnedEntityCount + 1;
+            var index = (nextSpawnNumber - 1) % _spawnOptions.Count;
+            (selectedPrefab, templateId) = _spawnOptions[index];
+
+            if (!EnemyModels.TryGetValue(selectedPrefab, out enemyToSpawn) || enemyToSpawn is null)
+            {
+                Logger.LogError("Enemy model for prefab '{Prefab}' not found for spawner id: {Id}. Returning...", selectedPrefab, Id);
+                return;
+            }
+
+            _spawnedEntityCount = nextSpawnNumber;
         }
 
         var states = new Dictionary<StateType, BaseState>();
@@ -244,7 +276,7 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
         var genericComp = Room.GetEntityFromId<AIStatsGenericComp>(templateId);
         var globalComp = Room.GetEntityFromId<AIStatsGlobalComp>(templateId);
 
-        Logger.LogInformation("Spawner '{Id}' is spawning enemy '{Enemy}' with template '{Template}' and prefab '{Prefab}'", Id, selectedPrefab, templateId, genericComp?.PrefabName);
+        Logger.LogInformation("Spawner '{Id}' spawning enemy #{Num} prefab '{Prefab}' template '{Template}'", Id, nextSpawnNumber, selectedPrefab, templateId);
 
         Room.SendSyncEvent(
             AISyncEventHelper.AIInit(
@@ -264,11 +296,23 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
             )
         );
 
-        _arenaComp?.ArenaEntities.Add($"{Id}_{_spawnedEntityCount}");
+        _arenaComp?.ArenaEntities.Add($"{Id}_{nextSpawnNumber}");
 
-        Room.SendSyncEvent(new Spawn_SyncEvent(Id, Room.Time, _spawnedEntityCount));
+        Room.SendSyncEvent(new Spawn_SyncEvent(Id, Room.Time, nextSpawnNumber));
 
         TimerThread.RunDelayed(DelayedSpawnData, new DelayedEnemySpawn() { Spawner = this, TemplateId = templateId, PrefabName = selectedPrefab }, TimeSpan.FromSeconds(delay));
+    }
+
+    private void ResetSpawnCycle()
+    {
+        lock (_sync)
+        {
+            _nextSpawnRequestTime = NotScheduled;
+            _spawnRequested = false;
+            _spawnedEntityCount = 0;
+            _updatedSpawnCycle = SpawnCycleCount;
+            LinkedEnemies.Clear();
+        }
     }
 
     public class DelayedEnemySpawn() : ITimerData
@@ -289,40 +333,130 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
         var templateId = spawn.TemplateId;
         var prefabName = spawn.PrefabName;
 
-        spawner._nextSpawnRequestTime = 0;
-
-        var room = spawner.Room;
-
-        var _spawnedEntityId = $"{spawner.Id}_{spawner._spawnedEntityCount}";
-
-        var components = room.GetEntitiesFromId<BaseComponent>(templateId).ToList();
-        spawner.Room.AddEntity(_spawnedEntityId, components);
-
-        foreach (var component in components)
+        lock (spawner._sync)
         {
-            component.InitializeComponent();
-            spawner.Room.RemoveKilledEnemy(component.Id);
+            spawner._nextSpawnRequestTime = 0;
         }
 
-        var enemyController = room.GetEnemyFromId(_spawnedEntityId);
-        var generic = room.GetEntityFromId<AIStatsGenericComp>(_spawnedEntityId);
-        var hazard = room.GetEntityFromId<HazardControllerComp>(_spawnedEntityId);
+        var room = spawner.Room;
+        var spawnedEntityId = $"{spawner.Id}_{spawner._spawnedEntityCount}";
+
+        var templateGo = room?.Planes?.Values
+            .SelectMany(p => p.GameObjects)
+            .Where(kvp => kvp.Key == templateId)
+            .SelectMany(kvp => kvp.Value)
+            .FirstOrDefault();
+
+        if (templateGo?.ObjectInfo == null)
+        {
+            spawner.Logger.LogError("Template object not found for template id {TemplateId}", templateId);
+            return;
+        }
+
+        var newObjectInfo = new ObjectInfoModel
+        {
+            ObjectId = spawnedEntityId,
+            PrefabName = prefabName,
+            ParentPlane = spawner.ParentPlane,
+            Position = new Vector3Model(spawner.Position.X + spawner.SpawningOffsetX, spawner.Position.Y + spawner.SpawningOffsetY, spawner.Position.Z, spawnedEntityId, room),
+            Rotation = new Vector3Model(templateGo.ObjectInfo.Rotation.X, templateGo.ObjectInfo.Rotation.Y, templateGo.ObjectInfo.Rotation.Z, spawnedEntityId, room),
+            Scale = new Vector3Model(templateGo.ObjectInfo.Scale.X, templateGo.ObjectInfo.Scale.Y, templateGo.ObjectInfo.Scale.Z, spawnedEntityId, room),
+            Rectangle = templateGo.ObjectInfo.Rectangle,
+            Components = templateGo.ObjectInfo.Components.ToDictionary(k => k.Key, v => new ComponentModel { ComponentAttributes = new Dictionary<string, string>(v.Value.ComponentAttributes) })
+        };
+
+        var builder = spawner.Services.GetRequiredService<EntityComponentBuilder>();
+        var builtComponents = builder.Build(new GameObjectModel { ObjectInfo = newObjectInfo }, room, out var _);
+
+        if (builtComponents.Count == 0)
+        {
+            spawner.Logger.LogError("Failed to build components for spawned enemy {SpawnedId} using template {TemplateId}", spawnedEntityId, templateId);
+            return;
+        }
+
+        spawner.Room.AddEntity(spawnedEntityId, builtComponents);
+
+        foreach (var component in builtComponents)
+        {
+            try
+            {
+                component.InitializeComponent();
+            }
+            catch (Exception e)
+            {
+                spawner.Logger.LogError(e, "Error initializing spawned component {Component} for {SpawnedId}", component.GetType().Name, spawnedEntityId);
+            }
+        }
+
+        spawner.Room.RemoveKilledEnemy(spawnedEntityId);
+
+        var enemyController = room.GetEnemyFromId(spawnedEntityId);
+        var generic = room.GetEntityFromId<AIStatsGenericComp>(spawnedEntityId);
+        var hazard = room.GetEntityFromId<HazardControllerComp>(spawnedEntityId);
 
         // Fix some things before setting the enemy
-        hazard?.SetId(_spawnedEntityId);
+        hazard?.SetId(spawnedEntityId);
         generic?.SetPatrolRange(spawner.PatrolDistance);
 
-        var newEnemy = enemyController.CreateEnemy(_spawnedEntityId, prefabName);
+        var newEnemy = enemyController.CreateEnemy(spawnedEntityId, prefabName);
 
         if (newEnemy is not null)
-            spawner.LinkedEnemies.Add(_spawnedEntityId, newEnemy);
+        {
+            lock (spawner._sync)
+            {
+                try
+                {
+                    newEnemy.CheckForSpawner();
+                }
+                catch (Exception e)
+                {
+                    spawner.Logger.LogError(e, "Error calling CheckForSpawner for spawned enemy {SpawnedId}", spawnedEntityId);
+                }
+
+                if (newEnemy.LinkedSpawner == null)
+                {
+                    newEnemy.LinkedSpawner = spawner;
+                    newEnemy.IsFromSpawner = true;
+                }
+
+                spawner.LinkedEnemies.Add(spawnedEntityId, newEnemy);
+            }
+        }
     }
 
     public void NotifyEnemyDefeat(string id)
     {
-        LinkedEnemies.Remove(id);
+        bool waveCleared;
+        bool moreThisCycle;
+
+        lock (_sync)
+        {
+            LinkedEnemies.Remove(id);
+
+            waveCleared = LinkedEnemies.Count == 0;
+            moreThisCycle = CanSpawnMoreThisCycle();
+
+            if (waveCleared)
+            {
+                if (moreThisCycle)
+                {
+                    _spawnRequested = true;
+                    _nextSpawnRequestTime = MinSpawnInterval <= 0 ? Room.Time : Room.Time + MinSpawnInterval;
+                }
+                else
+                {
+                    if (SpawnCycleCount > 0)
+                        _updatedSpawnCycle += SpawnCycleCount;
+                    
+                    _nextSpawnRequestTime = 0;
+                }
+            }
+        }
+
         _protectArenaComp?.AddDefeat();
     }
+
+    private bool CanSpawnMoreThisCycle() => SpawnCycleCount <= 0 || _spawnedEntityCount < _updatedSpawnCycle;
 
     public void Destroy() => Room.RemoveEnemy(Id);
 }

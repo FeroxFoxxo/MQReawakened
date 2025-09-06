@@ -138,28 +138,19 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
                 if (Room.Time >= _lastUpdate + CurrentBehavior.GetBehaviorTime())
                     CurrentBehavior.NextState();
         }
+    }
 
-        Position = new Vector3(AiData.Sync_PosX, AiData.Sync_PosY, Position.z);
-
-        if (Hitbox != null && Hitbox.BoundingBox != null)
-        {
-            Hitbox.Position = new Vector3(
-                AiData.Sync_PosX,
-                AiData.Sync_PosY - (EnemyController.Scale.Y < 0 ? Hitbox.BoundingBox.height : 0),
-                Position.z
-            );
-        }
+    protected override bool TryGetAuthoritativePosition(out float x, out float y, out float z)
+    {
+        x = AiData.Sync_PosX;
+        y = AiData.Sync_PosY;
+        z = AiData.Sync_PosZ != 0 ? AiData.Sync_PosZ : Position.z;
+        
+        return true;
     }
 
     public bool HasDetectedPlayers()
     {
-        if (Hitbox == null || Hitbox.BoundingBox == null || Global == null)
-        {
-            Logger.LogTrace("Skipping detection for {Id}: Hitbox or Global not ready (Hitbox={HasHitbox}, BoundingBox={HasBB}, Global={HasGlobal})",
-                Id, Hitbox != null, Hitbox?.BoundingBox != null, Global != null);
-            return false;
-        }
-
         var rect = new Rect(
             Hitbox.Position.x - (AiData.Intern_Dir < 0 ? Global.Global_FrontDetectionRangeX : Global.Global_BackDetectionRangeX) - Hitbox.BoundingBox.width / 2,
             Hitbox.Position.y - (AiData.Intern_Dir < 0 ? Global.Global_FrontDetectionRangeDownY : Global.Global_BackDetectionRangeDownY) - Hitbox.BoundingBox.height / 2,
