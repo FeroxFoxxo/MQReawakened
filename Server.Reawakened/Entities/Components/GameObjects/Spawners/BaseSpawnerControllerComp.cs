@@ -154,7 +154,7 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
             if (Room == null)
                 return;
 
-            if (Room.IsPlayerNearby(position, _activeDetectionRadius) && LinkedEnemies.Count < 1 && _nextSpawnRequestTime <= 0)
+            if (Room.IsPlayerNearby(position, _activeDetectionRadius) && LinkedEnemies.Count < MaxSimultanousSpawned && _nextSpawnRequestTime <= 0)
                 Spawn();
 
             if (_spawnRequested && _nextSpawnRequestTime <= Room.Time)
@@ -166,8 +166,7 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
     public void Spawn()
     {
         _nextSpawnRequestTime = _nextSpawnRequestTime == -1 ? Room.Time + InitialSpawnDelay : Room.Time + MinSpawnInterval;
-
-        if (_spawnedEntityCount < _updatedSpawnCycle)
+        if (CanSpawnMoreThisCycle() && LinkedEnemies.Count < MaxSimultanousSpawned)
             _spawnRequested = true;
     }
 
@@ -357,7 +356,16 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
     {
         LinkedEnemies.Remove(id);
         _protectArenaComp?.AddDefeat();
+
+        if (LinkedEnemies.Count == 0 && CanSpawnMoreThisCycle() == false)
+        {
+            if (SpawnCycleCount > 0)
+                _updatedSpawnCycle += SpawnCycleCount;
+            _nextSpawnRequestTime = 0;
+        }
     }
+
+    private bool CanSpawnMoreThisCycle() => SpawnCycleCount <= 0 || _spawnedEntityCount < _updatedSpawnCycle;
 
     public void Destroy() => Room.RemoveEnemy(Id);
 }
