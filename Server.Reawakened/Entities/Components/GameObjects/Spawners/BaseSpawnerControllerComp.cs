@@ -21,7 +21,15 @@ using Server.Reawakened.XMLs.Bundles.Internal;
 using Server.Reawakened.XMLs.Data.Enemy.Abstractions;
 using Server.Reawakened.XMLs.Data.Enemy.Enums;
 using Server.Reawakened.XMLs.Data.Enemy.Models;
-using Server.Reawakened.XMLs.Data.Enemy.States;
+using Server.Base.Logging;
+using Server.Reawakened.BundleHost.Configs;
+using Server.Reawakened.Network.Helpers;
+using Server.Reawakened.Rooms.Models.Planes;
+using System.Collections.Specialized;
+using System.Reflection;
+using System.Collections;
+using System.Text.Json;
+using UnityEngine;
 
 namespace Server.Reawakened.Entities.Components.GameObjects.Spawners;
 
@@ -244,7 +252,7 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
         var genericComp = Room.GetEntityFromId<AIStatsGenericComp>(templateId);
         var globalComp = Room.GetEntityFromId<AIStatsGlobalComp>(templateId);
 
-        Logger.LogInformation("Spawner '{Id}' is spawning enemy '{Enemy}' with template '{Template}' and prefab '{Prefab}'", Id, selectedPrefab, templateId, genericComp?.PrefabName);
+        Logger.LogInformation("Spawner '{Id}' is spawning enemy '{Enemy}' with template '{Template}' and prefab '{Prefab}'", Id, selectedPrefab, templateId, selectedPrefab);
 
         Room.SendSyncEvent(
             AISyncEventHelper.AIInit(
@@ -292,30 +300,68 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
         spawner._nextSpawnRequestTime = 0;
 
         var room = spawner.Room;
+        var spawnedEntityId = $"{spawner.Id}_{spawner._spawnedEntityCount}";
 
-        var _spawnedEntityId = $"{spawner.Id}_{spawner._spawnedEntityCount}";
+        var templateGo = room?.Planes?.Values
+            .SelectMany(p => p.GameObjects)
+            .Where(kvp => kvp.Key == templateId)
+            .SelectMany(kvp => kvp.Value)
+            .FirstOrDefault();
 
-        var components = room.GetEntitiesFromId<BaseComponent>(templateId).ToList();
-        spawner.Room.AddEntity(_spawnedEntityId, components);
-
-        foreach (var component in components)
+        if (templateGo?.ObjectInfo == null)
         {
-            component.InitializeComponent();
-            spawner.Room.RemoveKilledEnemy(component.Id);
+            spawner.Logger.LogError("Template object not found for template id {TemplateId}", templateId);
+            return;
         }
 
-        var enemyController = room.GetEnemyFromId(_spawnedEntityId);
-        var generic = room.GetEntityFromId<AIStatsGenericComp>(_spawnedEntityId);
-        var hazard = room.GetEntityFromId<HazardControllerComp>(_spawnedEntityId);
+        var newObjectInfo = new ObjectInfoModel
+        {
+            ObjectId = spawnedEntityId,
+            PrefabName = prefabName,
+            ParentPlane = spawner.ParentPlane,
+            Position = new Vector3Model(spawner.Position.X + spawner.SpawningOffsetX, spawner.Position.Y + spawner.SpawningOffsetY, spawner.Position.Z, spawnedEntityId, room),
+            Rotation = new Vector3Model(templateGo.ObjectInfo.Rotation.X, templateGo.ObjectInfo.Rotation.Y, templateGo.ObjectInfo.Rotation.Z, spawnedEntityId, room),
+            Scale = new Vector3Model(templateGo.ObjectInfo.Scale.X, templateGo.ObjectInfo.Scale.Y, templateGo.ObjectInfo.Scale.Z, spawnedEntityId, room),
+            Rectangle = templateGo.ObjectInfo.Rectangle,
+            Components = templateGo.ObjectInfo.Components.ToDictionary(k => k.Key, v => new ComponentModel { ComponentAttributes = new Dictionary<string, string>(v.Value.ComponentAttributes) })
+        };
+
+        var builder = spawner.Services.GetRequiredService<EntityComponentBuilder>();
+        var builtComponents = builder.Build(new GameObjectModel { ObjectInfo = newObjectInfo }, room, out var _);
+
+        if (builtComponents.Count == 0)
+        {
+            spawner.Logger.LogError("Failed to build components for spawned enemy {SpawnedId} using template {TemplateId}", spawnedEntityId, templateId);
+            return;
+        }
+
+        spawner.Room.AddEntity(spawnedEntityId, builtComponents);
+
+        foreach (var component in builtComponents)
+        {
+            try
+            {
+                component.InitializeComponent();
+            }
+            catch (Exception e)
+            {
+                spawner.Logger.LogError(e, "Error initializing spawned component {Component} for {SpawnedId}", component.GetType().Name, spawnedEntityId);
+            }
+            spawner.Room.RemoveKilledEnemy(spawnedEntityId);
+        }
+
+        var enemyController = room.GetEnemyFromId(spawnedEntityId);
+        var generic = room.GetEntityFromId<AIStatsGenericComp>(spawnedEntityId);
+        var hazard = room.GetEntityFromId<HazardControllerComp>(spawnedEntityId);
 
         // Fix some things before setting the enemy
-        hazard?.SetId(_spawnedEntityId);
+        hazard?.SetId(spawnedEntityId);
         generic?.SetPatrolRange(spawner.PatrolDistance);
 
-        var newEnemy = enemyController.CreateEnemy(_spawnedEntityId, prefabName);
+        var newEnemy = enemyController.CreateEnemy(spawnedEntityId, prefabName);
 
         if (newEnemy is not null)
-            spawner.LinkedEnemies.Add(_spawnedEntityId, newEnemy);
+            spawner.LinkedEnemies.Add(spawnedEntityId, newEnemy);
     }
 
     public void NotifyEnemyDefeat(string id)
