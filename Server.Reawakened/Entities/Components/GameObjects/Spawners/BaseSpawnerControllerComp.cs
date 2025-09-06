@@ -4,16 +4,12 @@ using Server.Base.Core.Abstractions;
 using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Entities.Components.AI.Stats;
-using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Controller;
 using Server.Reawakened.Entities.Components.GameObjects.Breakables;
 using Server.Reawakened.Entities.Enemies.Behaviors.Abstractions;
 using Server.Reawakened.Entities.Components.GameObjects.Hazards;
-using Server.Reawakened.Entities.Components.GameObjects.InterObjs;
 using Server.Reawakened.Entities.Components.GameObjects.Trigger;
 using Server.Reawakened.Entities.Enemies.EnemyTypes.Abstractions;
 using Server.Reawakened.Entities.Enemies.Extensions;
-using Server.Reawakened.Entities.Enemies.Models;
-using Server.Reawakened.Entities.Components.PrefabInfos;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Rooms.Services;
@@ -21,14 +17,7 @@ using Server.Reawakened.XMLs.Bundles.Internal;
 using Server.Reawakened.XMLs.Data.Enemy.Abstractions;
 using Server.Reawakened.XMLs.Data.Enemy.Enums;
 using Server.Reawakened.XMLs.Data.Enemy.Models;
-using Server.Base.Logging;
-using Server.Reawakened.BundleHost.Configs;
-using Server.Reawakened.Network.Helpers;
 using Server.Reawakened.Rooms.Models.Planes;
-using System.Collections.Specialized;
-using System.Reflection;
-using System.Collections;
-using System.Text.Json;
 using UnityEngine;
 
 namespace Server.Reawakened.Entities.Components.GameObjects.Spawners;
@@ -56,7 +45,7 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
     public bool SpawnFromStart => ComponentData.SpawnFromStart;
     public bool SpawnOnDetection => ComponentData.SpawnOnDetection;
     public float DetectionRadius => ComponentData.DetectionRadius;
-    public UnityEngine.Vector3 PatrolDistance => ComponentData.PatrolDistance;
+    public Vector3 PatrolDistance => ComponentData.PatrolDistance;
     public string OnDeathTargetID => ComponentData.OnDeathTargetID;
 
     public ILogger<BaseSpawnerControllerComp> Logger { get; set; }
@@ -160,7 +149,7 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
     {
         if (_activated)
         {
-            var position = new UnityEngine.Vector3(Position.X, Position.Y, Position.Z);
+            var position = new Vector3(Position.X, Position.Y, Position.Z);
 
             if (Room == null)
                 return;

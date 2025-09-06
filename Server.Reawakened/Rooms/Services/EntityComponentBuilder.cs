@@ -5,13 +5,11 @@ using Server.Reawakened.BundleHost.Configs;
 using Server.Reawakened.Network.Helpers;
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Rooms.Models.Planes;
-using System;
 using System.Collections;
 using System.Collections.Specialized;
 using System.Reflection;
 using System.Text.Json;
 using UnityEngine;
-using System.Linq;
 
 namespace Server.Reawakened.Rooms.Services;
 
@@ -104,7 +102,7 @@ public class EntityComponentBuilder(ReflectionUtils reflectionUtils,
         }
     }
 
-    private static void ApplyPrefabOverrides(OrderedDictionary prefabOverrides, object dataObj, ILogger logger)
+    private static void ApplyPrefabOverrides(OrderedDictionary prefabOverrides, object dataObj, Microsoft.Extensions.Logging.ILogger logger)
     {
         var fields = dataObj.GetType().GetFields();
 
@@ -239,7 +237,7 @@ public class EntityComponentBuilder(ReflectionUtils reflectionUtils,
         }
     }
 
-    private static void ApplyXMLOverrides(Dictionary<string, string> componentAttributes, object dataObj, FieldInfo[] fields, ILogger logger)
+    private static void ApplyXMLOverrides(Dictionary<string, string> componentAttributes, object dataObj, FieldInfo[] fields, Microsoft.Extensions.Logging.ILogger logger)
     {
         foreach (var componentValue in componentAttributes.Where(componentValue =>
                      !string.IsNullOrEmpty(componentValue.Value)))
