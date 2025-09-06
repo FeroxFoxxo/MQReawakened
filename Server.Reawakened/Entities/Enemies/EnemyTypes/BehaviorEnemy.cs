@@ -138,14 +138,15 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
                 if (Room.Time >= _lastUpdate + CurrentBehavior.GetBehaviorTime())
                     CurrentBehavior.NextState();
         }
+    }
 
-        Position = new Vector3(AiData.Sync_PosX, AiData.Sync_PosY, Position.z);
-
-        Hitbox.Position = new Vector3(
-            AiData.Sync_PosX,
-            AiData.Sync_PosY - (EnemyController.Scale.Y < 0 ? Hitbox.BoundingBox.height : 0),
-            Position.z
-        );
+    protected override bool TryGetAuthoritativePosition(out float x, out float y, out float z)
+    {
+        x = AiData.Sync_PosX;
+        y = AiData.Sync_PosY;
+        z = AiData.Sync_PosZ != 0 ? AiData.Sync_PosZ : Position.z;
+        
+        return true;
     }
 
     public bool HasDetectedPlayers()

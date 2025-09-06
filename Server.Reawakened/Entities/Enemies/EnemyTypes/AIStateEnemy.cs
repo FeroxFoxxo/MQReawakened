@@ -5,6 +5,7 @@ using Server.Reawakened.Entities.Enemies.Extensions;
 using Server.Reawakened.Entities.Enemies.Models;
 using Server.Reawakened.Players;
 using Server.Reawakened.Rooms.Extensions;
+using Server.Reawakened.Rooms.Models.Entities; // For BaseComponent
 
 namespace Server.Reawakened.Entities.Enemies.EnemyTypes;
 
@@ -30,6 +31,23 @@ public class AIStateEnemy(EnemyData data) : BaseEnemy(data)
                 Position.x, Position.y
             )
         );
+    }
+
+    protected override bool TryGetAuthoritativePosition(out float x, out float y, out float z)
+    {
+        var machine = Room.GetEntityFromId<IAIStateMachine>(Id);
+
+        if (machine is BaseComponent comp)
+        {
+            x = comp.Position.X;
+            y = comp.Position.Y;
+            z = comp.Position.Z;
+            return true;
+        }
+
+        x = Position.x; y = Position.y; z = Position.z;
+
+        return true;
     }
 
     public override void SendAiData(Player player) =>
