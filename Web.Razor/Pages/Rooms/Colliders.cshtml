@@ -29,6 +29,11 @@
             border-radius: 4px;
             font-size: 11px;
         }
+        #roomList .list-group-item.collider-item { background:#133043; color:#f0f6fc; border:1px solid #0f2735; line-height:1.1; }
+        #roomList .list-group-item.collider-item:hover { background:#19465f; color:#ffffff; }
+        #roomList .list-group-item.collider-item.active-room { background:#256d8f; color:#fff; font-weight:600; }
+        #status, #stats, #hoverInfo, #colliderDetail { color:#b7e3ff !important; text-shadow:0 0 3px rgba(0,0,0,0.7); }
+        .legend span { border:1px solid rgba(255,255,255,0.15); }
     </style>
 }
 <div class="container-fluid mt-3">
@@ -113,6 +118,8 @@
         let showBBox = false;
         let selectedColliderId = null;
         let fpsFrameCount = 0; let fpsLastTime = performance.now(); let fps = 0;
+        let pageActive = true; // false when tab hidden
+        let intentionalStop = false; // prevent auto-reconnect when intentionally suspended
 
         function fitView() {
             if (colliders.length === 0) return;
@@ -129,6 +136,7 @@
         }
 
         function draw() {
+            if (!pageActive) return; // don't render while suspended
             const canvas = document.getElementById('colliderCanvas');
             const ctx = canvas.getContext('2d');
             ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -186,8 +194,21 @@
             ctx.restore();
             document.getElementById('status').innerText = currentRoom ? `${currentRoom.name} | V${version} | Colliders: ${colliders.length} | Zoom: ${zoom.toFixed(2)} | FPS: ${fps.toFixed(0)}` : 'No room selected';
             if (pendingStats) { document.getElementById('stats').innerText = `Δ Added:${pendingStats.added} Updated:${pendingStats.updated} Removed:${pendingStats.removed} Bounds: ${pendingStats.bbox.width.toFixed(1)}x${pendingStats.bbox.height.toFixed(1)}`; pendingStats = null; }
-            requestAnimationFrame(() => { if (changeFlash.size > 0 || selectedColliderId) draw(); });
+            if (pageActive && (changeFlash.size > 0 || selectedColliderId)) scheduleNextFrame();
             fpsFrameCount++; const nowTs = performance.now(); if (nowTs - fpsLastTime >= 1000) { fps = (fpsFrameCount * 1000) / (nowTs - fpsLastTime); fpsFrameCount = 0; fpsLastTime = nowTs; }
+        }
+        const MAX_FPS = 30; let lastFrameTs = 0;
+        function scheduleNextFrame() {
+            if (!pageActive) return;
+            requestAnimationFrame(ts => {
+                if (!pageActive) return; // re-check after frame
+                if (ts - lastFrameTs >= 1000 / MAX_FPS) {
+                    lastFrameTs = ts;
+                    draw();
+                } else if (changeFlash.size > 0 || selectedColliderId) {
+                    scheduleNextFrame();
+                }
+            });
         }
 
         function shadeColor(hex, percent) {
@@ -205,10 +226,43 @@
         function buildFilters() { const container = document.getElementById('filterList'); container.innerHTML = ''; Object.keys(colors).forEach(t => { const id = 'flt_' + t; const div = document.createElement('div'); div.className = 'form-check'; div.innerHTML = `<input class='form-check-input' type='checkbox' id='${id}' ${(activeTypes.has(t) ? 'checked' : '')}><label class='form-check-label small' for='${id}'>${t}</label>`; container.appendChild(div); document.getElementById(id).addEventListener('change', e => { if (e.target.checked) activeTypes.add(t); else activeTypes.delete(t); draw(); }); }); }
         async function loadRooms() {
             rooms = await hub.invoke('GetRooms'); const list = document.getElementById('roomList'); list.innerHTML = '';
-            rooms.forEach(r => { const a = document.createElement('a'); a.href = '#'; a.className = 'list-group-item list-group-item-action collider-item'; a.textContent = `${r.LevelId}:${r.RoomInstanceId} ${r.Name}`; a.onclick = () => selectRoom(r); list.appendChild(a); }); buildFilters();
+            rooms.forEach(r => {
+                const a = document.createElement('a');
+                a.href = '#';
+                a.className = 'list-group-item list-group-item-action collider-item';
+                const levelId = r.levelId ?? r.LevelId ?? '?';
+                const roomInstanceId = r.roomInstanceId ?? r.RoomInstanceId ?? '?';
+                const name = r.name ?? r.Name ?? 'Unnamed';
+                a.textContent = `${levelId}:${roomInstanceId} ${name}`;
+                a.dataset.levelId = levelId;
+                a.dataset.roomInstanceId = roomInstanceId;
+                a.onclick = (e) => { e.preventDefault(); selectRoom(r); highlightActiveRoom(levelId, roomInstanceId); };
+                list.appendChild(a);
+            });
+            buildFilters();
+            if (currentRoom) highlightActiveRoom(currentRoom.levelId, currentRoom.roomInstanceId);
         }
 
-        async function selectRoom(r) { if (currentRoom) await hub.invoke('UnsubscribeRoom', currentRoom.levelId, currentRoom.roomInstanceId); currentRoom = { levelId: r.levelId || r.LevelId, roomInstanceId: r.roomInstanceId || r.RoomInstanceId, name: r.name || r.Name }; const data = await hub.invoke('SubscribeRoom', currentRoom.levelId, currentRoom.roomInstanceId); if (data) { colliders = data.colliders || data.Colliders; version = data.version || 0; lastBbox = data.bbox || null; changeFlash.clear(); colliders.forEach(c => changeFlash.set(c.id, performance.now())); fitView(); persistView(); draw(); } }
+        async function selectRoom(r) {
+            if (currentRoom) await hub.invoke('UnsubscribeRoom', currentRoom.levelId, currentRoom.roomInstanceId);
+            currentRoom = { levelId: r.levelId ?? r.LevelId, roomInstanceId: r.roomInstanceId ?? r.RoomInstanceId, name: r.name ?? r.Name ?? 'Unnamed' };
+            const data = await hub.invoke('SubscribeRoom', currentRoom.levelId, currentRoom.roomInstanceId);
+            if (data) {
+                colliders = data.colliders || data.Colliders || [];
+                version = data.version || 0;
+                lastBbox = data.bbox || null;
+                changeFlash.clear();
+                colliders.forEach(c => changeFlash.set(c.id, performance.now()));
+                fitView();
+                persistView();
+                highlightActiveRoom(currentRoom.levelId, currentRoom.roomInstanceId);
+                draw();
+            }
+        }
+        function highlightActiveRoom(levelId, roomInstanceId) {
+            const list = document.getElementById('roomList'); if (!list) return;
+            [...list.querySelectorAll('.collider-item')].forEach(a => a.classList.toggle('active-room', a.dataset.levelId == levelId && a.dataset.roomInstanceId == roomInstanceId));
+        }
 
         hub.on('collidersUpdated', payload => { if (!currentRoom) return; if (payload.levelId === currentRoom.levelId && payload.roomInstanceId === currentRoom.roomInstanceId) { colliders = payload.colliders; version = payload.version || version + 1; lastBbox = payload.bbox || lastBbox; fitView(); persistView(); draw(); } });
         hub.on('collidersReset', payload => { if (!currentRoom) return; if (payload.levelId === currentRoom.levelId && payload.roomInstanceId === currentRoom.roomInstanceId) { colliders = payload.colliders; version = payload.version || 0; lastBbox = payload.bbox || null; changeFlash.clear(); colliders.forEach(c => changeFlash.set(c.id, performance.now())); fitView(); persistView(); draw(); } });
@@ -261,11 +315,16 @@
 
             hub.onclose(err => {
                 console.error('Collider hub closed', err);
-                setTimeout(() => { if (hub.state === signalR.HubConnectionState.Disconnected) hub.start().catch(e => console.error('Restart failed', e)); }, 2000);
+                if (!intentionalStop) {
+                    setTimeout(() => { if (pageActive && hub.state === signalR.HubConnectionState.Disconnected) hub.start().catch(e => console.error('Restart failed', e)); }, 2000);
+                }
             });
             hub.onreconnecting(err => console.warn('Collider hub reconnecting...', err));
             hub.onreconnected(id => console.info('Collider hub reconnected', id));
             hub.start().then(() => { loadRooms(); resizeCanvas(); }).catch(err => console.error('Collider hub start failed', err));
++
++            document.addEventListener('visibilitychange', () => { if (document.hidden) suspendPage(); else resumePage(); });
++            window.addEventListener('beforeunload', () => { suspendPage(); });
         }
 
         if (document.readyState === 'loading') {
