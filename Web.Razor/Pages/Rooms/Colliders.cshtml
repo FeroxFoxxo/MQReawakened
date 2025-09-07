@@ -156,6 +156,12 @@
                     <div id="filterList"></div>
                 </div>
 
+                <div class="panel-section primary" aria-labelledby="planes-heading">
+                    <h5 id="planes-heading">Planes</h5>
+                    <div id="planeToggles" class="section-inline-controls" style="gap:6px; flex-wrap:wrap;" aria-label="Plane visibility toggles"></div>
+                    <div class="panel-small" id="planeHint">Toggle which planes are rendered.</div>
+                </div>
+
                 <div class="panel-section primary" aria-labelledby="display-heading">
                     <h5 id="display-heading">Display</h5>
                     <div class="section-inline-controls" id="displayToggles" style="gap:6px; flex-wrap:wrap;">
@@ -224,7 +230,7 @@
         const FLASH_MS = 1500;
         let lastBbox = null;
         let pendingStats = null;
-        const displayState = {
+    const displayState = {
             autoFit: true,
             bbox: false,
             grid: true,
@@ -232,6 +238,11 @@
             inactive: true,
             invisible: true
         };
+        let activePlanes = new Set();
+        let knownPlanes = [];
+        let hoverStack = [];
+        let lastClickStack = null; // { ids:Set<string>, index:number, time:number }
+        let lastHoverTopId = null;
         let selectedColliderId = null;
         let fpsFrameCount = 0; let fpsLastTime = performance.now(); let fps = 0;
         let pageActive = true;
@@ -268,7 +279,7 @@
             offsetY = -(minY - padding) * scale * zoom + (canvas.height - h * scale * zoom) / 2;
         }
 
-        function draw() {
+    function draw() {
             if (!pageActive) return;
             const canvas = document.getElementById('colliderCanvas');
             const ctx = canvas.getContext('2d');
@@ -314,6 +325,7 @@
                 if (!activeTypes.has(c.type)) continue;
                 if (!showInactive && !c.active) continue;
                 if (!showInvisible && c.invisible) continue;
+                if (activePlanes.size && !activePlanes.has(c.plane)) continue;
                 const color = colors[c.type] || colors.Default;
                 let baseColor = c.active ? color : '#555';
                 const t = changeFlash.get(c.id);
@@ -333,6 +345,52 @@
                     ctx.strokeStyle = '#ffff00';
                     ctx.lineWidth = 2 / zoom;
                     ctx.strokeRect(c.x * scale, (-(c.y + c.height)) * scale, c.width * scale, c.height * scale);
+                }
+            }
+            if (hoverStack.length) {
+                const top = hoverStack[0];
+                if (top) {
+                    ctx.save();
+                    ctx.strokeStyle = '#ffffff';
+                    ctx.setLineDash([6 / zoom, 4 / zoom]);
+                    ctx.lineWidth = 2 / zoom;
+                    ctx.strokeRect(top.x * scale, (-(top.y + top.height)) * scale, top.width * scale, top.height * scale);
+                    ctx.restore();
+                    if (hoverStack.length > 1) {
+                        ctx.save();
+                        const badgeX = top.x * scale;
+                        const badgeY = (-(top.y + top.height)) * scale; // top-left screen position
+                        const pad = 4;
+                        const txt = hoverStack.length.toString();
+                        ctx.font = `${12}px system-ui,sans-serif`;
+                        const tw = ctx.measureText(txt).width;
+                        const bw = tw + pad * 2;
+                        const bh = 16;
+                        ctx.fillStyle = 'rgba(0,0,0,0.7)';
+                        ctx.strokeStyle = '#ffd54f';
+                        ctx.lineWidth = 1;
+                        ctx.beginPath();
+                        const r = 6;
+                        const bx = badgeX + 2;
+                        const by = badgeY + 2;
+                        // Rounded rect
+                        ctx.moveTo(bx + r, by);
+                        ctx.lineTo(bx + bw - r, by);
+                        ctx.quadraticCurveTo(bx + bw, by, bx + bw, by + r);
+                        ctx.lineTo(bx + bw, by + bh - r);
+                        ctx.quadraticCurveTo(bx + bw, by + bh, bx + bw - r, by + bh);
+                        ctx.lineTo(bx + r, by + bh);
+                        ctx.quadraticCurveTo(bx, by + bh, bx, by + bh - r);
+                        ctx.lineTo(bx, by + r);
+                        ctx.quadraticCurveTo(bx, by, bx + r, by);
+                        ctx.closePath();
+                        ctx.fill();
+                        ctx.stroke();
+                        ctx.fillStyle = '#ffd54f';
+                        ctx.textBaseline = 'middle';
+                        ctx.fillText(txt, bx + pad, by + bh / 2);
+                        ctx.restore();
+                    }
                 }
             }
             if (displayState.bbox && lastBbox) {
@@ -488,6 +546,7 @@
                 lastBbox = data.bbox || null;
                 changeFlash.clear();
                 colliders.forEach(c => changeFlash.set(c.id, performance.now()));
+                rebuildPlanes();
                 const restored = restoreView();
                 if (!restored) {
                     fitView();
@@ -503,8 +562,8 @@
             [...list.querySelectorAll('.collider-item')].forEach(a => a.classList.toggle('active-room', a.dataset.levelId == levelId && a.dataset.roomInstanceId == roomInstanceId));
         }
 
-    hub.on('collidersUpdated', payload => { if (!currentRoom) return; if (payload.levelId === currentRoom.levelId && payload.roomInstanceId === currentRoom.roomInstanceId) { colliders = (payload.colliders || []).map(normalizeCollider); version = payload.version || version + 1; lastBbox = payload.bbox || lastBbox; fitView(); persistView(); draw(); } });
-    hub.on('collidersReset', payload => { if (!currentRoom) return; if (payload.levelId === currentRoom.levelId && payload.roomInstanceId === currentRoom.roomInstanceId) { colliders = (payload.colliders || []).map(normalizeCollider); version = payload.version || 0; lastBbox = payload.bbox || null; changeFlash.clear(); colliders.forEach(c => changeFlash.set(c.id, performance.now())); fitView(); persistView(); draw(); } });
+    hub.on('collidersUpdated', payload => { if (!currentRoom) return; if (payload.levelId === currentRoom.levelId && payload.roomInstanceId === currentRoom.roomInstanceId) { colliders = (payload.colliders || []).map(normalizeCollider); version = payload.version || version + 1; lastBbox = payload.bbox || lastBbox; if (rebuildPlanes()) persistView(); fitView(); persistView(); draw(); } });
+    hub.on('collidersReset', payload => { if (!currentRoom) return; if (payload.levelId === currentRoom.levelId && payload.roomInstanceId === currentRoom.roomInstanceId) { colliders = (payload.colliders || []).map(normalizeCollider); version = payload.version || 0; lastBbox = payload.bbox || null; changeFlash.clear(); colliders.forEach(c => changeFlash.set(c.id, performance.now())); rebuildPlanes(); fitView(); persistView(); draw(); } });
         hub.on('collidersDiff', payload => {
             if (!currentRoom) return;
             if (payload.levelId !== currentRoom.levelId || payload.roomInstanceId !== currentRoom.roomInstanceId) return;
@@ -515,6 +574,7 @@
             if (payload.added) { payload.added.forEach(a => { const na = normalizeCollider(a); colliders.push(na); changeFlash.set(na.id, performance.now()); }); }
             if (payload.bbox) { if (lastBbox) { const growth = (payload.bbox.width * payload.bbox.height) / (lastBbox.width * lastBbox.height + 0.0001); if (growth > 1.25 && displayState.autoFit) fitView(); } lastBbox = payload.bbox; }
             if (payload.stats) { pendingStats = { ...payload.stats, bbox: payload.bbox || { width: 0, height: 0 } }; }
+            if (rebuildPlanes()) persistView();
             persistView();
             draw();
         });
@@ -550,13 +610,13 @@
             list.appendChild(a);
         }
 
-    function persistView() { if (!currentRoom) return; const state = { zoom, offsetX, offsetY, active: [...activeTypes], displayState }; localStorage.setItem('colliderView_' + currentRoom.levelId + '_' + currentRoom.roomInstanceId, JSON.stringify(state)); }
-    function restoreView() { if (!currentRoom) return false; const raw = localStorage.getItem('colliderView_' + currentRoom.levelId + '_' + currentRoom.roomInstanceId); if (!raw) return false; try { const s = JSON.parse(raw); if (typeof s.zoom === 'number' && typeof s.offsetX === 'number' && typeof s.offsetY === 'number') { zoom = s.zoom; offsetX = s.offsetX; offsetY = s.offsetY; } if (Array.isArray(s.active)) { activeTypes = new Set(s.active); buildFilters(); } if (s.displayState) { Object.assign(displayState, s.displayState); syncDisplayButtons(); } return true; } catch (_) { return false; } }
+    function persistView() { if (!currentRoom) return; const state = { zoom, offsetX, offsetY, active: [...activeTypes], planes: [...activePlanes], displayState }; localStorage.setItem('colliderView_' + currentRoom.levelId + '_' + currentRoom.roomInstanceId, JSON.stringify(state)); }
+    function restoreView() { if (!currentRoom) return false; const raw = localStorage.getItem('colliderView_' + currentRoom.levelId + '_' + currentRoom.roomInstanceId); if (!raw) return false; try { const s = JSON.parse(raw); if (typeof s.zoom === 'number' && typeof s.offsetX === 'number' && typeof s.offsetY === 'number') { zoom = s.zoom; offsetX = s.offsetX; offsetY = s.offsetY; } if (Array.isArray(s.active)) { activeTypes = new Set(s.active); buildFilters(); } if (s.displayState) { Object.assign(displayState, s.displayState); syncDisplayButtons(); } if (Array.isArray(s.planes)) { activePlanes = new Set(s.planes); syncPlaneButtons(); } return true; } catch (_) { return false; } }
 
     function initUi() {
             if (initialized) return;
             initialized = true;
-            const required = ['displayToggles','btnFit','searchBtn','searchCollider','exportJson','exportPng','colliderCanvas','toggleSidebar'];
+            const required = ['displayToggles','btnFit','searchBtn','searchCollider','exportJson','exportPng','colliderCanvas','toggleSidebar','planeToggles'];
             const missing = required.filter(id => !document.getElementById(id));
             if (missing.length) {
                 if (document.readyState !== 'complete') {
@@ -583,6 +643,20 @@
             document.getElementById('exportJson')?.addEventListener('click', () => { const data = JSON.stringify({ room: currentRoom, version, colliders }, null, 2); const blob = new Blob([data], { type: 'application/json' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `colliders_${currentRoom?.levelId || 'unknown'}_${currentRoom?.roomInstanceId || 'x'}_v${version}.json`; a.click(); URL.revokeObjectURL(a.href); });
             document.getElementById('exportPng')?.addEventListener('click', () => { const canvas = document.getElementById('colliderCanvas'); const a = document.createElement('a'); a.href = canvas.toDataURL('image/png'); a.download = `colliders_${currentRoom?.levelId || 'unknown'}_${currentRoom?.roomInstanceId || 'x'}_v${version}.png`; a.click(); });
             document.getElementById('toggleSidebar')?.addEventListener('click', (e) => { const sb = document.getElementById('roomsSidebar'); if (!sb) return; sb.classList.toggle('collapsed'); const expanded = !sb.classList.contains('collapsed'); e.target.setAttribute('aria-expanded', expanded); e.target.textContent = expanded ? 'Hide Panel' : 'Show Panel'; });
+            document.getElementById('planeToggles')?.addEventListener('click', e => {
+                const btn = e.target.closest('button[data-plane]');
+                if (!btn) return;
+                const plane = parseInt(btn.dataset.plane,10);
+                if (activePlanes.has(plane)) {
+                    activePlanes.delete(plane);
+                    if (activePlanes.size === 0) { activePlanes.add(plane); return; }
+                } else {
+                    activePlanes.add(plane);
+                }
+                syncPlaneButtons();
+                persistView();
+                draw();
+            });
 
             const colliderCanvas = document.getElementById('colliderCanvas');
             if (!colliderCanvas) return;
@@ -624,24 +698,47 @@
     function onCanvasMove(e) {
             const canvas = e.target; const rect = canvas.getBoundingClientRect(); const mx = (e.clientX - rect.left - offsetX) / (zoom * scale); const my = -((e.clientY - rect.top - offsetY) / (zoom * scale));
             const showInactive = displayState.inactive; const showInvisible = displayState.invisible;
-            const found = colliders.find(c => {
+            const stack = colliders.filter(c => {
                 if (!activeTypes.has(c.type)) return false;
                 if (!showInactive && !c.active) return false;
                 if (!showInvisible && c.invisible) return false;
+                if (activePlanes.size && !activePlanes.has(c.plane)) return false;
                 return mx >= c.x && mx <= c.x + c.width && my >= c.y && my <= c.y + c.height;
             });
+            hoverStack = stack;
+            const top = stack[0] || null;
             const info = document.getElementById('hoverInfo');
-            if (info) info.textContent = found ? `${found.type} ${found.id} (${found.x.toFixed(2)},${found.y.toFixed(2)}) ${found.width.toFixed(2)}x${found.height.toFixed(2)} ${found.active ? '' : '[inactive]'} ${found.invisible ? '[invis]' : ''}` : '';
+            if (info) {
+                if (top) {
+                    const extra = stack.length > 1 ? ` (+${stack.length - 1} more)` : '';
+                    info.textContent = `${top.type} ${top.id} (${top.x.toFixed(2)},${top.y.toFixed(2)}) ${top.width.toFixed(2)}x${top.height.toFixed(2)}${extra}`;
+                } else info.textContent = '';
+            }
+            if (top?.id !== lastHoverTopId || (stack.length > 1 && stack.length !== hoverStack.length)) {
+                lastHoverTopId = top ? top.id : null;
+                draw();
+            } else if (!top && lastHoverTopId) { lastHoverTopId = null; draw(); }
         }
         function onCanvasClick(e) {
             const canvas = e.target; const rect = canvas.getBoundingClientRect(); const mx = (e.clientX - rect.left - offsetX) / (zoom * scale); const my = -((e.clientY - rect.top - offsetY) / (zoom * scale));
             const showInactive = displayState.inactive; const showInvisible = displayState.invisible;
-            const found = colliders.find(c => activeTypes.has(c.type) && (showInactive || c.active) && (showInvisible || !c.invisible) && mx >= c.x && mx <= c.x + c.width && my >= c.y && my <= c.y + c.height);
-            selectedColliderId = found ? found.id : null;
-            const detail = document.getElementById('colliderDetail');
-            if (detail) detail.textContent = found ? `Selected: ${found.id} | ${found.type} | Pos(${found.x.toFixed(2)},${found.y.toFixed(2)}) Size(${found.width.toFixed(2)}x${found.height.toFixed(2)}) Plane:${found.plane}` : '';
-            if (found) announce(`Collider ${found.id} selected at position ${found.x.toFixed(0)}, ${found.y.toFixed(0)}.`); else announce('Selection cleared.');
-            draw();
+                const stack = colliders.filter(c => activeTypes.has(c.type) && (showInactive || c.active) && (showInvisible || !c.invisible) && (!activePlanes.size || activePlanes.has(c.plane)) && mx >= c.x && mx <= c.x + c.width && my >= c.y && my <= c.y + c.height);
+                if (stack.length === 0) { selectedColliderId = null; draw(); announce('Selection cleared.'); return; }
+                const now = performance.now();
+                const idSet = new Set(stack.map(c => c.id));
+                if (lastClickStack && (now - lastClickStack.time < 1500) && idSet.size === lastClickStack.ids.size && [...idSet].every(id => lastClickStack.ids.has(id))) {
+                    lastClickStack.index = (lastClickStack.index + 1) % stack.length;
+                    selectedColliderId = stack[lastClickStack.index].id;
+                    lastClickStack.time = now;
+                } else {
+                    selectedColliderId = stack[0].id;
+                    lastClickStack = { ids: idSet, index: 0, time: now };
+                }
+                const sel = stack.find(c => c.id === selectedColliderId);
+                const detail = document.getElementById('colliderDetail');
+                if (detail && sel) detail.textContent = `Selected: ${sel.id} | ${sel.type} | Pos(${sel.x.toFixed(2)},${sel.y.toFixed(2)}) Size(${sel.width.toFixed(2)}x${sel.height.toFixed(2)}) Plane:${sel.plane}${stack.length>1 ? ` (stack ${lastClickStack.index+1}/${stack.length})` : ''}`;
+                if (sel) announce(`Collider ${sel.id} selected.${stack.length>1 ? ' Stack item '+(lastClickStack.index+1)+' of '+stack.length+'. Click to cycle.' : ''}`);
+                draw();
         }
 
         window.addEventListener('mouseup', () => { isPanning = false; document.body.style.cursor = 'default'; });
@@ -653,6 +750,37 @@
         const key = b.dataset.key; if (!key) return; const state = !!displayState[key]; b.classList.toggle('active', state); b.setAttribute('aria-pressed', state);
             });
         }
+
+    function rebuildPlanes() {
+        const planes = Array.from(new Set(colliders.map(c => c.plane).filter(p => p !== undefined))).sort((a,b)=>a-b);
+        const changed = planes.length !== knownPlanes.length || planes.some((p,i)=>p!==knownPlanes[i]);
+        if (!changed) return false;
+        knownPlanes = planes;
+        if (activePlanes.size === 0) planes.forEach(p => activePlanes.add(p));
+        const container = document.getElementById('planeToggles'); if (!container) return false;
+        container.innerHTML='';
+        planes.forEach(p => {
+            const btn = document.createElement('button');
+            btn.type='button';
+            btn.className='btn btn-sm btn-outline-dark toggle-btn';
+            btn.dataset.plane = p;
+            btn.textContent = 'P'+p;
+            btn.setAttribute('aria-pressed', activePlanes.has(p));
+            if (activePlanes.has(p)) btn.classList.add('active');
+            container.appendChild(btn);
+        });
+        return true;
+    }
+
+    function syncPlaneButtons() {
+        const container = document.getElementById('planeToggles'); if (!container) return;
+        [...container.querySelectorAll('button[data-plane]')].forEach(b => {
+            const p = parseInt(b.dataset.plane,10);
+            const on = activePlanes.has(p);
+            b.classList.toggle('active', on);
+            b.setAttribute('aria-pressed', on);
+        });
+    }
 
     function announce(message) {
         const region = document.getElementById('srAnnounce');

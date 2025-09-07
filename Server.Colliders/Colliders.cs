@@ -13,6 +13,7 @@ public class Colliders(ILogger<Colliders> logger) : Module(logger)
         services.AddSingleton<IColliderSnapshotProvider, ColliderSnapshotProvider>();
         services.AddSingleton<IColliderDiffCalculator, ColliderDiffCalculator>();
         services.AddSingleton<IRoomVersionTracker, InMemoryRoomVersionTracker>();
+        services.AddSingleton<IColliderSubscriptionTracker, InMemoryColliderSubscriptionTracker>();
         services.AddHostedService<ColliderPushService>();
     }
 }

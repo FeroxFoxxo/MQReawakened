@@ -10,12 +10,14 @@ public class ColliderPushService(IColliderSnapshotProvider _snapshots,
     IColliderDiffCalculator _diffs,
     IRoomVersionTracker _versions,
     IColliderUpdatePublisher _publisher,
+    IColliderSubscriptionTracker _subs,
     ILogger<ColliderPushService> _logger) : BackgroundService, IService
 {
     private readonly Dictionary<(int, int), RoomCollidersDto> _last = [];
 
     private int _currentIntervalMs = 1000;
     private const int BaseInterval = 1000;
+    private const int MaxIdleInterval = 5000;
 
     public void Initialize() { }
 
@@ -26,6 +28,17 @@ public class ColliderPushService(IColliderSnapshotProvider _snapshots,
             var totalChanges = 0;
             try
             {
+                var anySubs = _subs.HasAnySubscribers();
+                if (!anySubs)
+                {
+                    _currentIntervalMs = Math.Min(MaxIdleInterval, (int)(_currentIntervalMs * 1.5));
+                    try { await Task.Delay(_currentIntervalMs, stoppingToken); } catch { }
+                    continue;
+                }
+                else if (_currentIntervalMs > BaseInterval)
+                {
+                    _currentIntervalMs = BaseInterval;
+                }
                 var current = _snapshots.GetSnapshots();
 
                 foreach (var room in current)
@@ -40,6 +53,12 @@ public class ColliderPushService(IColliderSnapshotProvider _snapshots,
                 foreach (var room in current)
                 {
                     var key = (room.LevelId, room.RoomInstanceId);
+
+                    if (!_subs.HasSubscribers(room.LevelId, room.RoomInstanceId))
+                    {
+                        _last[key] = room;
+                        continue;
+                    }
 
                     if (!_last.TryGetValue(key, out var prev))
                     {
@@ -68,12 +87,9 @@ public class ColliderPushService(IColliderSnapshotProvider _snapshots,
                     _last.Remove(rk);
                 }
 
-                _currentIntervalMs = totalChanges switch
-                {
-                    > 50 => Math.Max(100, _currentIntervalMs / 2),
-                    0 => Math.Min(2000, (int)(_currentIntervalMs * 1.25)),
-                    _ => BaseInterval
-                };
+                _currentIntervalMs = totalChanges == 0
+                    ? Math.Min(2000, (int)(_currentIntervalMs * 1.15))
+                    : totalChanges > 50 ? Math.Max(100, _currentIntervalMs / 2) : BaseInterval;
             }
             catch (Exception ex)
             { _logger.LogError(ex, "Collider push cycle failure"); }

@@ -13,12 +13,14 @@ public class ColliderPushService : BackgroundService
     private readonly IHubContext<ColliderHub> _hub;
     private readonly ILogger<ColliderPushService> _logger;
     private readonly IRoomVersionTracker _versions;
+    private readonly IColliderSubscriptionTracker _subs;
 
     private readonly int _baseIntervalMs = 1000;
     private int _currentIntervalMs = 1000;
+    private const int MaxIdleInterval = 5000;
 
-    public ColliderPushService(IColliderSnapshotProvider snapshots, IHubContext<ColliderHub> hub, ILogger<ColliderPushService> logger, IRoomVersionTracker versions)
-    { _snapshots = snapshots; _hub = hub; _logger = logger; _versions = versions; }
+    public ColliderPushService(IColliderSnapshotProvider snapshots, IHubContext<ColliderHub> hub, ILogger<ColliderPushService> logger, IRoomVersionTracker versions, IColliderSubscriptionTracker subs)
+    { _snapshots = snapshots; _hub = hub; _logger = logger; _versions = versions; _subs = subs; }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
@@ -27,6 +29,15 @@ public class ColliderPushService : BackgroundService
         {
             try
             {
+                var anySubs = _subs.HasAnySubscribers();
+                if (!anySubs)
+                {
+                    _currentIntervalMs = Math.Min(MaxIdleInterval, (int)(_currentIntervalMs * 1.5));
+                    await Task.Delay(_currentIntervalMs, stoppingToken);
+                    continue;
+                }
+                else if (_currentIntervalMs > _baseIntervalMs)
+                { _currentIntervalMs = _baseIntervalMs; }
                 var current = _snapshots.GetSnapshots();
                 if (last.Length > 0)
                 {
@@ -46,6 +57,11 @@ public class ColliderPushService : BackgroundService
                 {
                     var group = $"room:{room.LevelId}:{room.RoomInstanceId}";
                     var prev = last.FirstOrDefault(r => r.LevelId == room.LevelId && r.RoomInstanceId == room.RoomInstanceId);
+
+                    if (!_subs.HasSubscribers(room.LevelId, room.RoomInstanceId))
+                    {
+                        continue;
+                    }
 
                     if (prev == null)
                     {
@@ -127,8 +143,8 @@ public class ColliderPushService : BackgroundService
 
                 _currentIntervalMs = totalChanges switch
                 {
+                    0 => Math.Min(2000, (int)(_currentIntervalMs * 1.15)),
                     > 50 => Math.Max(100, _currentIntervalMs / 2),
-                    0 => Math.Min(2000, (int)(_currentIntervalMs * 1.25)),
                     _ => _baseIntervalMs
                 };
             }
