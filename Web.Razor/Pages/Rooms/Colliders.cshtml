@@ -106,13 +106,12 @@
         const colors = { Attack: '#ff6b6b', Player: '#4ecdc4', Enemy: '#ffe66d', Default: '#1a535c', Breakable: '#a29bfe', Hazard: '#ff922b', MovingPlatform: '#74c0fc', TriggerTarget: '#e599f7', TriggerReceiver: '#be4bdb', Stomper: '#ff8787', AiAttack: '#ff6b6b' };
         let activeTypes = new Set(Object.keys(colors));
         let version = 0;
-        const changeFlash = new Map(); // id -> timestamp for change highlight
+        const changeFlash = new Map();
         const FLASH_MS = 1500;
-        let lastBbox = null; // latest bounding box from server
-        let pendingStats = null; // stats payload to show after diff
-        let showBBox = false; // bounding box overlay toggle
-        let selectedColliderId = null; // currently selected collider
-        // FPS metrics
+        let lastBbox = null;
+        let pendingStats = null;
+        let showBBox = false;
+        let selectedColliderId = null;
         let fpsFrameCount = 0; let fpsLastTime = performance.now(); let fps = 0;
 
         function fitView() {
@@ -122,7 +121,7 @@
             const maxX = Math.max(...colliders.map(c => c.x + c.width));
             const maxY = Math.max(...colliders.map(c => c.y + c.height));
             const canvas = document.getElementById('colliderCanvas');
-            const padding = 2; // world units
+            const padding = 2;
             const w = maxX - minX + padding * 2; const h = maxY - minY + padding * 2;
             zoom = Math.min(canvas.width / (w * scale), canvas.height / (h * scale));
             offsetX = -(minX - padding) * scale * zoom + (canvas.width - w * scale * zoom) / 2;
@@ -136,11 +135,10 @@
             ctx.save();
             ctx.translate(offsetX, offsetY);
             ctx.scale(zoom, zoom);
-            // grid
             if (document.getElementById('showGrid').checked) {
                 ctx.save(); ctx.strokeStyle = '#123'; ctx.lineWidth = 1 / zoom;
                 const gridSize = scale;
-                const cols = 200; const rows = 200; // arbitrary large
+                const cols = 200; const rows = 200;
                 for (let i = -cols; i < cols; i++) {
                     ctx.beginPath(); ctx.moveTo(i * gridSize, -rows * gridSize); ctx.lineTo(i * gridSize, rows * gridSize); ctx.stroke();
                 }
@@ -231,11 +229,10 @@
         function persistView() { if (!currentRoom) return; const state = { zoom, offsetX, offsetY, active: [...activeTypes] }; localStorage.setItem('colliderView_' + currentRoom.levelId + '_' + currentRoom.roomInstanceId, JSON.stringify(state)); }
         function restoreView() { if (!currentRoom) return; const raw = localStorage.getItem('colliderView_' + currentRoom.levelId + '_' + currentRoom.roomInstanceId); if (!raw) return; try { const s = JSON.parse(raw); zoom = s.zoom; offsetX = s.offsetX; offsetY = s.offsetY; activeTypes = new Set(s.active); buildFilters(); } catch (_) { } }
 
-        function initUi() {
+    function initUi() {
             const required = ['autoFitToggle','flashChanges','toggleBBox','showInactive','showInvisible','searchBtn','searchCollider','exportJson','exportPng','colliderCanvas'];
             const missing = required.filter(id => !document.getElementById(id));
             if (missing.length) {
-                // Retry shortly if DOM not fully ready yet
                 if (document.readyState !== 'complete') {
                     return setTimeout(initUi, 40);
                 }
@@ -252,7 +249,7 @@
             document.getElementById('searchCollider')?.addEventListener('keydown', e => { if (e.key === 'Enter') searchCollider(); });
             document.getElementById('exportJson')?.addEventListener('click', () => { const data = JSON.stringify({ room: currentRoom, version, colliders }, null, 2); const blob = new Blob([data], { type: 'application/json' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `colliders_${currentRoom?.levelId || 'unknown'}_${currentRoom?.roomInstanceId || 'x'}_v${version}.json`; a.click(); URL.revokeObjectURL(a.href); });
             document.getElementById('exportPng')?.addEventListener('click', () => { const canvas = document.getElementById('colliderCanvas'); const a = document.createElement('a'); a.href = canvas.toDataURL('image/png'); a.download = `colliders_${currentRoom?.levelId || 'unknown'}_${currentRoom?.roomInstanceId || 'x'}_v${version}.png`; a.click(); });
-            // canvas interactions
+
             const colliderCanvas = document.getElementById('colliderCanvas');
             if (!colliderCanvas) return;
             colliderCanvas.addEventListener('mousemove', onCanvasMove);
@@ -261,8 +258,14 @@
             colliderCanvas.addEventListener('wheel', e => { e.preventDefault(); const canvas = e.target; const rect = canvas.getBoundingClientRect(); const mx = e.clientX - rect.left; const my = e.clientY - rect.top; const prevZoom = zoom; zoom *= e.deltaY < 0 ? 1.1 : 0.9; zoom = Math.min(Math.max(zoom, 0.05), 20); offsetX = mx - (mx - offsetX) * (zoom / prevZoom); offsetY = my - (my - offsetY) * (zoom / prevZoom); draw(); }, { passive: false });
             colliderCanvas.addEventListener('dblclick', () => { fitView(); draw(); });
             document.getElementById('resetView')?.addEventListener('click', () => { fitView(); draw(); });
-            // Begin hub after UI ready
-            hub.start().then(() => { loadRooms(); resizeCanvas(); }).catch(err => console.error(err));
+
+            hub.onclose(err => {
+                console.error('Collider hub closed', err);
+                setTimeout(() => { if (hub.state === signalR.HubConnectionState.Disconnected) hub.start().catch(e => console.error('Restart failed', e)); }, 2000);
+            });
+            hub.onreconnecting(err => console.warn('Collider hub reconnecting...', err));
+            hub.onreconnected(id => console.info('Collider hub reconnected', id));
+            hub.start().then(() => { loadRooms(); resizeCanvas(); }).catch(err => console.error('Collider hub start failed', err));
         }
 
         if (document.readyState === 'loading') {

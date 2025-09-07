@@ -19,8 +19,10 @@ public class ColliderBroadcastService(WorldHandler _world, IHubContext<ColliderH
             {
                 foreach (var room in _world.GetOpenRooms())
                 {
-                    var group = room.ToString();
-                    
+                    var levelId = room.LevelInfo.LevelId;
+                    var roomInstanceId = int.Parse(room.ToString().Split('_').Last());
+                    var group = $"room:{levelId}:{roomInstanceId}";
+
                     var colliderData = room.GetColliders().Select(c => new
                     {
                         id = c.Id,
@@ -36,8 +38,8 @@ public class ColliderBroadcastService(WorldHandler _world, IHubContext<ColliderH
 
                     var payload = new
                     {
-                        levelId = room.LevelInfo.LevelId,
-                        roomInstanceId = int.Parse(room.ToString().Split('_').Last()),
+                        levelId,
+                        roomInstanceId,
                         colliders = colliderData
                     };
                     await _hub.Clients.Group(group).SendAsync("collidersUpdated", payload, stoppingToken);
