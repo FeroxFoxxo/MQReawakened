@@ -34,6 +34,12 @@
         #roomList .list-group-item.collider-item.active-room { background:#256d8f; color:#fff; font-weight:600; }
         #status, #stats, #hoverInfo, #colliderDetail { color:#b7e3ff !important; text-shadow:0 0 3px rgba(0,0,0,0.7); }
         .legend span { border:1px solid rgba(255,255,255,0.15); }
+        .filter-swatch { display:inline-block; width:13px; height:13px; border:1px solid rgba(0,0,0,0.6); margin-right:6px; vertical-align:middle; border-radius:3px; box-shadow:0 0 2px rgba(0,0,0,0.5); }
+        #filterList .form-check { padding:2px 4px; margin:0; }
+        #filterList label { cursor:pointer; user-select:none; }
+        #filterList input { cursor:pointer; }
+        #status, #stats, #hoverInfo, #colliderDetail { background:linear-gradient(135deg, rgba(70,160,70,0.22), rgba(40,110,40,0.28)); border:1px solid rgba(90,200,90,0.45); border-radius:4px; padding:2px 6px; color:#081b08 !important; font-weight:500; }
+        #hoverInfo { margin-top:4px; }
     </style>
 }
 <div class="container-fluid mt-3">
@@ -223,7 +229,19 @@
         function resizeCanvas() { const canvas = document.getElementById('colliderCanvas'); canvas.width = canvas.clientWidth; canvas.height = canvas.clientHeight; draw(); }
         window.addEventListener('resize', () => { resizeCanvas(); fitView(); draw(); });
 
-        function buildFilters() { const container = document.getElementById('filterList'); container.innerHTML = ''; Object.keys(colors).forEach(t => { const id = 'flt_' + t; const div = document.createElement('div'); div.className = 'form-check'; div.innerHTML = `<input class='form-check-input' type='checkbox' id='${id}' ${(activeTypes.has(t) ? 'checked' : '')}><label class='form-check-label small' for='${id}'>${t}</label>`; container.appendChild(div); document.getElementById(id).addEventListener('change', e => { if (e.target.checked) activeTypes.add(t); else activeTypes.delete(t); draw(); }); }); }
+        function buildFilters() {
+            const container = document.getElementById('filterList');
+            container.innerHTML = '';
+            Object.keys(colors).forEach(t => {
+                const id = 'flt_' + t;
+                const div = document.createElement('div');
+                div.className = 'form-check';
+                const swatch = colors[t] || '#1a535c';
+                div.innerHTML = `\n<input class='form-check-input' type='checkbox' id='${id}' ${(activeTypes.has(t) ? 'checked' : '')}>\n<label class='form-check-label small' for='${id}'><span class="filter-swatch" style="background:${swatch}"></span>${t}</label>`;
+                container.appendChild(div);
+                document.getElementById(id).addEventListener('change', e => { if (e.target.checked) activeTypes.add(t); else activeTypes.delete(t); draw(); });
+            });
+        }
         async function loadRooms() {
             rooms = await hub.invoke('GetRooms'); const list = document.getElementById('roomList'); list.innerHTML = '';
             rooms.forEach(r => {
