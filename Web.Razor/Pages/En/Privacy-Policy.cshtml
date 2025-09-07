@@ -5,47 +5,34 @@
     ViewData["Title"] = "Privacy Policy";
 }
 
-<div class="container d-flex justify-content-center align-items-center">
-    <div class="card signup-card">
-        <div class="row g-0">
-            <div class="col-md-6 info-container">
-                <img class="site_logo rounded-circle" src="/_content/Web.Razor/logo.png" alt="Site Logo" />
-                <p class="description">Privacy Policy</p>
-                <h3 class="text-warning">Effective Date: 04/09/2024</h3>
-            </div>
-            <div class="col-md-6 form-container">
-                <br />
-                <h3>
-                    1. Introduction
-                </h3>
-                <p>
-                    We are committed to protecting your privacy and ensuring that your personal information is handled in a safe and responsible manner. This Privacy Policy outlines how we collect, use, and protect your information.
-                </p>
-                <h3>
-                    2. Information We Collect
-                </h3>
-                <p>
-                    Personal Information: When you register on our site, we may collect personal information such as your email address and username.
-                </p>
-                <h3>
-                    3. How We Use Your Information
-                </h3>
-                <p>
-                    To Provide Services: We use your information to create and manage your account.
-                </p>
-                <h3>
-                    4. Security
-                </h3>
-                <p>
-                    We implement a variety of security measures to maintain the safety of your personal information. However, no method of transmission over the internet or electronic storage is 100% secure.
-                </p>
-                <h3>
-                    5. Changes to This Policy
-                </h3>
-                <p>
-                    We may update this Privacy Policy from time to time. We will notify the community of any changes by posting the new policy on our site.
-                </p>
+<section class="mq-container mt-space fade-in">
+    @await Html.PartialAsync("_PanelShell", new Web.Razor.Pages.Shared.PanelShellModel { Title = "Privacy Policy", Kicker = "Policy", Description = "How we handle & protect your information.", Center = false })
+        <div class="row">
+            <div class="col-12" style="font-size:.85rem; line-height:1.4; color:var(--mq-color-text-dim);" data-reveal>
+                <p class="stat-pill" style="margin:0 0 1rem; display:inline-flex;">Effective Date: 04/09/2024</p>
+                <article class="flow" style="--flow-space:1.2rem;">
+                    <section>
+                        <h3 class="t-sub" style="color:var(--mq-color-text);">1. Introduction</h3>
+                        <p>We are committed to protecting your privacy and ensuring that your personal information is handled in a safe and responsible manner. This Privacy Policy outlines how we collect, use, and protect your information.</p>
+                    </section>
+                    <section>
+                        <h3 class="t-sub" style="color:var(--mq-color-text);">2. Information We Collect</h3>
+                        <p><strong>Personal Information:</strong> When you register on our site, we may collect personal information such as your email address and username.</p>
+                    </section>
+                    <section>
+                        <h3 class="t-sub" style="color:var(--mq-color-text);">3. How We Use Your Information</h3>
+                        <p><strong>To Provide Services:</strong> We use your information to create and manage your account.</p>
+                    </section>
+                    <section>
+                        <h3 class="t-sub" style="color:var(--mq-color-text);">4. Security</h3>
+                        <p>We implement a variety of security measures to maintain the safety of your personal information. However, no method of transmission over the internet or electronic storage is 100% secure.</p>
+                    </section>
+                    <section>
+                        <h3 class="t-sub" style="color:var(--mq-color-text);">5. Changes to This Policy</h3>
+                        <p>We may update this Privacy Policy from time to time. We will notify the community of any changes by posting the new policy on our site.</p>
+                    </section>
+                </article>
             </div>
         </div>
     </div>
-</div>
+</section>

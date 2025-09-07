@@ -5,7 +5,6 @@ using MimeKit;
 using RazorLight;
 using Server.Base.Core.Extensions;
 using System.IO.Compression;
-using System.Collections.Generic;
 using Server.Base.Core.Abstractions;
 using Server.Base.Core.Configs;
 using Server.Base.Core.Events;

@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using Protocols.External;
 using Protocols.System;
+using Server.Colliders;
 using Server.Base.Core.Abstractions;
 using Server.Base.Logging;
 using Server.Reawakened;
@@ -27,7 +28,8 @@ public static class ImportModules
             typeof(Launcher),
             typeof(Apps),
             typeof(Razor),
-            typeof(WebPlayer)
+            typeof(WebPlayer),
+            typeof(Colliders)
         };
 
         var services = new ServiceCollection();

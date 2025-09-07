@@ -5,23 +5,15 @@
     ViewData["Title"] = "News";
 }
 
-<div class="container d-flex justify-content-center align-items-center">
-    <div class="card signup-card">
-        <div class="row g-0">
-            <div class="col-md-6 info-container">
-                <img class="site_logo rounded-circle" src="/_content/Web.Razor/logo.png" alt="Site Logo" />
-                <p class="description">@ViewData["ServerName"] News</p>
-                <h3 class="text-warning">Hear all about us here!</h3>
-            </div>
-            <div class="col-md-6 form-container">
-                <br />
-                <h3>
-                    Newest News:
-                </h3>
-                <p>
-                    @NewsModel.News
-                </p>
+<section class="mq-container mt-space fade-in">
+    @await Html.PartialAsync("_PanelShell", new Web.Razor.Pages.Shared.PanelShellModel { Title = (string)ViewData["ServerName"] + " News", Description = "Hear all about us here!", Center = false, AdditionalClasses = "panel-p-lg panel-variant-success" })
+        <div class="row">
+            <div class="col-12" style="font-size:.85rem; line-height:1.4; color:var(--mq-color-text-dim);" data-reveal>
+                <article class="flow" style="max-width:760px;">
+                    <h3 class="t-sub" style="color:var(--mq-color-text);">Latest</h3>
+                    <p>@Model.News</p>
+                </article>
             </div>
         </div>
     </div>
-</div>
+</section>

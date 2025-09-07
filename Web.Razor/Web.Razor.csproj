@@ -28,9 +28,18 @@
         <FrameworkReference Include="Microsoft.AspNetCore.App" />
         <PackageReference Include="MailKit" Version="4.7.1.1" />
         <PackageReference Include="RazorLight" Version="2.3.1" />
+
         <ProjectReference Include="..\Server.Reawakened\Server.Reawakened.csproj" />
+        <ProjectReference Include="..\Server.Colliders\Server.Colliders.csproj" />
         <ProjectReference Include="..\Server.Web\Server.Web.csproj" />
         <ProjectReference Include="..\Web.Launcher\Web.Launcher.csproj" />
+        
+        <Reference Include="UnityEngine">
+          <HintPath>..\Server.Reawakened\Dependencies\UnityEngine.dll</HintPath>
+        </Reference>
+        <Reference Include="Assembly-CSharp">
+            <HintPath>..\Server.Reawakened\Dependencies\Assembly-CSharp.dll</HintPath>
+        </Reference>
     </ItemGroup>
 
     <ItemGroup>

@@ -19,9 +19,6 @@
         <Reference Include="Assembly-CSharp">
             <HintPath>..\Server.Reawakened\Dependencies\Assembly-CSharp.dll</HintPath>
         </Reference>
-        <Reference Include="A2mCore">
-            <HintPath>..\Server.Reawakened\Dependencies\A2mCore.dll</HintPath>
-        </Reference>
         <Reference Include="LitJson">
           <HintPath>..\Server.Reawakened\Dependencies\LitJson.dll</HintPath>
         </Reference>

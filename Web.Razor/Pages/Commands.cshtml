@@ -1,4 +1,4 @@
-﻿@page
+﻿@page "/commands"
 @using Server.Reawakened.XMLs.Data.Commands
 @using Web.Razor.Pages
 @model CommandsModel
@@ -25,25 +25,22 @@
     </script>
 }
 
-<div class="container card-text-body">
-    <header class="text-center my-4 site-header">
-        <h1 class="mb-0">@ViewData["ServerName"] Command Reference</h1>
-        <p class="site-description">Note! Commands may not be fully implemented, or may not work on older versions of MQ.</p>
-    </header>
+<section class="mq-container mt-space fade-in">
+    @await Html.PartialAsync("_PanelShell", new Web.Razor.Pages.Shared.PanelShellModel { Title = (string)ViewData["ServerName"] + " Command Reference", Description = "Note: Some commands may not be fully implemented or may not work on older versions.", Center = true, AdditionalClasses = "flow panel-p-lg" })
     @functions {
         private void RenderParameter(ParameterModel parameter, string parentId)
         {
             var optionsId = $"{parentId.Replace("/", "").ToLower()}-{parameter.Name.Replace("/", "").ToLower()}";
-            <div class="card my-2 parameter-card">
-                <div class="card-body">
-                    <h5 class="card-title">
+            <div class="parameter-nest" style="margin-top:10px;">
+                <div>
+                    <h5 style="font-size:.75rem; margin:0 0 4px; color:var(--mq-color-accent-soft); letter-spacing:.5px;">
                         @parameter.Name
                         @if (parameter.Optional)
                         {
                             <span class="optional-indicator">(Optional)</span>
                         }
                     </h5>
-                    <p class="card-text">@parameter.Description</p>
+                    <p style="font-size:.65rem; line-height:1.25; color:var(--mq-color-text-dim); margin:0 0 6px;">@parameter.Description</p>
                     @if (parameter.Options != null && parameter.Options.Any())
                     {
                         <div class="options-collapse collapse" id="@optionsId">
@@ -63,9 +60,7 @@
                                 </div>
                             }
                         </div>
-                        <button class="options-toggle btn btn-link" data-toggle="collapse" data-target="#@optionsId" aria-expanded="false" aria-controls="@optionsId">
-                            Show Options
-                        </button>
+                        <button class="btn-modern btn-pad-md" style="margin-top:4px; font-size:.6rem; letter-spacing:.75px; text-transform:uppercase;" data-toggle="collapse" data-target="#@optionsId" aria-expanded="false" aria-controls="@optionsId">Show Options</button>
                     }
                 </div>
             </div>
@@ -73,42 +68,43 @@
 
         private void RenderCommandList(List<CommandModel> commands, string name)
         {
-            <div class="container">
-                <h2 class="section-header text-center mt-4">@name Commands</h2>
-                <div class="row">
-                    @foreach (var command in commands)
-                    {
-                        <div class="col-md-4 mb-4">
-                            <div class="card command-card h-100">
-                                <div class="card-header">
-                                    <h3>@command.CommandName</h3>
-                                </div>
-                                <div class="card-body">
-                                    <p>@command.CommandDescription</p>
-                                    @if (command.Parameters != null && command.Parameters.Any())
-                                    {
-                                        int parameterId = 0;
-                                        foreach (var parameter in command.Parameters)
-                                        {
-                                            parameterId++;
-                                            RenderParameter(parameter, $"options-{name}-{command.CommandName}-{parameterId}");
-                                        }
-                                    }
-                                </div>
-                                <div class="card-footer @(command.AccessLevel > Server.Base.Accounts.Enums.AccessLevel.Player ? "custom-red" : "custom-blue")">
-                                    Requires: @command.AccessLevel
-                                </div>
-                            </div>
+            <h2 class="t-sub" style="margin-top:2rem;">@name Commands</h2>
+            <div class="command-grid mt-2">
+                @foreach (var command in commands)
+                {
+                    <div class="command-card-modern">
+                        <div>
+                            <h3>@command.CommandName</h3>
+                            <p>@command.CommandDescription</p>
                         </div>
-                    }
-                </div>
+                        @if (command.Parameters != null && command.Parameters.Any())
+                        {
+                            int parameterId = 0;
+                            foreach (var parameter in command.Parameters)
+                            {
+                                parameterId++;
+                                RenderParameter(parameter, $"options-{name}-{command.CommandName}-{parameterId}");
+                            }
+                        }
+                        <div class="command-meta @(command.AccessLevel > Server.Base.Accounts.Enums.AccessLevel.Player ? "danger" : null)">
+                            <span>Requires @command.AccessLevel</span>
+                        </div>
+                    </div>
+                }
             </div>
         }
     }
-    <div class="commands">
-        @{
-            RenderCommandList(Model.ServerCommands, "Server");
-            RenderCommandList(Model.ClientCommands, "Client");
+    <div class="flow" style="margin-top:1rem;">
+        @if ((Model.ServerCommands == null || !Model.ServerCommands.Any()) && (Model.ClientCommands == null || !Model.ClientCommands.Any()))
+        {
+            <div class="panel-glass" style="background:rgba(255,255,255,0.02); padding:1.25rem; border-radius:16px; border:1px dashed #1e5166;">
+                <p style="font-size:.75rem; letter-spacing:.4px; color:var(--mq-color-text-dim); margin:0;">No commands are currently loaded. This usually means the server hasn't finished starting or command bundles are still initializing. Refresh in a moment.</p>
+            </div>
+        }
+        else
+        {
+            RenderCommandList(Model.ServerCommands ?? new List<CommandModel>(), "Server");
+            RenderCommandList(Model.ClientCommands ?? new List<CommandModel>(), "Client");
         }
     </div>
-</div>
+</section>

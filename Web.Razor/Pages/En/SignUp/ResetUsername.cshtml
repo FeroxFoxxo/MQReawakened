@@ -5,41 +5,40 @@
     ViewData["Title"] = "Reset Username";
 }
 
-<div class="container d-flex justify-content-center align-items-center">
-    <div class="card signup-card">
-        <div class="row g-0">
-            <div class="col-md-6 info-container">
-                <img class="site_logo rounded-circle" src="/_content/Web.Razor/logo.png" alt="Site Logo" />
-                <p class="description">Reset Username</p>
+<section class="mq-container mt-space fade-in">
+    @await Html.PartialAsync("_PanelShell", new Web.Razor.Pages.Shared.PanelShellModel { Title = "Reset Username", Description = "Enter and confirm your new username below.", Center = false })
+        <div class="row">
+            <div class="col-lg-5 d-flex flex-column align-items-center justify-content-center mb-4 mb-lg-0 center" data-reveal>
+                <img class="site_logo" src="/_content/Web.Razor/logo.png" alt="Site Logo" style="max-width:130px;" />
             </div>
-            <div class="col-md-6 form-container">
-                <form asp-action="ResetUsername" method="post" class="form text-center">
-                    <h3>Please enter your new username</h3>
-                    <br />
-
-                    <div class="form_field">
+            <div class="col-lg-7" data-reveal>
+                <form asp-action="ResetUsername" method="post" class="form-modern" novalidate>
+                    <div class="field">
                         <label asp-for="Username"></label>
+                        <div class="input-shell">
+                            <input asp-for="Username" placeholder="Enter Username" />
+                        </div>
                         <span asp-validation-for="Username" class="text-danger"></span>
-                        <input asp-for="Username" class="border" placeholder="Enter Username Here">
                     </div>
-
-                    <div class="form_field">
+                    <div class="field">
                         <label asp-for="ConfirmUsername"></label>
+                        <div class="input-shell">
+                            <input asp-for="ConfirmUsername" placeholder="Confirm Username" />
+                        </div>
                         <span asp-validation-for="ConfirmUsername" class="text-danger"></span>
-                        <input asp-for="ConfirmUsername" class="border" placeholder="Confirm Username Here">
                     </div>
-
-                    <div class="form_field">
+                    <div class="field">
                         <label asp-for="Password"></label>
+                        <div class="input-shell">
+                            <input asp-for="Password" placeholder="Current Password" />
+                        </div>
                         <span asp-validation-for="Password" class="text-danger"></span>
-                        <input asp-for="Password" class="border" placeholder="Enter Current Password Here">
                     </div>
-
-                    <div class="form_field">
-                        <input type="submit" value="Reset Username">
+                    <div class="field" style="margin-top:4px;">
+                        <button type="submit" class="btn-modern btn-accent" style="width:100%; padding:14px 0;">Reset Username</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
-</div>
+</section>

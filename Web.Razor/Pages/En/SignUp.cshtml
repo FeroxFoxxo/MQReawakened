@@ -6,81 +6,87 @@
 }
 
 @section Scripts {
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- SweetAlert removed; internal toast system used -->
 }
 
 @if (!string.IsNullOrEmpty(Model.StatusMessage))
 {
     <script>
-        window.onload = function () {
-            Swal.fire({
-                text: '@Model.StatusMessage',
-                showConfirmButton: false
-            });
-        };
+        window.addEventListener('DOMContentLoaded', function(){
+            if(window.showToast){ showToast('@Model.StatusMessage'.replace(/'/g,"\'"), 'success'); }
+        });
     </script>
 }
 
-<div class="container d-flex justify-content-center align-items-center">
-    <div class="card signup-card">
-        <div class="row g-0">
-            <div class="col-md-6 info-container">
-                <img class="site_logo rounded-circle" src="/_content/Web.Razor/logo.png" alt="Site Logo" />
-                <p class="description">Join our community and explore!</p>
-            </div>
-            <div class="col-md-6 form-container">
-                <form asp-action="SignUp" method="post" class="form text-center">
-                    <div class="form_field">
-                        <label asp-for="Username"></label>
-                        <span asp-validation-for="Username" class="text-danger"></span>
-                        <input asp-for="Username" class="border" placeholder="XXX_Monkey_King_XXX">
+<section class="mq-container mt-space fade-in">
+    @await Html.PartialAsync("_PanelShell", new Web.Razor.Pages.Shared.PanelShellModel { Title = "Create Account", Description = "Join our community and explore the reborn world of Ook.", Center = false, AdditionalClasses = "" })
+        <div class="row">
+            <div class="col-lg-12" data-reveal>
+                <form asp-action="SignUp" method="post" class="form-modern" novalidate>
+                    <div class="form-row-duo">
+                        <div class="field">
+                            <label asp-for="Username"></label>
+                            <div class="input-shell">
+                                <input asp-for="Username" placeholder="XXX_Monkey_King_XXX" />
+                            </div>
+                            <span asp-validation-for="Username" class="text-danger"></span>
+                        </div>
+                        <div class="field">
+                            <label asp-for="Email"></label>
+                            <div class="input-shell">
+                                <input asp-for="Email" placeholder="info@mailaddress.com" />
+                            </div>
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
                     </div>
-
-                    <div class="form_field">
-                        <label asp-for="Password"></label>
-                        <span asp-validation-for="Password" class="text-danger"></span>
-                        <input asp-for="Password" class="border" placeholder="Enter Password Here">
+                    <div class="form-row-duo">
+                        <div class="field">
+                            <label asp-for="Password"></label>
+                            <div class="input-shell">
+                                <input asp-for="Password" placeholder="Enter Password" />
+                            </div>
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+                        <div class="field">
+                            <label asp-for="ConfirmPassword"></label>
+                            <div class="input-shell">
+                                <input asp-for="ConfirmPassword" placeholder="Confirm Password" />
+                            </div>
+                            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                        </div>
                     </div>
-
-                    <div class="form_field">
-                        <label asp-for="ConfirmPassword"></label>
-                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-                        <input asp-for="ConfirmPassword" class="border" placeholder="Confirm Password Here">
+                    <div class="form-row-duo">
+                        <div class="field">
+                            <label asp-for="Gender"></label>
+                            <div class="input-shell">
+                                <select asp-for="Gender" asp-items="Pages.En.SignUpModel.Genders">
+                                    <option disabled selected value="">Select…</option>
+                                </select>
+                            </div>
+                            <span asp-validation-for="Gender" class="text-danger"></span>
+                        </div>
+                        <div class="field">
+                            <label asp-for="Region"></label>
+                            <div class="input-shell">
+                                <select asp-for="Region" asp-items="Pages.En.SignUpModel.Regions">
+                                    <option disabled selected value="">Select…</option>
+                                </select>
+                            </div>
+                            <span asp-validation-for="Region" class="text-danger"></span>
+                        </div>
                     </div>
-
-                    <div class="form_field">
-                        <label asp-for="Email"></label>
-                        <span asp-validation-for="Email" class="text-danger"></span>
-                        <input asp-for="Email" class="border" placeholder="info@mailaddress.com">
-                    </div>
-
-                    <div class="form_field">
-                        <label asp-for="Gender"></label>
-                        <span asp-validation-for="Gender" class="text-danger"></span>
-                        <select asp-for="Gender" asp-items="Pages.En.SignUpModel.Genders" class="border" placeholder="Gender">
-                            <option disabled selected>SELECT</option>
-                        </select>
-                    </div>
-
-                    <div class="form_field">
-                        <label asp-for="Date"></label>
+                    <div class="field">
+                        <label asp-for="Date">Date of Birth</label>
+                        <div class="input-shell">
+                            <input asp-for="Date" />
+                        </div>
                         <span asp-validation-for="Date" class="text-danger"></span>
-                        <input asp-for="Date" class="border">
                     </div>
-
-                    <div class="form_field">
-                        <label asp-for="Region"></label>
-                        <span asp-validation-for="Region" class="text-danger"></span>
-                        <select asp-for="Region" asp-items="Pages.En.SignUpModel.Regions" class="border" placeholder="Region">
-                            <option disabled selected>SELECT</option>
-                        </select>
-                    </div>
-                    <br />
-                    <div class="form_field">
-                        <input type="submit" value="Sign Up">
+                    <div class="field" style="margin-top:4px;">
+                        <button type="submit" class="btn-modern btn-accent" style="width:100%; padding:14px 0; font-size:.9rem;">Sign Up</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
-</div>
+</section>
