@@ -419,3 +419,35 @@ h2 {
 .table-striped > tbody > tr:nth-of-type(odd) {
     background-color: rgba(0, 150, 136, 0.1);
 }
+
+.admin-dropdown {
+    background: linear-gradient(160deg, #2A6A7C 0%, #216d9b 70%, #144455 100%);
+    border: 1px solid rgba(255,255,255,0.15);
+    min-width: 12rem;
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+}
+.admin-dropdown .dropdown-item {
+    color: #f2fbff;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: background .25s, color .25s, padding-left .25s;
+}
+.admin-dropdown .dropdown-item:hover,
+.admin-dropdown .dropdown-item:focus {
+    background: #577B3D;
+    color: #ffffff;
+    padding-left: 1.15rem;
+}
+.admin-dropdown .dropdown-item:active {
+    background: #2A6A7C;
+    color: #e8faff;
+}
+.navbar-dark .dropdown-menu.admin-dropdown {
+    background-color: transparent;
+}
+.navbar-dark .nav-item.show > .nav-link#adminDropdown,
+.navbar-dark .nav-link#adminDropdown:focus,
+.navbar-dark .nav-link#adminDropdown:hover {
+    color: #cceeff !important;
+}
