@@ -28,6 +28,19 @@ public class ColliderPushService : BackgroundService
             try
             {
                 var current = _snapshots.GetSnapshots();
+                if (last.Length > 0)
+                {
+                    var newRooms = current.Where(c => !last.Any(l => l.LevelId == c.LevelId && l.RoomInstanceId == c.RoomInstanceId));
+                    foreach (var nr in newRooms)
+                    {
+                        await _hub.Clients.All.SendAsync("roomAdded", new
+                        {
+                            levelId = nr.LevelId,
+                            roomInstanceId = nr.RoomInstanceId,
+                            name = nr.Name
+                        }, stoppingToken);
+                    }
+                }
                 var totalChanges = 0;
                 foreach (var room in current)
                 {
@@ -93,6 +106,19 @@ public class ColliderPushService : BackgroundService
                             updated,
                             stats = new { added = added.Length, removed = removed.Length, updated = updated.Count },
                             bbox
+                        }, stoppingToken);
+                    }
+                }
+
+                if (last.Length > 0)
+                {
+                    var closedRooms = last.Where(l => !current.Any(c => c.LevelId == l.LevelId && c.RoomInstanceId == l.RoomInstanceId));
+                    foreach (var cr in closedRooms)
+                    {
+                        await _hub.Clients.All.SendAsync("roomRemoved", new
+                        {
+                            levelId = cr.LevelId,
+                            roomInstanceId = cr.RoomInstanceId
                         }, stoppingToken);
                     }
                 }

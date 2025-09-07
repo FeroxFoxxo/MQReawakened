@@ -138,10 +138,7 @@
                         <li>Scroll to zoom</li>
                         <li>Double-click to reset view</li>
                     </ul>
-                </div>
-
-                <div class="panel-section" aria-live="polite">
-                    <div id="colliderDetail" class="small auto-hide" aria-label="Collider details"></div>
+                    <div id="colliderDetail" class="small auto-hide mt-1" aria-label="Collider details"></div>
                 </div>
             </div>
         </div>
@@ -177,6 +174,23 @@
         let fpsFrameCount = 0; let fpsLastTime = performance.now(); let fps = 0;
         let pageActive = true; // false when tab hidden
         let intentionalStop = false; // prevent auto-reconnect when intentionally suspended
+
+        // Normalization helper to guard against casing differences from server
+        function normalizeCollider(c) {
+            if (!c) return c;
+            return {
+                ...c,
+                id: c.id ?? c.Id ?? '',
+                type: c.type ?? c.Type ?? 'Default',
+                active: (c.active ?? c.Active ?? true),
+                invisible: (c.invisible ?? c.Invisible ?? false),
+                plane: c.plane ?? c.Plane ?? 0,
+                x: c.x,
+                y: c.y,
+                width: c.width,
+                height: c.height
+            };
+        }
 
         function fitView() {
             if (colliders.length === 0) return;
@@ -251,7 +265,8 @@
             ctx.restore();
             document.getElementById('status').innerText = currentRoom ? `${currentRoom.name} | V${version} | Colliders: ${colliders.length} | Zoom: ${zoom.toFixed(2)} | FPS: ${fps.toFixed(0)}` : 'No room selected';
             if (pendingStats) { const statsEl = document.getElementById('stats'); if (statsEl) statsEl.innerText = `Δ Added:${pendingStats.added} Updated:${pendingStats.updated} Removed:${pendingStats.removed} Bounds: ${pendingStats.bbox.width.toFixed(1)}x${pendingStats.bbox.height.toFixed(1)}`; pendingStats = null; }
-            if (pageActive && (changeFlash.size > 0 || selectedColliderId)) scheduleNextFrame();
+            // Only continue animating if flash is enabled and there are flashing items, or a collider stays selected (for outline clarity)
+            if (pageActive && ((document.getElementById('flashChanges')?.checked && changeFlash.size > 0) || selectedColliderId)) scheduleNextFrame();
             fpsFrameCount++; const nowTs = performance.now(); if (nowTs - fpsLastTime >= 1000) { fps = (fpsFrameCount * 1000) / (nowTs - fpsLastTime); fpsFrameCount = 0; fpsLastTime = nowTs; }
         }
         const MAX_FPS = 30; let lastFrameTs = 0;
@@ -335,12 +350,15 @@
             const hoverEl = document.getElementById('hoverInfo'); if (hoverEl) hoverEl.textContent='';
             const data = await hub.invoke('SubscribeRoom', currentRoom.levelId, currentRoom.roomInstanceId);
             if (data) {
-                colliders = data.colliders || data.Colliders || [];
+                colliders = (data.colliders || data.Colliders || []).map(normalizeCollider);
                 version = data.version || 0;
                 lastBbox = data.bbox || null;
                 changeFlash.clear();
                 colliders.forEach(c => changeFlash.set(c.id, performance.now()));
-                fitView();
+                const restored = restoreView();
+                if (!restored) {
+                    fitView();
+                }
                 persistView();
                 highlightActiveRoom(currentRoom.levelId, currentRoom.roomInstanceId);
                 draw();
@@ -351,24 +369,57 @@
             [...list.querySelectorAll('.collider-item')].forEach(a => a.classList.toggle('active-room', a.dataset.levelId == levelId && a.dataset.roomInstanceId == roomInstanceId));
         }
 
-        hub.on('collidersUpdated', payload => { if (!currentRoom) return; if (payload.levelId === currentRoom.levelId && payload.roomInstanceId === currentRoom.roomInstanceId) { colliders = payload.colliders; version = payload.version || version + 1; lastBbox = payload.bbox || lastBbox; fitView(); persistView(); draw(); } });
-        hub.on('collidersReset', payload => { if (!currentRoom) return; if (payload.levelId === currentRoom.levelId && payload.roomInstanceId === currentRoom.roomInstanceId) { colliders = payload.colliders; version = payload.version || 0; lastBbox = payload.bbox || null; changeFlash.clear(); colliders.forEach(c => changeFlash.set(c.id, performance.now())); fitView(); persistView(); draw(); } });
+    hub.on('collidersUpdated', payload => { if (!currentRoom) return; if (payload.levelId === currentRoom.levelId && payload.roomInstanceId === currentRoom.roomInstanceId) { colliders = (payload.colliders || []).map(normalizeCollider); version = payload.version || version + 1; lastBbox = payload.bbox || lastBbox; fitView(); persistView(); draw(); } });
+    hub.on('collidersReset', payload => { if (!currentRoom) return; if (payload.levelId === currentRoom.levelId && payload.roomInstanceId === currentRoom.roomInstanceId) { colliders = (payload.colliders || []).map(normalizeCollider); version = payload.version || 0; lastBbox = payload.bbox || null; changeFlash.clear(); colliders.forEach(c => changeFlash.set(c.id, performance.now())); fitView(); persistView(); draw(); } });
         hub.on('collidersDiff', payload => {
             if (!currentRoom) return;
             if (payload.levelId !== currentRoom.levelId || payload.roomInstanceId !== currentRoom.roomInstanceId) return;
             if (payload.version && payload.version <= version) return; // stale
             version = payload.version || version + 1;
             if (payload.removed) { const remSet = new Set(payload.removed); colliders = colliders.filter(c => !remSet.has(c.id)); }
-            if (payload.updated) { const map = new Map(colliders.map(c => [c.id, c])); payload.updated.forEach(u => { if (map.has(u.id)) { Object.assign(map.get(u.id), u); changeFlash.set(u.id, performance.now()); } }); colliders = Array.from(map.values()); }
-            if (payload.added) { payload.added.forEach(a => { colliders.push(a); changeFlash.set(a.id, performance.now()); }); }
+            if (payload.updated) { const map = new Map(colliders.map(c => [c.id, c])); payload.updated.forEach(u => { const id = u.id ?? u.Id; if (map.has(id)) { Object.assign(map.get(id), normalizeCollider(u)); changeFlash.set(id, performance.now()); } }); colliders = Array.from(map.values()); }
+            if (payload.added) { payload.added.forEach(a => { const na = normalizeCollider(a); colliders.push(na); changeFlash.set(na.id, performance.now()); }); }
             if (payload.bbox) { if (lastBbox) { const growth = (payload.bbox.width * payload.bbox.height) / (lastBbox.width * lastBbox.height + 0.0001); if (growth > 1.25 && document.getElementById('autoFitToggle').dataset.enabled === 'true') fitView(); } lastBbox = payload.bbox; }
             if (payload.stats) { pendingStats = { ...payload.stats, bbox: payload.bbox || { width: 0, height: 0 } }; }
             persistView();
             draw();
         });
 
-        function persistView() { if (!currentRoom) return; const state = { zoom, offsetX, offsetY, active: [...activeTypes] }; localStorage.setItem('colliderView_' + currentRoom.levelId + '_' + currentRoom.roomInstanceId, JSON.stringify(state)); }
-        function restoreView() { if (!currentRoom) return; const raw = localStorage.getItem('colliderView_' + currentRoom.levelId + '_' + currentRoom.roomInstanceId); if (!raw) return; try { const s = JSON.parse(raw); zoom = s.zoom; offsetX = s.offsetX; offsetY = s.offsetY; activeTypes = new Set(s.active); buildFilters(); } catch (_) { } }
+        // Dynamic room list updates
+        hub.on('roomAdded', payload => {
+            if (!payload) return;
+            if (rooms.some(r => (r.levelId ?? r.LevelId) === payload.levelId && (r.roomInstanceId ?? r.RoomInstanceId) === payload.roomInstanceId)) return;
+            rooms.push({ levelId: payload.levelId, roomInstanceId: payload.roomInstanceId, name: payload.name });
+            appendRoomToList(payload.levelId, payload.roomInstanceId, payload.name);
+        });
+
+        hub.on('roomRemoved', payload => {
+            if (!payload) return;
+            rooms = rooms.filter(r => (r.levelId ?? r.LevelId) !== payload.levelId || (r.roomInstanceId ?? r.RoomInstanceId) !== payload.roomInstanceId);
+            const list = document.getElementById('roomList');
+            const item = list?.querySelector(`.collider-item[data-levelid="${payload.levelId}"][data-roominstanceid="${payload.roomInstanceId}"]`);
+            if (item) item.remove();
+            if (currentRoom && currentRoom.levelId === payload.levelId && currentRoom.roomInstanceId === payload.roomInstanceId) {
+                currentRoom = null; colliders = []; version = 0; lastBbox = null; draw();
+            }
+        });
+
+        function appendRoomToList(levelId, roomInstanceId, name) {
+            const list = document.getElementById('roomList'); if (!list) return;
+            const a = document.createElement('a');
+            a.href = '#';
+            a.className = 'list-group-item list-group-item-action collider-item';
+            a.textContent = `${levelId}:${roomInstanceId} ${name || 'Unnamed'}`;
+            a.dataset.levelId = levelId; a.dataset.roomInstanceId = roomInstanceId; // existing camelCase usage
+            // duplicate attributes in lowercase for query selectors used on removal
+            a.setAttribute('data-levelid', levelId);
+            a.setAttribute('data-roominstanceid', roomInstanceId);
+            a.onclick = (e) => { e.preventDefault(); const r = { levelId, roomInstanceId, name }; selectRoom(r); highlightActiveRoom(levelId, roomInstanceId); };
+            list.appendChild(a);
+        }
+
+        function persistView() { if (!currentRoom) return; const autoFit = document.getElementById('autoFitToggle')?.dataset.enabled === 'true'; const state = { zoom, offsetX, offsetY, active: [...activeTypes], autoFit }; localStorage.setItem('colliderView_' + currentRoom.levelId + '_' + currentRoom.roomInstanceId, JSON.stringify(state)); }
+        function restoreView() { if (!currentRoom) return false; const raw = localStorage.getItem('colliderView_' + currentRoom.levelId + '_' + currentRoom.roomInstanceId); if (!raw) return false; try { const s = JSON.parse(raw); if (typeof s.zoom === 'number' && typeof s.offsetX === 'number' && typeof s.offsetY === 'number') { zoom = s.zoom; offsetX = s.offsetX; offsetY = s.offsetY; } if (Array.isArray(s.active)) { activeTypes = new Set(s.active); buildFilters(); } if (typeof s.autoFit === 'boolean') { const btn = document.getElementById('autoFitToggle'); if (btn) { btn.dataset.enabled = s.autoFit.toString(); btn.classList.toggle('active', s.autoFit); } } return true; } catch (_) { return false; } }
 
     function initUi() {
             const required = ['autoFitToggle','flashChanges','toggleBBox','showInactive','showInvisible','searchBtn','searchCollider','exportJson','exportPng','colliderCanvas'];
@@ -381,7 +432,7 @@
             }
             const autoFitToggle = document.getElementById('autoFitToggle');
             if (!autoFitToggle) return; // can't proceed
-            autoFitToggle.addEventListener('click', e => { const btn = e.target; const enabled = btn.dataset.enabled === 'true'; btn.dataset.enabled = (!enabled).toString(); btn.classList.toggle('active', !enabled); });
+            autoFitToggle.addEventListener('click', e => { const btn = e.target; const enabled = btn.dataset.enabled === 'true'; btn.dataset.enabled = (!enabled).toString(); btn.classList.toggle('active', !enabled); persistView(); });
             document.getElementById('flashChanges')?.addEventListener('change', () => draw());
             document.getElementById('toggleBBox')?.addEventListener('click', e => { showBBox = !showBBox; e.target.classList.toggle('active', showBBox); draw(); });
             document.getElementById('showInactive')?.addEventListener('change', () => draw());
