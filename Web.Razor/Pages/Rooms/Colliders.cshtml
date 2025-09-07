@@ -35,11 +35,14 @@
         #roomList .list-group-item.collider-item:hover { background:#19465f; color:#ffffff; }
         #roomList .list-group-item.collider-item.active-room { background:#256d8f; color:#fff; font-weight:600; }
 
-        .collider-side { position:sticky; top:var(--space-3); background:var(--c-bg-panel); border:1px solid var(--c-border-panel); border-radius:var(--radius-md); padding:var(--space-3) var(--space-3) calc(var(--space-3) + 2px); box-shadow:var(--shadow-panel); display:flex; flex-direction:column; gap:var(--space-3); }
-        .collider-side h5.page-title { margin:0 0 var(--space-2); color:#f5fbff; font-weight:600; letter-spacing:.5px; text-shadow:0 1px 2px #000; font-size:1.05rem; display:flex; align-items:center; gap:6px; }
-        .panel-section { display:flex; flex-direction:column; gap:var(--space-2); }
-        .panel-section + .panel-section { border-top:1px solid rgba(255,255,255,0.05); padding-top:var(--space-3); }
-        .panel-section h6 { margin:0; color:#f5fbff; font-weight:600; font-size:.8rem; letter-spacing:.75px; text-transform:uppercase; opacity:.9; }
+    .collider-side { position:sticky; top:var(--space-3); background:var(--c-bg-panel); border:1px solid var(--c-border-panel); border-radius:var(--radius-md); padding:var(--space-3) var(--space-3) calc(var(--space-3) + 2px); box-shadow:var(--shadow-panel); display:flex; flex-direction:column; gap:var(--space-3); font-size:13px; }
+    .collider-side h5.page-title { margin:0 0 var(--space-1); color:#f5fbff; font-weight:600; letter-spacing:.5px; text-shadow:0 1px 2px #000; font-size:1.1rem; display:flex; align-items:center; gap:6px; }
+    .panel-section { display:flex; flex-direction:column; gap:var(--space-2); }
+    .panel-section + .panel-section { border-top:1px solid rgba(255,255,255,0.05); padding-top:var(--space-3); }
+    .panel-section h5 { margin:0; color:#f5fbff; font-weight:600; font-size:.9rem; letter-spacing:.5px; display:flex; align-items:center; gap:6px; }
+    .panel-section h6 { margin:0; color:#d6ecf5; font-weight:600; font-size:.7rem; letter-spacing:.75px; text-transform:uppercase; opacity:.85; }
+    .panel-section.primary h5 { position:relative; padding-left:10px; }
+    .panel-section.primary h5:before { content:""; position:absolute; left:0; top:50%; transform:translateY(-50%); width:4px; height:60%; background:var(--c-accent); border-radius:2px; box-shadow:0 0 6px rgba(47,168,216,.6); }
         .panel-small { font-size:11px; color:var(--c-text-dim); }
         .legend { display:grid; grid-template-columns:repeat(auto-fill,minmax(70px,1fr)); gap:4px; }
         .legend span { display:inline-flex; align-items:center; justify-content:center; padding:2px 4px; border-radius:var(--radius-sm); font-size:10px; line-height:1.1; border:1px solid rgba(255,255,255,0.12); background:#1a2f3b; color:#dff7ff; font-weight:500; }
@@ -54,8 +57,11 @@
         .btn-outline-dark:hover, .btn-light:hover, .btn-outline-dark.active { background:#1d566f; color:#fff; }
         .form-check-input { background:#1b3643; border:1px solid #2a5f77; }
         .form-check-input:checked { background:var(--c-accent); border-color:var(--c-accent); }
-        .input-group-sm > .form-control { background:#123040; border:1px solid var(--c-border-strong); color:var(--c-text); }
-        .input-group-sm > .form-control:focus { background:#163b4d; color:#fff; }
+    .input-group-sm > .form-control { background:#123040; border:1px solid var(--c-border-strong); color:var(--c-text); }
+    .input-group-sm > .form-control:focus { background:#163b4d; color:#fff; }
+    .input-group-sm .btn { background:#123040; border:1px solid var(--c-border-strong); color:var(--c-text); }
+    .input-group-sm .btn:hover { background:#1d566f; color:#fff; }
+    .input-group-sm .form-control, .input-group-sm .btn { height:30px; }
         .section-inline-controls { display:flex; flex-wrap:wrap; gap:4px; }
         ul.compact-list { list-style:disc; padding-left:16px; margin:0; display:flex; flex-direction:column; gap:2px; }
         ul.compact-list li { color:#d6ecf5; font-size:11px; }
@@ -70,18 +76,18 @@
             <div class="collider-side" role="complementary" aria-label="Colliders sidebar">
                 <h5 class="page-title">@ViewData["ServerName"] Rooms</h5>
 
-                <div class="panel-section" aria-labelledby="rooms-heading">
-                    <h6 id="rooms-heading">Rooms</h6>
+                <div class="panel-section primary" aria-labelledby="rooms-heading">
+                    <h5 id="rooms-heading">Rooms</h5>
                     <div id="roomList" class="list-group"></div>
                 </div>
 
-                <div class="panel-section" aria-labelledby="filters-heading">
-                    <h6 id="filters-heading">Filters</h6>
+                <div class="panel-section primary" aria-labelledby="filters-heading">
+                    <h5 id="filters-heading">Filters</h5>
                     <div id="filterList"></div>
                 </div>
 
-                <div class="panel-section" aria-labelledby="display-heading">
-                    <h6 id="display-heading">Display</h6>
+                <div class="panel-section primary" aria-labelledby="display-heading">
+                    <h5 id="display-heading">Display</h5>
                     <div class="section-inline-controls">
                         <div class="btn-group btn-group-sm" role="group">
                             <button id="resetView" class="btn btn-light" title="Fit current room bounds (F)">Fit</button>
@@ -110,7 +116,7 @@
                 </div>
 
                 <div class="panel-section" aria-labelledby="search-heading">
-                    <h6 id="search-heading">Search Collider</h6>
+                    <h5 id="search-heading">Search</h5>
                     <div class="input-group input-group-sm">
                         <input type="text" id="searchCollider" class="form-control" placeholder="ID or partial..." aria-label="Collider search" />
                         <button id="searchBtn" class="btn btn-outline-dark" title="Find collider by ID">Find</button>
@@ -118,7 +124,7 @@
                 </div>
 
                 <div class="panel-section export-group" aria-labelledby="export-heading">
-                    <h6 id="export-heading">Export</h6>
+                    <h5 id="export-heading">Export</h5>
                     <div class="btn-group btn-group-sm w-100" role="group">
                         <button id="exportJson" class="btn btn-outline-dark" title="Download collider list as JSON">JSON</button>
                         <button id="exportPng" class="btn btn-outline-dark" title="Download canvas as PNG">PNG</button>
@@ -126,22 +132,12 @@
                 </div>
 
                 <div class="panel-section" aria-labelledby="controls-heading">
-                    <h6 id="controls-heading">Controls</h6>
+                    <h5 id="controls-heading">Controls</h5>
                     <ul class="compact-list">
                         <li>Drag to pan</li>
                         <li>Scroll to zoom</li>
                         <li>Double-click to reset view</li>
                     </ul>
-                </div>
-
-                <div class="panel-section" aria-labelledby="legend-heading">
-                    <h6 id="legend-heading">Legend</h6>
-                    <div class="legend">
-                        <span style="background:#ff6b6b">Attack</span>
-                        <span style="background:#4ecdc4">Player</span>
-                        <span style="background:#ffe66d">Enemy</span>
-                        <span style="background:#1a535c;color:#fff;">Default</span>
-                    </div>
                 </div>
 
                 <div class="panel-section" aria-live="polite">
