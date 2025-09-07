@@ -339,18 +339,33 @@
                 const color = colors[c.type] || colors.Default;
                 let baseColor = c.active ? color : '#555';
                 const t = changeFlash.get(c.id);
+                let flashing = false;
                 if (displayState.flash && t && now - t < FLASH_MS) {
-                    const alpha = 1 - (now - t) / FLASH_MS;
-                    ctx.fillStyle = shadeColor(baseColor, alpha * 40);
+                    const alpha = 1 - (now - t) / FLASH_MS; // 1 -> 0
+                    ctx.fillStyle = brightenColor(baseColor, alpha);
+                    flashing = true;
                 } else {
                     ctx.fillStyle = baseColor;
                 }
                 ctx.globalAlpha = c.invisible ? 0.3 : 0.8;
                 ctx.fillRect(c.x * scale, (-(c.y + c.height)) * scale, c.width * scale, c.height * scale);
                 ctx.globalAlpha = 1.0;
-                ctx.strokeStyle = '#222';
+                if (flashing) {
+                    // Outer glow stroke
+                    const alpha = 1 - (now - t) / FLASH_MS;
+                    ctx.save();
+                    ctx.strokeStyle = `rgba(255,255,255,${Math.min(1, alpha*0.9)})`;
+                    ctx.lineWidth = 3 / zoom;
+                    ctx.shadowBlur = 12 / zoom;
+                    ctx.shadowColor = 'rgba(255,255,255,0.6)';
+                    ctx.strokeRect(c.x * scale, (-(c.y + c.height)) * scale, c.width * scale, c.height * scale);
+                    ctx.restore();
+                }
+                ctx.save();
+                ctx.strokeStyle = flashing ? 'rgba(0,0,0,0.4)' : '#222';
                 ctx.lineWidth = 1 / zoom;
                 ctx.strokeRect(c.x * scale, (-(c.y + c.height)) * scale, c.width * scale, c.height * scale);
+                ctx.restore();
                 if (selectedColliderId === c.id) {
                     ctx.strokeStyle = '#ffff00';
                     ctx.lineWidth = 2 / zoom;
@@ -486,6 +501,19 @@
             let b = (num & 0x0000FF) + percent;
             r = Math.min(255, Math.max(0, r)); g = Math.min(255, Math.max(0, g)); b = Math.min(255, Math.max(0, b));
             return '#' + (r << 16 | g << 8 | b).toString(16).padStart(6, '0');
+        }
+
+        function brightenColor(hex, intensity) {
+            // intensity 0..1, move color toward white non-linearly
+            const num = parseInt(hex.replace('#',''),16);
+            let r = (num >> 16) & 0xFF;
+            let g = (num >> 8) & 0xFF;
+            let b = num & 0xFF;
+            const k = Math.pow(intensity, 0.6); // slower falloff
+            r = Math.round(r + (255 - r) * k);
+            g = Math.round(g + (255 - g) * k);
+            b = Math.round(b + (255 - b) * k);
+            return '#' + (r << 16 | g << 8 | b).toString(16).padStart(6,'0');
         }
 
         function resizeCanvas() {
