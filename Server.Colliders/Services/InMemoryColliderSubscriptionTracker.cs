@@ -33,25 +33,31 @@ public class InMemoryColliderSubscriptionTracker : IColliderSubscriptionTracker
         }
     }
 
-    public void RemoveAll(string connectionId)
-    {
-        if (_connIndex.TryRemove(connectionId, out var rooms))
+        public IReadOnlyCollection<(int levelId,int roomInstanceId)> RemoveAll(string connectionId)
         {
-            lock(rooms)
+            var removed = new List<(int,int)>();
+            if (_connIndex.TryRemove(connectionId, out var rooms))
             {
-                foreach (var key in rooms)
+                lock(rooms)
                 {
-                    if (_roomSubs.TryGetValue(key, out var set))
+                    foreach (var key in rooms)
                     {
-                        set.TryRemove(connectionId, out _);
-                        if (set.IsEmpty) _roomSubs.TryRemove(key, out _);
+                        if (_roomSubs.TryGetValue(key, out var set))
+                        {
+                            set.TryRemove(connectionId, out _);
+                            if (set.IsEmpty) _roomSubs.TryRemove(key, out _);
+                        }
+                        removed.Add(key);
                     }
                 }
             }
+            return removed;
         }
-    }
 
     public bool HasAnySubscribers() => _roomSubs.Any(static kvp => !kvp.Value.IsEmpty);
 
     public bool HasSubscribers(int levelId, int roomInstanceId) => _roomSubs.TryGetValue((levelId, roomInstanceId), out var set) && !set.IsEmpty;
+
+    public int GetRoomSubscriberCount(int levelId, int roomInstanceId)
+        => _roomSubs.TryGetValue((levelId, roomInstanceId), out var set) ? set.Count : 0;
 }

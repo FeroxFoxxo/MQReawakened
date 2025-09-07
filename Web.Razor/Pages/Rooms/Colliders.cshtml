@@ -230,7 +230,7 @@
         const FLASH_MS = 1500;
         let lastBbox = null;
         let pendingStats = null;
-    const displayState = {
+        const displayState = {
             autoFit: true,
             bbox: false,
             grid: true,
@@ -244,6 +244,7 @@
         let lastClickStack = null; // { ids:Set<string>, index:number, time:number }
         let lastHoverTopId = null;
         let selectedColliderId = null;
+        let currentSubscriberCount = 0;
         let fpsFrameCount = 0; let fpsLastTime = performance.now(); let fps = 0;
         let pageActive = true;
         let intentionalStop = false;
@@ -251,13 +252,20 @@
 
         function normalizeCollider(c) {
             if (!c) return c;
+            let plane = c.plane ?? c.Plane ?? 0;
+            if (typeof plane === 'string') {
+                // Extract first integer, e.g. "Plane0" -> 0, "1" -> 1
+                const m = plane.match(/(\d+)/);
+                plane = m ? parseInt(m[1], 10) : 0;
+            }
+            if (!Number.isFinite(plane)) plane = 0;
             return {
                 ...c,
                 id: c.id ?? c.Id ?? '',
                 type: c.type ?? c.Type ?? 'Default',
                 active: (c.active ?? c.Active ?? true),
                 invisible: (c.invisible ?? c.Invisible ?? false),
-                plane: c.plane ?? c.Plane ?? 0,
+                plane,
                 x: c.x,
                 y: c.y,
                 width: c.width,
@@ -402,7 +410,7 @@
                 ctx.restore();
             }
             ctx.restore();
-            document.getElementById('status').innerText = currentRoom ? `${currentRoom.name} | V${version} | Colliders: ${colliders.length} | Zoom: ${zoom.toFixed(2)} | FPS: ${fps.toFixed(0)}` : 'No room selected';
+            document.getElementById('status').innerText = currentRoom ? `${currentRoom.name} | V${version} | Colliders: ${colliders.length} | Subs: ${currentSubscriberCount} | Zoom: ${zoom.toFixed(2)} | FPS: ${fps.toFixed(0)}` : 'No room selected';
             if (pendingStats) { const statsEl = document.getElementById('stats'); if (statsEl) statsEl.innerText = `Δ Added:${pendingStats.added} Updated:${pendingStats.updated} Removed:${pendingStats.removed} Bounds: ${pendingStats.bbox.width.toFixed(1)}x${pendingStats.bbox.height.toFixed(1)}`; pendingStats = null; }
             if (pageActive && ((displayState.flash && changeFlash.size > 0) || selectedColliderId)) scheduleNextFrame();
             fpsFrameCount++; const nowTs = performance.now(); if (nowTs - fpsLastTime >= 1000) { fps = (fpsFrameCount * 1000) / (nowTs - fpsLastTime); fpsFrameCount = 0; fpsLastTime = nowTs; }
@@ -540,6 +548,7 @@
             const statsEl = document.getElementById('stats'); if (statsEl) statsEl.textContent='';
             const hoverEl = document.getElementById('hoverInfo'); if (hoverEl) hoverEl.textContent='';
             const data = await hub.invoke('SubscribeRoom', currentRoom.levelId, currentRoom.roomInstanceId);
+            try { currentSubscriberCount = await hub.invoke('GetSubscriberCount', currentRoom.levelId, currentRoom.roomInstanceId); } catch (_) { currentSubscriberCount = 0; }
             if (data) {
                 colliders = (data.colliders || data.Colliders || []).map(normalizeCollider);
                 version = data.version || 0;
@@ -563,6 +572,7 @@
         }
 
     hub.on('collidersUpdated', payload => { if (!currentRoom) return; if (payload.levelId === currentRoom.levelId && payload.roomInstanceId === currentRoom.roomInstanceId) { colliders = (payload.colliders || []).map(normalizeCollider); version = payload.version || version + 1; lastBbox = payload.bbox || lastBbox; if (rebuildPlanes()) persistView(); fitView(); persistView(); draw(); } });
+    hub.on('roomSubscriberCount', payload => { if (currentRoom && payload.levelId === currentRoom.levelId && payload.roomInstanceId === currentRoom.roomInstanceId) { currentSubscriberCount = payload.count || 0; } });
     hub.on('collidersReset', payload => { if (!currentRoom) return; if (payload.levelId === currentRoom.levelId && payload.roomInstanceId === currentRoom.roomInstanceId) { colliders = (payload.colliders || []).map(normalizeCollider); version = payload.version || 0; lastBbox = payload.bbox || null; changeFlash.clear(); colliders.forEach(c => changeFlash.set(c.id, performance.now())); rebuildPlanes(); fitView(); persistView(); draw(); } });
         hub.on('collidersDiff', payload => {
             if (!currentRoom) return;
@@ -647,6 +657,7 @@
                 const btn = e.target.closest('button[data-plane]');
                 if (!btn) return;
                 const plane = parseInt(btn.dataset.plane,10);
+                if (Number.isNaN(plane)) return; // ignore invalid
                 if (activePlanes.has(plane)) {
                     activePlanes.delete(plane);
                     if (activePlanes.size === 0) { activePlanes.add(plane); return; }
@@ -764,7 +775,7 @@
             btn.type='button';
             btn.className='btn btn-sm btn-outline-dark toggle-btn';
             btn.dataset.plane = p;
-            btn.textContent = 'P'+p;
+            btn.textContent = 'Plane'+p;
             btn.setAttribute('aria-pressed', activePlanes.has(p));
             if (activePlanes.has(p)) btn.classList.add('active');
             container.appendChild(btn);
