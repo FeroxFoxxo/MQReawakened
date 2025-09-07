@@ -231,15 +231,45 @@
         function persistView() { if (!currentRoom) return; const state = { zoom, offsetX, offsetY, active: [...activeTypes] }; localStorage.setItem('colliderView_' + currentRoom.levelId + '_' + currentRoom.roomInstanceId, JSON.stringify(state)); }
         function restoreView() { if (!currentRoom) return; const raw = localStorage.getItem('colliderView_' + currentRoom.levelId + '_' + currentRoom.roomInstanceId); if (!raw) return; try { const s = JSON.parse(raw); zoom = s.zoom; offsetX = s.offsetX; offsetY = s.offsetY; activeTypes = new Set(s.active); buildFilters(); } catch (_) { } }
 
-        document.getElementById('autoFitToggle').addEventListener('click', e => { const btn = e.target; const enabled = btn.dataset.enabled === 'true'; btn.dataset.enabled = (!enabled).toString(); btn.classList.toggle('active', !enabled); });
-        document.getElementById('flashChanges').addEventListener('change', () => draw());
-        document.getElementById('toggleBBox').addEventListener('click', e => { showBBox = !showBBox; e.target.classList.toggle('active', showBBox); draw(); });
-        document.getElementById('showInactive').addEventListener('change', () => draw());
-        document.getElementById('showInvisible').addEventListener('change', () => draw());
-        document.getElementById('searchBtn').addEventListener('click', () => searchCollider());
-        document.getElementById('searchCollider').addEventListener('keydown', e => { if (e.key === 'Enter') searchCollider(); });
-        document.getElementById('exportJson').addEventListener('click', () => { const data = JSON.stringify({ room: currentRoom, version, colliders }, null, 2); const blob = new Blob([data], { type: 'application/json' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `colliders_${currentRoom?.levelId || 'unknown'}_${currentRoom?.roomInstanceId || 'x'}_v${version}.json`; a.click(); URL.revokeObjectURL(a.href); });
-        document.getElementById('exportPng').addEventListener('click', () => { const canvas = document.getElementById('colliderCanvas'); const a = document.createElement('a'); a.href = canvas.toDataURL('image/png'); a.download = `colliders_${currentRoom?.levelId || 'unknown'}_${currentRoom?.roomInstanceId || 'x'}_v${version}.png`; a.click(); });
+        function initUi() {
+            const required = ['autoFitToggle','flashChanges','toggleBBox','showInactive','showInvisible','searchBtn','searchCollider','exportJson','exportPng','colliderCanvas'];
+            const missing = required.filter(id => !document.getElementById(id));
+            if (missing.length) {
+                // Retry shortly if DOM not fully ready yet
+                if (document.readyState !== 'complete') {
+                    return setTimeout(initUi, 40);
+                }
+                console.warn('Colliders page: missing expected elements:', missing.join(','));
+            }
+            const autoFitToggle = document.getElementById('autoFitToggle');
+            if (!autoFitToggle) return; // can't proceed
+            autoFitToggle.addEventListener('click', e => { const btn = e.target; const enabled = btn.dataset.enabled === 'true'; btn.dataset.enabled = (!enabled).toString(); btn.classList.toggle('active', !enabled); });
+            document.getElementById('flashChanges')?.addEventListener('change', () => draw());
+            document.getElementById('toggleBBox')?.addEventListener('click', e => { showBBox = !showBBox; e.target.classList.toggle('active', showBBox); draw(); });
+            document.getElementById('showInactive')?.addEventListener('change', () => draw());
+            document.getElementById('showInvisible')?.addEventListener('change', () => draw());
+            document.getElementById('searchBtn')?.addEventListener('click', () => searchCollider());
+            document.getElementById('searchCollider')?.addEventListener('keydown', e => { if (e.key === 'Enter') searchCollider(); });
+            document.getElementById('exportJson')?.addEventListener('click', () => { const data = JSON.stringify({ room: currentRoom, version, colliders }, null, 2); const blob = new Blob([data], { type: 'application/json' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `colliders_${currentRoom?.levelId || 'unknown'}_${currentRoom?.roomInstanceId || 'x'}_v${version}.json`; a.click(); URL.revokeObjectURL(a.href); });
+            document.getElementById('exportPng')?.addEventListener('click', () => { const canvas = document.getElementById('colliderCanvas'); const a = document.createElement('a'); a.href = canvas.toDataURL('image/png'); a.download = `colliders_${currentRoom?.levelId || 'unknown'}_${currentRoom?.roomInstanceId || 'x'}_v${version}.png`; a.click(); });
+            // canvas interactions
+            const colliderCanvas = document.getElementById('colliderCanvas');
+            if (!colliderCanvas) return;
+            colliderCanvas.addEventListener('mousemove', onCanvasMove);
+            colliderCanvas.addEventListener('click', onCanvasClick);
+            colliderCanvas.addEventListener('mousedown', e => { isPanning = true; startPan = { x: e.clientX, y: e.clientY }; document.body.style.cursor = 'grabbing'; });
+            colliderCanvas.addEventListener('wheel', e => { e.preventDefault(); const canvas = e.target; const rect = canvas.getBoundingClientRect(); const mx = e.clientX - rect.left; const my = e.clientY - rect.top; const prevZoom = zoom; zoom *= e.deltaY < 0 ? 1.1 : 0.9; zoom = Math.min(Math.max(zoom, 0.05), 20); offsetX = mx - (mx - offsetX) * (zoom / prevZoom); offsetY = my - (my - offsetY) * (zoom / prevZoom); draw(); }, { passive: false });
+            colliderCanvas.addEventListener('dblclick', () => { fitView(); draw(); });
+            document.getElementById('resetView')?.addEventListener('click', () => { fitView(); draw(); });
+            // Begin hub after UI ready
+            hub.start().then(() => { loadRooms(); resizeCanvas(); }).catch(err => console.error(err));
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initUi);
+        } else {
+            initUi();
+        }
 
         function searchCollider() {
             const term = document.getElementById('searchCollider').value.trim();
@@ -249,30 +279,24 @@
         }
         function panTo(c) { const canvas = document.getElementById('colliderCanvas'); const cx = (c.x + c.width / 2) * scale * zoom + offsetX; const cy = (-(c.y + c.height / 2)) * scale * zoom + offsetY; const midX = canvas.width / 2; const midY = canvas.height / 2; offsetX += (midX - cx); offsetY += (midY - cy); }
 
-        // hover info
-        document.getElementById('colliderCanvas').addEventListener('mousemove', e => {
+        function onCanvasMove(e) {
             const canvas = e.target; const rect = canvas.getBoundingClientRect(); const mx = (e.clientX - rect.left - offsetX) / (zoom * scale); const my = -((e.clientY - rect.top - offsetY) / (zoom * scale));
-            const showInactive = document.getElementById('showInactive').checked; const showInvisible = document.getElementById('showInvisible').checked;
+            const showInactive = document.getElementById('showInactive')?.checked ?? true; const showInvisible = document.getElementById('showInvisible')?.checked ?? true;
             const found = colliders.find(c => activeTypes.has(c.type) && (showInactive || c.active) && (showInvisible || !c.invisible) && mx >= c.x && mx <= c.x + c.width && my <= c.y && my >= c.y - c.height);
             const info = document.getElementById('hoverInfo');
-            if (found) info.textContent = `${found.type} ${found.id} (${found.x.toFixed(2)},${found.y.toFixed(2)}) ${found.width.toFixed(2)}x${found.height.toFixed(2)} ${found.active ? '' : '[inactive]'} ${found.invisible ? '[invis]' : ''}`; else info.textContent = '';
-        });
-        document.getElementById('colliderCanvas').addEventListener('click', e => {
+            if (info) info.textContent = found ? `${found.type} ${found.id} (${found.x.toFixed(2)},${found.y.toFixed(2)}) ${found.width.toFixed(2)}x${found.height.toFixed(2)} ${found.active ? '' : '[inactive]'} ${found.invisible ? '[invis]' : ''}` : '';
+        }
+        function onCanvasClick(e) {
             const canvas = e.target; const rect = canvas.getBoundingClientRect(); const mx = (e.clientX - rect.left - offsetX) / (zoom * scale); const my = -((e.clientY - rect.top - offsetY) / (zoom * scale));
-            const showInactive = document.getElementById('showInactive').checked; const showInvisible = document.getElementById('showInvisible').checked;
+            const showInactive = document.getElementById('showInactive')?.checked ?? true; const showInvisible = document.getElementById('showInvisible')?.checked ?? true;
             const found = colliders.find(c => activeTypes.has(c.type) && (showInactive || c.active) && (showInvisible || !c.invisible) && mx >= c.x && mx <= c.x + c.width && my <= c.y && my >= c.y - c.height);
             selectedColliderId = found ? found.id : null;
-            document.getElementById('colliderDetail').textContent = found ? `Selected: ${found.id} | ${found.type} | Pos(${found.x.toFixed(2)},${found.y.toFixed(2)}) Size(${found.width.toFixed(2)}x${found.height.toFixed(2)}) Plane:${found.plane}` : '';
+            const detail = document.getElementById('colliderDetail');
+            if (detail) detail.textContent = found ? `Selected: ${found.id} | ${found.type} | Pos(${found.x.toFixed(2)},${found.y.toFixed(2)}) Size(${found.width.toFixed(2)}x${found.height.toFixed(2)}) Plane:${found.plane}` : '';
             draw();
-        });
-        document.getElementById('resetView').addEventListener('click', () => { fitView(); draw(); });
+        }
 
-        document.getElementById('colliderCanvas').addEventListener('mousedown', e => { isPanning = true; startPan = { x: e.clientX, y: e.clientY }; document.body.style.cursor = 'grabbing'; });
         window.addEventListener('mouseup', () => { isPanning = false; document.body.style.cursor = 'default'; });
         window.addEventListener('mousemove', e => { if (!isPanning) return; const dx = e.clientX - startPan.x; const dy = e.clientY - startPan.y; startPan = { x: e.clientX, y: e.clientY }; offsetX += dx; offsetY += dy; draw(); });
-        document.getElementById('colliderCanvas').addEventListener('wheel', e => { e.preventDefault(); const canvas = e.target; const rect = canvas.getBoundingClientRect(); const mx = e.clientX - rect.left; const my = e.clientY - rect.top; const prevZoom = zoom; zoom *= e.deltaY < 0 ? 1.1 : 0.9; zoom = Math.min(Math.max(zoom, 0.05), 20); offsetX = mx - (mx - offsetX) * (zoom / prevZoom); offsetY = my - (my - offsetY) * (zoom / prevZoom); draw(); }, { passive: false });
-        document.getElementById('colliderCanvas').addEventListener('dblclick', () => { fitView(); draw(); });
-
-        hub.start().then(() => { loadRooms(); resizeCanvas(); }).catch(err => console.error(err));
     </script>
 }
