@@ -112,7 +112,7 @@
 
     #roomsSidebar { transition:max-height .5s ease, padding .35s ease, opacity .4s ease; }
     #roomsSidebar.collapsed { max-height:0 !important; padding:0 0 !important; opacity:0; overflow:hidden; border-width:0; box-shadow:none; }
-    @media (max-width: 991.98px) {
+    @@media (max-width: 991.98px) {
         .collider-side { position:relative; top:0; }
         #colliderCanvas { height:60vh; }
         .status-group { margin-top:12px; }
@@ -131,12 +131,12 @@
     .export-group .btn:before { content:""; position:absolute; inset:0; background:radial-gradient(circle at 30% 20%,rgba(255,255,255,.15),transparent 70%); opacity:0; transition:opacity .35s; }
     .export-group .btn:hover:before { opacity:1; }
 
-    @keyframes pulseFlash { 0%{box-shadow:0 0 0 0 rgba(47,168,216,.7);} 70%{box-shadow:0 0 0 8px rgba(47,168,216,0);} 100%{box-shadow:0 0 0 0 rgba(47,168,216,0);} }
+    @@keyframes pulseFlash { 0%{box-shadow:0 0 0 0 rgba(47,168,216,.7);} 70%{box-shadow:0 0 0 8px rgba(47,168,216,0);} 100%{box-shadow:0 0 0 0 rgba(47,168,216,0);} }
     .pulse-once { animation:pulseFlash 1.2s ease forwards; }
 
-    @media (prefers-contrast: more) { #colliderCanvas { outline:2px solid #fff; } }
+    @@media (prefers-contrast: more) { #colliderCanvas { outline:2px solid #fff; } }
 
-    @media (prefers-reduced-motion: reduce) {
+    @@media (prefers-reduced-motion: reduce) {
         * { transition:none !important; animation:none !important; }
     }
     </style>
