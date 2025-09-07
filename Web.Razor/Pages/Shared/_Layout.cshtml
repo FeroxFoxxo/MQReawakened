@@ -45,7 +45,7 @@
 					<a class="navbar-brand mb-0" href="/">
 						<span class="brand-name">@ViewData["ServerName"]</span>
 					</a>
-					<ul class="navbar-nav ml-auto align-items-lg-center d-none d-lg-flex" style="flex:1;">
+					<ul class="navbar-nav ml-auto align-items-lg-center d-none d-lg-flex main-nav">
 						<li class="nav-item"><a class="nav-link @(path=="/" || path=="" ? "active" : null)" href="/">Home</a></li>
 						<li class="nav-item"><a class="nav-link @(path=="/patchnotes" ? "active" : null)" href="/patchnotes">Patch Notes</a></li>
 						<li class="nav-item"><a class="nav-link @(path.StartsWith("/en/signup") ? "active" : null)" href="/en/signup">Sign Up</a></li>
@@ -58,7 +58,7 @@
 							</div>
 						</li>
 					</ul>
-					<div class="ml-auto d-flex align-items-center" style="gap:10px;">
+					<div class="nav-actions d-flex align-items-center" style="gap:10px;">
 						<button id="themeToggle" class="theme-toggle" aria-label="Toggle theme" title="Toggle theme">
 							<svg id="themeToggleIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a1 1 0 0 1 1 1 7 7 0 0 0 7 7 1 1 0 0 1 0 2 7 7 0 0 0-7 7 1 1 0 0 1-2 0 7 7 0 0 0-7-7 1 1 0 0 1 0-2 7 7 0 0 0 7-7 1 1 0 0 1 1-1Z" /></svg>
 						</button>

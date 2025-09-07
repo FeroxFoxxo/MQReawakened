@@ -6,7 +6,7 @@
 }
 
 <section class="mq-container mt-space fade-in">
-    @await Html.PartialAsync("_PanelShell", new Web.Razor.Pages.Shared.PanelShellModel { Title = "Starting Download", Description = "Thanks for downloading " + (string)ViewData["ServerName"] + ". Your adventure into the land of Ook begins soon.", Center = true, AdditionalClasses = "panel-p-xl" })
+    @await Html.PartialAsync("_PanelShell", new Web.Razor.Pages.Shared.PanelShellModel { Title = "Starting Download", Description = "Thanks for downloading " + (string)ViewData["ServerName"] + ". Your adventure into the land of Ook begins soon.", Center = true, AdditionalClasses = "panel-p-lg" })
     <p id="downloadMessage" class="stat-pill" style="display:none; margin-top:1.25rem;" data-reveal>Your file is being downloaded...</p>
         <div style="margin-top:1.75rem;" data-reveal>
             <a href="/StartDownload" class="btn-modern btn-accent" style="padding:14px 30px;">If it doesn't start, click here</a>
