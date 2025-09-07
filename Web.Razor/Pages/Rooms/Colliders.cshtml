@@ -617,13 +617,11 @@
             rooms = rooms.filter(r => (r.levelId ?? r.LevelId) !== payload.levelId || (r.roomInstanceId ?? r.RoomInstanceId) !== payload.roomInstanceId);
             const list = document.getElementById('roomList');
             if (list) {
-                // Prefer canonical hyphenated attribute names, fallback to legacy non-hyphen variant.
                 const selectorNew = `.collider-item[data-level-id="${payload.levelId}"][data-room-instance-id="${payload.roomInstanceId}"]`;
                 const selectorLegacy = `.collider-item[data-levelid="${payload.levelId}"][data-roominstanceid="${payload.roomInstanceId}"]`;
                 const item = list.querySelector(selectorNew) || list.querySelector(selectorLegacy);
                 if (item) {
                     item.classList.add('fade-out');
-                    // Remove after transition ends (fallback timeout included)
                     const removeFn = () => { item.removeEventListener('transitionend', removeFn); if (item.parentNode) item.remove(); };
                     item.addEventListener('transitionend', removeFn);
                     setTimeout(removeFn, 400); // safety
@@ -685,7 +683,7 @@
                             if (!btn) return;
                             const plane = parseInt(btn.dataset.plane,10);
                             if (Number.isNaN(plane)) return;
-                            if (activePlanes.has(plane)) return; // already selected
+                            if (activePlanes.has(plane)) return;
                             activePlanes.clear();
                             activePlanes.add(plane);
                             syncPlaneButtons();
