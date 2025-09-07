@@ -41,28 +41,32 @@
         #filterList label { cursor:pointer; user-select:none; display:flex; align-items:center; gap:6px; margin:0; }
         #filterList input { cursor:pointer; }
         /* Green paper style for overlay info */
-        #status, #stats, #hoverInfo, #colliderDetail { background:linear-gradient(135deg, rgba(70,160,70,0.22), rgba(40,110,40,0.28)); border:1px solid rgba(90,200,90,0.45); border-radius:4px; padding:2px 6px; color:#081b08 !important; font-weight:500; }
+        #status, #stats, #hoverInfo, #colliderDetail { background:rgba(25,40,50,0.55); backdrop-filter:blur(2px); border:1px solid rgba(90,170,200,0.35); border-radius:4px; padding:2px 6px; color:#e8f7ff !important; font-weight:500; }
         #hoverInfo { margin-top:4px; }
-        /* Sidebar green panel */
-        .collider-side { background:linear-gradient(135deg,#3e8b44 0%, #296730 55%, #1e4f25 100%); border:1px solid #2d7c33; border-radius:8px; padding:10px 10px 12px; box-shadow:0 2px 6px rgba(0,0,0,0.35), inset 0 0 6px rgba(0,0,0,0.25); }
-        .collider-side h5, .collider-side h6, .collider-side label, .collider-side li, .collider-side .legend span { color:#081b08; }
-        .collider-side h5, .collider-side h6 { text-shadow:0 1px 2px rgba(255,255,255,0.35); font-weight:600; }
-        .collider-side .legend span { background:rgba(255,255,255,0.55) !important; font-weight:600; }
-        .collider-side .legend span[style*='1a535c'] { color:#fff !important; }
+        /* Sidebar dark panel consistent with app theme */
+        .collider-side { background:linear-gradient(145deg,#0f1f29,#142e3b 55%,#0d1a22); border:1px solid #1f4457; border-radius:8px; padding:10px 10px 14px; box-shadow:0 2px 6px rgba(0,0,0,0.4), inset 0 0 10px rgba(0,0,0,0.35); }
+        .collider-side h5, .collider-side h6 { color:#f5fbff; font-weight:600; letter-spacing:.5px; text-shadow:0 1px 2px #000; }
+        .collider-side label, .collider-side li { color:#d6ecf5; }
+        .collider-side .legend span { background:#1a2f3b !important; color:#dff7ff; font-weight:500; }
         /* Brand visibility */
         .navbar-brand, .navbar .navbar-brand { color:#e9ffe9 !important; text-shadow:0 0 4px rgba(0,0,0,0.7); font-weight:600; }
         /* Room list integration */
-        .collider-side #roomList { background:rgba(255,255,255,0.15); border:1px solid rgba(0,0,0,0.25); }
-        .collider-side #roomList .list-group-item { background:rgba(255,255,255,0.55); color:#052005; }
-        .collider-side #roomList .list-group-item.active-room { background:#ffe28a; color:#000; }
-        .collider-side #roomList .list-group-item:hover { background:#fff9d2; }
+        .collider-side #roomList { background:rgba(10,25,32,0.55); border:1px solid #203c4a; }
+        .collider-side #roomList .list-group-item { background:#163241; color:#e1f6ff; border:1px solid #1d4558; }
+        .collider-side #roomList .list-group-item.active-room { background:#256d8f; color:#fff; }
+        .collider-side #roomList .list-group-item:hover { background:#1f4558; }
+        .collider-side .btn-outline-dark, .collider-side .btn-light { background:#123040; color:#e0f8ff; border:1px solid #1d566f; }
+        .collider-side .btn-outline-dark:hover, .collider-side .btn-light:hover { background:#1d566f; color:#fff; }
+        .collider-side .form-check-input { background:#1b3643; border:1px solid #2a5f77; }
+        .collider-side .form-check-input:checked { background:#2fa8d8; border-color:#2fa8d8; }
+        .filter-swatch { box-shadow:0 0 0 1px rgba(0,0,0,0.6), 0 0 4px rgba(0,0,0,0.5); }
     </style>
 }
 <div class="container-fluid mt-3">
     <div class="row">
         <div class="col-md-3">
             <div class="collider-side">
-                <h5 class="mb-2">Rooms</h5>
+                <h5 class="mb-2">@ViewData["ServerName"] Rooms</h5>
                 <div id="roomList" class="list-group mb-2"></div>
                 <h6 class="mt-2 mb-1">Filters</h6>
                 <div id="filterList" class="mb-2"></div>
@@ -112,9 +116,9 @@
         </div>
         <div class="col-md-9">
             <canvas id="colliderCanvas"></canvas>
-            <div id="status" class="small text-muted mt-2"></div>
-            <div id="stats" class="small text-muted"></div>
-            <div id="hoverInfo" class="small text-info mt-1"></div>
+            <div id="status" class="small mt-2"></div>
+            <div id="stats" class="small"></div>
+            <div id="hoverInfo" class="small mt-1"></div>
         </div>
     </div>
 </div>
@@ -144,7 +148,7 @@
             const minX = Math.min(...colliders.map(c => c.x));
             const minY = Math.min(...colliders.map(c => c.y));
             const maxX = Math.max(...colliders.map(c => c.x + c.width));
-            const maxY = Math.max(...colliders.map(c => c.y + c.height));
+            const maxY = Math.max(...colliders.map c => c.y + c.height));
             const canvas = document.getElementById('colliderCanvas');
             const padding = 2;
             const w = maxX - minX + padding * 2; const h = maxY - minY + padding * 2;
@@ -270,7 +274,7 @@
         }
         async function loadRooms() {
             rooms = await hub.invoke('GetRooms'); const list = document.getElementById('roomList'); list.innerHTML = '';
-            rooms.forEach(r => {
+            rooms.forEach r => {
                 const a = document.createElement('a');
                 a.href = '#';
                 a.className = 'list-group-item list-group-item-action collider-item';
