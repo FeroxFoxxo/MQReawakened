@@ -222,8 +222,9 @@
 @section Scripts {
     <script src="https://cdn.jsdelivr.net/npm/@@microsoft/signalr@8.0.0/dist/browser/signalr.min.js" referrerpolicy="no-referrer"></script>
     <script>
-    const hub = new signalR.HubConnectionBuilder().withUrl('/hubs/colliders').withAutomaticReconnect().build();
-        let rooms = []; let currentRoom = null; let colliders = []; let scale = 32; // world units to pixels
+        const hub = new signalR.HubConnectionBuilder().withUrl('/hubs/colliders').withAutomaticReconnect().build();
+        
+        let rooms = []; let currentRoom = null; let colliders = []; let scale = 32;
         let zoom = 1; let offsetX = 0; let offsetY = 0; let isPanning = false; let startPan = { x: 0, y: 0 };
         const colors = { Attack: '#ff6b6b', Player: '#4ecdc4', Enemy: '#ffe66d', Default: '#1a535c', Breakable: '#a29bfe', Hazard: '#ff922b', MovingPlatform: '#74c0fc', TriggerTarget: '#e599f7', TriggerReceiver: '#be4bdb', Stomper: '#ff8787', AiAttack: '#ff6b6b' };
         let activeTypes = new Set(Object.keys(colors));
@@ -243,7 +244,7 @@
         let activePlanes = new Set();
         let knownPlanes = [];
         let hoverStack = [];
-        let lastClickStack = null; // { ids:Set<string>, index:number, time:number }
+        let lastClickStack = null;
         let lastHoverTopId = null;
         let selectedColliderId = null;
         let currentSubscriberCount = 0;
@@ -256,7 +257,6 @@
             if (!c) return c;
             let plane = c.plane ?? c.Plane ?? 0;
             if (typeof plane === 'string') {
-                // Extract first integer, e.g. "Plane0" -> 0, "1" -> 1
                 const m = plane.match(/(\d+)/);
                 plane = m ? parseInt(m[1], 10) : 0;
             }
@@ -275,7 +275,7 @@
             };
         }
 
-    function fitView() {
+        function fitView() {
             if (colliders.length === 0) return;
             const minX = Math.min(...colliders.map(c => c.x));
             const minY = Math.min(...colliders.map(c => c.y));
@@ -289,7 +289,7 @@
             offsetY = -(minY - padding) * scale * zoom + (canvas.height - h * scale * zoom) / 2;
         }
 
-    function draw() {
+        function draw() {
             if (!pageActive) return;
             const frameStart = performance.now();
             const canvas = document.getElementById('colliderCanvas');
@@ -298,7 +298,6 @@
             ctx.save();
             ctx.translate(offsetX, offsetY);
             ctx.scale(zoom, zoom);
-            // Grid (unchanged)
             if (displayState.grid) {
                 ctx.save();
                 const gridSize = scale;
@@ -318,12 +317,10 @@
             const now = performance.now();
             const showInactive = displayState.inactive;
             const showInvisible = displayState.invisible;
-            // Visible bounds (world)
             const visibleMinX = (0 - offsetX) / (zoom * scale);
             const visibleMaxX = (canvas.width - offsetX) / (zoom * scale);
             const visibleMaxY = -((0 - offsetY) / (zoom * scale));
             const visibleMinY = -((canvas.height - offsetY) / (zoom * scale));
-            // Adaptive flash quality
             if (!window._flashState) window._flashState = { quality: 'high', lastMs: 0 };
             const s = window._flashState;
             if (colliders.length > 1500 || zoom < 0.28 || s.lastMs > 28) s.quality = 'low';
@@ -334,7 +331,7 @@
                 if (!showInactive && !c.active) continue;
                 if (!showInvisible && c.invisible) continue;
                 if (activePlanes.size && !activePlanes.has(c.plane)) continue;
-                if (c.x + c.width < visibleMinX || c.x > visibleMaxX || c.y + c.height < visibleMinY || c.y > visibleMaxY) continue; // cull
+                if (c.x + c.width < visibleMinX || c.x > visibleMaxX || c.y + c.height < visibleMinY || c.y > visibleMaxY) continue; 
                 const color = colors[c.type] || colors.Default;
                 let baseColor = c.active ? color : '#555';
                 const t = changeFlash.get(c.id);
@@ -366,7 +363,7 @@
                     if (hoverStack.length > 1) {
                         ctx.save();
                         const badgeX = top.x * scale;
-                        const badgeY = (-(top.y + top.height)) * scale; // top-left screen position
+                        const badgeY = (-(top.y + top.height)) * scale; 
                         const pad = 4;
                         const txt = hoverStack.length.toString();
                         ctx.font = `${12}px system-ui,sans-serif`;
@@ -380,7 +377,6 @@
                         const r = 6;
                         const bx = badgeX + 2;
                         const by = badgeY + 2;
-                        // Rounded rect
                         ctx.moveTo(bx + r, by);
                         ctx.lineTo(bx + bw - r, by);
                         ctx.quadraticCurveTo(bx + bw, by, bx + bw, by + r);
@@ -487,12 +483,11 @@
         }
 
         function brightenColor(hex, intensity) {
-            // intensity 0..1, move color toward white non-linearly
             const num = parseInt(hex.replace('#',''),16);
             let r = (num >> 16) & 0xFF;
             let g = (num >> 8) & 0xFF;
             let b = num & 0xFF;
-            const k = Math.pow(intensity, 0.6); // slower falloff
+            const k = Math.pow(intensity, 0.6);
             r = Math.round(r + (255 - r) * k);
             g = Math.round(g + (255 - g) * k);
             b = Math.round(b + (255 - b) * k);
@@ -562,7 +557,7 @@
              if (currentRoom) highlightActiveRoom(currentRoom.levelId, currentRoom.roomInstanceId);
          }
 
-    async function selectRoom(r) {
+        async function selectRoom(r) {
             if (currentRoom) await hub.invoke('UnsubscribeRoom', currentRoom.levelId, currentRoom.roomInstanceId);
             currentRoom = { levelId: r.levelId ?? r.LevelId, roomInstanceId: r.roomInstanceId ?? r.RoomInstanceId, name: r.name ?? r.Name ?? 'Unnamed' };
             const detailEl = document.getElementById('colliderDetail'); if (detailEl) detailEl.textContent='';
@@ -592,19 +587,19 @@
             [...list.querySelectorAll('.collider-item')].forEach(a => a.classList.toggle('active-room', a.dataset.levelId == levelId && a.dataset.roomInstanceId == roomInstanceId));
         }
 
-    hub.on('collidersUpdated', payload => { if (!currentRoom) return; if (payload.levelId === currentRoom.levelId && payload.roomInstanceId === currentRoom.roomInstanceId) { colliders = (payload.colliders || []).map(normalizeCollider); version = payload.version || version + 1; lastBbox = payload.bbox || lastBbox; if (rebuildPlanes()) persistView(); fitView(); persistView(); draw(); } });
-    hub.on('roomSubscriberCount', payload => {
-        if (currentRoom && payload.levelId === currentRoom.levelId && payload.roomInstanceId === currentRoom.roomInstanceId) {
-            currentSubscriberCount = payload.count || 0;
-            const vc = document.getElementById('viewerCount');
-            if (vc) vc.textContent = `Viewers: ${currentSubscriberCount}`;
-        }
-    });
-    hub.on('collidersReset', payload => { if (!currentRoom) return; if (payload.levelId === currentRoom.levelId && payload.roomInstanceId === currentRoom.roomInstanceId) { colliders = (payload.colliders || []).map(normalizeCollider); version = payload.version || 0; lastBbox = payload.bbox || null; changeFlash.clear(); colliders.forEach(c => changeFlash.set(c.id, performance.now())); rebuildPlanes(); fitView(); persistView(); draw(); } });
+        hub.on('collidersUpdated', payload => { if (!currentRoom) return; if (payload.levelId === currentRoom.levelId && payload.roomInstanceId === currentRoom.roomInstanceId) { colliders = (payload.colliders || []).map(normalizeCollider); version = payload.version || version + 1; lastBbox = payload.bbox || lastBbox; if (rebuildPlanes()) persistView(); fitView(); persistView(); draw(); } });
+        hub.on('roomSubscriberCount', payload => {
+            if (currentRoom && payload.levelId === currentRoom.levelId && payload.roomInstanceId === currentRoom.roomInstanceId) {
+                currentSubscriberCount = payload.count || 0;
+                const vc = document.getElementById('viewerCount');
+                if (vc) vc.textContent = `Viewers: ${currentSubscriberCount}`;
+            }
+        });
+        hub.on('collidersReset', payload => { if (!currentRoom) return; if (payload.levelId === currentRoom.levelId && payload.roomInstanceId === currentRoom.roomInstanceId) { colliders = (payload.colliders || []).map(normalizeCollider); version = payload.version || 0; lastBbox = payload.bbox || null; changeFlash.clear(); colliders.forEach(c => changeFlash.set(c.id, performance.now())); rebuildPlanes(); fitView(); persistView(); draw(); } });
         hub.on('collidersDiff', payload => {
             if (!currentRoom) return;
             if (payload.levelId !== currentRoom.levelId || payload.roomInstanceId !== currentRoom.roomInstanceId) return;
-            if (payload.version && payload.version <= version) return; // stale
+            if (payload.version && payload.version <= version) return;
             version = payload.version || version + 1;
             if (payload.removed) { const remSet = new Set(payload.removed); colliders = colliders.filter(c => !remSet.has(c.id)); }
             if (payload.updated) { const map = new Map(colliders.map(c => [c.id, c])); payload.updated.forEach(u => { const id = u.id ?? u.Id; if (map.has(id)) { Object.assign(map.get(id), normalizeCollider(u)); changeFlash.set(id, performance.now()); } }); colliders = Array.from(map.values()); }
@@ -635,7 +630,7 @@
                     item.classList.add('fade-out');
                     const removeFn = () => { item.removeEventListener('transitionend', removeFn); if (item.parentNode) item.remove(); };
                     item.addEventListener('transitionend', removeFn);
-                    setTimeout(removeFn, 400); // safety
+                    setTimeout(removeFn, 400);
                 }
             }
             if (currentRoom && currentRoom.levelId === payload.levelId && currentRoom.roomInstanceId === payload.roomInstanceId) {
@@ -649,17 +644,16 @@
             a.href = '#';
             a.className = 'list-group-item list-group-item-action collider-item';
             a.textContent = `${levelId}:${roomInstanceId} ${name || 'Unnamed'}`;
-            // Canonical dataset assignments -> data-level-id / data-room-instance-id
             a.dataset.levelId = levelId;
             a.dataset.roomInstanceId = roomInstanceId;
             a.onclick = (e) => { e.preventDefault(); const r = { levelId, roomInstanceId, name }; selectRoom(r); highlightActiveRoom(levelId, roomInstanceId); };
             list.appendChild(a);
         }
 
-    function persistView() { if (!currentRoom) return; const state = { zoom, offsetX, offsetY, active: [...activeTypes], planes: [...activePlanes].slice(0,1), displayState }; localStorage.setItem('colliderView_' + currentRoom.levelId + '_' + currentRoom.roomInstanceId, JSON.stringify(state)); }
-    function restoreView() { if (!currentRoom) return false; const raw = localStorage.getItem('colliderView_' + currentRoom.levelId + '_' + currentRoom.roomInstanceId); if (!raw) return false; try { const s = JSON.parse(raw); if (typeof s.zoom === 'number' && typeof s.offsetX === 'number' && typeof s.offsetY === 'number') { zoom = s.zoom; offsetX = s.offsetX; offsetY = s.offsetY; } if (Array.isArray(s.active)) { activeTypes = new Set(s.active); buildFilters(); } if (s.displayState) { Object.assign(displayState, s.displayState); syncDisplayButtons(); } if (Array.isArray(s.planes) && s.planes.length) { activePlanes = new Set([s.planes[0]]); syncPlaneButtons(); } return true; } catch (_) { return false; } }
+        function persistView() { if (!currentRoom) return; const state = { zoom, offsetX, offsetY, active: [...activeTypes], planes: [...activePlanes].slice(0,1), displayState }; localStorage.setItem('colliderView_' + currentRoom.levelId + '_' + currentRoom.roomInstanceId, JSON.stringify(state)); }
+        function restoreView() { if (!currentRoom) return false; const raw = localStorage.getItem('colliderView_' + currentRoom.levelId + '_' + currentRoom.roomInstanceId); if (!raw) return false; try { const s = JSON.parse(raw); if (typeof s.zoom === 'number' && typeof s.offsetX === 'number' && typeof s.offsetY === 'number') { zoom = s.zoom; offsetX = s.offsetX; offsetY = s.offsetY; } if (Array.isArray(s.active)) { activeTypes = new Set(s.active); buildFilters(); } if (s.displayState) { Object.assign(displayState, s.displayState); syncDisplayButtons(); } if (Array.isArray(s.planes) && s.planes.length) { activePlanes = new Set([s.planes[0]]); syncPlaneButtons(); } return true; } catch (_) { return false; } }
 
-    function initUi() {
+        function initUi() {
             if (initialized) return;
             initialized = true;
             const required = ['displayToggles','btnFit','searchBtn','searchCollider','exportJson','exportPng','colliderCanvas','toggleSidebar','planeToggles'];
@@ -739,7 +733,7 @@
         }
         function panTo(c) { const canvas = document.getElementById('colliderCanvas'); const cx = (c.x + c.width / 2) * scale * zoom + offsetX; const cy = (-(c.y + c.height / 2)) * scale * zoom + offsetY; const midX = canvas.width / 2; const midY = canvas.height / 2; offsetX += (midX - cx); offsetY += (midY - cy); }
 
-    function onCanvasMove(e) {
+        function onCanvasMove(e) {
             const canvas = e.target; const rect = canvas.getBoundingClientRect(); const mx = (e.clientX - rect.left - offsetX) / (zoom * scale); const my = -((e.clientY - rect.top - offsetY) / (zoom * scale));
             const showInactive = displayState.inactive; const showInvisible = displayState.invisible;
             const stack = colliders.filter(c => {
@@ -788,10 +782,10 @@
         window.addEventListener('mouseup', () => { isPanning = false; document.body.style.cursor = 'default'; });
         window.addEventListener('mousemove', e => { if (!isPanning) return; const dx = e.clientX - startPan.x; const dy = e.clientY - startPan.y; startPan = { x: e.clientX, y: e.clientY }; offsetX += dx; offsetY += dy; draw(); });
 
-    function syncDisplayButtons() {
+        function syncDisplayButtons() {
             const container = document.getElementById('displayToggles'); if (!container) return;
             [...container.querySelectorAll('button.toggle-btn')].forEach(b => {
-        const key = b.dataset.key; if (!key) return; const state = !!displayState[key]; b.classList.toggle('active', state); b.setAttribute('aria-pressed', state);
+                const key = b.dataset.key; if (!key) return; const state = !!displayState[key]; b.classList.toggle('active', state); b.setAttribute('aria-pressed', state);
             });
         }
 

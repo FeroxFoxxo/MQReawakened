@@ -19,16 +19,17 @@
 }
 
 <style>
-	ul {
+	/* Scoped styles to this page only to avoid impacting global layout/navigation */
+	.release-notes-page ul {
 		list-style-type: disc;
 		padding-left: 20px;
 	}
 
-	li {
+	.release-notes-page li {
 		margin-bottom: 10px;
 	}
 
-	select {
+	#versionDropdown {
 		font-size: 16px;
 		background-color: #333 !important;
 		color: white;
@@ -37,21 +38,21 @@
 		padding: 10px 20px;
 	}
 
-		select option {
-			background-color: #333;
-			color: white;
-		}
+	#versionDropdown option {
+		background-color: #333;
+		color: white;
+	}
 
-		select:hover {
-			opacity: 0.8
-		}
+	#versionDropdown:hover {
+		opacity: 0.8;
+	}
 
 	.release-notes {
 		display: none; /* Hide all release notes by default */
 	}
 </style>
 
-<div class="container mt-4">
+<div class="container mt-4 release-notes-page">
 	<div class="card custom-home-card shadow-lg">
 		<div class="card-body">
 			<div class="text-center">
