@@ -118,6 +118,7 @@ public class ChooseQuestReward : ExternalProtocol
 
         Player.CheckAchievement(AchConditionType.CompleteQuest, [quest.Name], InternalAchievement, Logger); // Specific Quest by name for example EVT_SB_1_01
         Player.CheckAchievement(AchConditionType.CompleteQuestInLevel, [Player.Room.LevelInfo.Name], InternalAchievement, Logger); // Quest by Level/Trail if any exist
+
         if (questline.QuestType == QuestType.Daily)
             Player.CheckAchievement(AchConditionType.CompleteDailyQuest, [], InternalAchievement, Logger);
     }
