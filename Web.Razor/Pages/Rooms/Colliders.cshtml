@@ -1,0 +1,279 @@
+@page "/rooms/colliders"
+@model Web.Razor.Pages.Rooms.CollidersModel
+@{
+    ViewData["Title"] = "Room Colliders";
+}
+@section Stylesheets {
+    <style>
+        #colliderCanvas {
+            width: 100%;
+            height: 70vh;
+            border: 1px solid #444;
+            background: #0b1d2a;
+            cursor: grab;
+        }
+
+        #roomList {
+            max-height: 30vh;
+            overflow: auto;
+        }
+
+        .collider-item {
+            font-size: 12px;
+        }
+
+        .legend span {
+            display: inline-block;
+            padding: 2px 6px;
+            margin: 2px;
+            border-radius: 4px;
+            font-size: 11px;
+        }
+    </style>
+}
+<div class="container-fluid mt-3">
+    <div class="row">
+        <div class="col-md-3">
+            <h5>Rooms</h5>
+            <div id="roomList" class="list-group"></div>
+            <hr />
+            <h6>Filters</h6>
+            <div id="filterList" class="mb-2"></div>
+            <div class="btn-group mb-2" role="group">
+                <button id="resetView" class="btn btn-sm btn-secondary">Fit</button>
+                <button id="autoFitToggle" class="btn btn-sm btn-outline-secondary active" data-enabled="true"
+                    title="Auto-fit when bounds grow">Auto-Fit</button>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="showGrid" checked>
+                <label class="form-check-label" for="showGrid">Grid</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="flashChanges" checked>
+                <label class="form-check-label" for="flashChanges">Flash Changes</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="showInactive" checked>
+                <label class="form-check-label" for="showInactive">Show Inactive</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="showInvisible" checked>
+                <label class="form-check-label" for="showInvisible">Show Invisible</label>
+            </div>
+            <div class="input-group input-group-sm mb-2">
+                <input type="text" id="searchCollider" class="form-control" placeholder="Collider ID..." />
+                <div class="input-group-append">
+                    <button id="searchBtn" class="btn btn-outline-secondary">Find</button>
+                </div>
+            </div>
+            <div class="btn-group btn-group-sm mb-3" role="group">
+                <button id="exportJson" class="btn btn-outline-primary"
+                    title="Download collider list as JSON">JSON</button>
+                <button id="exportPng" class="btn btn-outline-primary" title="Download canvas as PNG">PNG</button>
+                <button id="toggleBBox" class="btn btn-outline-secondary" data-enabled="false"
+                    title="Show bounding box">BBox</button>
+            </div>
+            <h6>Controls</h6>
+            <ul class="small">
+                <li>Drag to pan</li>
+                <li>Scroll to zoom</li>
+                <li>Double-click to reset view</li>
+            </ul>
+            <div class="legend">
+                <span style="background:#ff6b6b">Attack</span>
+                <span style="background:#4ecdc4">Player</span>
+                <span style="background:#ffe66d">Enemy</span>
+                <span style="background:#1a535c;color:#fff;">Default</span>
+            </div>
+            <div id="colliderDetail" class="small mt-3"></div>
+        </div>
+        <div class="col-md-9">
+            <canvas id="colliderCanvas"></canvas>
+            <div id="status" class="small text-muted mt-2"></div>
+            <div id="stats" class="small text-muted"></div>
+            <div id="hoverInfo" class="small text-info mt-1"></div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.0/signalr.min.js"
+        integrity="sha512-MpOda6MqFmoVoeAQMtk0iA0WIMRqjYOEoTP0TO+GfY+3CX6XcncxZV8oPZxC25f6/sOlne342XQI3/OQK0svNA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        const hub = new signalR.HubConnectionBuilder().withUrl('/hubs/colliders').withAutomaticReconnect().build();
+        let rooms = []; let currentRoom = null; let colliders = []; let scale = 32; // world units to pixels
+        let zoom = 1; let offsetX = 0; let offsetY = 0; let isPanning = false; let startPan = { x: 0, y: 0 };
+        const colors = { Attack: '#ff6b6b', Player: '#4ecdc4', Enemy: '#ffe66d', Default: '#1a535c', Breakable: '#a29bfe', Hazard: '#ff922b', MovingPlatform: '#74c0fc', TriggerTarget: '#e599f7', TriggerReceiver: '#be4bdb', Stomper: '#ff8787', AiAttack: '#ff6b6b' };
+        let activeTypes = new Set(Object.keys(colors));
+        let version = 0;
+        const changeFlash = new Map(); // id -> timestamp for change highlight
+        const FLASH_MS = 1500;
+        let lastBbox = null; // latest bounding box from server
+        let pendingStats = null; // stats payload to show after diff
+        let showBBox = false; // bounding box overlay toggle
+        let selectedColliderId = null; // currently selected collider
+        // FPS metrics
+        let fpsFrameCount = 0; let fpsLastTime = performance.now(); let fps = 0;
+
+        function fitView() {
+            if (colliders.length === 0) return;
+            const minX = Math.min(...colliders.map(c => c.x));
+            const minY = Math.min(...colliders.map(c => c.y));
+            const maxX = Math.max(...colliders.map(c => c.x + c.width));
+            const maxY = Math.max(...colliders.map(c => c.y + c.height));
+            const canvas = document.getElementById('colliderCanvas');
+            const padding = 2; // world units
+            const w = maxX - minX + padding * 2; const h = maxY - minY + padding * 2;
+            zoom = Math.min(canvas.width / (w * scale), canvas.height / (h * scale));
+            offsetX = -(minX - padding) * scale * zoom + (canvas.width - w * scale * zoom) / 2;
+            offsetY = -(minY - padding) * scale * zoom + (canvas.height - h * scale * zoom) / 2;
+        }
+
+        function draw() {
+            const canvas = document.getElementById('colliderCanvas');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.save();
+            ctx.translate(offsetX, offsetY);
+            ctx.scale(zoom, zoom);
+            // grid
+            if (document.getElementById('showGrid').checked) {
+                ctx.save(); ctx.strokeStyle = '#123'; ctx.lineWidth = 1 / zoom;
+                const gridSize = scale;
+                const cols = 200; const rows = 200; // arbitrary large
+                for (let i = -cols; i < cols; i++) {
+                    ctx.beginPath(); ctx.moveTo(i * gridSize, -rows * gridSize); ctx.lineTo(i * gridSize, rows * gridSize); ctx.stroke();
+                }
+                for (let j = -rows; j < rows; j++) {
+                    ctx.beginPath(); ctx.moveTo(-cols * gridSize, j * gridSize); ctx.lineTo(cols * gridSize, j * gridSize); ctx.stroke();
+                }
+                ctx.restore();
+            }
+            const now = performance.now();
+            const showInactive = document.getElementById('showInactive')?.checked ?? true;
+            const showInvisible = document.getElementById('showInvisible')?.checked ?? true;
+            for (const c of colliders) {
+                if (!activeTypes.has(c.type)) continue;
+                if (!showInactive && !c.active) continue;
+                if (!showInvisible && c.invisible) continue;
+                const color = colors[c.type] || colors.Default;
+                let baseColor = c.active ? color : '#555';
+                const t = changeFlash.get(c.id);
+                if (document.getElementById('flashChanges').checked && t && now - t < FLASH_MS) {
+                    const alpha = 1 - (now - t) / FLASH_MS;
+                    ctx.fillStyle = shadeColor(baseColor, alpha * 40);
+                } else {
+                    ctx.fillStyle = baseColor;
+                }
+                ctx.globalAlpha = c.invisible ? 0.3 : 0.8;
+                ctx.fillRect(c.x * scale, (-(c.y + c.height)) * scale, c.width * scale, c.height * scale);
+                ctx.globalAlpha = 1.0;
+                ctx.strokeStyle = '#222';
+                ctx.lineWidth = 1 / zoom;
+                ctx.strokeRect(c.x * scale, (-(c.y + c.height)) * scale, c.width * scale, c.height * scale);
+                if (selectedColliderId === c.id) {
+                    ctx.strokeStyle = '#ffff00';
+                    ctx.lineWidth = 2 / zoom;
+                    ctx.strokeRect(c.x * scale, (-(c.y + c.height)) * scale, c.width * scale, c.height * scale);
+                }
+            }
+            if (showBBox && lastBbox) {
+                ctx.save();
+                ctx.strokeStyle = 'rgba(255,255,255,0.5)';
+                ctx.setLineDash([6 / zoom, 4 / zoom]);
+                ctx.lineWidth = 1.5 / zoom;
+                ctx.strokeRect(lastBbox.minX * scale, (-(lastBbox.minY + lastBbox.height)) * scale, lastBbox.width * scale, lastBbox.height * scale);
+                ctx.restore();
+            }
+            ctx.restore();
+            document.getElementById('status').innerText = currentRoom ? `${currentRoom.name} | V${version} | Colliders: ${colliders.length} | Zoom: ${zoom.toFixed(2)} | FPS: ${fps.toFixed(0)}` : 'No room selected';
+            if (pendingStats) { document.getElementById('stats').innerText = `Δ Added:${pendingStats.added} Updated:${pendingStats.updated} Removed:${pendingStats.removed} Bounds: ${pendingStats.bbox.width.toFixed(1)}x${pendingStats.bbox.height.toFixed(1)}`; pendingStats = null; }
+            requestAnimationFrame(() => { if (changeFlash.size > 0 || selectedColliderId) draw(); });
+            fpsFrameCount++; const nowTs = performance.now(); if (nowTs - fpsLastTime >= 1000) { fps = (fpsFrameCount * 1000) / (nowTs - fpsLastTime); fpsFrameCount = 0; fpsLastTime = nowTs; }
+        }
+
+        function shadeColor(hex, percent) {
+            const num = parseInt(hex.replace('#', ''), 16);
+            let r = (num >> 16) + percent;
+            let g = ((num >> 8) & 0x00FF) + percent;
+            let b = (num & 0x0000FF) + percent;
+            r = Math.min(255, Math.max(0, r)); g = Math.min(255, Math.max(0, g)); b = Math.min(255, Math.max(0, b));
+            return '#' + (r << 16 | g << 8 | b).toString(16).padStart(6, '0');
+        }
+
+        function resizeCanvas() { const canvas = document.getElementById('colliderCanvas'); canvas.width = canvas.clientWidth; canvas.height = canvas.clientHeight; draw(); }
+        window.addEventListener('resize', () => { resizeCanvas(); fitView(); draw(); });
+
+        function buildFilters() { const container = document.getElementById('filterList'); container.innerHTML = ''; Object.keys(colors).forEach(t => { const id = 'flt_' + t; const div = document.createElement('div'); div.className = 'form-check'; div.innerHTML = `<input class='form-check-input' type='checkbox' id='${id}' ${(activeTypes.has(t) ? 'checked' : '')}><label class='form-check-label small' for='${id}'>${t}</label>`; container.appendChild(div); document.getElementById(id).addEventListener('change', e => { if (e.target.checked) activeTypes.add(t); else activeTypes.delete(t); draw(); }); }); }
+        async function loadRooms() {
+            rooms = await hub.invoke('GetRooms'); const list = document.getElementById('roomList'); list.innerHTML = '';
+            rooms.forEach(r => { const a = document.createElement('a'); a.href = '#'; a.className = 'list-group-item list-group-item-action collider-item'; a.textContent = `${r.LevelId}:${r.RoomInstanceId} ${r.Name}`; a.onclick = () => selectRoom(r); list.appendChild(a); }); buildFilters();
+        }
+
+        async function selectRoom(r) { if (currentRoom) await hub.invoke('UnsubscribeRoom', currentRoom.levelId, currentRoom.roomInstanceId); currentRoom = { levelId: r.levelId || r.LevelId, roomInstanceId: r.roomInstanceId || r.RoomInstanceId, name: r.name || r.Name }; const data = await hub.invoke('SubscribeRoom', currentRoom.levelId, currentRoom.roomInstanceId); if (data) { colliders = data.colliders || data.Colliders; version = data.version || 0; lastBbox = data.bbox || null; changeFlash.clear(); colliders.forEach(c => changeFlash.set(c.id, performance.now())); fitView(); persistView(); draw(); } }
+
+        hub.on('collidersUpdated', payload => { if (!currentRoom) return; if (payload.levelId === currentRoom.levelId && payload.roomInstanceId === currentRoom.roomInstanceId) { colliders = payload.colliders; version = payload.version || version + 1; lastBbox = payload.bbox || lastBbox; fitView(); persistView(); draw(); } });
+        hub.on('collidersReset', payload => { if (!currentRoom) return; if (payload.levelId === currentRoom.levelId && payload.roomInstanceId === currentRoom.roomInstanceId) { colliders = payload.colliders; version = payload.version || 0; lastBbox = payload.bbox || null; changeFlash.clear(); colliders.forEach(c => changeFlash.set(c.id, performance.now())); fitView(); persistView(); draw(); } });
+        hub.on('collidersDiff', payload => {
+            if (!currentRoom) return;
+            if (payload.levelId !== currentRoom.levelId || payload.roomInstanceId !== currentRoom.roomInstanceId) return;
+            if (payload.version && payload.version <= version) return; // stale
+            version = payload.version || version + 1;
+            if (payload.removed) { const remSet = new Set(payload.removed); colliders = colliders.filter(c => !remSet.has(c.id)); }
+            if (payload.updated) { const map = new Map(colliders.map(c => [c.id, c])); payload.updated.forEach(u => { if (map.has(u.id)) { Object.assign(map.get(u.id), u); changeFlash.set(u.id, performance.now()); } }); colliders = Array.from(map.values()); }
+            if (payload.added) { payload.added.forEach(a => { colliders.push(a); changeFlash.set(a.id, performance.now()); }); }
+            if (payload.bbox) { if (lastBbox) { const growth = (payload.bbox.width * payload.bbox.height) / (lastBbox.width * lastBbox.height + 0.0001); if (growth > 1.25 && document.getElementById('autoFitToggle').dataset.enabled === 'true') fitView(); } lastBbox = payload.bbox; }
+            if (payload.stats) { pendingStats = { ...payload.stats, bbox: payload.bbox || { width: 0, height: 0 } }; }
+            persistView();
+            draw();
+        });
+
+        function persistView() { if (!currentRoom) return; const state = { zoom, offsetX, offsetY, active: [...activeTypes] }; localStorage.setItem('colliderView_' + currentRoom.levelId + '_' + currentRoom.roomInstanceId, JSON.stringify(state)); }
+        function restoreView() { if (!currentRoom) return; const raw = localStorage.getItem('colliderView_' + currentRoom.levelId + '_' + currentRoom.roomInstanceId); if (!raw) return; try { const s = JSON.parse(raw); zoom = s.zoom; offsetX = s.offsetX; offsetY = s.offsetY; activeTypes = new Set(s.active); buildFilters(); } catch (_) { } }
+
+        document.getElementById('autoFitToggle').addEventListener('click', e => { const btn = e.target; const enabled = btn.dataset.enabled === 'true'; btn.dataset.enabled = (!enabled).toString(); btn.classList.toggle('active', !enabled); });
+        document.getElementById('flashChanges').addEventListener('change', () => draw());
+        document.getElementById('toggleBBox').addEventListener('click', e => { showBBox = !showBBox; e.target.classList.toggle('active', showBBox); draw(); });
+        document.getElementById('showInactive').addEventListener('change', () => draw());
+        document.getElementById('showInvisible').addEventListener('change', () => draw());
+        document.getElementById('searchBtn').addEventListener('click', () => searchCollider());
+        document.getElementById('searchCollider').addEventListener('keydown', e => { if (e.key === 'Enter') searchCollider(); });
+        document.getElementById('exportJson').addEventListener('click', () => { const data = JSON.stringify({ room: currentRoom, version, colliders }, null, 2); const blob = new Blob([data], { type: 'application/json' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `colliders_${currentRoom?.levelId || 'unknown'}_${currentRoom?.roomInstanceId || 'x'}_v${version}.json`; a.click(); URL.revokeObjectURL(a.href); });
+        document.getElementById('exportPng').addEventListener('click', () => { const canvas = document.getElementById('colliderCanvas'); const a = document.createElement('a'); a.href = canvas.toDataURL('image/png'); a.download = `colliders_${currentRoom?.levelId || 'unknown'}_${currentRoom?.roomInstanceId || 'x'}_v${version}.png`; a.click(); });
+
+        function searchCollider() {
+            const term = document.getElementById('searchCollider').value.trim();
+            if (!term) { selectedColliderId = null; document.getElementById('colliderDetail').textContent = ''; draw(); return; }
+            const found = colliders.find(c => c.id.toLowerCase().includes(term.toLowerCase()));
+            if (found) { selectedColliderId = found.id; document.getElementById('colliderDetail').textContent = `Selected: ${found.id} | ${found.type}`; panTo(found); draw(); }
+        }
+        function panTo(c) { const canvas = document.getElementById('colliderCanvas'); const cx = (c.x + c.width / 2) * scale * zoom + offsetX; const cy = (-(c.y + c.height / 2)) * scale * zoom + offsetY; const midX = canvas.width / 2; const midY = canvas.height / 2; offsetX += (midX - cx); offsetY += (midY - cy); }
+
+        // hover info
+        document.getElementById('colliderCanvas').addEventListener('mousemove', e => {
+            const canvas = e.target; const rect = canvas.getBoundingClientRect(); const mx = (e.clientX - rect.left - offsetX) / (zoom * scale); const my = -((e.clientY - rect.top - offsetY) / (zoom * scale));
+            const showInactive = document.getElementById('showInactive').checked; const showInvisible = document.getElementById('showInvisible').checked;
+            const found = colliders.find(c => activeTypes.has(c.type) && (showInactive || c.active) && (showInvisible || !c.invisible) && mx >= c.x && mx <= c.x + c.width && my <= c.y && my >= c.y - c.height);
+            const info = document.getElementById('hoverInfo');
+            if (found) info.textContent = `${found.type} ${found.id} (${found.x.toFixed(2)},${found.y.toFixed(2)}) ${found.width.toFixed(2)}x${found.height.toFixed(2)} ${found.active ? '' : '[inactive]'} ${found.invisible ? '[invis]' : ''}`; else info.textContent = '';
+        });
+        document.getElementById('colliderCanvas').addEventListener('click', e => {
+            const canvas = e.target; const rect = canvas.getBoundingClientRect(); const mx = (e.clientX - rect.left - offsetX) / (zoom * scale); const my = -((e.clientY - rect.top - offsetY) / (zoom * scale));
+            const showInactive = document.getElementById('showInactive').checked; const showInvisible = document.getElementById('showInvisible').checked;
+            const found = colliders.find(c => activeTypes.has(c.type) && (showInactive || c.active) && (showInvisible || !c.invisible) && mx >= c.x && mx <= c.x + c.width && my <= c.y && my >= c.y - c.height);
+            selectedColliderId = found ? found.id : null;
+            document.getElementById('colliderDetail').textContent = found ? `Selected: ${found.id} | ${found.type} | Pos(${found.x.toFixed(2)},${found.y.toFixed(2)}) Size(${found.width.toFixed(2)}x${found.height.toFixed(2)}) Plane:${found.plane}` : '';
+            draw();
+        });
+        document.getElementById('resetView').addEventListener('click', () => { fitView(); draw(); });
+
+        document.getElementById('colliderCanvas').addEventListener('mousedown', e => { isPanning = true; startPan = { x: e.clientX, y: e.clientY }; document.body.style.cursor = 'grabbing'; });
+        window.addEventListener('mouseup', () => { isPanning = false; document.body.style.cursor = 'default'; });
+        window.addEventListener('mousemove', e => { if (!isPanning) return; const dx = e.clientX - startPan.x; const dy = e.clientY - startPan.y; startPan = { x: e.clientX, y: e.clientY }; offsetX += dx; offsetY += dy; draw(); });
+        document.getElementById('colliderCanvas').addEventListener('wheel', e => { e.preventDefault(); const canvas = e.target; const rect = canvas.getBoundingClientRect(); const mx = e.clientX - rect.left; const my = e.clientY - rect.top; const prevZoom = zoom; zoom *= e.deltaY < 0 ? 1.1 : 0.9; zoom = Math.min(Math.max(zoom, 0.05), 20); offsetX = mx - (mx - offsetX) * (zoom / prevZoom); offsetY = my - (my - offsetY) * (zoom / prevZoom); draw(); }, { passive: false });
+        document.getElementById('colliderCanvas').addEventListener('dblclick', () => { fitView(); draw(); });
+
+        hub.start().then(() => { loadRooms(); resizeCanvas(); }).catch(err => console.error(err));
+    </script>
+}

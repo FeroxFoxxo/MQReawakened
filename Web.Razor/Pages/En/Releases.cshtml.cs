@@ -5,10 +5,18 @@ using Server.Reawakened.XMLs.Data.ReleaseNotes;
 
 namespace Web.Razor.Pages.En;
 
-public class ReleaseNotesModel(InternalRwConfig iConfig, InternalReleaseNotes internalReleaseNotes) : PageModel
+public class ReleaseNotesModel : PageModel
 {
-    // Define a list of release notes (version, release date, and notes)
-    public List<ReleaseNote> ReleaseNotes => internalReleaseNotes.ReleaseNotes;
+    private readonly InternalRwConfig _config;
+    private readonly InternalReleaseNotes _notesBundle;
 
-    public void OnGet() => ViewData["ServerName"] = iConfig.ServerName;
+    public List<ReleaseNote> ReleaseNotes => _notesBundle.ReleaseNotes ?? new List<ReleaseNote>();
+
+    public ReleaseNotesModel(InternalRwConfig config, InternalReleaseNotes notesBundle)
+    {
+        _config = config;
+        _notesBundle = notesBundle;
+    }
+
+    public void OnGet() => ViewData["ServerName"] = _config.ServerName;
 }

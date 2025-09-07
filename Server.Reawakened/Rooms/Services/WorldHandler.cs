@@ -294,4 +294,14 @@ public class WorldHandler(EventSink sink, ServerRConfig config, WorldGraph world
 
         return prefabOverrides;
     }
+
+    public IEnumerable<Room> GetOpenRooms()
+    {
+        List<Room> rooms;
+
+        lock (Lock)
+            rooms = _levels.Values.SelectMany(l => l.Rooms.Values).Where(r => r.IsOpen).ToList();
+
+        return rooms;
+    }
 }

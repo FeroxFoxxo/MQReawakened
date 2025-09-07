@@ -1,0 +1,78 @@
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using Server.Base.Core.Abstractions;
+using Server.Colliders.Abstractions;
+using Server.Colliders.DTOs;
+
+namespace Server.Colliders.Services;
+
+public class ColliderPushService(IColliderSnapshotProvider _snapshots,
+    IColliderDiffCalculator _diffs,
+    IRoomVersionTracker _versions,
+    IColliderUpdatePublisher _publisher,
+    ILogger<ColliderPushService> _logger) : BackgroundService, IService
+{
+    private readonly Dictionary<(int, int), RoomCollidersDto> _last = [];
+
+    private int _currentIntervalMs = 1000;
+    private const int BaseInterval = 1000;
+
+    public void Initialize() { }
+
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+    {
+        while (!stoppingToken.IsCancellationRequested)
+        {
+            var totalChanges = 0;
+            try
+            {
+                var current = _snapshots.GetSnapshots();
+
+                foreach (var room in current)
+                {
+                    var key = (room.LevelId, room.RoomInstanceId);
+
+                    if (!_last.TryGetValue(key, out var prev))
+                    {
+                        var version = _versions.Increment(room.LevelId, room.RoomInstanceId);
+                        var bounds = CalcBounds(room.Colliders);
+                        var stats = new ColliderStatsDto(room.Colliders.Length, 0, 0);
+                        await _publisher.PublishResetAsync(room, version, bounds, stats, stoppingToken);
+                        _last[key] = room;
+                        continue;
+                    }
+
+                    var diff = _diffs.Calculate(prev, room);
+                    if (diff.Added.Length == 0 && diff.Removed.Length == 0 && diff.Updated.Length == 0)
+                    { _last[key] = room; continue; }
+                    var versionWithIncrement = _versions.Increment(room.LevelId, room.RoomInstanceId);
+                    diff = diff with { Version = versionWithIncrement, Bounds = CalcBounds(room.Colliders), Stats = new ColliderStatsDto(diff.Added.Length, diff.Removed.Length, diff.Updated.Length) };
+                    totalChanges += diff.Added.Length + diff.Removed.Length + diff.Updated.Length;
+                    await _publisher.PublishDiffAsync(diff, stoppingToken);
+                    _last[key] = room;
+                }
+                
+                _currentIntervalMs = totalChanges switch
+                {
+                    > 50 => Math.Max(100, _currentIntervalMs / 2),
+                    0 => Math.Min(2000, (int)(_currentIntervalMs * 1.25)),
+                    _ => BaseInterval
+                };
+            }
+            catch (Exception ex)
+            { _logger.LogError(ex, "Collider push cycle failure"); }
+
+            try { await Task.Delay(_currentIntervalMs, stoppingToken); } catch { }
+        }
+    }
+
+    private static ColliderBoundsDto CalcBounds(ColliderDto[] colliders)
+    {
+        if (colliders.Length == 0) return new ColliderBoundsDto(0, 0, 0, 0, 0, 0);
+        var minX = colliders.Min(c => c.X);
+        var minY = colliders.Min(c => c.Y);
+        var maxX = colliders.Max(c => c.X + c.Width);
+        var maxY = colliders.Max(c => c.Y + c.Height);
+        return new ColliderBoundsDto(minX, minY, maxX, maxY, maxX - minX, maxY - minY);
+    }
+}
