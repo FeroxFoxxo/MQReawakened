@@ -5,121 +5,159 @@
 }
 @section Stylesheets {
     <style>
-        #colliderCanvas {
-            width: 100%;
-            height: 70vh;
-            border: 1px solid #444;
-            background: #0b1d2a;
-            cursor: grab;
+        :root {
+            --c-bg-panel: linear-gradient(145deg,#0f1f29,#142e3b 55%,#0d1a22);
+            --c-border-panel: #1f4457;
+            --c-border-subtle: #203c4a;
+            --c-border-strong: #1d566f;
+            --c-accent: #2fa8d8;
+            --c-text: #e1f6ff;
+            --c-text-dim: #b7d3df;
+            --space-1: 4px;
+            --space-2: 8px;
+            --space-3: 12px;
+            --space-4: 16px;
+            --radius-sm: 4px;
+            --radius-md: 8px;
+            --shadow-panel: 0 2px 6px rgba(0,0,0,0.4), inset 0 0 10px rgba(0,0,0,0.35);
         }
 
-        #roomList {
-            max-height: 30vh;
-            overflow: auto;
-        }
-
-        .collider-item {
-            font-size: 12px;
-        }
-
-        .legend span {
-            display: inline-block;
-            padding: 2px 6px;
-            margin: 2px;
-            border-radius: 4px;
-            font-size: 11px;
-        }
-        #roomList .list-group-item.collider-item { background:#133043; color:#f0f6fc; border:1px solid #0f2735; line-height:1.1; }
-        #roomList .list-group-item.collider-item:hover { background:#19465f; color:#ffffff; }
-        #roomList .list-group-item.collider-item.active-room { background:#256d8f; color:#fff; font-weight:600; }
-        #status, #stats, #hoverInfo, #colliderDetail { color:#b7e3ff !important; text-shadow:0 0 3px rgba(0,0,0,0.7); }
-        .legend span { border:1px solid rgba(255,255,255,0.15); }
-        /* Filter color swatches */
-        .filter-swatch { display:inline-block; width:14px; height:14px; border:1px solid rgba(0,0,0,0.55); margin-right:4px; border-radius:3px; box-shadow:0 0 2px rgba(0,0,0,0.45); }
-        #filterList .form-check { padding:2px 4px; margin:0; display:flex; align-items:center; gap:6px; }
-        #filterList .form-check-input { margin:0; position:static; width:16px; height:16px; }
-        #filterList label { cursor:pointer; user-select:none; display:flex; align-items:center; gap:6px; margin:0; }
-        #filterList input { cursor:pointer; }
-        /* Green paper style for overlay info */
-        #status, #stats, #hoverInfo, #colliderDetail { background:rgba(25,40,50,0.55); backdrop-filter:blur(2px); border:1px solid rgba(90,170,200,0.35); border-radius:4px; padding:2px 6px; color:#e8f7ff !important; font-weight:500; }
+        #colliderCanvas { width:100%; height:70vh; border:1px solid #233b48; background:#0b1d2a; cursor:grab; border-radius:var(--radius-md); box-shadow:0 0 0 1px #0d2631, 0 3px 12px rgba(0,0,0,0.45); }
+        .canvas-wrapper { position:relative; }
+        .status-group { display:flex; flex-wrap:wrap; gap:var(--space-2); margin-top:var(--space-2); }
+        #status, #stats, #hoverInfo, #colliderDetail { background:rgba(25,40,50,0.55); backdrop-filter:blur(2px); border:1px solid rgba(90,170,200,0.35); border-radius:var(--radius-sm); padding:2px 6px; color:#e8f7ff !important; font-weight:500; text-shadow:0 0 3px rgba(0,0,0,0.7); }
         .auto-hide:empty { display:none !important; }
         #hoverInfo { margin-top:4px; }
-        /* Sidebar dark panel consistent with app theme */
-        .collider-side { background:linear-gradient(145deg,#0f1f29,#142e3b 55%,#0d1a22); border:1px solid #1f4457; border-radius:8px; padding:10px 10px 14px; box-shadow:0 2px 6px rgba(0,0,0,0.4), inset 0 0 10px rgba(0,0,0,0.35); }
-        .collider-side h5, .collider-side h6 { color:#f5fbff; font-weight:600; letter-spacing:.5px; text-shadow:0 1px 2px #000; }
-        .collider-side label, .collider-side li { color:#d6ecf5; }
-        .collider-side .legend span { background:#1a2f3b !important; color:#dff7ff; font-weight:500; }
-        /* Brand visibility */
-        .navbar-brand, .navbar .navbar-brand { color:#e9ffe9 !important; text-shadow:0 0 4px rgba(0,0,0,0.7); font-weight:600; }
-        /* Room list integration */
-        .collider-side #roomList { background:rgba(10,25,32,0.55); border:1px solid #203c4a; }
-        .collider-side #roomList .list-group-item { background:#163241; color:#e1f6ff; border:1px solid #1d4558; }
-        .collider-side #roomList .list-group-item.active-room { background:#256d8f; color:#fff; }
-        .collider-side #roomList .list-group-item:hover { background:#1f4558; }
-        .collider-side .btn-outline-dark, .collider-side .btn-light { background:#123040; color:#e0f8ff; border:1px solid #1d566f; }
-        .collider-side .btn-outline-dark:hover, .collider-side .btn-light:hover { background:#1d566f; color:#fff; }
-        .collider-side .form-check-input { background:#1b3643; border:1px solid #2a5f77; }
-        .collider-side .form-check-input:checked { background:#2fa8d8; border-color:#2fa8d8; }
-        .filter-swatch { box-shadow:0 0 0 1px rgba(0,0,0,0.6), 0 0 4px rgba(0,0,0,0.5); }
+        #roomList { max-height:28vh; overflow:auto; border:1px solid var(--c-border-subtle); border-radius:var(--radius-sm); scroll-behavior:smooth; }
+        .collider-item { font-size:12px; line-height:1.15; padding:4px 8px; }
+        #roomList .list-group-item.collider-item { background:#133043; color:#f0f6fc; border:0; border-bottom:1px solid #0f2735; }
+        #roomList .list-group-item.collider-item:last-child { border-bottom:0; }
+        #roomList .list-group-item.collider-item:hover { background:#19465f; color:#ffffff; }
+        #roomList .list-group-item.collider-item.active-room { background:#256d8f; color:#fff; font-weight:600; }
+
+        .collider-side { position:sticky; top:var(--space-3); background:var(--c-bg-panel); border:1px solid var(--c-border-panel); border-radius:var(--radius-md); padding:var(--space-3) var(--space-3) calc(var(--space-3) + 2px); box-shadow:var(--shadow-panel); display:flex; flex-direction:column; gap:var(--space-3); }
+        .collider-side h5.page-title { margin:0 0 var(--space-2); color:#f5fbff; font-weight:600; letter-spacing:.5px; text-shadow:0 1px 2px #000; font-size:1.05rem; display:flex; align-items:center; gap:6px; }
+        .panel-section { display:flex; flex-direction:column; gap:var(--space-2); }
+        .panel-section + .panel-section { border-top:1px solid rgba(255,255,255,0.05); padding-top:var(--space-3); }
+        .panel-section h6 { margin:0; color:#f5fbff; font-weight:600; font-size:.8rem; letter-spacing:.75px; text-transform:uppercase; opacity:.9; }
+        .panel-small { font-size:11px; color:var(--c-text-dim); }
+        .legend { display:grid; grid-template-columns:repeat(auto-fill,minmax(70px,1fr)); gap:4px; }
+        .legend span { display:inline-flex; align-items:center; justify-content:center; padding:2px 4px; border-radius:var(--radius-sm); font-size:10px; line-height:1.1; border:1px solid rgba(255,255,255,0.12); background:#1a2f3b; color:#dff7ff; font-weight:500; }
+        .filter-swatch { display:inline-block; width:14px; height:14px; border:1px solid rgba(0,0,0,0.55); margin-right:4px; border-radius:3px; box-shadow:0 0 0 1px rgba(0,0,0,0.6), 0 0 4px rgba(0,0,0,0.5); }
+        #filterList { display:grid; grid-template-columns:repeat(auto-fill,minmax(120px,1fr)); gap:2px 6px; }
+        #filterList .form-check { padding:2px 2px; margin:0; display:flex; align-items:center; gap:6px; background:#123040; border:1px solid #1d4558; border-radius:var(--radius-sm); }
+        #filterList .form-check:hover { background:#16495e; }
+        #filterList .form-check-input { margin:0; position:static; width:16px; height:16px; cursor:pointer; background:#1b3643; border:1px solid #2a5f77; }
+        #filterList .form-check-input:checked { background:var(--c-accent); border-color:var(--c-accent); }
+        #filterList label { cursor:pointer; user-select:none; display:flex; align-items:center; gap:6px; margin:0; font-size:11px; color:var(--c-text); }
+        .btn-outline-dark, .btn-light { background:#123040; color:#e0f8ff; border:1px solid var(--c-border-strong); }
+        .btn-outline-dark:hover, .btn-light:hover, .btn-outline-dark.active { background:#1d566f; color:#fff; }
+        .form-check-input { background:#1b3643; border:1px solid #2a5f77; }
+        .form-check-input:checked { background:var(--c-accent); border-color:var(--c-accent); }
+        .input-group-sm > .form-control { background:#123040; border:1px solid var(--c-border-strong); color:var(--c-text); }
+        .input-group-sm > .form-control:focus { background:#163b4d; color:#fff; }
+        .section-inline-controls { display:flex; flex-wrap:wrap; gap:4px; }
+        ul.compact-list { list-style:disc; padding-left:16px; margin:0; display:flex; flex-direction:column; gap:2px; }
+        ul.compact-list li { color:#d6ecf5; font-size:11px; }
+        .export-group .btn { flex:1; }
+        .collider-side #colliderDetail { min-height:18px; }
+        .canvas-wrapper:focus-within #colliderCanvas { outline:2px solid var(--c-accent); }
     </style>
 }
 <div class="container-fluid mt-3">
     <div class="row">
         <div class="col-md-3">
-            <div class="collider-side">
-                <h5 class="mb-2">@ViewData["ServerName"] Rooms</h5>
-                <div id="roomList" class="list-group mb-2"></div>
-                <h6 class="mt-2 mb-1">Filters</h6>
-                <div id="filterList" class="mb-2"></div>
-                <div class="btn-group mb-2" role="group">
-                    <button id="resetView" class="btn btn-sm btn-light">Fit</button>
-                    <button id="autoFitToggle" class="btn btn-sm btn-outline-dark active" data-enabled="true" title="Auto-fit when bounds grow">Auto-Fit</button>
+            <div class="collider-side" role="complementary" aria-label="Colliders sidebar">
+                <h5 class="page-title">@ViewData["ServerName"] Rooms</h5>
+
+                <div class="panel-section" aria-labelledby="rooms-heading">
+                    <h6 id="rooms-heading">Rooms</h6>
+                    <div id="roomList" class="list-group"></div>
                 </div>
-                <div class="form-check mb-1">
-                    <input class="form-check-input" type="checkbox" id="showGrid" checked>
-                    <label class="form-check-label" for="showGrid">Grid</label>
+
+                <div class="panel-section" aria-labelledby="filters-heading">
+                    <h6 id="filters-heading">Filters</h6>
+                    <div id="filterList"></div>
                 </div>
-                <div class="form-check mb-1">
-                    <input class="form-check-input" type="checkbox" id="flashChanges" checked>
-                    <label class="form-check-label" for="flashChanges">Flash Changes</label>
+
+                <div class="panel-section" aria-labelledby="display-heading">
+                    <h6 id="display-heading">Display</h6>
+                    <div class="section-inline-controls">
+                        <div class="btn-group btn-group-sm" role="group">
+                            <button id="resetView" class="btn btn-light" title="Fit current room bounds (F)">Fit</button>
+                            <button id="autoFitToggle" class="btn btn-outline-dark active" data-enabled="true" title="Auto-fit when bounds grow">Auto-Fit</button>
+                        </div>
+                        <button id="toggleBBox" class="btn btn-sm btn-outline-dark" data-enabled="false" title="Show bounding box">BBox</button>
+                    </div>
+                    <div class="section-inline-controls">
+                        <div class="form-check form-check-sm">
+                            <input class="form-check-input" type="checkbox" id="showGrid" checked>
+                            <label class="form-check-label" for="showGrid">Grid</label>
+                        </div>
+                        <div class="form-check form-check-sm">
+                            <input class="form-check-input" type="checkbox" id="flashChanges" checked>
+                            <label class="form-check-label" for="flashChanges">Flash</label>
+                        </div>
+                        <div class="form-check form-check-sm">
+                            <input class="form-check-input" type="checkbox" id="showInactive" checked>
+                            <label class="form-check-label" for="showInactive">Inactive</label>
+                        </div>
+                        <div class="form-check form-check-sm">
+                            <input class="form-check-input" type="checkbox" id="showInvisible" checked>
+                            <label class="form-check-label" for="showInvisible">Invisible</label>
+                        </div>
+                    </div>
                 </div>
-                <div class="form-check mb-1">
-                    <input class="form-check-input" type="checkbox" id="showInactive" checked>
-                    <label class="form-check-label" for="showInactive">Show Inactive</label>
+
+                <div class="panel-section" aria-labelledby="search-heading">
+                    <h6 id="search-heading">Search Collider</h6>
+                    <div class="input-group input-group-sm">
+                        <input type="text" id="searchCollider" class="form-control" placeholder="ID or partial..." aria-label="Collider search" />
+                        <button id="searchBtn" class="btn btn-outline-dark" title="Find collider by ID">Find</button>
+                    </div>
                 </div>
-                <div class="form-check mb-2">
-                    <input class="form-check-input" type="checkbox" id="showInvisible" checked>
-                    <label class="form-check-label" for="showInvisible">Show Invisible</label>
+
+                <div class="panel-section export-group" aria-labelledby="export-heading">
+                    <h6 id="export-heading">Export</h6>
+                    <div class="btn-group btn-group-sm w-100" role="group">
+                        <button id="exportJson" class="btn btn-outline-dark" title="Download collider list as JSON">JSON</button>
+                        <button id="exportPng" class="btn btn-outline-dark" title="Download canvas as PNG">PNG</button>
+                    </div>
                 </div>
-                <div class="input-group input-group-sm mb-2">
-                    <input type="text" id="searchCollider" class="form-control" placeholder="Collider ID..." />
-                    <button id="searchBtn" class="btn btn-outline-dark">Find</button>
+
+                <div class="panel-section" aria-labelledby="controls-heading">
+                    <h6 id="controls-heading">Controls</h6>
+                    <ul class="compact-list">
+                        <li>Drag to pan</li>
+                        <li>Scroll to zoom</li>
+                        <li>Double-click to reset view</li>
+                    </ul>
                 </div>
-                <div class="btn-group btn-group-sm mb-3 w-100" role="group">
-                    <button id="exportJson" class="btn btn-outline-dark" title="Download collider list as JSON">JSON</button>
-                    <button id="exportPng" class="btn btn-outline-dark" title="Download canvas as PNG">PNG</button>
-                    <button id="toggleBBox" class="btn btn-outline-dark" data-enabled="false" title="Show bounding box">BBox</button>
+
+                <div class="panel-section" aria-labelledby="legend-heading">
+                    <h6 id="legend-heading">Legend</h6>
+                    <div class="legend">
+                        <span style="background:#ff6b6b">Attack</span>
+                        <span style="background:#4ecdc4">Player</span>
+                        <span style="background:#ffe66d">Enemy</span>
+                        <span style="background:#1a535c;color:#fff;">Default</span>
+                    </div>
                 </div>
-                <h6 class="mb-1">Controls</h6>
-                <ul class="small ps-3 mb-2">
-                    <li>Drag to pan</li>
-                    <li>Scroll to zoom</li>
-                    <li>Double-click to reset view</li>
-                </ul>
-                <div class="legend mb-2">
-                    <span style="background:#ff6b6b">Attack</span>
-                    <span style="background:#4ecdc4">Player</span>
-                    <span style="background:#ffe66d">Enemy</span>
-                    <span style="background:#1a535c;color:#fff;">Default</span>
+
+                <div class="panel-section" aria-live="polite">
+                    <div id="colliderDetail" class="small auto-hide" aria-label="Collider details"></div>
                 </div>
-                <div id="colliderDetail" class="small auto-hide"></div>
             </div>
         </div>
         <div class="col-md-9">
-            <canvas id="colliderCanvas"></canvas>
-            <div id="status" class="small mt-2"></div>
-            <div id="stats" class="small auto-hide"></div>
-            <div id="hoverInfo" class="small mt-1 auto-hide"></div>
+            <div class="canvas-wrapper">
+                <canvas id="colliderCanvas" aria-label="Collider visualization" tabindex="0"></canvas>
+            </div>
+            <div class="status-group">
+                <div id="status" class="small"></div>
+                <div id="stats" class="small auto-hide"></div>
+                <div id="hoverInfo" class="small auto-hide"></div>
+            </div>
         </div>
     </div>
 </div>
@@ -375,9 +413,8 @@
             hub.onreconnecting(err => console.warn('Collider hub reconnecting...', err));
             hub.onreconnected(id => console.info('Collider hub reconnected', id));
             hub.start().then(() => { loadRooms(); resizeCanvas(); }).catch(err => console.error('Collider hub start failed', err));
-+
-+            document.addEventListener('visibilitychange', () => { if (document.hidden) suspendPage(); else resumePage(); });
-+            window.addEventListener('beforeunload', () => { suspendPage(); });
+            document.addEventListener('visibilitychange', () => { if (document.hidden) suspendPage(); else resumePage(); });
+            window.addEventListener('beforeunload', () => { suspendPage(); });
         }
 
         if (document.readyState === 'loading') {
