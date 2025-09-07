@@ -40,19 +40,36 @@
 	<header class="mq-container">
 		<nav class="navbar navbar-expand-lg navbar-dark nav-modern" role="navigation" aria-label="Primary">
 			<div class="mq-container px-0">
-				<a class="navbar-brand" href="/">
-					<img src="/_content/Web.Razor/logo.png" alt="Logo" style="height:40px;border-radius:12px;box-shadow:0 0 0 1px rgba(0,0,0,.4),0 4px 10px -4px rgba(0,0,0,.6);" />
-					<span>@ViewData["ServerName"]</span>
-				</a>
-				<div class="d-flex align-items-center ml-auto order-lg-2" style="gap:10px;">
-					<button id="themeToggle" class="theme-toggle" aria-label="Toggle theme" title="Toggle theme">
-						<svg id="themeToggleIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a1 1 0 0 1 1 1 7 7 0 0 0 7 7 1 1 0 0 1 0 2 7 7 0 0 0-7 7 1 1 0 0 1-2 0 7 7 0 0 0-7-7 1 1 0 0 1 0-2 7 7 0 0 0 7-7 1 1 0 0 1 1-1Z" /></svg>
-					</button>
+				<div class="d-flex align-items-center w-100" style="gap:14px;">
+					<a class="navbar-brand mb-0" href="/">
+						<span class="brand-name">@ViewData["ServerName"]</span>
+					</a>
+					<ul class="navbar-nav ml-auto align-items-lg-center d-none d-lg-flex" style="flex:1;">
+						<li class="nav-item"><a class="nav-link @(ViewContext?.ActionDescriptor?.DisplayName?.Contains("Index") == true ? "active" : null)" href="/">Home</a></li>
+						<li class="nav-item"><a class="nav-link" href="/patchnotes">Patch Notes</a></li>
+						<li class="nav-item"><a class="nav-link" href="/en/signup">Sign Up</a></li>
+						<li class="nav-item"><a class="nav-link" href="/download">Download</a></li>
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" id="adminDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Admin</a>
+							<div class="dropdown-menu dropdown-menu-right admin-dropdown" aria-labelledby="adminDropdown">
+								<a class="dropdown-item" href="/commands">Commands</a>
+								<a class="dropdown-item" href="/colliders">Colliders</a>
+							</div>
+						</li>
+					</ul>
+					<div class="ml-auto d-flex align-items-center" style="gap:10px;">
+						<button id="themeToggle" class="theme-toggle" aria-label="Toggle theme" title="Toggle theme">
+							<svg id="themeToggleIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a1 1 0 0 1 1 1 7 7 0 0 0 7 7 1 1 0 0 1 0 2 7 7 0 0 0-7 7 1 1 0 0 1-2 0 7 7 0 0 0-7-7 1 1 0 0 1 0-2 7 7 0 0 0 7-7 1 1 0 0 1 1-1Z" /></svg>
+						</button>
+						<button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+							<span class="navbar-toggler-icon"></span>
+						</button>
+					</div>
 				</div>
 				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon"></span>
 				</button>
-				<div class="collapse navbar-collapse" id="navbarNav">
+				<div class="collapse navbar-collapse d-lg-none" id="navbarNav">
 					<ul class="navbar-nav ml-auto align-items-lg-center">
 						<li class="nav-item"><a class="nav-link @(ViewContext?.ActionDescriptor?.DisplayName?.Contains("Index") == true ? "active" : null)" href="/">Home</a></li>
 						<li class="nav-item"><a class="nav-link" href="/patchnotes">Patch Notes</a></li>

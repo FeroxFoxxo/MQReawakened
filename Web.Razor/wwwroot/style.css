@@ -85,6 +85,17 @@ body.modern-shell {
     text-rendering: optimizeLegibility;
 }
 
+/* Brand / Gradient text helpers */
+.brand-name { background:var(--mq-gradient-amber); -webkit-background-clip:text; background-clip:text; color:transparent; font-weight:700; letter-spacing:1px; display:inline-block; line-height:1; padding:.25rem 0; }
+.text-gradient-amber { background:var(--mq-gradient-amber); -webkit-background-clip:text; background-clip:text; color:transparent; }
+
+/* Elevation fix: ensure nav sits above hero/panels */
+.nav-modern.navbar { z-index:50; }
+
+/* Global link hover normalization */
+a { text-decoration:none; }
+a:hover, a:focus { text-decoration:none; }
+
 /* Typography scale utilities */
 .t-display { font-size: clamp(2.2rem, 4.5vw, 3.4rem); font-weight: 600; letter-spacing:.5px; text-shadow:0 2px 6px rgba(0,0,0,.5); }
 .t-lead { font-size: clamp(1.05rem,1.4vw,1.25rem); color: var(--mq-color-text-dim); font-weight:500; }
@@ -254,6 +265,7 @@ html[data-theme="light"], :root[data-theme="light"] {
 html[data-theme="light"] body.modern-shell { background:var(--mq-gradient-bg) fixed; }
 html[data-theme="light"] .panel-glass { background:linear-gradient(155deg,rgba(255,255,255,.85),rgba(240,250,252,.85)); box-shadow:0 10px 34px -12px rgba(0,0,0,.15),0 0 0 1px #d2e6ec, inset 0 0 0 1px rgba(255,255,255,0.6); }
 html[data-theme="light"] .nav-modern.navbar { background:linear-gradient(145deg,rgba(255,255,255,.85),rgba(245,252,254,.85)); box-shadow:0 2px 8px -2px rgba(0,0,0,.15), inset 0 0 0 1px rgba(0,0,0,.04); border-color:#cfe3ea; }
+html[data-theme="light"] .brand-name, html[data-theme="light"] .text-gradient-amber { color:transparent; }
 html[data-theme="light"] .feature-card { background:#ffffff; border-color:#cfe3ea; }
 html[data-theme="light"] .command-card-modern { background:#ffffff; border-color:#cfe3ea; }
 html[data-theme="light"] .btn-modern { box-shadow:0 0 0 1px #b5d5df,0 4px 14px -6px rgba(0,0,0,.2); }

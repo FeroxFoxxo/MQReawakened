@@ -31,16 +31,16 @@
         private void RenderParameter(ParameterModel parameter, string parentId)
         {
             var optionsId = $"{parentId.Replace("/", "").ToLower()}-{parameter.Name.Replace("/", "").ToLower()}";
-            <div class="card my-2 parameter-card">
-                <div class="card-body">
-                    <h5 class="card-title">
+            <div class="parameter-nest" style="margin-top:10px;" data-reveal>
+                <div>
+                    <h5 style="font-size:.75rem; margin:0 0 4px; color:var(--mq-color-accent-soft); letter-spacing:.5px;">
                         @parameter.Name
                         @if (parameter.Optional)
                         {
                             <span class="optional-indicator">(Optional)</span>
                         }
                     </h5>
-                    <p class="card-text">@parameter.Description</p>
+                    <p style="font-size:.65rem; line-height:1.25; color:var(--mq-color-text-dim); margin:0 0 6px;">@parameter.Description</p>
                     @if (parameter.Options != null && parameter.Options.Any())
                     {
                         <div class="options-collapse collapse" id="@optionsId">
@@ -60,9 +60,7 @@
                                 </div>
                             }
                         </div>
-                        <button class="options-toggle btn btn-link" data-toggle="collapse" data-target="#@optionsId" aria-expanded="false" aria-controls="@optionsId">
-                            Show Options
-                        </button>
+                        <button class="btn-modern btn-pad-md" style="margin-top:4px; font-size:.6rem; letter-spacing:.75px; text-transform:uppercase;" data-toggle="collapse" data-target="#@optionsId" aria-expanded="false" aria-controls="@optionsId">Show Options</button>
                     }
                 </div>
             </div>
@@ -98,6 +96,5 @@
     }
     <div class="flow" style="margin-top:1rem;">
         @{ RenderCommandList(Model.ServerCommands, "Server"); RenderCommandList(Model.ClientCommands, "Client"); }
-    </div>
     </div>
 </section>
