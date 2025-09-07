@@ -21,10 +21,7 @@
 <section class="mq-container mt-space fade-in">
     @await Html.PartialAsync("_PanelShell", new Web.Razor.Pages.Shared.PanelShellModel { Title = "Create Account", Description = "Join our community and explore the reborn world of Ook.", Center = false, AdditionalClasses = "" })
         <div class="row">
-            <div class="col-lg-5 d-flex flex-column align-items-center justify-content-center mb-4 mb-lg-0 center" data-reveal>
-                <img class="site_logo" src="/_content/Web.Razor/logo.png" alt="Site Logo" style="max-width:160px;" />
-            </div>
-            <div class="col-lg-7" data-reveal>
+            <div class="col-lg-12" data-reveal>
                 <form asp-action="SignUp" method="post" class="form-modern" novalidate>
                     <div class="form-row-duo">
                         <div class="field">

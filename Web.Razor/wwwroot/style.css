@@ -88,6 +88,7 @@ body.modern-shell {
 /* Brand / Gradient text helpers */
 .brand-name { background:var(--mq-gradient-amber); -webkit-background-clip:text; background-clip:text; color:transparent; font-weight:700; letter-spacing:1px; display:inline-block; line-height:1; padding:.25rem 0; }
 .text-gradient-amber { background:var(--mq-gradient-amber); -webkit-background-clip:text; background-clip:text; color:transparent; }
+.server-name-accent { color: var(--mq-color-accent); text-shadow:0 2px 6px rgba(0,0,0,.5); }
 
 /* Elevation fix: ensure nav sits above hero/panels */
 .nav-modern.navbar { z-index:50; }

@@ -8,11 +8,8 @@
 <section class="mq-container mt-space fade-in">
     @await Html.PartialAsync("_PanelShell", new Web.Razor.Pages.Shared.PanelShellModel { Title = "Help & Support", Description = "Visit our Discord server to receive help with " + (string)ViewData["ServerName"] + ".", Center = false })
         <div class="row">
-            <div class="col-lg-5 d-flex flex-column align-items-center justify-content-center mb-4 mb-lg-0 center" data-reveal>
-                <img class="site_logo" src="/_content/Web.Razor/logo.png" alt="Site Logo" style="max-width:140px;" />
-            </div>
-            <div class="col-lg-7" data-reveal>
-                <div style="background:#123a49; border:1px solid #1e5166; border-radius:18px; position:relative; padding:12px; box-shadow:0 0 0 1px #10313f;">
+            <div class="col-12" data-reveal>
+                <div style="background:#123a49; border:1px solid #1e5166; border-radius:18px; position:relative; padding:12px; box-shadow:0 0 0 1px #10313f; max-width:760px; margin:0 auto;">
                     <iframe title="Discord Server" src="https://discord.com/widget?id=@Model.ServerId&theme=dark" class="discord-widget" allowtransparency="true" style="height:380px;"></iframe>
                 </div>
             </div>
