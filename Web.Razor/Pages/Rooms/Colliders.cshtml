@@ -22,7 +22,7 @@
             --shadow-panel: 0 2px 6px rgba(0,0,0,0.4), inset 0 0 10px rgba(0,0,0,0.35);
         }
 
-        #colliderCanvas { width:100%; height:70vh; border:1px solid #233b48; background:#0b1d2a; cursor:grab; border-radius:var(--radius-md); box-shadow:0 0 0 1px #0d2631, 0 3px 12px rgba(0,0,0,0.45); }
+    #colliderCanvas { width:100%; height:70vh; border:1px solid #1d4150; background:radial-gradient(circle at 35% 40%, #0e2735 0%, #081923 60%, #06151d 100%); cursor:grab; border-radius:18px; box-shadow:0 0 0 1px #0d2631, 0 6px 26px -6px rgba(0,0,0,0.55), inset 0 0 42px -8px rgba(0,160,210,0.25); position:relative; }
         .canvas-wrapper { position:relative; }
         .status-group { display:flex; flex-wrap:wrap; gap:var(--space-2); margin-top:var(--space-2); }
         #status, #stats, #hoverInfo, #colliderDetail { background:rgba(25,40,50,0.55); backdrop-filter:blur(2px); border:1px solid rgba(90,170,200,0.35); border-radius:var(--radius-sm); padding:2px 6px; color:#e8f7ff !important; font-weight:500; text-shadow:0 0 3px rgba(0,0,0,0.7); }
@@ -35,7 +35,7 @@
         #roomList .list-group-item.collider-item:hover { background:#19465f; color:#ffffff; }
         #roomList .list-group-item.collider-item.active-room { background:#256d8f; color:#fff; font-weight:600; }
 
-    .collider-side { position:sticky; top:var(--space-3); background:var(--c-bg-panel); border:1px solid var(--c-border-panel); border-radius:var(--radius-md); padding:var(--space-3) var(--space-3) calc(var(--space-3) + 2px); box-shadow:var(--shadow-panel); display:flex; flex-direction:column; gap:var(--space-3); font-size:13px; }
+    .collider-side { position:sticky; top:var(--space-3); background:linear-gradient(160deg,#112836,#0f2430 45%,#0a1b23); border:1px solid #1d4254; border-radius:18px; padding:20px 18px 22px; box-shadow:0 4px 18px -4px rgba(0,0,0,0.6), inset 0 0 0 1px rgba(255,255,255,0.03); display:flex; flex-direction:column; gap:18px; font-size:13px; backdrop-filter:blur(4px) saturate(130%); }
     .collider-side h5.page-title { margin:0 0 var(--space-1); color:#f5fbff; font-weight:600; letter-spacing:.5px; text-shadow:0 1px 2px #000; font-size:1.1rem; display:flex; align-items:center; gap:6px; }
     .panel-section { display:flex; flex-direction:column; gap:var(--space-2); }
     .panel-section + .panel-section { border-top:1px solid rgba(255,255,255,0.05); padding-top:var(--space-3); }
@@ -53,8 +53,10 @@
         #filterList .form-check-input { margin:0; position:static; width:16px; height:16px; cursor:pointer; background:#1b3643; border:1px solid #2a5f77; }
         #filterList .form-check-input:checked { background:var(--c-accent); border-color:var(--c-accent); }
         #filterList label { cursor:pointer; user-select:none; display:flex; align-items:center; gap:6px; margin:0; font-size:11px; color:var(--c-text); }
-        .btn-outline-dark, .btn-light { background:#123040; color:#e0f8ff; border:1px solid var(--c-border-strong); }
-        .btn-outline-dark:hover, .btn-light:hover, .btn-outline-dark.active { background:#1d566f; color:#fff; }
+    .btn-outline-dark, .btn-light { background:linear-gradient(145deg,#15394a,#132f3d); color:#e0f8ff; border:1px solid #1e5166; border-radius:10px; font-weight:500; letter-spacing:.3px; position:relative; overflow:hidden; }
+    .btn-outline-dark::after, .btn-light::after { content:""; position:absolute; inset:0; background:linear-gradient(120deg,rgba(255,255,255,0.08),rgba(255,255,255,0)); opacity:0; transition:opacity .25s; }
+    .btn-outline-dark:hover::after, .btn-light:hover::after { opacity:1; }
+    .btn-outline-dark:hover, .btn-light:hover, .btn-outline-dark.active { background:linear-gradient(145deg,#1d566f,#194c63); color:#fff; box-shadow:0 0 0 1px #226d8a, 0 0 8px -1px rgba(47,168,216,0.5); }
         .form-check-input { background:#1b3643; border:1px solid #2a5f77; }
         .form-check-input:checked { background:var(--c-accent); border-color:var(--c-accent); }
     .input-group-sm > .form-control { background:#123040; border:1px solid var(--c-border-strong); color:var(--c-text); }
@@ -62,7 +64,33 @@
     .input-group-sm .btn { background:#123040; border:1px solid var(--c-border-strong); color:var(--c-text); }
     .input-group-sm .btn:hover { background:#1d566f; color:#fff; }
     .input-group-sm .form-control, .input-group-sm .btn { height:30px; }
-        .section-inline-controls { display:flex; flex-wrap:wrap; gap:4px; }
+    .section-inline-controls { display:flex; flex-wrap:wrap; gap:6px; }
+    #displayToggles button.toggle-btn { min-width:56px; font-size:11px; padding:4px 10px; line-height:1.1; border-radius:12px; transition:background .25s, box-shadow .25s, transform .25s; }
+    #displayToggles button.toggle-btn.active { background:linear-gradient(145deg,#2186ab,#1c6f8d); box-shadow:0 0 0 1px #2fa8d8, 0 0 10px -2px rgba(47,168,216,0.7); }
+    #displayToggles button.toggle-btn:not(.active):hover { background:#19465f; }
+    #displayHint { color:#7fbfd6; font-size:10px; margin-top:4px; text-shadow:0 0 4px rgba(0,0,0,0.4); }
+
+    /* Search group restyle */
+    .search-group { display:flex; align-items:stretch; width:100%; background:linear-gradient(135deg,#133544,#0f2935); border:1px solid #1e5166; border-radius:14px; overflow:hidden; box-shadow:0 4px 14px -6px rgba(0,0,0,0.6), inset 0 0 0 1px rgba(255,255,255,0.03); }
+    .search-group input { background:transparent; border:0; color:#dff7ff; padding:8px 14px; font-size:12px; flex:1; outline:none; }
+    .search-group input::placeholder { color:#5d8897; }
+    .search-group button { background:linear-gradient(145deg,#1d566f,#1a4e63); border:0; color:#e6fbff; padding:0 20px; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:600; cursor:pointer; letter-spacing:.5px; }
+    .search-group button:hover { background:linear-gradient(145deg,#227797,#1d6078); }
+    .search-group button:active { transform:translateY(1px); }
+
+    /* Room list polish */
+    #roomList .collider-item { border-radius:10px; margin:2px 4px; background:linear-gradient(145deg,#132f3f,#102633); border:1px solid #1a4558; transition:background .25s, transform .25s, box-shadow .25s; }
+    #roomList .collider-item:hover { background:#19465f; transform:translateY(-1px); }
+    #roomList .collider-item.active-room { background:linear-gradient(145deg,#256d8f,#1d5a77); box-shadow:0 0 0 1px #2fa8d8, 0 0 10px -2px rgba(47,168,216,.6); }
+
+    #roomList::-webkit-scrollbar { width:10px; }
+    #roomList::-webkit-scrollbar-track { background:#0f2531; border-radius:8px; }
+    #roomList::-webkit-scrollbar-thumb { background:linear-gradient(#1f566c,#1b4d61); border-radius:8px; border:2px solid #0f2531; }
+    #roomList::-webkit-scrollbar-thumb:hover { background:linear-gradient(#276f8a,#236175); }
+
+    .status-group > div { border-radius:14px !important; padding:4px 10px !important; background:linear-gradient(135deg,rgba(32,74,92,0.65),rgba(18,50,64,0.65)); backdrop-filter:blur(4px); box-shadow:0 0 0 1px rgba(47,168,216,0.25), 0 4px 14px -6px rgba(0,0,0,.65); }
+    #hoverInfo { font-weight:500; }
+    .canvas-wrapper:focus-within #colliderCanvas { outline:2px solid var(--c-accent); outline-offset:4px; }
         ul.compact-list { list-style:disc; padding-left:16px; margin:0; display:flex; flex-direction:column; gap:2px; }
         ul.compact-list li { color:#d6ecf5; font-size:11px; }
         .export-group .btn { flex:1; }
@@ -102,9 +130,9 @@
 
                 <div class="panel-section" aria-labelledby="search-heading">
                     <h5 id="search-heading">Search</h5>
-                    <div class="input-group input-group-sm">
-                        <input type="text" id="searchCollider" class="form-control" placeholder="ID or partial..." aria-label="Collider search" />
-                        <button id="searchBtn" class="btn btn-outline-dark" title="Find collider by ID">Find</button>
+                    <div class="search-group" role="search">
+                        <input type="text" id="searchCollider" placeholder="Collider id..." aria-label="Collider search" />
+                        <button id="searchBtn" title="Find collider by ID">FIND</button>
                     </div>
                 </div>
 
@@ -208,15 +236,35 @@
             ctx.translate(offsetX, offsetY);
             ctx.scale(zoom, zoom);
             if (displayState.grid) {
-                ctx.save(); ctx.strokeStyle = '#123'; ctx.lineWidth = 1 / zoom;
-                const gridSize = scale;
-                const cols = 200; const rows = 200;
-                for (let i = -cols; i < cols; i++) {
-                    ctx.beginPath(); ctx.moveTo(i * gridSize, -rows * gridSize); ctx.lineTo(i * gridSize, rows * gridSize); ctx.stroke();
+                ctx.save();
+                const gridSize = scale; // 1 world unit squares
+                const visibleWorldW = canvas.width / (zoom * scale);
+                const visibleWorldH = canvas.height / (zoom * scale);
+                const centerWorldX = ((canvas.width / 2) - offsetX) / (zoom * scale);
+                const centerWorldY = -(((canvas.height / 2) - offsetY) / (zoom * scale));
+                const minX = Math.floor(centerWorldX - visibleWorldW / 2) - 2;
+                const maxX = Math.ceil(centerWorldX + visibleWorldW / 2) + 2;
+                const minY = Math.floor(centerWorldY - visibleWorldH / 2) - 2;
+                const maxY = Math.ceil(centerWorldY + visibleWorldH / 2) + 2;
+                ctx.lineWidth = 1 / zoom;
+                for (let x = minX; x <= maxX; x++) {
+                    ctx.beginPath();
+                    ctx.strokeStyle = (x % 5 === 0) ? 'rgba(90,170,200,0.25)' : 'rgba(40,90,115,0.35)';
+                    ctx.moveTo(x * gridSize, -(minY) * gridSize);
+                    ctx.lineTo(x * gridSize, -(maxY) * gridSize);
+                    ctx.stroke();
                 }
-                for (let j = -rows; j < rows; j++) {
-                    ctx.beginPath(); ctx.moveTo(-cols * gridSize, j * gridSize); ctx.lineTo(cols * gridSize, j * gridSize); ctx.stroke();
+                for (let y = minY; y <= maxY; y++) {
+                    ctx.beginPath();
+                    ctx.strokeStyle = (y % 5 === 0) ? 'rgba(90,170,200,0.25)' : 'rgba(40,90,115,0.35)';
+                    ctx.moveTo(minX * gridSize, -y * gridSize);
+                    ctx.lineTo(maxX * gridSize, -y * gridSize);
+                    ctx.stroke();
                 }
+                // axis highlight
+                ctx.strokeStyle = 'rgba(255,255,255,0.35)'; ctx.lineWidth = 1.5 / zoom;
+                ctx.beginPath(); ctx.moveTo(0, -(minY) * gridSize); ctx.lineTo(0, -(maxY) * gridSize); ctx.stroke();
+                ctx.beginPath(); ctx.moveTo(minX * gridSize, 0); ctx.lineTo(maxX * gridSize, 0); ctx.stroke();
                 ctx.restore();
             }
             const now = performance.now();
