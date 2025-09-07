@@ -80,7 +80,6 @@
     #displayToggles button.toggle-btn:not(.active):hover, #displayToggles #btnFit:hover { background:#19465f; }
     #displayHint { color:#7fbfd6; font-size:10px; margin-top:4px; text-shadow:0 0 4px rgba(0,0,0,0.4); }
 
-    /* Search group restyle */
     .search-group { display:flex; align-items:stretch; width:100%; background:linear-gradient(135deg,#133544,#0f2935); border:1px solid #1e5166; border-radius:14px; overflow:hidden; box-shadow:0 4px 14px -6px rgba(0,0,0,0.6), inset 0 0 0 1px rgba(255,255,255,0.03); }
     .search-group input { background:transparent; border:0; color:#dff7ff; padding:8px 14px; font-size:12px; flex:1; outline:none; }
     .search-group input::placeholder { color:#5d8897; }
@@ -88,7 +87,6 @@
     .search-group button:hover { background:linear-gradient(145deg,#227797,#1d6078); }
     .search-group button:active { transform:translateY(1px); }
 
-    /* Room list polish */
     #roomList .collider-item { border-radius:10px; margin:2px 4px; background:linear-gradient(145deg,#132f3f,#102633); border:1px solid #1a4558; transition:background .25s, transform .25s, box-shadow .25s; display:block; white-space:normal; word-break:break-word; overflow-wrap:anywhere; }
     #roomList .collider-item:hover { background:#19465f; transform:translateY(-1px); }
     #roomList .collider-item.active-room { background:linear-gradient(145deg,#256d8f,#1d5a77); box-shadow:0 0 0 1px #2fa8d8, 0 0 10px -2px rgba(47,168,216,.6); }
@@ -226,7 +224,6 @@
         const FLASH_MS = 1500;
         let lastBbox = null;
         let pendingStats = null;
-        // Unified display state
         const displayState = {
             autoFit: true,
             bbox: false,
@@ -237,11 +234,10 @@
         };
         let selectedColliderId = null;
         let fpsFrameCount = 0; let fpsLastTime = performance.now(); let fps = 0;
-    let pageActive = true; // false when tab hidden
-    let intentionalStop = false; // prevent auto-reconnect when intentionally suspended
-    let initialized = false; // guard against double init
+        let pageActive = true;
+        let intentionalStop = false;
+        let initialized = false;
 
-        // Normalization helper to guard against casing differences from server
         function normalizeCollider(c) {
             if (!c) return c;
             return {
@@ -282,7 +278,7 @@
             ctx.scale(zoom, zoom);
             if (displayState.grid) {
                 ctx.save();
-                const gridSize = scale; // 1 world unit squares
+                const gridSize = scale;
                 const visibleWorldW = canvas.width / (zoom * scale);
                 const visibleWorldH = canvas.height / (zoom * scale);
                 const centerWorldX = ((canvas.width / 2) - offsetX) / (zoom * scale);
@@ -306,7 +302,6 @@
                     ctx.lineTo(maxX * gridSize, -y * gridSize);
                     ctx.stroke();
                 }
-                // axis highlight
                 ctx.strokeStyle = 'rgba(255,255,255,0.35)'; ctx.lineWidth = 1.5 / zoom;
                 ctx.beginPath(); ctx.moveTo(0, -(minY) * gridSize); ctx.lineTo(0, -(maxY) * gridSize); ctx.stroke();
                 ctx.beginPath(); ctx.moveTo(minX * gridSize, 0); ctx.lineTo(maxX * gridSize, 0); ctx.stroke();
@@ -351,7 +346,6 @@
             ctx.restore();
             document.getElementById('status').innerText = currentRoom ? `${currentRoom.name} | V${version} | Colliders: ${colliders.length} | Zoom: ${zoom.toFixed(2)} | FPS: ${fps.toFixed(0)}` : 'No room selected';
             if (pendingStats) { const statsEl = document.getElementById('stats'); if (statsEl) statsEl.innerText = `Δ Added:${pendingStats.added} Updated:${pendingStats.updated} Removed:${pendingStats.removed} Bounds: ${pendingStats.bbox.width.toFixed(1)}x${pendingStats.bbox.height.toFixed(1)}`; pendingStats = null; }
-            // Only continue animating if flash is enabled and there are flashing items, or a collider stays selected (for outline clarity)
             if (pageActive && ((displayState.flash && changeFlash.size > 0) || selectedColliderId)) scheduleNextFrame();
             fpsFrameCount++; const nowTs = performance.now(); if (nowTs - fpsLastTime >= 1000) { fps = (fpsFrameCount * 1000) / (nowTs - fpsLastTime); fpsFrameCount = 0; fpsLastTime = nowTs; }
         }
@@ -359,7 +353,7 @@
         function scheduleNextFrame() {
             if (!pageActive) return;
             requestAnimationFrame(ts => {
-                if (!pageActive) return; // re-check after frame
+                if (!pageActive) return;
                 if (ts - lastFrameTs >= 1000 / MAX_FPS) {
                     lastFrameTs = ts;
                     draw();
@@ -369,9 +363,8 @@
             });
         }
 
-        // Graceful suspend/resume handlers (were referenced but missing)
         function suspendPage() {
-            if (!pageActive) return; // already suspended
+            if (!pageActive) return; 
             pageActive = false;
             changeFlash.clear();
             try {
@@ -383,7 +376,7 @@
         }
 
         function resumePage() {
-            if (pageActive) return; // already active
+            if (pageActive) return;
             pageActive = true;
             intentionalStop = false;
             const restartNeeded = hub && hub.state === signalR.HubConnectionState.Disconnected;
@@ -423,7 +416,6 @@
             const canvas = document.getElementById('colliderCanvas');
             if (!canvas) return;
             const dpr = window.devicePixelRatio || 1;
-            // Preserve CSS size but increase backing resolution for sharpness
             const displayWidth = canvas.clientWidth;
             const displayHeight = canvas.clientHeight;
             canvas.width = Math.round(displayWidth * dpr);
@@ -433,6 +425,7 @@
             ctx.scale(dpr, dpr);
             draw();
         }
+
         window.addEventListener('resize', () => { resizeCanvas(); fitView(); draw(); });
 
         function buildFilters() {
@@ -462,6 +455,7 @@
                 input.addEventListener('change', e => { if (e.target.checked) activeTypes.add(t); else activeTypes.delete(t); draw(); });
             });
         }
+
         async function loadRooms() {
             rooms = await hub.invoke('GetRooms'); const list = document.getElementById('roomList'); list.innerHTML = '';
             rooms.forEach(r => {
@@ -484,7 +478,6 @@
     async function selectRoom(r) {
             if (currentRoom) await hub.invoke('UnsubscribeRoom', currentRoom.levelId, currentRoom.roomInstanceId);
             currentRoom = { levelId: r.levelId ?? r.LevelId, roomInstanceId: r.roomInstanceId ?? r.RoomInstanceId, name: r.name ?? r.Name ?? 'Unnamed' };
-            // Clear transient panels
             const detailEl = document.getElementById('colliderDetail'); if (detailEl) detailEl.textContent='';
             const statsEl = document.getElementById('stats'); if (statsEl) statsEl.textContent='';
             const hoverEl = document.getElementById('hoverInfo'); if (hoverEl) hoverEl.textContent='';
@@ -502,7 +495,7 @@
                 persistView();
                 highlightActiveRoom(currentRoom.levelId, currentRoom.roomInstanceId);
                 draw();
-        announce(`Room ${currentRoom.name} loaded with ${colliders.length} colliders. Version ${version}.`);
+                announce(`Room ${currentRoom.name} loaded with ${colliders.length} colliders. Version ${version}.`);
             }
         }
         function highlightActiveRoom(levelId, roomInstanceId) {
@@ -526,7 +519,6 @@
             draw();
         });
 
-        // Dynamic room list updates
         hub.on('roomAdded', payload => {
             if (!payload) return;
             if (rooms.some(r => (r.levelId ?? r.LevelId) === payload.levelId && (r.roomInstanceId ?? r.RoomInstanceId) === payload.roomInstanceId)) return;
@@ -551,8 +543,7 @@
             a.href = '#';
             a.className = 'list-group-item list-group-item-action collider-item';
             a.textContent = `${levelId}:${roomInstanceId} ${name || 'Unnamed'}`;
-            a.dataset.levelId = levelId; a.dataset.roomInstanceId = roomInstanceId; // existing camelCase usage
-            // duplicate attributes in lowercase for query selectors used on removal
+            a.dataset.levelId = levelId; a.dataset.roomInstanceId = roomInstanceId;
             a.setAttribute('data-levelid', levelId);
             a.setAttribute('data-roominstanceid', roomInstanceId);
             a.onclick = (e) => { e.preventDefault(); const r = { levelId, roomInstanceId, name }; selectRoom(r); highlightActiveRoom(levelId, roomInstanceId); };
@@ -563,7 +554,7 @@
     function restoreView() { if (!currentRoom) return false; const raw = localStorage.getItem('colliderView_' + currentRoom.levelId + '_' + currentRoom.roomInstanceId); if (!raw) return false; try { const s = JSON.parse(raw); if (typeof s.zoom === 'number' && typeof s.offsetX === 'number' && typeof s.offsetY === 'number') { zoom = s.zoom; offsetX = s.offsetX; offsetY = s.offsetY; } if (Array.isArray(s.active)) { activeTypes = new Set(s.active); buildFilters(); } if (s.displayState) { Object.assign(displayState, s.displayState); syncDisplayButtons(); } return true; } catch (_) { return false; } }
 
     function initUi() {
-            if (initialized) return; // guard double-call
+            if (initialized) return;
             initialized = true;
             const required = ['displayToggles','btnFit','searchBtn','searchCollider','exportJson','exportPng','colliderCanvas','toggleSidebar'];
             const missing = required.filter(id => !document.getElementById(id));
@@ -607,7 +598,6 @@
                     console.warn('Collider hub closed (unexpected)', err);
                     setTimeout(() => { if (pageActive && hub.state === signalR.HubConnectionState.Disconnected) hub.start().catch(e => console.error('Restart failed', e)); }, 2000);
                 } else {
-                    // Silent expected close
                 }
             });
             hub.onreconnecting(err => console.warn('Collider hub reconnecting...', err));
@@ -634,14 +624,19 @@
     function onCanvasMove(e) {
             const canvas = e.target; const rect = canvas.getBoundingClientRect(); const mx = (e.clientX - rect.left - offsetX) / (zoom * scale); const my = -((e.clientY - rect.top - offsetY) / (zoom * scale));
             const showInactive = displayState.inactive; const showInvisible = displayState.invisible;
-            const found = colliders.find(c => activeTypes.has(c.type) && (showInactive || c.active) && (showInvisible || !c.invisible) && mx >= c.x && mx <= c.x + c.width && my <= c.y && my >= c.y - c.height);
+            const found = colliders.find(c => {
+                if (!activeTypes.has(c.type)) return false;
+                if (!showInactive && !c.active) return false;
+                if (!showInvisible && c.invisible) return false;
+                return mx >= c.x && mx <= c.x + c.width && my >= c.y && my <= c.y + c.height;
+            });
             const info = document.getElementById('hoverInfo');
             if (info) info.textContent = found ? `${found.type} ${found.id} (${found.x.toFixed(2)},${found.y.toFixed(2)}) ${found.width.toFixed(2)}x${found.height.toFixed(2)} ${found.active ? '' : '[inactive]'} ${found.invisible ? '[invis]' : ''}` : '';
         }
         function onCanvasClick(e) {
             const canvas = e.target; const rect = canvas.getBoundingClientRect(); const mx = (e.clientX - rect.left - offsetX) / (zoom * scale); const my = -((e.clientY - rect.top - offsetY) / (zoom * scale));
             const showInactive = displayState.inactive; const showInvisible = displayState.invisible;
-            const found = colliders.find(c => activeTypes.has(c.type) && (showInactive || c.active) && (showInvisible || !c.invisible) && mx >= c.x && mx <= c.x + c.width && my <= c.y && my >= c.y - c.height);
+            const found = colliders.find(c => activeTypes.has(c.type) && (showInactive || c.active) && (showInvisible || !c.invisible) && mx >= c.x && mx <= c.x + c.width && my >= c.y && my <= c.y + c.height);
             selectedColliderId = found ? found.id : null;
             const detail = document.getElementById('colliderDetail');
             if (detail) detail.textContent = found ? `Selected: ${found.id} | ${found.type} | Pos(${found.x.toFixed(2)},${found.y.toFixed(2)}) Size(${found.width.toFixed(2)}x${found.height.toFixed(2)}) Plane:${found.plane}` : '';
@@ -662,7 +657,6 @@
     function announce(message) {
         const region = document.getElementById('srAnnounce');
         if (!region) return;
-        // Clear then set to retrigger polite announcement
         region.textContent = '';
         setTimeout(() => { region.textContent = message; }, 30);
     }
