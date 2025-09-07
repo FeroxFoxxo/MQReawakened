@@ -291,12 +291,14 @@
 
     function draw() {
             if (!pageActive) return;
+            const frameStart = performance.now();
             const canvas = document.getElementById('colliderCanvas');
             const ctx = canvas.getContext('2d');
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.save();
             ctx.translate(offsetX, offsetY);
             ctx.scale(zoom, zoom);
+            // Grid (unchanged)
             if (displayState.grid) {
                 ctx.save();
                 const gridSize = scale;
@@ -309,68 +311,48 @@
                 const minY = Math.floor(centerWorldY - visibleWorldH / 2) - 2;
                 const maxY = Math.ceil(centerWorldY + visibleWorldH / 2) + 2;
                 ctx.lineWidth = 1 / zoom;
-                for (let x = minX; x <= maxX; x++) {
-                    ctx.beginPath();
-                    ctx.strokeStyle = (x % 5 === 0) ? 'rgba(90,170,200,0.25)' : 'rgba(40,90,115,0.35)';
-                    ctx.moveTo(x * gridSize, -(minY) * gridSize);
-                    ctx.lineTo(x * gridSize, -(maxY) * gridSize);
-                    ctx.stroke();
-                }
-                for (let y = minY; y <= maxY; y++) {
-                    ctx.beginPath();
-                    ctx.strokeStyle = (y % 5 === 0) ? 'rgba(90,170,200,0.25)' : 'rgba(40,90,115,0.35)';
-                    ctx.moveTo(minX * gridSize, -y * gridSize);
-                    ctx.lineTo(maxX * gridSize, -y * gridSize);
-                    ctx.stroke();
-                }
-                ctx.strokeStyle = 'rgba(255,255,255,0.35)'; ctx.lineWidth = 1.5 / zoom;
-                ctx.beginPath(); ctx.moveTo(0, -(minY) * gridSize); ctx.lineTo(0, -(maxY) * gridSize); ctx.stroke();
-                ctx.beginPath(); ctx.moveTo(minX * gridSize, 0); ctx.lineTo(maxX * gridSize, 0); ctx.stroke();
-                ctx.restore();
+                for (let x = minX; x <= maxX; x++) { ctx.beginPath(); ctx.strokeStyle = (x % 5 === 0) ? 'rgba(90,170,200,0.25)' : 'rgba(40,90,115,0.35)'; ctx.moveTo(x * gridSize, -(minY) * gridSize); ctx.lineTo(x * gridSize, -(maxY) * gridSize); ctx.stroke(); }
+                for (let y = minY; y <= maxY; y++) { ctx.beginPath(); ctx.strokeStyle = (y % 5 === 0) ? 'rgba(90,170,200,0.25)' : 'rgba(40,90,115,0.35)'; ctx.moveTo(minX * gridSize, -y * gridSize); ctx.lineTo(maxX * gridSize, -y * gridSize); ctx.stroke(); }
+                ctx.strokeStyle = 'rgba(255,255,255,0.35)'; ctx.lineWidth = 1.5 / zoom; ctx.beginPath(); ctx.moveTo(0, -(minY) * gridSize); ctx.lineTo(0, -(maxY) * gridSize); ctx.stroke(); ctx.beginPath(); ctx.moveTo(minX * gridSize, 0); ctx.lineTo(maxX * gridSize, 0); ctx.stroke(); ctx.restore();
             }
             const now = performance.now();
             const showInactive = displayState.inactive;
             const showInvisible = displayState.invisible;
+            // Visible bounds (world)
+            const visibleMinX = (0 - offsetX) / (zoom * scale);
+            const visibleMaxX = (canvas.width - offsetX) / (zoom * scale);
+            const visibleMaxY = -((0 - offsetY) / (zoom * scale));
+            const visibleMinY = -((canvas.height - offsetY) / (zoom * scale));
+            // Adaptive flash quality
+            if (!window._flashState) window._flashState = { quality: 'high', lastMs: 0 };
+            const s = window._flashState;
+            if (colliders.length > 1500 || zoom < 0.28 || s.lastMs > 28) s.quality = 'low';
+            else if (s.lastMs < 18 && colliders.length < 1200 && zoom >= 0.32) s.quality = 'high';
+            let flashedCount = 0;
             for (const c of colliders) {
                 if (!activeTypes.has(c.type)) continue;
                 if (!showInactive && !c.active) continue;
                 if (!showInvisible && c.invisible) continue;
                 if (activePlanes.size && !activePlanes.has(c.plane)) continue;
+                if (c.x + c.width < visibleMinX || c.x > visibleMaxX || c.y + c.height < visibleMinY || c.y > visibleMaxY) continue; // cull
                 const color = colors[c.type] || colors.Default;
                 let baseColor = c.active ? color : '#555';
                 const t = changeFlash.get(c.id);
                 let flashing = false;
                 if (displayState.flash && t && now - t < FLASH_MS) {
-                    const alpha = 1 - (now - t) / FLASH_MS; // 1 -> 0
-                    ctx.fillStyle = brightenColor(baseColor, alpha);
-                    flashing = true;
-                } else {
-                    ctx.fillStyle = baseColor;
-                }
+                    const alpha = 1 - (now - t) / FLASH_MS;
+                    if (s.quality === 'high' && flashedCount < 650) ctx.fillStyle = brightenColor(baseColor, alpha); else ctx.fillStyle = shadeColor(baseColor, alpha * 120);
+                    flashedCount++; flashing = true;
+                } else ctx.fillStyle = baseColor;
                 ctx.globalAlpha = c.invisible ? 0.3 : 0.8;
                 ctx.fillRect(c.x * scale, (-(c.y + c.height)) * scale, c.width * scale, c.height * scale);
                 ctx.globalAlpha = 1.0;
                 if (flashing) {
-                    // Outer glow stroke
                     const alpha = 1 - (now - t) / FLASH_MS;
-                    ctx.save();
-                    ctx.strokeStyle = `rgba(255,255,255,${Math.min(1, alpha*0.9)})`;
-                    ctx.lineWidth = 3 / zoom;
-                    ctx.shadowBlur = 12 / zoom;
-                    ctx.shadowColor = 'rgba(255,255,255,0.6)';
-                    ctx.strokeRect(c.x * scale, (-(c.y + c.height)) * scale, c.width * scale, c.height * scale);
-                    ctx.restore();
-                }
-                ctx.save();
-                ctx.strokeStyle = flashing ? 'rgba(0,0,0,0.4)' : '#222';
-                ctx.lineWidth = 1 / zoom;
-                ctx.strokeRect(c.x * scale, (-(c.y + c.height)) * scale, c.width * scale, c.height * scale);
-                ctx.restore();
-                if (selectedColliderId === c.id) {
-                    ctx.strokeStyle = '#ffff00';
-                    ctx.lineWidth = 2 / zoom;
-                    ctx.strokeRect(c.x * scale, (-(c.y + c.height)) * scale, c.width * scale, c.height * scale);
-                }
+                    if (s.quality === 'high' && flashedCount < 700) { ctx.save(); ctx.strokeStyle = `rgba(255,255,255,${Math.min(1, alpha*0.9)})`; ctx.lineWidth = 3 / zoom; ctx.shadowBlur = 10 / zoom; ctx.shadowColor = 'rgba(255,255,255,0.55)'; ctx.strokeRect(c.x * scale, (-(c.y + c.height)) * scale, c.width * scale, c.height * scale); ctx.restore(); }
+                    else { ctx.save(); ctx.strokeStyle = `rgba(255,255,255,${Math.min(0.9, alpha)})`; ctx.lineWidth = 1.5 / zoom; ctx.strokeRect(c.x * scale, (-(c.y + c.height)) * scale, c.width * scale, c.height * scale); ctx.restore(); }
+                } else { ctx.save(); ctx.strokeStyle = '#222'; ctx.lineWidth = 1 / zoom; ctx.strokeRect(c.x * scale, (-(c.y + c.height)) * scale, c.width * scale, c.height * scale); ctx.restore(); }
+                if (selectedColliderId === c.id) { ctx.strokeStyle = '#ffff00'; ctx.lineWidth = 2 / zoom; ctx.strokeRect(c.x * scale, (-(c.y + c.height)) * scale, c.width * scale, c.height * scale); }
             }
             if (hoverStack.length) {
                 const top = hoverStack[0];
@@ -427,7 +409,7 @@
                 ctx.restore();
             }
             ctx.restore();
-            document.getElementById('status').innerText = currentRoom ? `${currentRoom.name} | V${version} | Colliders: ${colliders.length} | Zoom: ${zoom.toFixed(2)} | FPS: ${fps.toFixed(0)}` : 'No room selected';
+            document.getElementById('status').innerText = currentRoom ? `${currentRoom.name} | V${version} | Colliders: ${colliders.length} | Zoom: ${zoom.toFixed(2)} | FPS: ${fps.toFixed(0)} | Flash:${window._flashState?.quality || 'high'}` : 'No room selected';
             const vcEl = document.getElementById('viewerCount');
             if (vcEl) {
                 if (currentRoom) {
@@ -439,6 +421,7 @@
             if (pendingStats) { const statsEl = document.getElementById('stats'); if (statsEl) statsEl.innerText = `Δ Added:${pendingStats.added} Updated:${pendingStats.updated} Removed:${pendingStats.removed} Bounds: ${pendingStats.bbox.width.toFixed(1)}x${pendingStats.bbox.height.toFixed(1)}`; pendingStats = null; }
             if (pageActive && ((displayState.flash && changeFlash.size > 0) || selectedColliderId)) scheduleNextFrame();
             fpsFrameCount++; const nowTs = performance.now(); if (nowTs - fpsLastTime >= 1000) { fps = (fpsFrameCount * 1000) / (nowTs - fpsLastTime); fpsFrameCount = 0; fpsLastTime = nowTs; }
+            window._flashState.lastMs = performance.now() - frameStart;
         }
         const MAX_FPS = 30; let lastFrameTs = 0;
         function scheduleNextFrame() {
