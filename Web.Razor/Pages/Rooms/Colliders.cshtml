@@ -31,10 +31,10 @@
 
     #colliderCanvas { width:100%; height:70vh; border:1px solid #1d4150; background:radial-gradient(circle at 35% 40%, #0e2735 0%, #081923 60%, #06151d 100%); cursor:grab; border-radius:18px; box-shadow:0 0 0 1px #0d2631, 0 6px 26px -6px rgba(0,0,0,0.55), inset 0 0 42px -8px rgba(0,160,210,0.25); position:relative; }
         .canvas-wrapper { position:relative; }
-        .status-group { display:flex; flex-wrap:wrap; gap:var(--space-2); margin-top:var(--space-2); }
+    .status-group { display:flex; flex-wrap:wrap; gap:var(--space-2); margin-top:var(--space-2); align-items:center; }
         #status, #stats, #hoverInfo, #colliderDetail { background:rgba(25,40,50,0.55); backdrop-filter:blur(2px); border:1px solid rgba(90,170,200,0.35); border-radius:var(--radius-sm); padding:2px 6px; color:#e8f7ff !important; font-weight:500; text-shadow:0 0 3px rgba(0,0,0,0.7); }
         .auto-hide:empty { display:none !important; }
-        #hoverInfo { margin-top:4px; }
+    #hoverInfo { margin-top:0; }
     #roomList { max-height:28vh; overflow-y:auto; overflow-x:hidden; border:1px solid var(--c-border-subtle); border-radius:var(--radius-sm); scroll-behavior:smooth; }
         .collider-item { font-size:12px; line-height:1.15; padding:4px 8px; }
         #roomList .list-group-item.collider-item { background:#133043; color:#f0f6fc; border:0; border-bottom:1px solid #0f2735; }
@@ -87,9 +87,9 @@
     .search-group button:hover { background:linear-gradient(145deg,#227797,#1d6078); }
     .search-group button:active { transform:translateY(1px); }
 
-    #roomList .collider-item { border-radius:10px; margin:2px 4px; background:linear-gradient(145deg,#132f3f,#102633); border:1px solid #1a4558; transition:background .25s, transform .25s, box-shadow .25s; display:block; white-space:normal; word-break:break-word; overflow-wrap:anywhere; }
-    #roomList .collider-item:hover { background:#19465f; transform:translateY(-1px); }
-    #roomList .collider-item.active-room { background:linear-gradient(145deg,#256d8f,#1d5a77); box-shadow:0 0 0 1px #2fa8d8, 0 0 10px -2px rgba(47,168,216,.6); }
+    #roomList .collider-item { --pill-line-height:16px; font-size:12px; line-height:var(--pill-line-height); border-radius:10px; margin:2px 4px; background:linear-gradient(145deg,#132f3f,#102633); border:1px solid #1a4558; transition:background .25s, transform .25s, box-shadow .25s; display:block; white-space:normal; word-break:break-word; overflow-wrap:anywhere; padding:4px 8px; font-weight:500; }
+    #roomList .collider-item:hover { background:#19465f; transform:translateY(-1px); line-height:var(--pill-line-height); }
+    #roomList .collider-item.active-room { background:linear-gradient(145deg,#256d8f,#1d5a77); box-shadow:0 0 0 1px #2fa8d8, 0 0 10px -2px rgba(47,168,216,.6); font-weight:600; line-height:var(--pill-line-height); }
 
     #roomList::-webkit-scrollbar { width:10px; }
     #roomList::-webkit-scrollbar-track { background:#0f2531; border-radius:8px; }
