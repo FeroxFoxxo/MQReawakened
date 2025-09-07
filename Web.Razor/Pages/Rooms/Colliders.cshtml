@@ -65,9 +65,9 @@
     .input-group-sm .btn:hover { background:#1d566f; color:#fff; }
     .input-group-sm .form-control, .input-group-sm .btn { height:30px; }
     .section-inline-controls { display:flex; flex-wrap:wrap; gap:6px; }
-    #displayToggles button.toggle-btn { min-width:56px; font-size:11px; padding:4px 10px; line-height:1.1; border-radius:12px; transition:background .25s, box-shadow .25s, transform .25s; }
+    #displayToggles button.toggle-btn, #displayToggles #btnFit { min-width:56px; font-size:11px; padding:4px 10px; line-height:1.1; border-radius:12px; transition:background .25s, box-shadow .25s, transform .25s; }
     #displayToggles button.toggle-btn.active { background:linear-gradient(145deg,#2186ab,#1c6f8d); box-shadow:0 0 0 1px #2fa8d8, 0 0 10px -2px rgba(47,168,216,0.7); }
-    #displayToggles button.toggle-btn:not(.active):hover { background:#19465f; }
+    #displayToggles button.toggle-btn:not(.active):hover, #displayToggles #btnFit:hover { background:#19465f; }
     #displayHint { color:#7fbfd6; font-size:10px; margin-top:4px; text-shadow:0 0 4px rgba(0,0,0,0.4); }
 
     /* Search group restyle */
@@ -117,7 +117,7 @@
                 <div class="panel-section primary" aria-labelledby="display-heading">
                     <h5 id="display-heading">Display</h5>
                     <div class="section-inline-controls" id="displayToggles" style="gap:6px; flex-wrap:wrap;">
-                        <button id="btnFit" class="btn btn-sm btn-light" title="Fit current room bounds (F)">Fit</button>
+                        <button id="btnFit" class="btn btn-sm btn-outline-dark toggle-btn" data-role="action" title="Fit current room bounds (F)">Fit</button>
                         <button data-key="autoFit" class="btn btn-sm btn-outline-dark toggle-btn active" title="Auto-fit when bounds expand">Auto</button>
                         <button data-key="bbox" class="btn btn-sm btn-outline-dark toggle-btn" title="Show room bounding box">BBox</button>
                         <button data-key="grid" class="btn btn-sm btn-outline-dark toggle-btn active" title="Show grid">Grid</button>
