@@ -274,22 +274,22 @@
         }
         async function loadRooms() {
             rooms = await hub.invoke('GetRooms'); const list = document.getElementById('roomList'); list.innerHTML = '';
-            rooms.forEach r => {
-                const a = document.createElement('a');
-                a.href = '#';
-                a.className = 'list-group-item list-group-item-action collider-item';
-                const levelId = r.levelId ?? r.LevelId ?? '?';
-                const roomInstanceId = r.roomInstanceId ?? r.RoomInstanceId ?? '?';
-                const name = r.name ?? r.Name ?? 'Unnamed';
-                a.textContent = `${levelId}:${roomInstanceId} ${name}`;
-                a.dataset.levelId = levelId;
-                a.dataset.roomInstanceId = roomInstanceId;
-                a.onclick = (e) => { e.preventDefault(); selectRoom(r); highlightActiveRoom(levelId, roomInstanceId); };
-                list.appendChild(a);
+            rooms.forEach(r => {
+                 const a = document.createElement('a');
+                 a.href = '#';
+                 a.className = 'list-group-item list-group-item-action collider-item';
+                 const levelId = r.levelId ?? r.LevelId ?? '?';
+                 const roomInstanceId = r.roomInstanceId ?? r.RoomInstanceId ?? '?';
+                 const name = r.name ?? r.Name ?? 'Unnamed';
+                 a.textContent = `${levelId}:${roomInstanceId} ${name}`;
+                 a.dataset.levelId = levelId;
+                 a.dataset.roomInstanceId = roomInstanceId;
+                 a.onclick = (e) => { e.preventDefault(); selectRoom(r); highlightActiveRoom(levelId, roomInstanceId); };
+                 list.appendChild(a);
             });
             buildFilters();
-            if (currentRoom) highlightActiveRoom(currentRoom.levelId, currentRoom.roomInstanceId);
-        }
+             if (currentRoom) highlightActiveRoom(currentRoom.levelId, currentRoom.roomInstanceId);
+         }
 
         async function selectRoom(r) {
             if (currentRoom) await hub.invoke('UnsubscribeRoom', currentRoom.levelId, currentRoom.roomInstanceId);
