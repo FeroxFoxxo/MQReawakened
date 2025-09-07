@@ -42,6 +42,7 @@
         #filterList input { cursor:pointer; }
         /* Green paper style for overlay info */
         #status, #stats, #hoverInfo, #colliderDetail { background:rgba(25,40,50,0.55); backdrop-filter:blur(2px); border:1px solid rgba(90,170,200,0.35); border-radius:4px; padding:2px 6px; color:#e8f7ff !important; font-weight:500; }
+        .auto-hide:empty { display:none !important; }
         #hoverInfo { margin-top:4px; }
         /* Sidebar dark panel consistent with app theme */
         .collider-side { background:linear-gradient(145deg,#0f1f29,#142e3b 55%,#0d1a22); border:1px solid #1f4457; border-radius:8px; padding:10px 10px 14px; box-shadow:0 2px 6px rgba(0,0,0,0.4), inset 0 0 10px rgba(0,0,0,0.35); }
@@ -111,14 +112,14 @@
                     <span style="background:#ffe66d">Enemy</span>
                     <span style="background:#1a535c;color:#fff;">Default</span>
                 </div>
-                <div id="colliderDetail" class="small"></div>
+                <div id="colliderDetail" class="small auto-hide"></div>
             </div>
         </div>
         <div class="col-md-9">
             <canvas id="colliderCanvas"></canvas>
             <div id="status" class="small mt-2"></div>
-            <div id="stats" class="small"></div>
-            <div id="hoverInfo" class="small mt-1"></div>
+            <div id="stats" class="small auto-hide"></div>
+            <div id="hoverInfo" class="small mt-1 auto-hide"></div>
         </div>
     </div>
 </div>
@@ -215,7 +216,7 @@
             }
             ctx.restore();
             document.getElementById('status').innerText = currentRoom ? `${currentRoom.name} | V${version} | Colliders: ${colliders.length} | Zoom: ${zoom.toFixed(2)} | FPS: ${fps.toFixed(0)}` : 'No room selected';
-            if (pendingStats) { document.getElementById('stats').innerText = `Δ Added:${pendingStats.added} Updated:${pendingStats.updated} Removed:${pendingStats.removed} Bounds: ${pendingStats.bbox.width.toFixed(1)}x${pendingStats.bbox.height.toFixed(1)}`; pendingStats = null; }
+            if (pendingStats) { const statsEl = document.getElementById('stats'); if (statsEl) statsEl.innerText = `Δ Added:${pendingStats.added} Updated:${pendingStats.updated} Removed:${pendingStats.removed} Bounds: ${pendingStats.bbox.width.toFixed(1)}x${pendingStats.bbox.height.toFixed(1)}`; pendingStats = null; }
             if (pageActive && (changeFlash.size > 0 || selectedColliderId)) scheduleNextFrame();
             fpsFrameCount++; const nowTs = performance.now(); if (nowTs - fpsLastTime >= 1000) { fps = (fpsFrameCount * 1000) / (nowTs - fpsLastTime); fpsFrameCount = 0; fpsLastTime = nowTs; }
         }
@@ -294,6 +295,10 @@
         async function selectRoom(r) {
             if (currentRoom) await hub.invoke('UnsubscribeRoom', currentRoom.levelId, currentRoom.roomInstanceId);
             currentRoom = { levelId: r.levelId ?? r.LevelId, roomInstanceId: r.roomInstanceId ?? r.RoomInstanceId, name: r.name ?? r.Name ?? 'Unnamed' };
+            // Clear transient panels
+            const detailEl = document.getElementById('colliderDetail'); if (detailEl) detailEl.textContent='';
+            const statsEl = document.getElementById('stats'); if (statsEl) statsEl.textContent='';
+            const hoverEl = document.getElementById('hoverInfo'); if (hoverEl) hoverEl.textContent='';
             const data = await hub.invoke('SubscribeRoom', currentRoom.levelId, currentRoom.roomInstanceId);
             if (data) {
                 colliders = data.colliders || data.Colliders || [];
