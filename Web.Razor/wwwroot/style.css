@@ -444,7 +444,8 @@ h2 {
     color: #e8faff;
 }
 .navbar-dark .dropdown-menu.admin-dropdown {
-    background-color: transparent;
+    background-color: #577B3D; /* enforce solid background for contrast */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.35);
 }
 .navbar-dark .nav-item.show > .nav-link#adminDropdown,
 .navbar-dark .nav-link#adminDropdown:focus,
