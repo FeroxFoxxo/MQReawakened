@@ -6,7 +6,7 @@ using Server.Colliders.Services;
 
 namespace Server.Colliders;
 
-public class Razor(ILogger<Razor> logger) : Module(logger)
+public class Colliders(ILogger<Colliders> logger) : Module(logger)
 {
     public override void AddServices(IServiceCollection services, Module[] modules)
     {
