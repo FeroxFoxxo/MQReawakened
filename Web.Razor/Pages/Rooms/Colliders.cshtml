@@ -159,8 +159,8 @@
 
                 <div class="panel-section primary" aria-labelledby="planes-heading">
                     <h5 id="planes-heading">Planes</h5>
-                    <div id="planeToggles" class="section-inline-controls" style="gap:6px; flex-wrap:wrap;" aria-label="Plane visibility toggles"></div>
-                    <div class="panel-small" id="planeHint">Toggle which planes are rendered.</div>
+                    <div id="planeToggles" class="section-inline-controls" style="gap:6px; flex-wrap:wrap;" aria-label="Plane selection (single)"></div>
+                    <div class="panel-small" id="planeHint">Select a plane to view (single selection).</div>
                 </div>
 
                 <div class="panel-section primary" aria-labelledby="display-heading">
@@ -647,8 +647,8 @@
             list.appendChild(a);
         }
 
-    function persistView() { if (!currentRoom) return; const state = { zoom, offsetX, offsetY, active: [...activeTypes], planes: [...activePlanes], displayState }; localStorage.setItem('colliderView_' + currentRoom.levelId + '_' + currentRoom.roomInstanceId, JSON.stringify(state)); }
-    function restoreView() { if (!currentRoom) return false; const raw = localStorage.getItem('colliderView_' + currentRoom.levelId + '_' + currentRoom.roomInstanceId); if (!raw) return false; try { const s = JSON.parse(raw); if (typeof s.zoom === 'number' && typeof s.offsetX === 'number' && typeof s.offsetY === 'number') { zoom = s.zoom; offsetX = s.offsetX; offsetY = s.offsetY; } if (Array.isArray(s.active)) { activeTypes = new Set(s.active); buildFilters(); } if (s.displayState) { Object.assign(displayState, s.displayState); syncDisplayButtons(); } if (Array.isArray(s.planes)) { activePlanes = new Set(s.planes); syncPlaneButtons(); } return true; } catch (_) { return false; } }
+    function persistView() { if (!currentRoom) return; const state = { zoom, offsetX, offsetY, active: [...activeTypes], planes: [...activePlanes].slice(0,1), displayState }; localStorage.setItem('colliderView_' + currentRoom.levelId + '_' + currentRoom.roomInstanceId, JSON.stringify(state)); }
+    function restoreView() { if (!currentRoom) return false; const raw = localStorage.getItem('colliderView_' + currentRoom.levelId + '_' + currentRoom.roomInstanceId); if (!raw) return false; try { const s = JSON.parse(raw); if (typeof s.zoom === 'number' && typeof s.offsetX === 'number' && typeof s.offsetY === 'number') { zoom = s.zoom; offsetX = s.offsetX; offsetY = s.offsetY; } if (Array.isArray(s.active)) { activeTypes = new Set(s.active); buildFilters(); } if (s.displayState) { Object.assign(displayState, s.displayState); syncDisplayButtons(); } if (Array.isArray(s.planes) && s.planes.length) { activePlanes = new Set([s.planes[0]]); syncPlaneButtons(); } return true; } catch (_) { return false; } }
 
     function initUi() {
             if (initialized) return;
@@ -680,21 +680,18 @@
             document.getElementById('exportJson')?.addEventListener('click', () => { const data = JSON.stringify({ room: currentRoom, version, colliders }, null, 2); const blob = new Blob([data], { type: 'application/json' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `colliders_${currentRoom?.levelId || 'unknown'}_${currentRoom?.roomInstanceId || 'x'}_v${version}.json`; a.click(); URL.revokeObjectURL(a.href); });
             document.getElementById('exportPng')?.addEventListener('click', () => { const canvas = document.getElementById('colliderCanvas'); const a = document.createElement('a'); a.href = canvas.toDataURL('image/png'); a.download = `colliders_${currentRoom?.levelId || 'unknown'}_${currentRoom?.roomInstanceId || 'x'}_v${version}.png`; a.click(); });
             document.getElementById('toggleSidebar')?.addEventListener('click', (e) => { const sb = document.getElementById('roomsSidebar'); if (!sb) return; sb.classList.toggle('collapsed'); const expanded = !sb.classList.contains('collapsed'); e.target.setAttribute('aria-expanded', expanded); e.target.textContent = expanded ? 'Hide Panel' : 'Show Panel'; });
-            document.getElementById('planeToggles')?.addEventListener('click', e => {
-                const btn = e.target.closest('button[data-plane]');
-                if (!btn) return;
-                const plane = parseInt(btn.dataset.plane,10);
-                if (Number.isNaN(plane)) return; // ignore invalid
-                if (activePlanes.has(plane)) {
-                    activePlanes.delete(plane);
-                    if (activePlanes.size === 0) { activePlanes.add(plane); return; }
-                } else {
-                    activePlanes.add(plane);
-                }
-                syncPlaneButtons();
-                persistView();
-                draw();
-            });
+                        document.getElementById('planeToggles')?.addEventListener('click', e => {
+                            const btn = e.target.closest('button[data-plane]');
+                            if (!btn) return;
+                            const plane = parseInt(btn.dataset.plane,10);
+                            if (Number.isNaN(plane)) return;
+                            if (activePlanes.has(plane)) return; // already selected
+                            activePlanes.clear();
+                            activePlanes.add(plane);
+                            syncPlaneButtons();
+                            persistView();
+                            draw();
+                        });
 
             const colliderCanvas = document.getElementById('colliderCanvas');
             if (!colliderCanvas) return;
@@ -794,7 +791,13 @@
         const changed = planes.length !== knownPlanes.length || planes.some((p,i)=>p!==knownPlanes[i]);
         if (!changed) return false;
         knownPlanes = planes;
-        if (activePlanes.size === 0) planes.forEach(p => activePlanes.add(p));
+        const current = [...activePlanes][0];
+        if (!planes.includes(current)) {
+            activePlanes.clear();
+            if (planes.length) activePlanes.add(planes[0]);
+        } else {
+            activePlanes = new Set([current]);
+        }
         const container = document.getElementById('planeToggles'); if (!container) return false;
         container.innerHTML='';
         planes.forEach(p => {
@@ -803,8 +806,9 @@
             btn.className='btn btn-sm btn-outline-dark toggle-btn';
             btn.dataset.plane = p;
             btn.textContent = 'Plane'+p;
-            btn.setAttribute('aria-pressed', activePlanes.has(p));
-            if (activePlanes.has(p)) btn.classList.add('active');
+            const active = activePlanes.has(p);
+            btn.setAttribute('aria-pressed', active);
+            if (active) btn.classList.add('active');
             container.appendChild(btn);
         });
         return true;
