@@ -15,8 +15,8 @@ public class ColliderPushService(IColliderSnapshotProvider _snapshots,
 {
     private readonly Dictionary<(int, int), RoomCollidersDto> _last = [];
 
-    private int _currentIntervalMs = 1000;
-    private const int BaseInterval = 1000;
+    private static readonly int BaseInterval = Math.Clamp(int.TryParse(Environment.GetEnvironmentVariable("COLLIDER_BASE_INTERVAL_MS"), out var envBase) ? envBase : 250, 20, 5000);
+    private int _currentIntervalMs = BaseInterval;
     private const int MaxIdleInterval = 5000;
 
     public void Initialize() { }
@@ -88,8 +88,8 @@ public class ColliderPushService(IColliderSnapshotProvider _snapshots,
                 }
 
                 _currentIntervalMs = totalChanges == 0
-                    ? Math.Min(2000, (int)(_currentIntervalMs * 1.15))
-                    : totalChanges > 50 ? Math.Max(100, _currentIntervalMs / 2) : BaseInterval;
+                    ? Math.Min(1500, (int)(_currentIntervalMs * 1.15))
+                    : totalChanges > 50 ? Math.Max(50, _currentIntervalMs / 2) : BaseInterval;
             }
             catch (Exception ex)
             { _logger.LogError(ex, "Collider push cycle failure"); }

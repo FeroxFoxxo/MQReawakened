@@ -87,7 +87,8 @@
     .search-group button:hover { background:linear-gradient(145deg,#227797,#1d6078); }
     .search-group button:active { transform:translateY(1px); }
 
-    #roomList .collider-item { --pill-line-height:16px; font-size:12px; line-height:var(--pill-line-height); border-radius:10px; margin:2px 4px; background:linear-gradient(145deg,#132f3f,#102633); border:1px solid #1a4558; transition:background .25s, transform .25s, box-shadow .25s; display:block; white-space:normal; word-break:break-word; overflow-wrap:anywhere; padding:4px 8px; font-weight:500; }
+    #roomList .collider-item { --pill-line-height:16px; font-size:12px; line-height:var(--pill-line-height); border-radius:10px; margin:2px 4px; background:linear-gradient(145deg,#132f3f,#102633); border:1px solid #1a4558; transition:background .25s, transform .25s, box-shadow .25s, opacity .28s ease, max-height .28s ease, padding .28s ease, margin .28s ease; display:block; white-space:normal; word-break:break-word; overflow-wrap:anywhere; padding:4px 8px; font-weight:500; position:relative; }
+    #roomList .collider-item.fade-out { opacity:0; transform:translateX(-6px); pointer-events:none; }
     #roomList .collider-item:hover { background:#19465f; transform:translateY(-1px); line-height:var(--pill-line-height); }
     #roomList .collider-item.active-room { background:linear-gradient(145deg,#256d8f,#1d5a77); box-shadow:0 0 0 1px #2fa8d8, 0 0 10px -2px rgba(47,168,216,.6); font-weight:600; line-height:var(--pill-line-height); }
 
@@ -209,6 +210,7 @@
             </div>
             <div class="status-group">
                 <div id="status" class="small" role="status" aria-live="polite"></div>
+                <div id="viewerCount" class="small auto-hide" role="status" aria-live="polite"></div>
                 <div id="stats" class="small auto-hide" role="status" aria-live="polite"></div>
                 <div id="hoverInfo" class="small auto-hide" aria-live="polite"></div>
                 <div id="srAnnounce" class="visually-hidden" aria-live="polite" aria-atomic="true"></div>
@@ -410,7 +412,15 @@
                 ctx.restore();
             }
             ctx.restore();
-            document.getElementById('status').innerText = currentRoom ? `${currentRoom.name} | V${version} | Colliders: ${colliders.length} | Subs: ${currentSubscriberCount} | Zoom: ${zoom.toFixed(2)} | FPS: ${fps.toFixed(0)}` : 'No room selected';
+            document.getElementById('status').innerText = currentRoom ? `${currentRoom.name} | V${version} | Colliders: ${colliders.length} | Zoom: ${zoom.toFixed(2)} | FPS: ${fps.toFixed(0)}` : 'No room selected';
+            const vcEl = document.getElementById('viewerCount');
+            if (vcEl) {
+                if (currentRoom) {
+                    vcEl.textContent = `Viewers: ${currentSubscriberCount}`;
+                } else {
+                    vcEl.textContent = '';
+                }
+            }
             if (pendingStats) { const statsEl = document.getElementById('stats'); if (statsEl) statsEl.innerText = `Δ Added:${pendingStats.added} Updated:${pendingStats.updated} Removed:${pendingStats.removed} Bounds: ${pendingStats.bbox.width.toFixed(1)}x${pendingStats.bbox.height.toFixed(1)}`; pendingStats = null; }
             if (pageActive && ((displayState.flash && changeFlash.size > 0) || selectedColliderId)) scheduleNextFrame();
             fpsFrameCount++; const nowTs = performance.now(); if (nowTs - fpsLastTime >= 1000) { fps = (fpsFrameCount * 1000) / (nowTs - fpsLastTime); fpsFrameCount = 0; fpsLastTime = nowTs; }
@@ -572,7 +582,13 @@
         }
 
     hub.on('collidersUpdated', payload => { if (!currentRoom) return; if (payload.levelId === currentRoom.levelId && payload.roomInstanceId === currentRoom.roomInstanceId) { colliders = (payload.colliders || []).map(normalizeCollider); version = payload.version || version + 1; lastBbox = payload.bbox || lastBbox; if (rebuildPlanes()) persistView(); fitView(); persistView(); draw(); } });
-    hub.on('roomSubscriberCount', payload => { if (currentRoom && payload.levelId === currentRoom.levelId && payload.roomInstanceId === currentRoom.roomInstanceId) { currentSubscriberCount = payload.count || 0; } });
+    hub.on('roomSubscriberCount', payload => {
+        if (currentRoom && payload.levelId === currentRoom.levelId && payload.roomInstanceId === currentRoom.roomInstanceId) {
+            currentSubscriberCount = payload.count || 0;
+            const vc = document.getElementById('viewerCount');
+            if (vc) vc.textContent = `Viewers: ${currentSubscriberCount}`;
+        }
+    });
     hub.on('collidersReset', payload => { if (!currentRoom) return; if (payload.levelId === currentRoom.levelId && payload.roomInstanceId === currentRoom.roomInstanceId) { colliders = (payload.colliders || []).map(normalizeCollider); version = payload.version || 0; lastBbox = payload.bbox || null; changeFlash.clear(); colliders.forEach(c => changeFlash.set(c.id, performance.now())); rebuildPlanes(); fitView(); persistView(); draw(); } });
         hub.on('collidersDiff', payload => {
             if (!currentRoom) return;
@@ -600,8 +616,19 @@
             if (!payload) return;
             rooms = rooms.filter(r => (r.levelId ?? r.LevelId) !== payload.levelId || (r.roomInstanceId ?? r.RoomInstanceId) !== payload.roomInstanceId);
             const list = document.getElementById('roomList');
-            const item = list?.querySelector(`.collider-item[data-levelid="${payload.levelId}"][data-roominstanceid="${payload.roomInstanceId}"]`);
-            if (item) item.remove();
+            if (list) {
+                // Prefer canonical hyphenated attribute names, fallback to legacy non-hyphen variant.
+                const selectorNew = `.collider-item[data-level-id="${payload.levelId}"][data-room-instance-id="${payload.roomInstanceId}"]`;
+                const selectorLegacy = `.collider-item[data-levelid="${payload.levelId}"][data-roominstanceid="${payload.roomInstanceId}"]`;
+                const item = list.querySelector(selectorNew) || list.querySelector(selectorLegacy);
+                if (item) {
+                    item.classList.add('fade-out');
+                    // Remove after transition ends (fallback timeout included)
+                    const removeFn = () => { item.removeEventListener('transitionend', removeFn); if (item.parentNode) item.remove(); };
+                    item.addEventListener('transitionend', removeFn);
+                    setTimeout(removeFn, 400); // safety
+                }
+            }
             if (currentRoom && currentRoom.levelId === payload.levelId && currentRoom.roomInstanceId === payload.roomInstanceId) {
                 currentRoom = null; colliders = []; version = 0; lastBbox = null; draw();
             }
@@ -613,9 +640,9 @@
             a.href = '#';
             a.className = 'list-group-item list-group-item-action collider-item';
             a.textContent = `${levelId}:${roomInstanceId} ${name || 'Unnamed'}`;
-            a.dataset.levelId = levelId; a.dataset.roomInstanceId = roomInstanceId;
-            a.setAttribute('data-levelid', levelId);
-            a.setAttribute('data-roominstanceid', roomInstanceId);
+            // Canonical dataset assignments -> data-level-id / data-room-instance-id
+            a.dataset.levelId = levelId;
+            a.dataset.roomInstanceId = roomInstanceId;
             a.onclick = (e) => { e.preventDefault(); const r = { levelId, roomInstanceId, name }; selectRoom(r); highlightActiveRoom(levelId, roomInstanceId); };
             list.appendChild(a);
         }

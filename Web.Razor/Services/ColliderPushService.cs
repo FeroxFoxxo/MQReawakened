@@ -15,8 +15,8 @@ public class ColliderPushService : BackgroundService
     private readonly IRoomVersionTracker _versions;
     private readonly IColliderSubscriptionTracker _subs;
 
-    private readonly int _baseIntervalMs = 1000;
-    private int _currentIntervalMs = 1000;
+    private readonly int _baseIntervalMs = Math.Clamp(int.TryParse(Environment.GetEnvironmentVariable("COLLIDER_BASE_INTERVAL_MS"), out var envBase) ? envBase : 250, 20, 5000);
+    private int _currentIntervalMs = Math.Clamp(int.TryParse(Environment.GetEnvironmentVariable("COLLIDER_BASE_INTERVAL_MS"), out var envStart) ? envStart : 250, 20, 5000);
     private const int MaxIdleInterval = 5000;
 
     public ColliderPushService(IColliderSnapshotProvider snapshots, IHubContext<ColliderHub> hub, ILogger<ColliderPushService> logger, IRoomVersionTracker versions, IColliderSubscriptionTracker subs)
@@ -143,8 +143,8 @@ public class ColliderPushService : BackgroundService
 
                 _currentIntervalMs = totalChanges switch
                 {
-                    0 => Math.Min(2000, (int)(_currentIntervalMs * 1.15)),
-                    > 50 => Math.Max(100, _currentIntervalMs / 2),
+                    0 => Math.Min(1500, (int)(_currentIntervalMs * 1.15)),
+                    > 50 => Math.Max(50, _currentIntervalMs / 2),
                     _ => _baseIntervalMs
                 };
             }
