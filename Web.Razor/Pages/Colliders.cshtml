@@ -41,6 +41,8 @@
         #roomList .list-group-item.collider-item:last-child { border-bottom:0; }
         #roomList .list-group-item.collider-item:hover { background:#19465f; color:#ffffff; }
         #roomList .list-group-item.collider-item.active-room { background:#256d8f; color:#fff; font-weight:600; }
+    #roomList .empty-placeholder { padding:10px 12px; text-align:center; font-size:12px; color:var(--c-text-dim); font-weight:500; letter-spacing:.3px; background:linear-gradient(145deg,#132f3f,#102633); border:1px dashed #1a4558; border-radius:10px; margin:6px; }
+    #roomList .empty-placeholder strong { display:block; color:var(--c-text); font-weight:600; margin-bottom:2px; }
 
     .collider-side { position:sticky; top:var(--space-3); background:linear-gradient(160deg,#112836,#0f2430 45%,#0a1b23); border:1px solid #1d4254; border-radius:18px; padding:20px 18px 22px; box-shadow:0 4px 18px -4px rgba(0,0,0,0.6), inset 0 0 0 1px rgba(255,255,255,0.03); display:flex; flex-direction:column; gap:18px; font-size:13px; backdrop-filter:blur(4px) saturate(130%); position:relative; overflow:hidden; }
     .collider-side:before { content:""; position:absolute; inset:0; pointer-events:none; background:radial-gradient(circle at 15% 12%,rgba(47,168,216,.15),transparent 60%), radial-gradient(circle at 80% 85%,rgba(47,168,216,.08),transparent 70%); mix-blend-mode:screen; opacity:.8; }
@@ -149,7 +151,12 @@
 
                 <div class="panel-section primary" aria-labelledby="rooms-heading">
                     <h5 id="rooms-heading">Rooms</h5>
-                    <div id="roomList" class="list-group"></div>
+                    <div id="roomList" class="list-group">
+                        <div class="empty-placeholder" role="status" aria-live="polite">
+                            <strong>No rooms loaded</strong>
+                            <span>Waiting for server...</span>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="panel-section primary" aria-labelledby="filters-heading">
@@ -538,24 +545,41 @@
             });
         }
 
+        function ensureRoomsPlaceholder() {
+            const list = document.getElementById('roomList');
+            if (!list) return;
+            const hasRooms = list.querySelector('.collider-item');
+            const existing = list.querySelector('.empty-placeholder');
+            if (!hasRooms && !existing) {
+                const div = document.createElement('div');
+                div.className = 'empty-placeholder';
+                div.setAttribute('role','status');
+                div.innerHTML = '<strong>No rooms loaded</strong><span>Waiting for server...</span>';
+                list.appendChild(div);
+            } else if (hasRooms && existing) {
+                existing.remove();
+            }
+        }
+
         async function loadRooms() {
-            rooms = await hub.invoke('GetRooms'); const list = document.getElementById('roomList'); list.innerHTML = '';
+            rooms = await hub.invoke('GetRooms'); const list = document.getElementById('roomList'); if (!list) return; list.innerHTML = '';
             rooms.forEach(r => {
-                 const a = document.createElement('a');
-                 a.href = '#';
-                 a.className = 'list-group-item list-group-item-action collider-item';
-                 const levelId = r.levelId ?? r.LevelId ?? '?';
-                 const roomInstanceId = r.roomInstanceId ?? r.RoomInstanceId ?? '?';
-                 const name = r.name ?? r.Name ?? 'Unnamed';
-                 a.textContent = `${levelId}:${roomInstanceId} ${name}`;
-                 a.dataset.levelId = levelId;
-                 a.dataset.roomInstanceId = roomInstanceId;
-                 a.onclick = (e) => { e.preventDefault(); selectRoom(r); highlightActiveRoom(levelId, roomInstanceId); };
-                 list.appendChild(a);
+                const a = document.createElement('a');
+                a.href = '#';
+                a.className = 'list-group-item list-group-item-action collider-item';
+                const levelId = r.levelId ?? r.LevelId ?? '?';
+                const roomInstanceId = r.roomInstanceId ?? r.RoomInstanceId ?? '?';
+                const name = r.name ?? r.Name ?? 'Unnamed';
+                a.textContent = `${levelId}:${roomInstanceId} ${name}`;
+                a.dataset.levelId = levelId;
+                a.dataset.roomInstanceId = roomInstanceId;
+                a.onclick = (e) => { e.preventDefault(); selectRoom(r); highlightActiveRoom(levelId, roomInstanceId); };
+                list.appendChild(a);
             });
+            ensureRoomsPlaceholder();
             buildFilters();
-             if (currentRoom) highlightActiveRoom(currentRoom.levelId, currentRoom.roomInstanceId);
-         }
+            if (currentRoom) highlightActiveRoom(currentRoom.levelId, currentRoom.roomInstanceId);
+        }
 
         async function selectRoom(r) {
             if (currentRoom) await hub.invoke('UnsubscribeRoom', currentRoom.levelId, currentRoom.roomInstanceId);
@@ -616,9 +640,10 @@
             if (rooms.some(r => (r.levelId ?? r.LevelId) === payload.levelId && (r.roomInstanceId ?? r.RoomInstanceId) === payload.roomInstanceId)) return;
             rooms.push({ levelId: payload.levelId, roomInstanceId: payload.roomInstanceId, name: payload.name });
             appendRoomToList(payload.levelId, payload.roomInstanceId, payload.name);
+            ensureRoomsPlaceholder();
         });
 
-        hub.on('roomRemoved', payload => {
+    hub.on('roomRemoved', payload => {
             if (!payload) return;
             rooms = rooms.filter(r => (r.levelId ?? r.LevelId) !== payload.levelId || (r.roomInstanceId ?? r.RoomInstanceId) !== payload.roomInstanceId);
             const list = document.getElementById('roomList');
@@ -632,6 +657,7 @@
                     item.addEventListener('transitionend', removeFn);
                     setTimeout(removeFn, 400);
                 }
+        setTimeout(ensureRoomsPlaceholder, 420);
             }
             if (currentRoom && currentRoom.levelId === payload.levelId && currentRoom.roomInstanceId === payload.roomInstanceId) {
                 currentRoom = null; colliders = []; version = 0; lastBbox = null; draw();
@@ -648,6 +674,7 @@
             a.dataset.roomInstanceId = roomInstanceId;
             a.onclick = (e) => { e.preventDefault(); const r = { levelId, roomInstanceId, name }; selectRoom(r); highlightActiveRoom(levelId, roomInstanceId); };
             list.appendChild(a);
+            ensureRoomsPlaceholder();
         }
 
         function persistView() { if (!currentRoom) return; const state = { zoom, offsetX, offsetY, active: [...activeTypes], planes: [...activePlanes].slice(0,1), displayState }; localStorage.setItem('colliderView_' + currentRoom.levelId + '_' + currentRoom.roomInstanceId, JSON.stringify(state)); }
