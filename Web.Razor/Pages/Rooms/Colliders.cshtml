@@ -88,31 +88,16 @@
 
                 <div class="panel-section primary" aria-labelledby="display-heading">
                     <h5 id="display-heading">Display</h5>
-                    <div class="section-inline-controls">
-                        <div class="btn-group btn-group-sm" role="group">
-                            <button id="resetView" class="btn btn-light" title="Fit current room bounds (F)">Fit</button>
-                            <button id="autoFitToggle" class="btn btn-outline-dark active" data-enabled="true" title="Auto-fit when bounds grow">Auto-Fit</button>
-                        </div>
-                        <button id="toggleBBox" class="btn btn-sm btn-outline-dark" data-enabled="false" title="Show bounding box">BBox</button>
+                    <div class="section-inline-controls" id="displayToggles" style="gap:6px; flex-wrap:wrap;">
+                        <button id="btnFit" class="btn btn-sm btn-light" title="Fit current room bounds (F)">Fit</button>
+                        <button data-key="autoFit" class="btn btn-sm btn-outline-dark toggle-btn active" title="Auto-fit when bounds expand">Auto</button>
+                        <button data-key="bbox" class="btn btn-sm btn-outline-dark toggle-btn" title="Show room bounding box">BBox</button>
+                        <button data-key="grid" class="btn btn-sm btn-outline-dark toggle-btn active" title="Show grid">Grid</button>
+                        <button data-key="flash" class="btn btn-sm btn-outline-dark toggle-btn active" title="Flash changed colliders">Flash</button>
+                        <button data-key="inactive" class="btn btn-sm btn-outline-dark toggle-btn active" title="Show inactive colliders">Inactive</button>
+                        <button data-key="invisible" class="btn btn-sm btn-outline-dark toggle-btn active" title="Show invisible colliders (faded)">Invisible</button>
                     </div>
-                    <div class="section-inline-controls">
-                        <div class="form-check form-check-sm">
-                            <input class="form-check-input" type="checkbox" id="showGrid" checked>
-                            <label class="form-check-label" for="showGrid">Grid</label>
-                        </div>
-                        <div class="form-check form-check-sm">
-                            <input class="form-check-input" type="checkbox" id="flashChanges" checked>
-                            <label class="form-check-label" for="flashChanges">Flash</label>
-                        </div>
-                        <div class="form-check form-check-sm">
-                            <input class="form-check-input" type="checkbox" id="showInactive" checked>
-                            <label class="form-check-label" for="showInactive">Inactive</label>
-                        </div>
-                        <div class="form-check form-check-sm">
-                            <input class="form-check-input" type="checkbox" id="showInvisible" checked>
-                            <label class="form-check-label" for="showInvisible">Invisible</label>
-                        </div>
-                    </div>
+                    <div class="panel-small" id="displayHint">Flash highlights new/updated shapes for 1.5s.</div>
                 </div>
 
                 <div class="panel-section" aria-labelledby="search-heading">
@@ -169,7 +154,15 @@
         const FLASH_MS = 1500;
         let lastBbox = null;
         let pendingStats = null;
-        let showBBox = false;
+        // Unified display state
+        const displayState = {
+            autoFit: true,
+            bbox: false,
+            grid: true,
+            flash: true,
+            inactive: true,
+            invisible: true
+        };
         let selectedColliderId = null;
         let fpsFrameCount = 0; let fpsLastTime = performance.now(); let fps = 0;
         let pageActive = true; // false when tab hidden
@@ -214,7 +207,7 @@
             ctx.save();
             ctx.translate(offsetX, offsetY);
             ctx.scale(zoom, zoom);
-            if (document.getElementById('showGrid').checked) {
+            if (displayState.grid) {
                 ctx.save(); ctx.strokeStyle = '#123'; ctx.lineWidth = 1 / zoom;
                 const gridSize = scale;
                 const cols = 200; const rows = 200;
@@ -227,8 +220,8 @@
                 ctx.restore();
             }
             const now = performance.now();
-            const showInactive = document.getElementById('showInactive')?.checked ?? true;
-            const showInvisible = document.getElementById('showInvisible')?.checked ?? true;
+            const showInactive = displayState.inactive;
+            const showInvisible = displayState.invisible;
             for (const c of colliders) {
                 if (!activeTypes.has(c.type)) continue;
                 if (!showInactive && !c.active) continue;
@@ -236,7 +229,7 @@
                 const color = colors[c.type] || colors.Default;
                 let baseColor = c.active ? color : '#555';
                 const t = changeFlash.get(c.id);
-                if (document.getElementById('flashChanges').checked && t && now - t < FLASH_MS) {
+                if (displayState.flash && t && now - t < FLASH_MS) {
                     const alpha = 1 - (now - t) / FLASH_MS;
                     ctx.fillStyle = shadeColor(baseColor, alpha * 40);
                 } else {
@@ -254,7 +247,7 @@
                     ctx.strokeRect(c.x * scale, (-(c.y + c.height)) * scale, c.width * scale, c.height * scale);
                 }
             }
-            if (showBBox && lastBbox) {
+            if (displayState.bbox && lastBbox) {
                 ctx.save();
                 ctx.strokeStyle = 'rgba(255,255,255,0.5)';
                 ctx.setLineDash([6 / zoom, 4 / zoom]);
@@ -266,7 +259,7 @@
             document.getElementById('status').innerText = currentRoom ? `${currentRoom.name} | V${version} | Colliders: ${colliders.length} | Zoom: ${zoom.toFixed(2)} | FPS: ${fps.toFixed(0)}` : 'No room selected';
             if (pendingStats) { const statsEl = document.getElementById('stats'); if (statsEl) statsEl.innerText = `Δ Added:${pendingStats.added} Updated:${pendingStats.updated} Removed:${pendingStats.removed} Bounds: ${pendingStats.bbox.width.toFixed(1)}x${pendingStats.bbox.height.toFixed(1)}`; pendingStats = null; }
             // Only continue animating if flash is enabled and there are flashing items, or a collider stays selected (for outline clarity)
-            if (pageActive && ((document.getElementById('flashChanges')?.checked && changeFlash.size > 0) || selectedColliderId)) scheduleNextFrame();
+            if (pageActive && ((displayState.flash && changeFlash.size > 0) || selectedColliderId)) scheduleNextFrame();
             fpsFrameCount++; const nowTs = performance.now(); if (nowTs - fpsLastTime >= 1000) { fps = (fpsFrameCount * 1000) / (nowTs - fpsLastTime); fpsFrameCount = 0; fpsLastTime = nowTs; }
         }
         const MAX_FPS = 30; let lastFrameTs = 0;
@@ -379,7 +372,7 @@
             if (payload.removed) { const remSet = new Set(payload.removed); colliders = colliders.filter(c => !remSet.has(c.id)); }
             if (payload.updated) { const map = new Map(colliders.map(c => [c.id, c])); payload.updated.forEach(u => { const id = u.id ?? u.Id; if (map.has(id)) { Object.assign(map.get(id), normalizeCollider(u)); changeFlash.set(id, performance.now()); } }); colliders = Array.from(map.values()); }
             if (payload.added) { payload.added.forEach(a => { const na = normalizeCollider(a); colliders.push(na); changeFlash.set(na.id, performance.now()); }); }
-            if (payload.bbox) { if (lastBbox) { const growth = (payload.bbox.width * payload.bbox.height) / (lastBbox.width * lastBbox.height + 0.0001); if (growth > 1.25 && document.getElementById('autoFitToggle').dataset.enabled === 'true') fitView(); } lastBbox = payload.bbox; }
+            if (payload.bbox) { if (lastBbox) { const growth = (payload.bbox.width * payload.bbox.height) / (lastBbox.width * lastBbox.height + 0.0001); if (growth > 1.25 && displayState.autoFit) fitView(); } lastBbox = payload.bbox; }
             if (payload.stats) { pendingStats = { ...payload.stats, bbox: payload.bbox || { width: 0, height: 0 } }; }
             persistView();
             draw();
@@ -418,11 +411,11 @@
             list.appendChild(a);
         }
 
-        function persistView() { if (!currentRoom) return; const autoFit = document.getElementById('autoFitToggle')?.dataset.enabled === 'true'; const state = { zoom, offsetX, offsetY, active: [...activeTypes], autoFit }; localStorage.setItem('colliderView_' + currentRoom.levelId + '_' + currentRoom.roomInstanceId, JSON.stringify(state)); }
-        function restoreView() { if (!currentRoom) return false; const raw = localStorage.getItem('colliderView_' + currentRoom.levelId + '_' + currentRoom.roomInstanceId); if (!raw) return false; try { const s = JSON.parse(raw); if (typeof s.zoom === 'number' && typeof s.offsetX === 'number' && typeof s.offsetY === 'number') { zoom = s.zoom; offsetX = s.offsetX; offsetY = s.offsetY; } if (Array.isArray(s.active)) { activeTypes = new Set(s.active); buildFilters(); } if (typeof s.autoFit === 'boolean') { const btn = document.getElementById('autoFitToggle'); if (btn) { btn.dataset.enabled = s.autoFit.toString(); btn.classList.toggle('active', s.autoFit); } } return true; } catch (_) { return false; } }
+    function persistView() { if (!currentRoom) return; const state = { zoom, offsetX, offsetY, active: [...activeTypes], displayState }; localStorage.setItem('colliderView_' + currentRoom.levelId + '_' + currentRoom.roomInstanceId, JSON.stringify(state)); }
+    function restoreView() { if (!currentRoom) return false; const raw = localStorage.getItem('colliderView_' + currentRoom.levelId + '_' + currentRoom.roomInstanceId); if (!raw) return false; try { const s = JSON.parse(raw); if (typeof s.zoom === 'number' && typeof s.offsetX === 'number' && typeof s.offsetY === 'number') { zoom = s.zoom; offsetX = s.offsetX; offsetY = s.offsetY; } if (Array.isArray(s.active)) { activeTypes = new Set(s.active); buildFilters(); } if (s.displayState) { Object.assign(displayState, s.displayState); syncDisplayButtons(); } return true; } catch (_) { return false; } }
 
     function initUi() {
-            const required = ['autoFitToggle','flashChanges','toggleBBox','showInactive','showInvisible','searchBtn','searchCollider','exportJson','exportPng','colliderCanvas'];
+            const required = ['displayToggles','btnFit','searchBtn','searchCollider','exportJson','exportPng','colliderCanvas'];
             const missing = required.filter(id => !document.getElementById(id));
             if (missing.length) {
                 if (document.readyState !== 'complete') {
@@ -430,13 +423,19 @@
                 }
                 console.warn('Colliders page: missing expected elements:', missing.join(','));
             }
-            const autoFitToggle = document.getElementById('autoFitToggle');
-            if (!autoFitToggle) return; // can't proceed
-            autoFitToggle.addEventListener('click', e => { const btn = e.target; const enabled = btn.dataset.enabled === 'true'; btn.dataset.enabled = (!enabled).toString(); btn.classList.toggle('active', !enabled); persistView(); });
-            document.getElementById('flashChanges')?.addEventListener('change', () => draw());
-            document.getElementById('toggleBBox')?.addEventListener('click', e => { showBBox = !showBBox; e.target.classList.toggle('active', showBBox); draw(); });
-            document.getElementById('showInactive')?.addEventListener('change', () => draw());
-            document.getElementById('showInvisible')?.addEventListener('change', () => draw());
+            const displayToggles = document.getElementById('displayToggles');
+            if (!displayToggles) return;
+            displayToggles.addEventListener('click', e => {
+                const btn = e.target.closest('button.toggle-btn');
+                if (!btn) return;
+                const key = btn.dataset.key;
+                if (!key) return;
+                displayState[key] = !displayState[key];
+                btn.classList.toggle('active', displayState[key]);
+                persistView();
+                draw();
+            });
+            document.getElementById('btnFit')?.addEventListener('click', () => { fitView(); persistView(); draw(); });
             document.getElementById('searchBtn')?.addEventListener('click', () => searchCollider());
             document.getElementById('searchCollider')?.addEventListener('keydown', e => { if (e.key === 'Enter') searchCollider(); });
             document.getElementById('exportJson')?.addEventListener('click', () => { const data = JSON.stringify({ room: currentRoom, version, colliders }, null, 2); const blob = new Blob([data], { type: 'application/json' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `colliders_${currentRoom?.levelId || 'unknown'}_${currentRoom?.roomInstanceId || 'x'}_v${version}.json`; a.click(); URL.revokeObjectURL(a.href); });
@@ -478,16 +477,16 @@
         }
         function panTo(c) { const canvas = document.getElementById('colliderCanvas'); const cx = (c.x + c.width / 2) * scale * zoom + offsetX; const cy = (-(c.y + c.height / 2)) * scale * zoom + offsetY; const midX = canvas.width / 2; const midY = canvas.height / 2; offsetX += (midX - cx); offsetY += (midY - cy); }
 
-        function onCanvasMove(e) {
+    function onCanvasMove(e) {
             const canvas = e.target; const rect = canvas.getBoundingClientRect(); const mx = (e.clientX - rect.left - offsetX) / (zoom * scale); const my = -((e.clientY - rect.top - offsetY) / (zoom * scale));
-            const showInactive = document.getElementById('showInactive')?.checked ?? true; const showInvisible = document.getElementById('showInvisible')?.checked ?? true;
+            const showInactive = displayState.inactive; const showInvisible = displayState.invisible;
             const found = colliders.find(c => activeTypes.has(c.type) && (showInactive || c.active) && (showInvisible || !c.invisible) && mx >= c.x && mx <= c.x + c.width && my <= c.y && my >= c.y - c.height);
             const info = document.getElementById('hoverInfo');
             if (info) info.textContent = found ? `${found.type} ${found.id} (${found.x.toFixed(2)},${found.y.toFixed(2)}) ${found.width.toFixed(2)}x${found.height.toFixed(2)} ${found.active ? '' : '[inactive]'} ${found.invisible ? '[invis]' : ''}` : '';
         }
         function onCanvasClick(e) {
             const canvas = e.target; const rect = canvas.getBoundingClientRect(); const mx = (e.clientX - rect.left - offsetX) / (zoom * scale); const my = -((e.clientY - rect.top - offsetY) / (zoom * scale));
-            const showInactive = document.getElementById('showInactive')?.checked ?? true; const showInvisible = document.getElementById('showInvisible')?.checked ?? true;
+            const showInactive = displayState.inactive; const showInvisible = displayState.invisible;
             const found = colliders.find(c => activeTypes.has(c.type) && (showInactive || c.active) && (showInvisible || !c.invisible) && mx >= c.x && mx <= c.x + c.width && my <= c.y && my >= c.y - c.height);
             selectedColliderId = found ? found.id : null;
             const detail = document.getElementById('colliderDetail');
@@ -497,5 +496,12 @@
 
         window.addEventListener('mouseup', () => { isPanning = false; document.body.style.cursor = 'default'; });
         window.addEventListener('mousemove', e => { if (!isPanning) return; const dx = e.clientX - startPan.x; const dy = e.clientY - startPan.y; startPan = { x: e.clientX, y: e.clientY }; offsetX += dx; offsetY += dy; draw(); });
+
+        function syncDisplayButtons() {
+            const container = document.getElementById('displayToggles'); if (!container) return;
+            [...container.querySelectorAll('button.toggle-btn')].forEach(b => {
+                const key = b.dataset.key; if (!key) return; b.classList.toggle('active', !!displayState[key]);
+            });
+        }
     </script>
 }

@@ -37,4 +37,14 @@ public class SignalRColliderPublisher : IColliderUpdatePublisher
             bbox = new { minX = diff.Bounds.MinX, minY = diff.Bounds.MinY, maxX = diff.Bounds.MaxX, maxY = diff.Bounds.MaxY, width = diff.Bounds.Width, height = diff.Bounds.Height }
         }, ct);
     }
+
+    public Task PublishRoomAddedAsync(RoomCollidersDto snapshot, CancellationToken ct) =>
+        _hub.Clients.All.SendAsync("roomAdded", new {
+            levelId = snapshot.LevelId,
+            roomInstanceId = snapshot.RoomInstanceId,
+            name = snapshot.Name
+        }, ct);
+
+    public Task PublishRoomRemovedAsync(int levelId, int roomInstanceId, CancellationToken ct) =>
+        _hub.Clients.All.SendAsync("roomRemoved", new { levelId, roomInstanceId }, ct);
 }

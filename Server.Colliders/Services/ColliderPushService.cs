@@ -31,6 +31,15 @@ public class ColliderPushService(IColliderSnapshotProvider _snapshots,
                 foreach (var room in current)
                 {
                     var key = (room.LevelId, room.RoomInstanceId);
+                    if (!_last.ContainsKey(key))
+                    {
+                        await _publisher.PublishRoomAddedAsync(room, stoppingToken);
+                    }
+                }
+
+                foreach (var room in current)
+                {
+                    var key = (room.LevelId, room.RoomInstanceId);
 
                     if (!_last.TryGetValue(key, out var prev))
                     {
@@ -52,6 +61,13 @@ public class ColliderPushService(IColliderSnapshotProvider _snapshots,
                     _last[key] = room;
                 }
                 
+                var removedKeys = _last.Keys.Where(k => !current.Any(r => r.LevelId == k.Item1 && r.RoomInstanceId == k.Item2)).ToList();
+                foreach (var rk in removedKeys)
+                {
+                    await _publisher.PublishRoomRemovedAsync(rk.Item1, rk.Item2, stoppingToken);
+                    _last.Remove(rk);
+                }
+
                 _currentIntervalMs = totalChanges switch
                 {
                     > 50 => Math.Max(100, _currentIntervalMs / 2),
