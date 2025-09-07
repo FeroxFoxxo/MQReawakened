@@ -421,8 +421,8 @@ h2 {
 }
 
 .admin-dropdown {
-    background: linear-gradient(160deg, #2A6A7C 0%, #216d9b 70%, #144455 100%);
-    border: 1px solid rgba(255,255,255,0.15);
+    background: #577B3D; /* Solid to match command card header */
+    border: 1px solid rgba(255,255,255,0.18);
     min-width: 12rem;
     padding-top: 0.25rem;
     padding-bottom: 0.25rem;
@@ -435,12 +435,12 @@ h2 {
 }
 .admin-dropdown .dropdown-item:hover,
 .admin-dropdown .dropdown-item:focus {
-    background: #577B3D;
+    background: #2A6A7C; /* Slightly darker for hover */
     color: #ffffff;
     padding-left: 1.15rem;
 }
 .admin-dropdown .dropdown-item:active {
-    background: #2A6A7C;
+    background: #216d9b; /* Active press color */
     color: #e8faff;
 }
 .navbar-dark .dropdown-menu.admin-dropdown {
