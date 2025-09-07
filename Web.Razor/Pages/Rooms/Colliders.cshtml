@@ -34,69 +34,81 @@
         #roomList .list-group-item.collider-item.active-room { background:#256d8f; color:#fff; font-weight:600; }
         #status, #stats, #hoverInfo, #colliderDetail { color:#b7e3ff !important; text-shadow:0 0 3px rgba(0,0,0,0.7); }
         .legend span { border:1px solid rgba(255,255,255,0.15); }
-        .filter-swatch { display:inline-block; width:13px; height:13px; border:1px solid rgba(0,0,0,0.6); margin-right:6px; vertical-align:middle; border-radius:3px; box-shadow:0 0 2px rgba(0,0,0,0.5); }
-        #filterList .form-check { padding:2px 4px; margin:0; }
-        #filterList label { cursor:pointer; user-select:none; }
+        /* Filter color swatches */
+        .filter-swatch { display:inline-block; width:14px; height:14px; border:1px solid rgba(0,0,0,0.55); margin-right:4px; border-radius:3px; box-shadow:0 0 2px rgba(0,0,0,0.45); }
+        #filterList .form-check { padding:2px 4px; margin:0; display:flex; align-items:center; gap:6px; }
+        #filterList .form-check-input { margin:0; position:static; width:16px; height:16px; }
+        #filterList label { cursor:pointer; user-select:none; display:flex; align-items:center; gap:6px; margin:0; }
         #filterList input { cursor:pointer; }
+        /* Green paper style for overlay info */
         #status, #stats, #hoverInfo, #colliderDetail { background:linear-gradient(135deg, rgba(70,160,70,0.22), rgba(40,110,40,0.28)); border:1px solid rgba(90,200,90,0.45); border-radius:4px; padding:2px 6px; color:#081b08 !important; font-weight:500; }
         #hoverInfo { margin-top:4px; }
+        /* Sidebar green panel */
+        .collider-side { background:linear-gradient(135deg,#3e8b44 0%, #296730 55%, #1e4f25 100%); border:1px solid #2d7c33; border-radius:8px; padding:10px 10px 12px; box-shadow:0 2px 6px rgba(0,0,0,0.35), inset 0 0 6px rgba(0,0,0,0.25); }
+        .collider-side h5, .collider-side h6, .collider-side label, .collider-side li, .collider-side .legend span { color:#081b08; }
+        .collider-side h5, .collider-side h6 { text-shadow:0 1px 2px rgba(255,255,255,0.35); font-weight:600; }
+        .collider-side .legend span { background:rgba(255,255,255,0.55) !important; font-weight:600; }
+        .collider-side .legend span[style*='1a535c'] { color:#fff !important; }
+        /* Brand visibility */
+        .navbar-brand, .navbar .navbar-brand { color:#e9ffe9 !important; text-shadow:0 0 4px rgba(0,0,0,0.7); font-weight:600; }
+        /* Room list integration */
+        .collider-side #roomList { background:rgba(255,255,255,0.15); border:1px solid rgba(0,0,0,0.25); }
+        .collider-side #roomList .list-group-item { background:rgba(255,255,255,0.55); color:#052005; }
+        .collider-side #roomList .list-group-item.active-room { background:#ffe28a; color:#000; }
+        .collider-side #roomList .list-group-item:hover { background:#fff9d2; }
     </style>
 }
 <div class="container-fluid mt-3">
     <div class="row">
         <div class="col-md-3">
-            <h5>Rooms</h5>
-            <div id="roomList" class="list-group"></div>
-            <hr />
-            <h6>Filters</h6>
-            <div id="filterList" class="mb-2"></div>
-            <div class="btn-group mb-2" role="group">
-                <button id="resetView" class="btn btn-sm btn-secondary">Fit</button>
-                <button id="autoFitToggle" class="btn btn-sm btn-outline-secondary active" data-enabled="true"
-                    title="Auto-fit when bounds grow">Auto-Fit</button>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="showGrid" checked>
-                <label class="form-check-label" for="showGrid">Grid</label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="flashChanges" checked>
-                <label class="form-check-label" for="flashChanges">Flash Changes</label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="showInactive" checked>
-                <label class="form-check-label" for="showInactive">Show Inactive</label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="showInvisible" checked>
-                <label class="form-check-label" for="showInvisible">Show Invisible</label>
-            </div>
-            <div class="input-group input-group-sm mb-2">
-                <input type="text" id="searchCollider" class="form-control" placeholder="Collider ID..." />
-                <div class="input-group-append">
-                    <button id="searchBtn" class="btn btn-outline-secondary">Find</button>
+            <div class="collider-side">
+                <h5 class="mb-2">Rooms</h5>
+                <div id="roomList" class="list-group mb-2"></div>
+                <h6 class="mt-2 mb-1">Filters</h6>
+                <div id="filterList" class="mb-2"></div>
+                <div class="btn-group mb-2" role="group">
+                    <button id="resetView" class="btn btn-sm btn-light">Fit</button>
+                    <button id="autoFitToggle" class="btn btn-sm btn-outline-dark active" data-enabled="true" title="Auto-fit when bounds grow">Auto-Fit</button>
                 </div>
+                <div class="form-check mb-1">
+                    <input class="form-check-input" type="checkbox" id="showGrid" checked>
+                    <label class="form-check-label" for="showGrid">Grid</label>
+                </div>
+                <div class="form-check mb-1">
+                    <input class="form-check-input" type="checkbox" id="flashChanges" checked>
+                    <label class="form-check-label" for="flashChanges">Flash Changes</label>
+                </div>
+                <div class="form-check mb-1">
+                    <input class="form-check-input" type="checkbox" id="showInactive" checked>
+                    <label class="form-check-label" for="showInactive">Show Inactive</label>
+                </div>
+                <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" id="showInvisible" checked>
+                    <label class="form-check-label" for="showInvisible">Show Invisible</label>
+                </div>
+                <div class="input-group input-group-sm mb-2">
+                    <input type="text" id="searchCollider" class="form-control" placeholder="Collider ID..." />
+                    <button id="searchBtn" class="btn btn-outline-dark">Find</button>
+                </div>
+                <div class="btn-group btn-group-sm mb-3 w-100" role="group">
+                    <button id="exportJson" class="btn btn-outline-dark" title="Download collider list as JSON">JSON</button>
+                    <button id="exportPng" class="btn btn-outline-dark" title="Download canvas as PNG">PNG</button>
+                    <button id="toggleBBox" class="btn btn-outline-dark" data-enabled="false" title="Show bounding box">BBox</button>
+                </div>
+                <h6 class="mb-1">Controls</h6>
+                <ul class="small ps-3 mb-2">
+                    <li>Drag to pan</li>
+                    <li>Scroll to zoom</li>
+                    <li>Double-click to reset view</li>
+                </ul>
+                <div class="legend mb-2">
+                    <span style="background:#ff6b6b">Attack</span>
+                    <span style="background:#4ecdc4">Player</span>
+                    <span style="background:#ffe66d">Enemy</span>
+                    <span style="background:#1a535c;color:#fff;">Default</span>
+                </div>
+                <div id="colliderDetail" class="small"></div>
             </div>
-            <div class="btn-group btn-group-sm mb-3" role="group">
-                <button id="exportJson" class="btn btn-outline-primary"
-                    title="Download collider list as JSON">JSON</button>
-                <button id="exportPng" class="btn btn-outline-primary" title="Download canvas as PNG">PNG</button>
-                <button id="toggleBBox" class="btn btn-outline-secondary" data-enabled="false"
-                    title="Show bounding box">BBox</button>
-            </div>
-            <h6>Controls</h6>
-            <ul class="small">
-                <li>Drag to pan</li>
-                <li>Scroll to zoom</li>
-                <li>Double-click to reset view</li>
-            </ul>
-            <div class="legend">
-                <span style="background:#ff6b6b">Attack</span>
-                <span style="background:#4ecdc4">Player</span>
-                <span style="background:#ffe66d">Enemy</span>
-                <span style="background:#1a535c;color:#fff;">Default</span>
-            </div>
-            <div id="colliderDetail" class="small mt-3"></div>
         </div>
         <div class="col-md-9">
             <canvas id="colliderCanvas"></canvas>
@@ -234,12 +246,26 @@
             container.innerHTML = '';
             Object.keys(colors).forEach(t => {
                 const id = 'flt_' + t;
+                const swatch = colors[t] || '#1a535c';
                 const div = document.createElement('div');
                 div.className = 'form-check';
-                const swatch = colors[t] || '#1a535c';
-                div.innerHTML = `\n<input class='form-check-input' type='checkbox' id='${id}' ${(activeTypes.has(t) ? 'checked' : '')}>\n<label class='form-check-label small' for='${id}'><span class="filter-swatch" style="background:${swatch}"></span>${t}</label>`;
+                const input = document.createElement('input');
+                input.type = 'checkbox';
+                input.className = 'form-check-input';
+                input.id = id;
+                input.checked = activeTypes.has(t);
+                const label = document.createElement('label');
+                label.className = 'form-check-label small';
+                label.setAttribute('for', id);
+                const span = document.createElement('span');
+                span.className = 'filter-swatch';
+                span.style.background = swatch;
+                label.appendChild(span);
+                label.appendChild(document.createTextNode(t));
+                div.appendChild(input);
+                div.appendChild(label);
                 container.appendChild(div);
-                document.getElementById(id).addEventListener('change', e => { if (e.target.checked) activeTypes.add(t); else activeTypes.delete(t); draw(); });
+                input.addEventListener('change', e => { if (e.target.checked) activeTypes.add(t); else activeTypes.delete(t); draw(); });
             });
         }
         async function loadRooms() {
