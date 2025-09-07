@@ -1,17 +1,15 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
-	<title>@ViewData["Title"] - @ViewData["ServerName"]</title>
-	<meta name="title" content="@ViewData["ServerName"]">
-	<meta name="description" content="An open-source reimplementation & emulation of the backend of MQ, written from scratch without including intellectual property from the original game.">
-	<meta name="keywords" content="@ViewData["ServerName"]">
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
-	<!-- <meta name="robots" content="index, follow"> -->
-	<meta name="robots" content="noindex">
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<meta name="language" content="English">
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+	<title>@ViewData["Title"] - @ViewData["ServerName"]</title>
+	<meta name="title" content="@ViewData["ServerName"]" />
+	<meta name="description" content="An open-source reimplementation & emulation of the backend of MQ, written from scratch without including intellectual property from the original game." />
+	<meta name="keywords" content="@ViewData["ServerName"]" />
+	<meta name="robots" content="noindex" />
+	<meta name="language" content="English" />
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
 	<link href="/_content/Web.Razor/style.css" rel="stylesheet" />
 	@await RenderSectionAsync("Stylesheets", false)
 	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
@@ -19,70 +17,47 @@
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 	@await RenderSectionAsync("Scripts", false)
 	<script>
-		$(document).ready(function () {
+		$(function () {
 			if (!getCookie("disclaimerAccepted")) {
 				$('#disclaimerModal').modal('show');
 			}
-
-			$('#agreeButton').click(function () {
-				setCookie("disclaimerAccepted", "true", 365);
-				$('#disclaimerModal').modal('hide');
-			});
-
-			$('#returnButton').click(function () {
-				window.history.back();
-			});
+			$('#agreeButton').on('click', function () { setCookie("disclaimerAccepted", "true", 365); $('#disclaimerModal').modal('hide'); });
+			$('#returnButton').on('click', function () { window.history.back(); });
 		});
-
 		function setCookie(name, value, days) {
-			var expires = "";
-			if (days) {
-				var date = new Date();
-				date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-				expires = "; expires=" + date.toUTCString();
-			}
+			var expires = ""; if (days) { var d = new Date(); d.setTime(d.getTime() + (days * 86400000)); expires = "; expires=" + d.toUTCString(); }
 			document.cookie = name + "=" + (value || "") + expires + "; path=/";
 		}
-
 		function getCookie(name) {
-			var nameEQ = name + "=";
-			var ca = document.cookie.split(';');
-			for (var i = 0; i < ca.length; i++) {
-				var c = ca[i];
-				while (c.charAt(0) == ' ') c = c.substring(1, c.length);
-				if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
-			}
+			var nameEQ = name + "="; var ca = document.cookie.split(';');
+			for (var i = 0; i < ca.length; i++) { var c = ca[i]; while (c.charAt(0) === ' ') c = c.substring(1); if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length); }
 			return null;
 		}
 	</script>
 </head>
-<body>
-	<div class="content">
-		<nav class="navbar navbar-expand-lg navbar-dark bg-custom">
-			<div class="container">
+<body class="modern-shell d-flex flex-column min-vh-100">
+	<a href="#main" class="visually-hidden focusable">Skip to content</a>
+	<header class="mq-container">
+		<nav class="navbar navbar-expand-lg navbar-dark nav-modern" role="navigation" aria-label="Primary">
+			<div class="mq-container px-0">
 				<a class="navbar-brand" href="/">
-					<img src="/_content/Web.Razor/logo.png" alt="Logo" style="height: 40px;">
-					@ViewData["ServerName"]
+					<img src="/_content/Web.Razor/logo.png" alt="Logo" style="height:40px;border-radius:12px;box-shadow:0 0 0 1px rgba(0,0,0,.4),0 4px 10px -4px rgba(0,0,0,.6);" />
+					<span>@ViewData["ServerName"]</span>
 				</a>
-
+				<div class="d-flex align-items-center ml-auto order-lg-2" style="gap:10px;">
+					<button id="themeToggle" class="theme-toggle" aria-label="Toggle theme" title="Toggle theme">
+						<svg id="themeToggleIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a1 1 0 0 1 1 1 7 7 0 0 0 7 7 1 1 0 0 1 0 2 7 7 0 0 0-7 7 1 1 0 0 1-2 0 7 7 0 0 0-7-7 1 1 0 0 1 0-2 7 7 0 0 0 7-7 1 1 0 0 1 1-1Z" /></svg>
+					</button>
+				</div>
 				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon"></span>
 				</button>
-
 				<div class="collapse navbar-collapse" id="navbarNav">
-					<ul class="navbar-nav ml-auto">
-						<li class="nav-item">
-							<a class="nav-link" href="/">Home</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="/patchnotes">Patch Notes</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="/en/signup">Sign Up</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="/download">Download</a>
-						</li>
+					<ul class="navbar-nav ml-auto align-items-lg-center">
+						<li class="nav-item"><a class="nav-link @(ViewContext?.ActionDescriptor?.DisplayName?.Contains("Index") == true ? "active" : null)" href="/">Home</a></li>
+						<li class="nav-item"><a class="nav-link" href="/patchnotes">Patch Notes</a></li>
+						<li class="nav-item"><a class="nav-link" href="/en/signup">Sign Up</a></li>
+						<li class="nav-item"><a class="nav-link" href="/download">Download</a></li>
 						<li class="nav-item dropdown">
 							<a class="nav-link dropdown-toggle" href="#" id="adminDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Admin</a>
 							<div class="dropdown-menu dropdown-menu-right admin-dropdown" aria-labelledby="adminDropdown">
@@ -94,31 +69,32 @@
 				</div>
 			</div>
 		</nav>
+	</header>
+	<main id="main" class="flex-fill" role="main">
 		@RenderBody()
-	</div>
-	<footer class="footer bg-custom text-white mt-5 navbar-dark">
-		<div class="container">
-			<div class="text-center py-3">
-				<a class="nav-link" href="/en/news" style="display: inline;">News</a>
-				<a class="nav-link" href="/en/privacy-policy" style="display: inline;">Privacy Policy</a>
-				<a class="nav-link" href="/" style="display: inline;">&copy; @DateTime.Now.Year @ViewData["ServerName"]</a>
-				<a class="nav-link" href="/en/terms-of-use" style="display: inline;">Terms of Use</a>
-				<a class="nav-link" href="/en/report-a-bug" style="display: inline;">Help</a>
+	</main>
+	<footer class="footer-modern mt-5" role="contentinfo">
+		<div class="mq-container">
+			<div class="footer-links">
+				<a href="/en/news">News</a>
+				<a href="/en/privacy-policy">Privacy Policy</a>
+				<a href="/">&copy; @DateTime.Now.Year @ViewData["ServerName"]</a>
+				<a href="/en/terms-of-use">Terms of Use</a>
+				<a href="/en/report-a-bug">Help</a>
 			</div>
 		</div>
 	</footer>
+	<div class="toast-host" id="toastHost" aria-live="polite" aria-atomic="true"></div>
 	<div class="modal fade" id="disclaimerModal" tabindex="-1" role="dialog" aria-labelledby="disclaimerModalLabel" aria-hidden="true">
 		<div class="modal-dialog" role="document">
-			<div class="modal-content">
+			<div class="modal-content panel-glass card-gradient-border">
 				<div class="modal-header">
 					<h5 class="modal-title" id="disclaimerModalLabel">Disclaimer</h5>
 				</div>
 				<div class="modal-body">
 					<p>
-						This project is a fan-made remake. We are not affiliated, associated, authorized, endorsed by, or in any way officially connected with the original developers or publishers, including any of its subsidiaries or affiliates. All trademarks, service marks, and company names are the property of their respective owners.
-						<br /><br />
-						This remake is created purely for entertainment purposes and to celebrate the original game. We do not intend to infringe on any copyrights or trademarks. If you are the copyright holder and believe this project violates your rights, please contact us, and we will address your concerns promptly.
-						<br /><br />
+						This project is a fan-made remake. We are not affiliated, associated, authorized, endorsed by, or in any way officially connected with the original developers or publishers, including any of its subsidiaries or affiliates. All trademarks, service marks, and company names are the property of their respective owners.<br /><br />
+						This remake is created purely for entertainment purposes and to celebrate the original game. We do not intend to infringe on any copyrights or trademarks. If you are the copyright holder and believe this project violates your rights, please contact us, and we will address your concerns promptly.<br /><br />
 						By continuing, you acknowledge that this project is unofficial and that the original developers are not responsible for any content or issues that may arise from this remake.
 					</p>
 				</div>
@@ -130,4 +106,40 @@
 		</div>
 	</div>
 </body>
+<script>
+// Theme toggle
+(function(){
+	const root = document.documentElement; const btn = document.getElementById('themeToggle'); const icon = document.getElementById('themeToggleIcon');
+	const saved = localStorage.getItem('mq-theme'); if(saved){ root.setAttribute('data-theme', saved); }
+	function setIcon(){ if(root.getAttribute('data-theme')==='light'){ icon.innerHTML='<circle cx="12" cy="12" r="5" />'; } else { icon.innerHTML='<path d="M12 3a1 1 0 0 1 1 1 7 7 0 0 0 7 7 1 1 0 0 1 0 2 7 7 0 0 0-7 7 1 1 0 0 1-2 0 7 7 0 0 0-7-7 1 1 0 0 1 0-2 7 7 0 0 0 7-7 1 1 0 0 1 1-1Z" />'; } }
+	setIcon();
+	btn && btn.addEventListener('click',()=>{ const mode = root.getAttribute('data-theme')==='light'?'dark':'light'; root.setAttribute('data-theme', mode); localStorage.setItem('mq-theme', mode); setIcon(); showToast('Theme switched to '+mode.charAt(0).toUpperCase()+mode.slice(1), 'success'); });
+})();
+
+// Reveal logic
+const revealEls=[...document.querySelectorAll('[data-reveal], .reveal')];
+if('IntersectionObserver' in window){
+	const io=new IntersectionObserver((entries)=>{ entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('reveal-active'); io.unobserve(e.target); } }); }, {threshold:.15});
+	revealEls.forEach(el=>io.observe(el));
+} else { revealEls.forEach(el=>el.classList.add('reveal-active')); }
+
+// Toast system
+function showToast(message,type='info',timeout=4500){
+	const host=document.getElementById('toastHost'); if(!host) return; const el=document.createElement('div'); el.className='toast toast-'+type+' reveal-active';
+	el.innerHTML='<div style="flex:1;">'+message+'</div><button class="toast-close" aria-label="Close">&times;</button>';
+	host.appendChild(el); const closer=el.querySelector('.toast-close'); let to=setTimeout(()=>dismiss(), timeout);
+	function dismiss(){ if(!el.parentNode) return; el.style.opacity='0'; el.style.transform='translateY(-6px)'; setTimeout(()=>el.remove(), 320); }
+	closer.addEventListener('click',()=>{ clearTimeout(to); dismiss(); });
+}
+window.showToast=showToast;
+// Stagger reveal ordering
+document.addEventListener('DOMContentLoaded',()=>{
+	const nodes=[...document.querySelectorAll('[data-reveal]')];
+	nodes.forEach((el,i)=>{ el.style.transitionDelay = (Math.min(i,12)*45)+'ms'; });
+});
+// Accessible live region for toasts
+(()=>{ const host=document.getElementById('toastHost'); if(host){ host.setAttribute('role','status'); host.setAttribute('aria-live','polite'); host.setAttribute('aria-relevant','additions'); }})();
+// Panel factory helper
+window.createPanel=(cfg={})=>{ const d=document.createElement('div'); d.className='panel-glass card-gradient-border'; if(cfg.center) d.classList.add('center'); if(cfg.classes) d.classList.add(cfg.classes); if(cfg.style) d.setAttribute('style',cfg.style); if(cfg.title||cfg.description){ const h=document.createElement('div'); h.style.marginBottom='1rem'; let inner=''; if(cfg.kicker) inner+=`<div class="t-sub" style="margin-bottom:.3rem;">${cfg.kicker}</div>`; if(cfg.title) inner+=`<h2 class="t-display" style="font-size:1.6rem;margin:0;">${cfg.title}</h2>`; if(cfg.description) inner+=`<p class="t-lead" style="font-size:.8rem;margin-top:.35rem;max-width:560px;">${cfg.description}</p>`; h.innerHTML=inner; d.appendChild(h);} return d; };
+</script>
 </html>

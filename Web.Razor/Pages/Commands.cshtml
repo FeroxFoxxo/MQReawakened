@@ -25,11 +25,8 @@
     </script>
 }
 
-<div class="container card-text-body">
-    <header class="text-center my-4 site-header">
-        <h1 class="mb-0">@ViewData["ServerName"] Command Reference</h1>
-        <p class="site-description">Note! Commands may not be fully implemented, or may not work on older versions of MQ.</p>
-    </header>
+<section class="mq-container mt-space fade-in">
+    @await Html.PartialAsync("_PanelShell", new Web.Razor.Pages.Shared.PanelShellModel { Title = (string)ViewData["ServerName"] + " Command Reference", Description = "Note: Some commands may not be fully implemented or may not work on older versions.", Center = true, AdditionalClasses = "flow panel-p-xl" })
     @functions {
         private void RenderParameter(ParameterModel parameter, string parentId)
         {
@@ -73,42 +70,34 @@
 
         private void RenderCommandList(List<CommandModel> commands, string name)
         {
-            <div class="container">
-                <h2 class="section-header text-center mt-4">@name Commands</h2>
-                <div class="row">
-                    @foreach (var command in commands)
-                    {
-                        <div class="col-md-4 mb-4">
-                            <div class="card command-card h-100">
-                                <div class="card-header">
-                                    <h3>@command.CommandName</h3>
-                                </div>
-                                <div class="card-body">
-                                    <p>@command.CommandDescription</p>
-                                    @if (command.Parameters != null && command.Parameters.Any())
-                                    {
-                                        int parameterId = 0;
-                                        foreach (var parameter in command.Parameters)
-                                        {
-                                            parameterId++;
-                                            RenderParameter(parameter, $"options-{name}-{command.CommandName}-{parameterId}");
-                                        }
-                                    }
-                                </div>
-                                <div class="card-footer @(command.AccessLevel > Server.Base.Accounts.Enums.AccessLevel.Player ? "custom-red" : "custom-blue")">
-                                    Requires: @command.AccessLevel
-                                </div>
-                            </div>
+            <h2 class="t-sub" style="margin-top:2rem;" data-reveal>@name Commands</h2>
+            <div class="command-grid mt-2" data-reveal>
+                @foreach (var command in commands)
+                {
+                    <div class="command-card-modern" data-reveal>
+                        <div>
+                            <h3>@command.CommandName</h3>
+                            <p>@command.CommandDescription</p>
                         </div>
-                    }
-                </div>
+                        @if (command.Parameters != null && command.Parameters.Any())
+                        {
+                            int parameterId = 0;
+                            foreach (var parameter in command.Parameters)
+                            {
+                                parameterId++;
+                                RenderParameter(parameter, $"options-{name}-{command.CommandName}-{parameterId}");
+                            }
+                        }
+                        <div class="command-meta @(command.AccessLevel > Server.Base.Accounts.Enums.AccessLevel.Player ? "danger" : null)">
+                            <span>Requires @command.AccessLevel</span>
+                        </div>
+                    </div>
+                }
             </div>
         }
     }
-    <div class="commands">
-        @{
-            RenderCommandList(Model.ServerCommands, "Server");
-            RenderCommandList(Model.ClientCommands, "Client");
-        }
+    <div class="flow" style="margin-top:1rem;">
+        @{ RenderCommandList(Model.ServerCommands, "Server"); RenderCommandList(Model.ClientCommands, "Client"); }
     </div>
-</div>
+    </div>
+</section>

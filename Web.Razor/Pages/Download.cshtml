@@ -5,20 +5,15 @@
     ViewData["Title"] = "Download";
 }
 
-<div class="container d-flex justify-content-center align-items-center">
-    <div class="align card signup-card">
-        <div class="grid align_item">
-            <div class="register">
-                <img class="site_logo" src="/_content/Web.Razor/logo.png" , alt="Site Logo" />
-                <h2>Starting Download</h2>
-                <p>Thanks for downloading @ViewData["ServerName"]. We hope you enjoy your time as you adventure into the land of Ook.</p>
-                <div>
-                    <p id="downloadMessage" style="display:none;">Your file is being downloaded...</p>
-                </div>
-            </div>
+<section class="mq-container mt-space fade-in">
+    @await Html.PartialAsync("_PanelShell", new Web.Razor.Pages.Shared.PanelShellModel { Title = "Starting Download", Description = "Thanks for downloading " + (string)ViewData["ServerName"] + ". Your adventure into the land of Ook begins soon.", Center = true, AdditionalClasses = "panel-p-xl" })
+        <img class="site_logo" src="/_content/Web.Razor/logo.png" alt="Site Logo" style="max-width:160px; margin-bottom:1.25rem;" data-reveal />
+        <p id="downloadMessage" class="stat-pill" style="display:none; margin-top:1.25rem;" data-reveal>Your file is being downloaded...</p>
+        <div style="margin-top:1.75rem;" data-reveal>
+            <a href="/StartDownload" class="btn-modern btn-accent" style="padding:14px 30px;">If it doesn't start, click here</a>
         </div>
     </div>
-</div>
+</section>
 
 @section Scripts {
     <script>

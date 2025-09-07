@@ -18,118 +18,49 @@
 	}
 }
 
-<style>
-	/* Scoped styles to this page only to avoid impacting global layout/navigation */
-	.release-notes-page ul {
-		list-style-type: disc;
-		padding-left: 20px;
-	}
+@* Styles moved to global stylesheet *@
 
-	.release-notes-page li {
-		margin-bottom: 10px;
-	}
-
-	#versionDropdown {
-		font-size: 16px;
-		background-color: #333 !important;
-		color: white;
-		border-color: #3E4C00 !important;
-		border-radius: 20px;
-		padding: 10px 20px;
-	}
-
-	#versionDropdown option {
-		background-color: #333;
-		color: white;
-	}
-
-	#versionDropdown:hover {
-		opacity: 0.8;
-	}
-
-	.release-notes {
-		display: none; /* Hide all release notes by default */
-	}
-</style>
-
-<div class="container mt-4 release-notes-page">
-	<div class="card custom-home-card shadow-lg">
-		<div class="card-body">
-			<div class="text-center">
-				<p class="display-4"><span class="game-title">@ViewData["ServerName"] Patch Notes</span></p>
-				<p class="lead">
-					Welcome to the patch notes for <span class="game-title">@ViewData["ServerName"]</span>!
-					<br />
-					Select a version from the dropdown below to view its changes.
-				</p>
-				<br />
-				<!-- Dynamic Dropdown -->
-				<select id="versionDropdown" onchange="updateUrlWithVersion()">
-					@for (int i = 0; i < Model.ReleaseNotes.Count; i++)
-					{
-						var note = Model.ReleaseNotes[i];
-						<option value="@note.Version" selected="@(i == selectedIndex ? "selected" : null)">@(i == 0 ? "v" + note.Version + " (Latest)" : "v" + note.Version)</option>
-					}
-				</select>
-			</div>
-			<br />
-			<!-- Dynamic Release Notes Sections -->
-			<div class="form-container">
+<section class="mq-container mt-space fade-in release-notes-page">
+	@await Html.PartialAsync("_PanelShell", new Web.Razor.Pages.Shared.PanelShellModel { Title = (string)ViewData["ServerName"] + " Patch Notes", Description = "Welcome! Select a version below to view its changes.", Center = false, AdditionalClasses = "flow" })
+		<div class="center" data-reveal>
+			<select id="versionDropdown" class="version-select" onchange="updateUrlWithVersion()" data-reveal>
 				@for (int i = 0; i < Model.ReleaseNotes.Count; i++)
 				{
 					var note = Model.ReleaseNotes[i];
-					<div id="@($"releaseNotes{i}")" class="release-notes" style="display: @(i == selectedIndex ? "block" : "none");">
-						<div class="text-center">
-							<h3 class="card-title">
-								<span class="game-title">
-									Version @note.Version @(string.IsNullOrEmpty(note.Title) ? string.Empty : " - " + note.Title)
-								</span>
-							</h3>
-							<p class="card-text">
-								Release Date: @note.ReleaseDate
-							</p>
-						</div>
-						<br />
+					<option value="@note.Version" selected="@(i == selectedIndex ? "selected" : null)">@(i == 0 ? "v" + note.Version + " (Latest)" : "v" + note.Version)</option>
+				}
+			</select>
+		</div>
+		<div data-reveal>
+			@for (int i = 0; i < Model.ReleaseNotes.Count; i++)
+			{
+				var note = Model.ReleaseNotes[i];
+				<article id="@($"releaseNotes{i}")" class="release-note-panel" style="display:@(i == selectedIndex ? "block" : "none");">
+					<div style="margin-top:1.5rem;">
+						<h2 class="t-sub" style="color:var(--mq-color-text);">Version @note.Version @(string.IsNullOrEmpty(note.Title) ? string.Empty : " - " + note.Title)</h2>
+						<p style="font-size:.7rem; letter-spacing:.55px; text-transform:uppercase; opacity:.7;">Release Date: @note.ReleaseDate</p>
+					</div>
+					<div class="flow" style="margin-top:.5rem;">
 						@foreach (var item in note.Notes)
 							@Html.Raw(item)
-
 					</div>
-				}
-			</div>
+				</article>
+			}
 		</div>
-		<script>
-			// Function to update the URL with the selected version
-			function updateUrlWithVersion() {
-				// Get the selected version from the dropdown
-				const selectedVersion = document.getElementById('versionDropdown').value;
-
-				// Update the URL with the selected version
-				const newUrl = `${window.location.pathname}?version=${selectedVersion}`;
-				window.history.pushState({}, '', newUrl);
-
-				// Show the selected release notes
-				showReleaseNotes();
-			}
-
-			// Function to show the selected release notes
-			function showReleaseNotes() {
-				// Hide all release notes sections
-				document.querySelectorAll('.release-notes').forEach(section => {
-					section.style.display = 'none';
-				});
-
-				// Get the selected version from the dropdown
-				const selectedVersion = document.getElementById('versionDropdown').value;
-
-				// Find the index of the selected version
-				const selectedIndex = Array.from(document.getElementById('versionDropdown').options).findIndex(option => option.value === selectedVersion);
-
-				// Show the selected release notes section
-				const selectedSection = document.getElementById(`releaseNotes${selectedIndex}`);
-				if (selectedSection) {
-					selectedSection.style.display = 'block';
-				}
-			}
-		</script>
 	</div>
-</div>
+	<script>
+		function updateUrlWithVersion() {
+			const v = document.getElementById('versionDropdown').value;
+			const newUrl = `${window.location.pathname}?version=${v}`;
+			window.history.pushState({}, '', newUrl);
+			showReleaseNotes();
+		}
+		function showReleaseNotes() {
+			document.querySelectorAll('.release-note-panel').forEach(p => p.style.display = 'none');
+			const v = document.getElementById('versionDropdown').value;
+			const idx = Array.from(document.getElementById('versionDropdown').options).findIndex(o => o.value === v);
+			const target = document.getElementById(`releaseNotes${idx}`);
+			if (target) target.style.display = 'block';
+		}
+	</script>
+</section>
