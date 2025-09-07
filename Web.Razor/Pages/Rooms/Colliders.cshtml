@@ -369,6 +369,48 @@
             });
         }
 
+        // Graceful suspend/resume handlers (were referenced but missing)
+        function suspendPage() {
+            if (!pageActive) return;
+            pageActive = false;
+            // Stop further animation frames quickly
+            changeFlash.clear();
+            // Intentionally stop SignalR to avoid reconnect churn while hidden/unloaded
+            try {
+                if (hub && hub.state !== signalR.HubConnectionState.Disconnected) {
+                    intentionalStop = true;
+                    hub.stop().catch(() => { /* ignore */ });
+                }
+            } catch (_) { }
+        }
+
+        function resumePage() {
+            if (pageActive) return;
+            pageActive = true;
+            intentionalStop = false;
+            // Restart hub if needed
+            if (hub && hub.state === signalR.HubConnectionState.Disconnected) {
+                hub.start().then(() => {
+                    // Re-subscribe current room to refresh state
+                    if (currentRoom) {
+                        hub.invoke('SubscribeRoom', currentRoom.levelId, currentRoom.roomInstanceId).then(data => {
+                            if (data) {
+                                colliders = (data.colliders || data.Colliders || []).map(normalizeCollider);
+                                version = data.version || version;
+                                lastBbox = data.bbox || lastBbox;
+                                draw();
+                            }
+                        }).catch(console.error);
+                    } else {
+                        loadRooms();
+                    }
+                }).catch(err => console.error('Resume hub start failed', err));
+            } else {
+                draw();
+            }
+            scheduleNextFrame();
+        }
+
         function shadeColor(hex, percent) {
             const num = parseInt(hex.replace('#', ''), 16);
             let r = (num >> 16) + percent;
