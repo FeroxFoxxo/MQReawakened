@@ -108,10 +108,6 @@ public static class NpcExtensions
 
         player.SendXt("na", questModel, setActive ? 1 : 0);
 
-        if (player.Room != null)
-            foreach (var trigger in player.Room.GetEntitiesFromType<IQuestTriggered>())
-                trigger.QuestAdded(quest, player);
-
         player.UpdateNpcsInLevel(quest);
 
         logger.LogInformation("[{QuestName} ({QuestId})] [QUEST STARTED]", quest.Name, questModel.Id);
@@ -134,6 +130,10 @@ public static class NpcExtensions
 
             player.SendUpdatedInventory();
         }
+
+        if (player.Room != null)
+            foreach (var trigger in player.Room.GetEntitiesFromType<IQuestTriggered>())
+                trigger.QuestAdded(quest, player);
 
         return questModel;
     }
