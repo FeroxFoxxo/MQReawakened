@@ -44,7 +44,7 @@
 
     .collider-side { position:sticky; top:var(--space-3); background:linear-gradient(160deg,#112836,#0f2430 45%,#0a1b23); border:1px solid #1d4254; border-radius:18px; padding:20px 18px 22px; box-shadow:0 4px 18px -4px rgba(0,0,0,0.6), inset 0 0 0 1px rgba(255,255,255,0.03); display:flex; flex-direction:column; gap:18px; font-size:13px; backdrop-filter:blur(4px) saturate(130%); position:relative; overflow:hidden; }
     .collider-side:before { content:""; position:absolute; inset:0; pointer-events:none; background:radial-gradient(circle at 15% 12%,rgba(47,168,216,.15),transparent 60%), radial-gradient(circle at 80% 85%,rgba(47,168,216,.08),transparent 70%); mix-blend-mode:screen; opacity:.8; }
-    .collider-side:after { content:""; position:absolute; inset:0; padding:1px; border-radius:inherit; background:linear-gradient(155deg,rgba(47,168,216,.55),rgba(47,168,216,0) 40%,rgba(47,168,216,.4)); -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0); -webkit-mask-composite:xor; mask-composite:exclude; }
+    .collider-side:after { content:""; position:absolute; inset:0; padding:1px; border-radius:inherit; background:linear-gradient(155deg,rgba(47,168,216,.55),rgba(47,168,216,0) 40%,rgba(47,168,216,.4)); -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0); -webkit-mask-composite:xor; mask-composite:exclude; pointer-events:none; }
     .collider-side h5.page-title { margin:0 0 var(--space-1); color:#f5fbff; font-weight:600; letter-spacing:.5px; text-shadow:0 1px 2px #000; font-size:1.1rem; display:flex; align-items:center; gap:6px; }
     .panel-section { display:flex; flex-direction:column; gap:var(--space-2); }
     .panel-section + .panel-section { border-top:1px solid rgba(255,255,255,0.05); padding-top:var(--space-3); }
@@ -99,7 +99,7 @@
     #roomList::-webkit-scrollbar-thumb:hover { background:linear-gradient(#276f8a,#236175); }
 
     .status-group > div { border-radius:14px !important; padding:4px 10px !important; background:linear-gradient(135deg,rgba(32,74,92,0.65),rgba(18,50,64,0.65)); backdrop-filter:blur(4px); box-shadow:0 0 0 1px rgba(47,168,216,0.25), 0 4px 14px -6px rgba(0,0,0,.65); position:relative; overflow:hidden; }
-    .status-group > div:before { content:""; position:absolute; inset:0; background:linear-gradient(120deg,rgba(47,168,216,.25),rgba(47,168,216,0) 65%); mix-blend-mode:overlay; opacity:.25; }
+    .status-group > div:before { content:""; position:absolute; inset:0; background:linear-gradient(120deg,rgba(47,168,216,.25),rgba(47,168,216,0) 65%); mix-blend-mode:overlay; opacity:.25; pointer-events:none; }
     #hoverInfo { font-weight:500; }
     .canvas-wrapper:focus-within #colliderCanvas { outline:2px solid var(--c-accent); outline-offset:4px; }
         ul.compact-list { list-style:disc; padding-left:16px; margin:0; display:flex; flex-direction:column; gap:2px; }
@@ -128,7 +128,7 @@
     #filterList .form-check-input:checked { transform:scale(1.1); }
 
     .export-group .btn { position:relative; overflow:hidden; }
-    .export-group .btn:before { content:""; position:absolute; inset:0; background:radial-gradient(circle at 30% 20%,rgba(255,255,255,.15),transparent 70%); opacity:0; transition:opacity .35s; }
+    .export-group .btn:before { content:""; position:absolute; inset:0; background:radial-gradient(circle at 30% 20%,rgba(255,255,255,.15),transparent 70%); opacity:0; transition:opacity .35s; pointer-events:none; }
     .export-group .btn:hover:before { opacity:1; }
 
     @@keyframes pulseFlash { 0%{box-shadow:0 0 0 0 rgba(47,168,216,.7);} 70%{box-shadow:0 0 0 8px rgba(47,168,216,0);} 100%{box-shadow:0 0 0 0 rgba(47,168,216,0);} }
@@ -214,10 +214,9 @@
 </div>
 
 @section Scripts {
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.0/signalr.min.js"
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@@microsoft/signalr@8.0.0/dist/browser/signalr.min.js" referrerpolicy="no-referrer"></script>
     <script>
-        const hub = new signalR.HubConnectionBuilder().withUrl('/hubs/colliders').withAutomaticReconnect().build();
+    const hub = new signalR.HubConnectionBuilder().withUrl('/hubs/colliders').withAutomaticReconnect().build();
         let rooms = []; let currentRoom = null; let colliders = []; let scale = 32; // world units to pixels
         let zoom = 1; let offsetX = 0; let offsetY = 0; let isPanning = false; let startPan = { x: 0, y: 0 };
         const colors = { Attack: '#ff6b6b', Player: '#4ecdc4', Enemy: '#ffe66d', Default: '#1a535c', Breakable: '#a29bfe', Hazard: '#ff922b', MovingPlatform: '#74c0fc', TriggerTarget: '#e599f7', TriggerReceiver: '#be4bdb', Stomper: '#ff8787', AiAttack: '#ff6b6b' };
@@ -238,8 +237,9 @@
         };
         let selectedColliderId = null;
         let fpsFrameCount = 0; let fpsLastTime = performance.now(); let fps = 0;
-        let pageActive = true; // false when tab hidden
-        let intentionalStop = false; // prevent auto-reconnect when intentionally suspended
+    let pageActive = true; // false when tab hidden
+    let intentionalStop = false; // prevent auto-reconnect when intentionally suspended
+    let initialized = false; // guard against double init
 
         // Normalization helper to guard against casing differences from server
         function normalizeCollider(c) {
@@ -371,38 +371,37 @@
 
         // Graceful suspend/resume handlers (were referenced but missing)
         function suspendPage() {
-            if (!pageActive) return;
+            if (!pageActive) return; // already suspended
             pageActive = false;
-            // Stop further animation frames quickly
             changeFlash.clear();
-            // Intentionally stop SignalR to avoid reconnect churn while hidden/unloaded
             try {
                 if (hub && hub.state !== signalR.HubConnectionState.Disconnected) {
                     intentionalStop = true;
                     hub.stop().catch(() => { /* ignore */ });
                 }
-            } catch (_) { }
+            } catch (_) { /* noop */ }
         }
 
         function resumePage() {
-            if (pageActive) return;
+            if (pageActive) return; // already active
             pageActive = true;
             intentionalStop = false;
-            // Restart hub if needed
-            if (hub && hub.state === signalR.HubConnectionState.Disconnected) {
+            const restartNeeded = hub && hub.state === signalR.HubConnectionState.Disconnected;
+            if (restartNeeded) {
                 hub.start().then(() => {
-                    // Re-subscribe current room to refresh state
                     if (currentRoom) {
-                        hub.invoke('SubscribeRoom', currentRoom.levelId, currentRoom.roomInstanceId).then(data => {
-                            if (data) {
-                                colliders = (data.colliders || data.Colliders || []).map(normalizeCollider);
-                                version = data.version || version;
-                                lastBbox = data.bbox || lastBbox;
+                        return hub.invoke('SubscribeRoom', currentRoom.levelId, currentRoom.roomInstanceId)
+                            .then(data => {
+                                if (data) {
+                                    colliders = (data.colliders || data.Colliders || []).map(normalizeCollider);
+                                    version = data.version || version;
+                                    lastBbox = data.bbox || lastBbox;
+                                }
                                 draw();
-                            }
-                        }).catch(console.error);
+                            });
                     } else {
                         loadRooms();
+                        draw();
                     }
                 }).catch(err => console.error('Resume hub start failed', err));
             } else {
@@ -564,6 +563,8 @@
     function restoreView() { if (!currentRoom) return false; const raw = localStorage.getItem('colliderView_' + currentRoom.levelId + '_' + currentRoom.roomInstanceId); if (!raw) return false; try { const s = JSON.parse(raw); if (typeof s.zoom === 'number' && typeof s.offsetX === 'number' && typeof s.offsetY === 'number') { zoom = s.zoom; offsetX = s.offsetX; offsetY = s.offsetY; } if (Array.isArray(s.active)) { activeTypes = new Set(s.active); buildFilters(); } if (s.displayState) { Object.assign(displayState, s.displayState); syncDisplayButtons(); } return true; } catch (_) { return false; } }
 
     function initUi() {
+            if (initialized) return; // guard double-call
+            initialized = true;
             const required = ['displayToggles','btnFit','searchBtn','searchCollider','exportJson','exportPng','colliderCanvas','toggleSidebar'];
             const missing = required.filter(id => !document.getElementById(id));
             if (missing.length) {
@@ -602,15 +603,17 @@
             document.getElementById('resetView')?.addEventListener('click', () => { fitView(); draw(); });
 
             hub.onclose(err => {
-                console.error('Collider hub closed', err);
                 if (!intentionalStop) {
+                    console.warn('Collider hub closed (unexpected)', err);
                     setTimeout(() => { if (pageActive && hub.state === signalR.HubConnectionState.Disconnected) hub.start().catch(e => console.error('Restart failed', e)); }, 2000);
+                } else {
+                    // Silent expected close
                 }
             });
             hub.onreconnecting(err => console.warn('Collider hub reconnecting...', err));
             hub.onreconnected(id => console.info('Collider hub reconnected', id));
             hub.start().then(() => { loadRooms(); resizeCanvas(); }).catch(err => console.error('Collider hub start failed', err));
-            document.addEventListener('visibilitychange', () => { if (document.hidden) suspendPage(); else resumePage(); });
+            document.addEventListener('visibilitychange', () => { if (document.hidden) { suspendPage(); } else { resumePage(); } });
             window.addEventListener('beforeunload', () => { suspendPage(); });
         }
 
