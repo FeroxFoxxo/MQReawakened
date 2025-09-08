@@ -9,24 +9,24 @@
 
 @section Scripts {
     <script>
-        $(document).ready(function () {
-            $('.options-toggle').click(function () {
-                var $this = $(this);
-                var targetId = $this.data('target');
-                var $target = $(targetId);
-
-                if ($target.hasClass('show')) {
-                    $this.text('Show Options');
-                } else {
-                    $this.text('Hide Options');
-                }
+        (function(){
+            // Handle Bootstrap collapse events for option groups
+            $(document).on('show.bs.collapse', '.options-collapse', function(){
+                const id = this.id; const $btn = $('[data-target="#'+id+'"]');
+                $btn.addClass('open').attr('aria-expanded','true').find('.options-toggle-label').text('Hide Options');
+                $btn.find('.options-toggle-icon').text('−');
             });
-        });
+            $(document).on('hide.bs.collapse', '.options-collapse', function(){
+                const id = this.id; const $btn = $('[data-target="#'+id+'"]');
+                $btn.removeClass('open').attr('aria-expanded','false').find('.options-toggle-label').text('Show Options');
+                $btn.find('.options-toggle-icon').text('+');
+            });
+        })();
     </script>
 }
 
 <section class="mq-container mt-space fade-in">
-    @await Html.PartialAsync("_PanelShell", new Web.Razor.Pages.Shared.PanelShellModel { Title = (string)ViewData["ServerName"] + " Command Reference", Description = "Note: Some commands may not be fully implemented or may not work on older versions.", Center = true, AdditionalClasses = "flow panel-p-lg", Reveal = false })
+    @await Html.PartialAsync("_PanelShell", new Web.Razor.Pages.Shared.PanelShellModel { Title = (string)ViewData["ServerName"] + " Command Reference", Description = "Note: Some commands may not be fully implemented or may not work on older versions.", Center = false, CenterHeader = true, AdditionalClasses = "flow panel-p-lg", Reveal = false })
     @functions {
         private void RenderParameter(ParameterModel parameter, string parentId)
         {
@@ -44,10 +44,11 @@
                     @if (parameter.Options != null && parameter.Options.Any())
                     {
                         <div class="options-collapse collapse" id="@optionsId">
+                            <div class="options-list-modern">
                             @foreach (var option in parameter.Options)
                             {
-                                <div class="border-left pl-3 option-item">
-                                    <strong>Option:</strong> @option.Name - @option.Description
+                                <div class="option-item">
+                                    <div class="option-line"><span class="option-name">@option.Name</span><span class="option-sep">–</span><span class="option-desc">@option.Description</span></div>
                                     @if (option.Parameters != null && option.Parameters.Any())
                                     {
                                         int parameterId = 0;
@@ -59,8 +60,12 @@
                                     }
                                 </div>
                             }
+                            </div>
                         </div>
-                        <button class="btn-modern btn-pad-md" style="margin-top:4px; font-size:.6rem; letter-spacing:.75px; text-transform:uppercase;" data-toggle="collapse" data-target="#@optionsId" aria-expanded="false" aria-controls="@optionsId">Show Options</button>
+                        <button class="btn-modern btn-pad-sm options-toggle" style="margin-top:6px; font-size:.55rem; letter-spacing:.8px; text-transform:uppercase; display:inline-flex; align-items:center; gap:6px;" data-toggle="collapse" data-target="#@optionsId" aria-expanded="false" aria-controls="@optionsId">
+                            <span class="options-toggle-icon" aria-hidden="true">+</span>
+                            <span class="options-toggle-label">Show Options</span>
+                        </button>
                     }
                 </div>
             </div>

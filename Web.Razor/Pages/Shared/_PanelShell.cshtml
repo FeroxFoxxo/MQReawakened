@@ -16,15 +16,32 @@
 <div class="panel-glass card-gradient-border @(Model.Center ? "center" : null) @Model.AdditionalClasses" style="@Model.Style" @(Model.Reveal ? "data-reveal" : null)>
     @if (Model.ShowHeader && (!string.IsNullOrEmpty(Model.Title) || !string.IsNullOrEmpty(Model.Description) || !string.IsNullOrEmpty(Model.Kicker) || Model.Actions != null))
     {
-        <div class="d-flex align-items-start justify-content-between" style="gap:1rem; margin-bottom:1.25rem;">
-            <div>
-                @if(!string.IsNullOrEmpty(Model.Kicker)) { <div class="t-sub" style="margin-bottom:.3rem;">@Model.Kicker</div>; }
-                @if(!string.IsNullOrEmpty(Model.Title)) { <h2 class="t-display" style="font-size:clamp(1.4rem,2.2vw,2rem); margin:0;">@Model.Title</h2>; }
-                @if(!string.IsNullOrEmpty(Model.Description)) { <p class="t-lead" style="font-size:.85rem; margin-top:.35rem; max-width:560px;">@Model.Description</p>; }
+        if (Model.CenterHeader)
+        {
+            <div class="panel-header-center" style="text-align:center; margin-bottom:1.25rem; display:flex; flex-direction:column; align-items:center; gap:.65rem;">
+                <div style="max-width:680px;">
+                    @if(!string.IsNullOrEmpty(Model.Kicker)) { <div class="t-sub" style="margin-bottom:.3rem;">@Model.Kicker</div>; }
+                    @if(!string.IsNullOrEmpty(Model.Title)) { <h2 class="t-display" style="font-size:clamp(1.5rem,2.4vw,2.2rem); margin:0;">@Model.Title</h2>; }
+                    @if(!string.IsNullOrEmpty(Model.Description)) { <p class="t-lead" style="font-size:.85rem; margin-top:.45rem; max-width:560px; margin-left:auto; margin-right:auto;">@Model.Description</p>; }
+                </div>
+                @if (Model.Actions != null)
+                {
+                    <div class="d-flex" style="gap:.5rem; flex-wrap:wrap; justify-content:center;">@Model.Actions</div>
+                }
             </div>
-            @if (Model.Actions != null)
-            {
-                <div class="d-flex" style="gap:.5rem; flex-shrink:0;">@Model.Actions</div>
-            }
-        </div>
+        }
+        else
+        {
+            <div class="d-flex align-items-start justify-content-between" style="gap:1rem; margin-bottom:1.25rem;">
+                <div>
+                    @if(!string.IsNullOrEmpty(Model.Kicker)) { <div class="t-sub" style="margin-bottom:.3rem;">@Model.Kicker</div>; }
+                    @if(!string.IsNullOrEmpty(Model.Title)) { <h2 class="t-display" style="font-size:clamp(1.4rem,2.2vw,2rem); margin:0;">@Model.Title</h2>; }
+                    @if(!string.IsNullOrEmpty(Model.Description)) { <p class="t-lead" style="font-size:.85rem; margin-top:.35rem; max-width:560px;">@Model.Description</p>; }
+                </div>
+                @if (Model.Actions != null)
+                {
+                    <div class="d-flex" style="gap:.5rem; flex-shrink:0;">@Model.Actions</div>
+                }
+            </div>
+        }
     }

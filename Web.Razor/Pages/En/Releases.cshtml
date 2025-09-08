@@ -21,7 +21,7 @@
 @* Styles moved to global stylesheet *@
 
 <section class="mq-container mt-space fade-in release-notes-page">
-	@await Html.PartialAsync("_PanelShell", new Web.Razor.Pages.Shared.PanelShellModel { Title = (string)ViewData["ServerName"] + " Patch Notes", Description = "Browse historical changes. Select a version below to view its notes.", Center = true, AdditionalClasses = "flow panel-p-lg" })
+	@await Html.PartialAsync("_PanelShell", new Web.Razor.Pages.Shared.PanelShellModel { Title = (string)ViewData["ServerName"] + " Patch Notes", Description = "Browse historical changes. Select a version below to view its notes.", Center = false, CenterHeader = false, AdditionalClasses = "flow panel-p-lg" })
 		<div class="version-select-row center" data-reveal style="margin-top:.25rem;">
 			<label for="versionDropdown" class="visually-hidden">Select version</label>
 			<select id="versionDropdown" class="version-select" onchange="updateUrlWithVersion()" data-reveal>
@@ -32,7 +32,7 @@
 				}
 			</select>
 		</div>
-		<div class="release-notes-stack flow" data-reveal style="margin-top:.75rem;">
+		<div class="release-notes-stack flow" data-reveal style="margin-top:.75rem; text-align:left;">
 			@for (int i = 0; i < Model.ReleaseNotes.Count; i++)
 			{
 				var note = Model.ReleaseNotes[i];
