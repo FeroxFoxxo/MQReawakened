@@ -42,7 +42,6 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
         _enemyLock = new object();
         TimerThread = Services.GetRequiredService<TimerThread>();
 
-        // Try by spawned Id first; if not present, keep values set during CheckForSpawner (template), or fallback to template now
         var globalById = Room.GetEntityFromId<AIStatsGlobalComp>(Id);
         var genericById = Room.GetEntityFromId<AIStatsGenericComp>(Id);
 
@@ -52,6 +51,7 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
         if ((Global == null || Generic == null) && LinkedSpawner != null)
         {
             var templateId = LinkedSpawner.TemplateIds.FirstOrDefault();
+            
             if (!string.IsNullOrEmpty(templateId))
             {
                 Global ??= Room.GetEntityFromId<AIStatsGlobalComp>(templateId);
@@ -94,7 +94,7 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
             AISyncEventHelper.AIInit(
                 Position.x, Position.y, Position.z,
                 Position.x, Position.y,
-        Generic?.Patrol_InitialProgressRatio ?? 0f, this
+                Generic?.Patrol_InitialProgressRatio ?? 0f, this
             )
         );
 
@@ -209,7 +209,6 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
     {
         lock (_enemyLock)
         {
-            // Syncs direction of client entity with server
             if (direction == 0)
                 direction = AiData.Intern_Dir;
 
@@ -229,10 +228,10 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
 
             _lastUpdate = Room.Time;
 
-        Room.SendSyncEvent(
+            Room.SendSyncEvent(
                 AISyncEventHelper.AIDo(
                     Position.x, Position.y, 1.0f,
-            targetX, targetY, direction, Global != null && CurrentState == Global.AwareBehavior,
+                    targetX, targetY, direction, Global != null && CurrentState == Global.AwareBehavior,
                     this
                 )
             );

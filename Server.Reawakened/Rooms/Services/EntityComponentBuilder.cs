@@ -35,13 +35,21 @@ public class EntityComponentBuilder(ReflectionUtils reflectionUtils,
         {
             if (!room.World.ProcessableComponents.TryGetValue(component.Key, out var mqType))
             {
-                room.Logger.LogTrace("Could not find processable type for {ComponentKey}", component.Key);
+                if (!room.LoggedComponentKeys.Contains(component.Key))
+                {
+                    room.Logger.LogTrace("Could not find processable type for {ComponentKey}", component.Key);
+                    room.LoggedComponentKeys.Add(component.Key);
+                }
                 continue;
             }
 
             if (!room.World.EntityComponents.TryGetValue(component.Key, out var internalType))
             {
-                room.Logger.LogTrace("Could not find internal type for {ComponentKey}", component.Key);
+                if (!room.LoggedComponentKeys.Contains(component.Key))
+                {
+                    room.Logger.LogTrace("Could not find internal type for {ComponentKey}", component.Key);
+                    room.LoggedComponentKeys.Add(component.Key);
+                }
                 unknownComponents.Add(mqType.Name);
                 continue;
             }
