@@ -81,9 +81,11 @@
             </div>
         }
 
+        private static bool _firstSectionRendered = false;
         private void RenderCommandList(List<CommandModel> commands, string name)
         {
-            <h2 class="t-sub" style="margin-top:2rem;" data-reveal>@name Commands</h2>
+            var top = _firstSectionRendered ? "1.4rem" : ".85rem"; _firstSectionRendered = true;
+            <h2 class="t-sub" style="margin-top:@top;" data-reveal>@name Commands</h2>
             <div class="command-grid mt-2" data-reveal>
                 @foreach (var command in commands)
                 {
@@ -109,7 +111,7 @@
             </div>
         }
     }
-    <div class="flow" style="margin-top:1rem;">
+    <div class="flow" style="margin-top:.35rem;">
         @if ((Model.ServerCommands == null || !Model.ServerCommands.Any()) && (Model.ClientCommands == null || !Model.ClientCommands.Any()))
         {
             <div class="panel-glass" style="background:rgba(255,255,255,0.02); padding:1.25rem; border-radius:16px; border:1px dashed var(--mq-color-border-accent);">

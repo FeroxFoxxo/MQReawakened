@@ -28,11 +28,17 @@
             --danger: #ff6b6b;
             --ok: #7ddf5b;
             --focus-ring: 0 0 0 2px rgba(232,163,46,.9), 0 0 12px -2px rgba(181,247,61,.6);
+            --grid-line-minor: rgba(50,105,70,0.35);
+            --grid-line-major: rgba(181,247,61,0.22);
+            --grid-axis: rgba(255,255,255,0.35);
         }
 
         html[data-theme="light"] {
             --c-text:#27341e;
             --c-text-dim:#5a6d33;
+            --grid-line-minor: rgba(120,140,70,0.35);
+            --grid-line-major: rgba(200,170,60,0.45);
+            --grid-axis: rgba(70,60,25,0.5);
         }
 
     #colliderCanvas { width:100%; height:70vh; border:1px solid #1b3a27; background:radial-gradient(circle at 35% 40%, #123820 0%, #0d2517 60%, #08170f 100%); cursor:grab; border-radius:18px; box-shadow:0 0 0 1px #0d2a18, 0 6px 26px -6px rgba(0,0,0,0.6), inset 0 0 42px -8px rgba(232,163,46,0.15); position:relative; }
@@ -362,10 +368,14 @@
                 const maxX = Math.ceil(centerWorldX + visibleWorldW / 2) + 2;
                 const minY = Math.floor(centerWorldY - visibleWorldH / 2) - 2;
                 const maxY = Math.ceil(centerWorldY + visibleWorldH / 2) + 2;
+                const styles = getComputedStyle(document.documentElement);
+                const minor = styles.getPropertyValue('--grid-line-minor').trim() || 'rgba(50,105,70,0.35)';
+                const major = styles.getPropertyValue('--grid-line-major').trim() || 'rgba(181,247,61,0.22)';
+                const axis = styles.getPropertyValue('--grid-axis').trim() || 'rgba(255,255,255,0.35)';
                 ctx.lineWidth = 1 / zoom;
-                for (let x = minX; x <= maxX; x++) { ctx.beginPath(); ctx.strokeStyle = (x % 5 === 0) ? 'rgba(181,247,61,0.22)' : 'rgba(50,105,70,0.35)'; ctx.moveTo(x * gridSize, -(minY) * gridSize); ctx.lineTo(x * gridSize, -(maxY) * gridSize); ctx.stroke(); }
-                for (let y = minY; y <= maxY; y++) { ctx.beginPath(); ctx.strokeStyle = (y % 5 === 0) ? 'rgba(181,247,61,0.22)' : 'rgba(50,105,70,0.35)'; ctx.moveTo(minX * gridSize, -y * gridSize); ctx.lineTo(maxX * gridSize, -y * gridSize); ctx.stroke(); }
-                ctx.strokeStyle = 'rgba(255,255,255,0.35)'; ctx.lineWidth = 1.5 / zoom; ctx.beginPath(); ctx.moveTo(0, -(minY) * gridSize); ctx.lineTo(0, -(maxY) * gridSize); ctx.stroke(); ctx.beginPath(); ctx.moveTo(minX * gridSize, 0); ctx.lineTo(maxX * gridSize, 0); ctx.stroke(); ctx.restore();
+                for (let x = minX; x <= maxX; x++) { ctx.beginPath(); ctx.strokeStyle = (x % 5 === 0) ? major : minor; ctx.moveTo(x * gridSize, -(minY) * gridSize); ctx.lineTo(x * gridSize, -(maxY) * gridSize); ctx.stroke(); }
+                for (let y = minY; y <= maxY; y++) { ctx.beginPath(); ctx.strokeStyle = (y % 5 === 0) ? major : minor; ctx.moveTo(minX * gridSize, -y * gridSize); ctx.lineTo(maxX * gridSize, -y * gridSize); ctx.stroke(); }
+                ctx.strokeStyle = axis; ctx.lineWidth = 1.5 / zoom; ctx.beginPath(); ctx.moveTo(0, -(minY) * gridSize); ctx.lineTo(0, -(maxY) * gridSize); ctx.stroke(); ctx.beginPath(); ctx.moveTo(minX * gridSize, 0); ctx.lineTo(maxX * gridSize, 0); ctx.stroke(); ctx.restore();
             }
             const now = performance.now();
             const showInactive = displayState.inactive;
