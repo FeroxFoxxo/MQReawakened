@@ -5,7 +5,7 @@
 }
 @section Stylesheets {
     <style>
-        :root {
+        .colliders-page {
             --c-bg-panel: linear-gradient(145deg,#0c1e14,#102a1b 55%,#08170f);
             --c-border-panel: #1f3b2a;
             --c-border-subtle: #1a2d22;
@@ -33,7 +33,7 @@
             --grid-axis: rgba(255,255,255,0.35);
         }
 
-        html[data-theme="light"] {
+        html[data-theme="light"] .colliders-page {
             --c-text:#27341e;
             --c-text-dim:#5a6d33;
             --grid-line-minor: rgba(120,140,70,0.35);
@@ -47,7 +47,6 @@
     html[data-theme="light"] #displayToggles button.toggle-btn:not(.active):hover,
     html[data-theme="light"] #displayToggles #btnFit:hover { background:linear-gradient(145deg,#ffffff,#f1f4cd); color:#27341e; }
     html[data-theme="light"] #displayToggles button.toggle-btn.active { background:linear-gradient(145deg,#e8a32e,#d69c35); color:#2c1c06; box-shadow:0 0 0 1px #e8a32e,0 0 10px -2px rgba(232,163,46,.45); }
-        }
 
     #colliderCanvas { width:100%; height:70vh; border:1px solid #1b3a27; background:radial-gradient(circle at 35% 40%, #123820 0%, #0d2517 60%, #08170f 100%); cursor:grab; border-radius:18px; box-shadow:0 0 0 1px #0d2a18, 0 6px 26px -6px rgba(0,0,0,0.6), inset 0 0 42px -8px rgba(232,163,46,0.15); position:relative; }
         .canvas-wrapper { position:relative; }
