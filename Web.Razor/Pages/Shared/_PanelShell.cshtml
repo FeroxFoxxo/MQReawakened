@@ -8,7 +8,7 @@
                 <div style="max-width:680px;">
                     @if(!string.IsNullOrEmpty(Model.Kicker)) { <div class="t-sub h-gap-sm">@Model.Kicker</div>; }
                     @if(!string.IsNullOrEmpty(Model.Title)) { <h2 class="t-display h-tight">@Model.Title</h2>; }
-                    @if(!string.IsNullOrEmpty(Model.Description)) { <p class="t-lead" style="max-width:560px; margin:.4rem auto 0;">@Model.Description</p>; }
+                    @if(!string.IsNullOrEmpty(Model.Description)) { <p class="t-lead lead-wide" style="margin:.4rem auto 0;">@Model.Description</p>; }
                 </div>
                 @if (Model.Actions != null)
                 {
@@ -22,7 +22,7 @@
                 <div>
                     @if(!string.IsNullOrEmpty(Model.Kicker)) { <div class="t-sub h-gap-sm">@Model.Kicker</div>; }
                     @if(!string.IsNullOrEmpty(Model.Title)) { <h2 class="t-display h-tight">@Model.Title</h2>; }
-                    @if(!string.IsNullOrEmpty(Model.Description)) { <p class="t-lead" style="max-width:560px; margin-top:.3rem;">@Model.Description</p>; }
+                    @if(!string.IsNullOrEmpty(Model.Description)) { <p class="t-lead lead-wide" style="margin-top:.3rem;">@Model.Description</p>; }
                 </div>
                 @if (Model.Actions != null)
                 {
