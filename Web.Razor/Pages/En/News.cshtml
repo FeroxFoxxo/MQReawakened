@@ -6,7 +6,7 @@
 }
 
 <section class="mq-container mt-space fade-in">
-    @await Html.PartialAsync("_PanelShell", new Web.Razor.Pages.Shared.PanelShellModel { Title = (string)ViewData["ServerName"] + " News", Description = "Hear all about us here!", Center = false, AdditionalClasses = "panel-p-lg panel-variant-success" })
+    @await Html.PartialAsync("_PanelShell", new Web.Razor.Pages.Shared.PanelShellModel { Title = (string)ViewData["ServerName"] + " News", Description = "Hear all about us here!", AdditionalClasses = "panel-p-lg panel-variant-success" })
         <div class="row">
             <div class="col-12" style="font-size:.85rem; line-height:1.4; color:var(--mq-color-text-dim);" data-reveal>
                 <article class="flow" style="max-width:760px;">

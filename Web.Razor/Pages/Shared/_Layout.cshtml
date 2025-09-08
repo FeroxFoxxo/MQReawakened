@@ -42,22 +42,11 @@
 			<div class="mq-container px-0">
 				@{ var path = Context?.Request?.Path.Value?.ToLowerInvariant() ?? string.Empty; }
 				<div class="d-flex align-items-center w-100" style="gap:14px;">
-					<a class="navbar-brand mb-0" href="/">
-						<span class="brand-name">@ViewData["ServerName"]</span>
+					<a class="navbar-brand mb-0" href="/" aria-label="@ViewData["ServerName"] home">
+					    <img src="/_content/Web.Razor/logo.png" alt="Site Logo" class="brand-logo" />
+						<span class="sr-only">@ViewData["ServerName"]</span>
 					</a>
-					<ul class="navbar-nav ml-auto align-items-lg-center d-none d-lg-flex main-nav">
-						<li class="nav-item"><a class="nav-link @(path=="/" || path=="" ? "active" : null)" href="/">Home</a></li>
-						<li class="nav-item"><a class="nav-link @(path=="/patchnotes" ? "active" : null)" href="/patchnotes">Patch Notes</a></li>
-						<li class="nav-item"><a class="nav-link @(path.StartsWith("/en/signup") ? "active" : null)" href="/en/signup">Sign Up</a></li>
-						<li class="nav-item"><a class="nav-link @(path=="/download" ? "active" : null)" href="/download">Download</a></li>
-						<li class="nav-item dropdown @(path=="/commands" || path=="/colliders" ? "show" : null)">
-							<a class="nav-link dropdown-toggle @(path=="/commands" || path=="/colliders" ? "active" : null)" href="#" id="adminDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Admin</a>
-							<div class="dropdown-menu dropdown-menu-right admin-dropdown @(path=="/commands" || path=="/colliders" ? "show" : null)" aria-labelledby="adminDropdown">
-								<a class="dropdown-item @(path=="/commands" ? "active" : null)" href="/commands">Commands</a>
-								<a class="dropdown-item @(path=="/colliders" ? "active" : null)" href="/colliders">Colliders</a>
-							</div>
-						</li>
-					</ul>
+					@await Html.PartialAsync("_NavMenu")
 					<div class="nav-actions d-flex align-items-center" style="gap:10px;">
 						<button id="themeToggle" class="theme-toggle" aria-label="Toggle theme" title="Toggle theme">
 							<svg id="themeToggleIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a1 1 0 0 1 1 1 7 7 0 0 0 7 7 1 1 0 0 1 0 2 7 7 0 0 0-7 7 1 1 0 0 1-2 0 7 7 0 0 0-7-7 1 1 0 0 1 0-2 7 7 0 0 0 7-7 1 1 0 0 1 1-1Z" /></svg>
@@ -70,7 +59,7 @@
 			</div>
 		</nav>
 	</header>
-	<main id="main" class="flex-fill" role="main">
+	<main id="main" class="flex-fill main-offset-top" role="main">
 		@RenderBody()
 	</main>
 	<footer class="footer-modern mt-5" role="contentinfo">
@@ -87,9 +76,9 @@
 	<div class="toast-host" id="toastHost" aria-live="polite" aria-atomic="true"></div>
 	<div class="modal fade" id="disclaimerModal" tabindex="-1" role="dialog" aria-labelledby="disclaimerModalLabel" aria-hidden="true">
 		<div class="modal-dialog" role="document">
-			<div class="modal-content panel-glass card-gradient-border">
-				<div class="modal-header">
-					<h5 class="modal-title" id="disclaimerModalLabel">Disclaimer</h5>
+				<div class="modal-content panel-glass confirm-modal card-gradient-border">
+					<div class="modal-header">
+					<h2 class="modal-title t-display h-tight" id="disclaimerModalLabel" style="font-size:clamp(1.6rem,3.2vw,2.25rem);">Disclaimer</h2>
 				</div>
 				<div class="modal-body">
 					<p>
@@ -99,31 +88,43 @@
 					</p>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" id="returnButton">Return</button>
-					<button type="button" class="btn btn-primary" id="agreeButton">Agree</button>
+					<button type="button" class="btn-modern btn-outline-jungle btn-pad-sm" id="returnButton">Return</button>
+					<button type="button" class="btn-modern btn-accent btn-pad-sm fx-pop" id="agreeButton">Agree</button>
 				</div>
 			</div>
 		</div>
 	</div>
 </body>
 <script>
-// Theme toggle
 (function(){
 	const root = document.documentElement; const btn = document.getElementById('themeToggle'); const icon = document.getElementById('themeToggleIcon');
 	const saved = localStorage.getItem('mq-theme'); if(saved){ root.setAttribute('data-theme', saved); }
-	function setIcon(){ if(root.getAttribute('data-theme')==='light'){ icon.innerHTML='<circle cx="12" cy="12" r="5" />'; } else { icon.innerHTML='<path d="M12 3a1 1 0 0 1 1 1 7 7 0 0 0 7 7 1 1 0 0 1 0 2 7 7 0 0 0-7 7 1 1 0 0 1-2 0 7 7 0 0 0-7-7 1 1 0 0 1 0-2 7 7 0 0 0 7-7 1 1 0 0 1 1-1Z" />'; } }
-	setIcon();
+	function setIcon(){ if(!icon) return; if(root.getAttribute('data-theme')==='light'){ icon.innerHTML='<circle cx="12" cy="12" r="5" />'; } else { icon.innerHTML='<path d="M12 3a1 1 0 0 1 1 1 7 7 0 0 0 7 7 1 1 0 0 1 0 2 7 7 0 0 0-7 7 1 1 0 0 1-2 0 7 7 0 0 0-7-7 1 1 0 0 1 0-2 7 7 0 0 0 7-7 1 1 0 0 1 1-1Z" />'; } }
+	icon && setIcon();
 	btn && btn.addEventListener('click',()=>{ const mode = root.getAttribute('data-theme')==='light'?'dark':'light'; root.setAttribute('data-theme', mode); localStorage.setItem('mq-theme', mode); setIcon(); showToast('Theme switched to '+mode.charAt(0).toUpperCase()+mode.slice(1), 'success'); });
 })();
 
-// Reveal logic
+	document.addEventListener('click',function(e){
+		const item = e.target.closest('.admin-dropdown .dropdown-item');
+		if(item){
+			const menu = item.closest('.admin-dropdown');
+			const parent = menu && menu.parentElement;
+			if(parent && parent.classList.contains('show')){ parent.classList.remove('show'); }
+			menu.classList.remove('show');
+			const toggle = document.getElementById('adminDropdown');
+			if(toggle){ toggle.setAttribute('aria-expanded','false'); }
+		}
+	});
+
 const revealEls=[...document.querySelectorAll('[data-reveal], .reveal')];
 if('IntersectionObserver' in window){
-	const io=new IntersectionObserver((entries)=>{ entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('reveal-active'); io.unobserve(e.target); } }); }, {threshold:.15});
+	const io=new IntersectionObserver((entries)=>{ entries.forEach(e=>{ if(e.isIntersecting || e.intersectionRatio>0){ e.target.classList.add('reveal-active'); io.unobserve(e.target); } }); }, {threshold:0.05, rootMargin:'0px 0px -5% 0px'});
 	revealEls.forEach(el=>io.observe(el));
+	setTimeout(()=>{
+		revealEls.forEach(el=>{ if(!el.classList.contains('reveal-active')){ const r=el.getBoundingClientRect(); if(r.top < window.innerHeight && r.bottom > 0){ el.classList.add('reveal-active'); } } });
+	},600);
 } else { revealEls.forEach(el=>el.classList.add('reveal-active')); }
 
-// Toast system
 function showToast(message,type='info',timeout=4500){
 	const host=document.getElementById('toastHost'); if(!host) return; const el=document.createElement('div'); el.className='toast toast-'+type+' reveal-active';
 	el.innerHTML='<div style="flex:1;">'+message+'</div><button class="toast-close" aria-label="Close">&times;</button>';
@@ -132,14 +133,14 @@ function showToast(message,type='info',timeout=4500){
 	closer.addEventListener('click',()=>{ clearTimeout(to); dismiss(); });
 }
 window.showToast=showToast;
-// Stagger reveal ordering
+
 document.addEventListener('DOMContentLoaded',()=>{
 	const nodes=[...document.querySelectorAll('[data-reveal]')];
 	nodes.forEach((el,i)=>{ el.style.transitionDelay = (Math.min(i,12)*45)+'ms'; });
 });
-// Accessible live region for toasts
+
 (()=>{ const host=document.getElementById('toastHost'); if(host){ host.setAttribute('role','status'); host.setAttribute('aria-live','polite'); host.setAttribute('aria-relevant','additions'); }})();
-// Panel factory helper
-window.createPanel=(cfg={})=>{ const d=document.createElement('div'); d.className='panel-glass card-gradient-border'; if(cfg.center) d.classList.add('center'); if(cfg.classes) d.classList.add(cfg.classes); if(cfg.style) d.setAttribute('style',cfg.style); if(cfg.title||cfg.description){ const h=document.createElement('div'); h.style.marginBottom='1rem'; let inner=''; if(cfg.kicker) inner+=`<div class="t-sub" style="margin-bottom:.3rem;">${cfg.kicker}</div>`; if(cfg.title) inner+=`<h2 class="t-display" style="font-size:1.6rem;margin:0;">${cfg.title}</h2>`; if(cfg.description) inner+=`<p class="t-lead" style="font-size:.8rem;margin-top:.35rem;max-width:560px;">${cfg.description}</p>`; h.innerHTML=inner; d.appendChild(h);} return d; };
+
+window.createPanel=(cfg={})=>{ const d=document.createElement('div'); d.className='panel-glass card-gradient-border'; if(cfg.classes) d.classList.add(cfg.classes); if(cfg.style) d.setAttribute('style',cfg.style); if(cfg.title||cfg.description){ const h=document.createElement('div'); h.style.marginBottom='1rem'; let inner=''; if(cfg.kicker) inner+=`<div class="t-sub" style="margin-bottom:.3rem;">${cfg.kicker}</div>`; if(cfg.title) inner+=`<h2 class="t-display" style="font-size:1.6rem;margin:0;">${cfg.title}</h2>`; if(cfg.description) inner+=`<p class="t-lead lead-wide" style="font-size:.8rem;margin:.35rem 0 0;">${cfg.description}</p>`; h.innerHTML=inner; d.appendChild(h);} if(cfg.html){ const body=document.createElement('div'); body.innerHTML=cfg.html; d.appendChild(body);} return d; };
 </script>
 </html>

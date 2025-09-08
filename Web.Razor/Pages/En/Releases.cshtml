@@ -18,11 +18,10 @@
 	}
 }
 
-@* Styles moved to global stylesheet *@
-
 <section class="mq-container mt-space fade-in release-notes-page">
-	@await Html.PartialAsync("_PanelShell", new Web.Razor.Pages.Shared.PanelShellModel { Title = (string)ViewData["ServerName"] + " Patch Notes", Description = "Welcome! Select a version below to view its changes.", Center = false, AdditionalClasses = "flow" })
-		<div class="center" data-reveal>
+	@await Html.PartialAsync("_PanelShell", new Web.Razor.Pages.Shared.PanelShellModel { Title = (string)ViewData["ServerName"] + " Patch Notes", Description = "Browse historical changes. Select a version below to view its notes.", CenterHeader = false, AdditionalClasses = "flow panel-p-lg" })
+		<div class="version-select-row" data-reveal style="margin-top:.25rem;">
+			<label for="versionDropdown" class="visually-hidden">Select version</label>
 			<select id="versionDropdown" class="version-select" onchange="updateUrlWithVersion()" data-reveal>
 				@for (int i = 0; i < Model.ReleaseNotes.Count; i++)
 				{
@@ -31,16 +30,14 @@
 				}
 			</select>
 		</div>
-		<div data-reveal>
+		<div class="release-notes-stack flow" data-reveal style="margin-top:.75rem; text-align:left;">
 			@for (int i = 0; i < Model.ReleaseNotes.Count; i++)
 			{
 				var note = Model.ReleaseNotes[i];
 				<article id="@($"releaseNotes{i}")" class="release-note-panel" style="display:@(i == selectedIndex ? "block" : "none");">
-					<div style="margin-top:1.5rem;">
-						<h2 class="t-sub" style="color:var(--mq-color-text);">Version @note.Version @(string.IsNullOrEmpty(note.Title) ? string.Empty : " - " + note.Title)</h2>
-						<p style="font-size:.7rem; letter-spacing:.55px; text-transform:uppercase; opacity:.7;">Release Date: @note.ReleaseDate</p>
-					</div>
-					<div class="flow" style="margin-top:.5rem;">
+					<h2 class="t-sub" style="margin:0; color:var(--mq-color-text);">Version @note.Version @(string.IsNullOrEmpty(note.Title) ? string.Empty : " - " + note.Title)</h2>
+					<p style="font-size:.6rem; letter-spacing:.55px; text-transform:uppercase; opacity:.6; margin:.25rem 0 0;">Released @note.ReleaseDate</p>
+					<div class="flow" style="margin-top:.75rem;">
 						@foreach (var item in note.Notes)
 							@Html.Raw(item)
 					</div>
