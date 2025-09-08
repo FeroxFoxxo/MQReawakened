@@ -10,4 +10,5 @@ public class PanelShellModel
     public string Style { get; set; }
     public string AdditionalClasses { get; set; }
     public bool ShowHeader { get; set; } = true;
+    public bool Reveal { get; set; } = true; // controls whether data-reveal attribute is emitted
 }

@@ -13,7 +13,7 @@
    <!-- body content here -->
    </div> <!-- caller closes wrapper -->
    Rationale: Simplicity over complex body passing / nested layouts. *@
-<div class="panel-glass card-gradient-border @(Model.Center ? "center" : null) @Model.AdditionalClasses" style="@Model.Style" data-reveal>
+<div class="panel-glass card-gradient-border @(Model.Center ? "center" : null) @Model.AdditionalClasses" style="@Model.Style" @(Model.Reveal ? "data-reveal" : null)>
     @if (Model.ShowHeader && (!string.IsNullOrEmpty(Model.Title) || !string.IsNullOrEmpty(Model.Description) || !string.IsNullOrEmpty(Model.Kicker) || Model.Actions != null))
     {
         <div class="d-flex align-items-start justify-content-between" style="gap:1rem; margin-bottom:1.25rem;">

@@ -6,12 +6,8 @@
 }
 
 <section class="mq-container mt-space fade-in">
-    @await Html.PartialAsync("_PanelShell", new Web.Razor.Pages.Shared.PanelShellModel { Title = "Forgot Username", Description = "Enter your email and we'll send your username if it exists.", Center = false })
-        <div class="row">
-            <div class="col-lg-5 d-flex flex-column align-items-center justify-content-center mb-4 mb-lg-0 center" data-reveal>
-                <img class="site_logo" src="/_content/Web.Razor/logo.png" alt="Site Logo" style="max-width:130px;" />
-            </div>
-            <div class="col-lg-7" data-reveal>
+    @await Html.PartialAsync("_PanelShell", new Web.Razor.Pages.Shared.PanelShellModel { Title = "Forgot Username", Description = "Enter your email and we'll send your username if it exists.", Center = false, AdditionalClasses = "panel-p-lg flow" })
+    <div data-reveal>
                 <form asp-action="ForgotUsername" method="post" class="form-modern" novalidate>
                     <div class="field">
                         <label asp-for="Email"></label>
@@ -24,7 +20,6 @@
                         <button type="submit" class="btn-modern btn-accent" style="width:100%; padding:14px 0;">Send Username</button>
                     </div>
                 </form>
-            </div>
         </div>
     </div>
 </section>

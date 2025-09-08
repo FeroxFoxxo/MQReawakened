@@ -6,7 +6,7 @@
 }
 
 <section class="mq-container mt-space fade-in">
-    @await Html.PartialAsync("_PanelShell", new Web.Razor.Pages.Shared.PanelShellModel { Title = "Help & Support", Description = "Visit our Discord server to receive help with " + (string)ViewData["ServerName"] + ".", Center = false })
+    @await Html.PartialAsync("_PanelShell", new Web.Razor.Pages.Shared.PanelShellModel { Title = "Help & Support", Description = "Visit our Discord server to receive help with " + (string)ViewData["ServerName"] + ".", Center = false, AdditionalClasses = "panel-p-lg flow" })
         <div class="row">
             <div class="col-12" data-reveal>
                 <div style="background:#123a49; border:1px solid #1e5166; border-radius:18px; position:relative; padding:12px; box-shadow:0 0 0 1px #10313f; max-width:760px; margin:0 auto;">

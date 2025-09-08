@@ -26,12 +26,12 @@
 }
 
 <section class="mq-container mt-space fade-in">
-    @await Html.PartialAsync("_PanelShell", new Web.Razor.Pages.Shared.PanelShellModel { Title = (string)ViewData["ServerName"] + " Command Reference", Description = "Note: Some commands may not be fully implemented or may not work on older versions.", Center = true, AdditionalClasses = "flow panel-p-lg" })
+    @await Html.PartialAsync("_PanelShell", new Web.Razor.Pages.Shared.PanelShellModel { Title = (string)ViewData["ServerName"] + " Command Reference", Description = "Note: Some commands may not be fully implemented or may not work on older versions.", Center = true, AdditionalClasses = "flow panel-p-lg", Reveal = false })
     @functions {
         private void RenderParameter(ParameterModel parameter, string parentId)
         {
             var optionsId = $"{parentId.Replace("/", "").ToLower()}-{parameter.Name.Replace("/", "").ToLower()}";
-            <div class="parameter-nest" style="margin-top:10px;">
+            <div class="parameter-nest" style="margin-top:10px;" data-reveal>
                 <div>
                     <h5 style="font-size:.75rem; margin:0 0 4px; color:var(--mq-color-accent-soft); letter-spacing:.5px;">
                         @parameter.Name
@@ -68,11 +68,11 @@
 
         private void RenderCommandList(List<CommandModel> commands, string name)
         {
-            <h2 class="t-sub" style="margin-top:2rem;">@name Commands</h2>
-            <div class="command-grid mt-2">
+            <h2 class="t-sub" style="margin-top:2rem;" data-reveal>@name Commands</h2>
+            <div class="command-grid mt-2" data-reveal>
                 @foreach (var command in commands)
                 {
-                    <div class="command-card-modern">
+                    <div class="command-card-modern" data-reveal>
                         <div>
                             <h3>@command.CommandName</h3>
                             <p>@command.CommandDescription</p>

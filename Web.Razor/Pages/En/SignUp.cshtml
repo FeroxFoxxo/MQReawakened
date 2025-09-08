@@ -19,7 +19,7 @@
 }
 
 <section class="mq-container mt-space fade-in">
-    @await Html.PartialAsync("_PanelShell", new Web.Razor.Pages.Shared.PanelShellModel { Title = "Create Account", Description = "Join our community and explore the reborn world of Ook.", Center = false, AdditionalClasses = "" })
+    @await Html.PartialAsync("_PanelShell", new Web.Razor.Pages.Shared.PanelShellModel { Title = "Create Account", Description = "Join our community and explore the reborn world of Ook.", Center = false, AdditionalClasses = "panel-p-lg flow" })
         <div class="row">
             <div class="col-lg-12" data-reveal>
                 <form asp-action="SignUp" method="post" class="form-modern" novalidate>
@@ -27,7 +27,7 @@
                         <div class="field">
                             <label asp-for="Username"></label>
                             <div class="input-shell">
-                                <input asp-for="Username" placeholder="XXX_Monkey_King_XXX" />
+                                <input asp-for="Username" placeholder="Monkey_King" />
                             </div>
                             <span asp-validation-for="Username" class="text-danger"></span>
                         </div>

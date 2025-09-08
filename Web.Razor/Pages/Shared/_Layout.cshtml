@@ -116,11 +116,15 @@
 	btn && btn.addEventListener('click',()=>{ const mode = root.getAttribute('data-theme')==='light'?'dark':'light'; root.setAttribute('data-theme', mode); localStorage.setItem('mq-theme', mode); setIcon(); showToast('Theme switched to '+mode.charAt(0).toUpperCase()+mode.slice(1), 'success'); });
 })();
 
-// Reveal logic
+// Reveal logic (with safety fallback)
 const revealEls=[...document.querySelectorAll('[data-reveal], .reveal')];
 if('IntersectionObserver' in window){
-	const io=new IntersectionObserver((entries)=>{ entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('reveal-active'); io.unobserve(e.target); } }); }, {threshold:.15});
+	const io=new IntersectionObserver((entries)=>{ entries.forEach(e=>{ if(e.isIntersecting || e.intersectionRatio>0){ e.target.classList.add('reveal-active'); io.unobserve(e.target); } }); }, {threshold:0.05, rootMargin:'0px 0px -5% 0px'});
 	revealEls.forEach(el=>io.observe(el));
+	// Fallback: force-activate anything still hidden after 600ms and inside viewport
+	setTimeout(()=>{
+		revealEls.forEach(el=>{ if(!el.classList.contains('reveal-active')){ const r=el.getBoundingClientRect(); if(r.top < window.innerHeight && r.bottom > 0){ el.classList.add('reveal-active'); } } });
+	},600);
 } else { revealEls.forEach(el=>el.classList.add('reveal-active')); }
 
 // Toast system
