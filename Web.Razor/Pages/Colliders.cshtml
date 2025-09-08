@@ -120,7 +120,6 @@
 
     .status-group > div { border-radius:14px !important; padding:4px 10px !important; background:linear-gradient(135deg,rgba(34,92,55,0.65),rgba(18,55,34,0.65)); backdrop-filter:blur(4px); box-shadow:0 0 0 1px rgba(232,163,46,0.2), 0 4px 14px -6px rgba(0,0,0,.65); position:relative; overflow:hidden; }
     .status-group > div:before { content:""; position:absolute; inset:0; background:linear-gradient(120deg,rgba(232,163,46,.28),rgba(232,163,46,0) 65%); mix-blend-mode:overlay; opacity:.25; pointer-events:none; }
-    /* Empty state badge variant */
     .status-group #status.empty-state { background:linear-gradient(135deg,#2d3a2f,#233027); color:#c2d659 !important; font-style:italic; }
     html[data-theme="light"] .status-group #status.empty-state { background:linear-gradient(135deg,#fff7e0,#f2f6dd); color:#624100 !important; box-shadow:0 0 0 1px #e8a32e,0 2px 6px -2px rgba(0,0,0,.15); }
     #hoverInfo { font-weight:500; }
@@ -202,10 +201,16 @@
     html[data-theme="light"] ul.compact-list li { color:#2c392a; }
     html[data-theme="light"] .panel-section + .panel-section { border-top:1px solid rgba(0,0,0,.06); }
     html[data-theme="light"] #colliderCanvas:focus { outline:2px solid var(--c-accent,#e8a32e); outline-offset:4px; }
+    .colliders-page .collider-side { top:0; padding-top:12px; }
+    /* Page title styling */
+    .colliders-title { margin:0 0 22px; font-size:1.35rem; font-weight:600; letter-spacing:.65px; color:var(--c-text); display:flex; align-items:center; gap:12px; text-shadow:0 1px 2px rgba(0,0,0,.65); position:relative; line-height:1.1; }
+    .colliders-title:before { content:""; width:7px; height:64%; background:var(--c-accent); border-radius:3px; box-shadow:0 0 10px -1px rgba(232,163,46,.7); }
+    html[data-theme="light"] .colliders-title { text-shadow:none; }
     </style>
 }
 <div class="container-fluid mt-3 colliders-page">
-    <div class="panel-glass panel-spacious">
+    <div class="panel-glass panel-spacious" aria-labelledby="colliders-heading" role="region">
+        <h1 id="colliders-heading" class="colliders-title">Room Colliders</h1>
         <div class="row">
         <div class="col-md-3">
             <button class="btn btn-outline-dark w-100 d-md-none mb-2" id="toggleSidebar" type="button" aria-expanded="true" aria-controls="roomsSidebar">Hide Panel</button>
