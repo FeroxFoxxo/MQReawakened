@@ -202,8 +202,10 @@
     html[data-theme="light"] #colliderCanvas:focus { outline:2px solid var(--c-accent,#e8a32e); outline-offset:4px; }
     </style>
 }
-<div class="container-fluid mt-3">
-    <div class="row">
+<div class="container-fluid mt-3 colliders-page">
+    <div class="panel-glass panel-spacious">
+        <div class="vine-divider vine-full" aria-hidden="true"></div>
+        <div class="row">
         <div class="col-md-3">
             <button class="btn btn-outline-dark w-100 d-md-none mb-2" id="toggleSidebar" type="button" aria-expanded="true" aria-controls="roomsSidebar">Hide Panel</button>
             <div class="collider-side" id="roomsSidebar" role="complementary" aria-label="Colliders sidebar">
@@ -282,6 +284,7 @@
                 <div id="hoverInfo" class="small auto-hide" aria-live="polite"></div>
                 <div id="srAnnounce" class="visually-hidden" aria-live="polite" aria-atomic="true"></div>
             </div>
+        </div>
         </div>
     </div>
 </div>
