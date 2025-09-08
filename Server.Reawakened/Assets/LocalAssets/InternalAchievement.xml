@@ -2701,7 +2701,7 @@
                 <Condition id="1" title="Complete 50 Quests" type="CompleteQuest" value="" goal="50" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="325" title="Monkey Quest" description="Complete 100 Quests" iconName="Questing_CompleteQuest_100" points="200" sortOrder="3" repeatable="false">
+        <Achievement id="325" title="Monkey Quester" description="Complete 100 Quests" iconName="Questing_CompleteQuest_100" points="200" sortOrder="3" repeatable="false">
             <Rewards>
                 <Reward type="Item" value="WPN_SPC_DoomGrenade01" quantity="30" />
             </Rewards>
