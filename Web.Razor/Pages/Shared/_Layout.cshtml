@@ -51,9 +51,9 @@
 						<li class="nav-item"><a class="nav-link @(path=="/patchnotes" ? "active" : null)" href="/patchnotes">Patch Notes</a></li>
 						<li class="nav-item"><a class="nav-link @(path.StartsWith("/en/signup") ? "active" : null)" href="/en/signup">Sign Up</a></li>
 						<li class="nav-item"><a class="nav-link @(path=="/download" ? "active" : null)" href="/download">Download</a></li>
-						<li class="nav-item dropdown @(path=="/commands" || path=="/colliders" ? "show" : null)">
+						<li class="nav-item dropdown">
 							<a class="nav-link dropdown-toggle @(path=="/commands" || path=="/colliders" ? "active" : null)" href="#" id="adminDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Admin</a>
-							<div class="dropdown-menu dropdown-menu-right admin-dropdown @(path=="/commands" || path=="/colliders" ? "show" : null)" aria-labelledby="adminDropdown">
+							<div class="dropdown-menu dropdown-menu-right admin-dropdown" aria-labelledby="adminDropdown">
 								<a class="dropdown-item @(path=="/commands" ? "active" : null)" href="/commands">Commands</a>
 								<a class="dropdown-item @(path=="/colliders" ? "active" : null)" href="/colliders">Colliders</a>
 							</div>
@@ -116,6 +116,19 @@
 	setIcon();
 	btn && btn.addEventListener('click',()=>{ const mode = root.getAttribute('data-theme')==='light'?'dark':'light'; root.setAttribute('data-theme', mode); localStorage.setItem('mq-theme', mode); setIcon(); showToast('Theme switched to '+mode.charAt(0).toUpperCase()+mode.slice(1), 'success'); });
 })();
+
+	// Close admin dropdown after selecting an item (Bootstrap sometimes keeps it due to manual 'show' logic we removed)
+	document.addEventListener('click',function(e){
+		const item = e.target.closest('.admin-dropdown .dropdown-item');
+		if(item){
+			const menu = item.closest('.admin-dropdown');
+			const parent = menu && menu.parentElement;
+			if(parent && parent.classList.contains('show')){ parent.classList.remove('show'); }
+			menu.classList.remove('show');
+			const toggle = document.getElementById('adminDropdown');
+			if(toggle){ toggle.setAttribute('aria-expanded','false'); }
+		}
+	});
 
 // Reveal logic (with safety fallback)
 const revealEls=[...document.querySelectorAll('[data-reveal], .reveal')];
