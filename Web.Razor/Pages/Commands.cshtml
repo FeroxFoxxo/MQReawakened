@@ -10,16 +10,23 @@
 @section Scripts {
     <script>
         (function(){
-            // Handle Bootstrap collapse events for option groups
+            function findLocalToggle(el){
+                const id = el.id;
+                return $(el).parent().find('> .options-toggle[data-target="#'+id+'"]');
+            }
             $(document).on('show.bs.collapse', '.options-collapse', function(){
-                const id = this.id; const $btn = $('[data-target="#'+id+'"]');
-                $btn.addClass('open').attr('aria-expanded','true').find('.options-toggle-label').text('Hide Options');
-                $btn.find('.options-toggle-icon').text('−');
+                const $btn = findLocalToggle(this);
+                if($btn.length){
+                    $btn.addClass('open').attr('aria-expanded','true').find('.options-toggle-label').text('Hide Options');
+                    $btn.find('.options-toggle-icon').text('−');
+                }
             });
             $(document).on('hide.bs.collapse', '.options-collapse', function(){
-                const id = this.id; const $btn = $('[data-target="#'+id+'"]');
-                $btn.removeClass('open').attr('aria-expanded','false').find('.options-toggle-label').text('Show Options');
-                $btn.find('.options-toggle-icon').text('+');
+                const $btn = findLocalToggle(this);
+                if($btn.length){
+                    $btn.removeClass('open').attr('aria-expanded','false').find('.options-toggle-label').text('Show Options');
+                    $btn.find('.options-toggle-icon').text('+');
+                }
             });
         })();
     </script>
@@ -28,9 +35,12 @@
 <section class="mq-container mt-space fade-in">
     @await Html.PartialAsync("_PanelShell", new Web.Razor.Pages.Shared.PanelShellModel { Title = (string)ViewData["ServerName"] + " Command Reference", Description = "Note: Some commands may not be fully implemented or may not work on older versions.", Center = false, CenterHeader = true, AdditionalClasses = "flow panel-p-lg", Reveal = false })
     @functions {
+        private static int _optCounter = 0;
         private void RenderParameter(ParameterModel parameter, string parentId)
         {
-            var optionsId = $"{parentId.Replace("/", "").ToLower()}-{parameter.Name.Replace("/", "").ToLower()}";
+            var baseId = $"{parentId.Replace("/", "").ToLower()}-{parameter.Name.Replace("/", "").ToLower()}";
+            var uniqueSuffix = System.Threading.Interlocked.Increment(ref _optCounter);
+            var optionsId = $"{baseId}-{uniqueSuffix}";
             <div class="parameter-nest" style="margin-top:10px;" data-reveal>
                 <div>
                     <h5 style="font-size:.75rem; margin:0 0 4px; color:var(--mq-color-accent-soft); letter-spacing:.5px;">
