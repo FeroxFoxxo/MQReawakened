@@ -6,24 +6,24 @@
 	ViewData["Title"] = "Home Page";
 }
 
-<section class="hero fade-in" style="position:relative;">
-	<div class="mq-container hero-content" style="position:relative; z-index:2;">
-		<h1 class="t-display" style="max-width:980px; font-size:clamp(2.4rem,4.2vw,3.6rem); line-height:1.05;">
-			Relive the memory of <span class="server-name-accent" style="white-space:nowrap;">Ook</span> in <span class="server-name-accent" style="white-space:nowrap;">@ViewData["ServerName"]</span>!
-		</h1>
-		<p class="t-lead" style="max-width:880px;">
-			The Monkey King is gone, Ka's shadow still stirs, and five tribes stand ready: Sea Dragons, Chim Foo, Ootu Mystics, Ice Raiders and Mek‑Tek. Reclaim lost trails, master elements, craft gear and help rebuild a world full of secrets.
-		</p>
-		<div class="hero-stats" role="group" aria-label="Server statistics" style="display:flex; gap:10px; flex-wrap:wrap;">
-			<div class="stat-pill" aria-live="polite">Online: <strong>@Model.PlayerCount</strong></div>
-			<div class="stat-pill">Registered: <strong>@Model.AccountCount</strong></div>
+<section class="intro-splash intro-animate" aria-labelledby="intro-heading">
+	<div class="mq-container intro-shell">
+		<div class="intro-main">
+			<h1 id="intro-heading" class="intro-title" data-animate="0">
+				Relive the memory of <span class="server-name-accent">Ook</span> in <span class="server-name-accent">@ViewData["ServerName"]</span>!
+			</h1>
+			<p class="intro-lead" data-animate="1">The Monkey King is gone, Ka's shadow still stirs, and five tribes stand ready. Reclaim trails, master elements, craft gear and help rebuild a world full of secrets.</p>
+			<div class="intro-actions" role="group" aria-label="Primary actions" data-animate="2">
+				<a href="/en/signup" class="btn-modern btn-accent btn-pad-lg fx-pop">Create Your Monkey</a>
+				<a href="/download" class="btn-modern btn-outline-jungle btn-pad-lg">Download Launcher</a>
+			</div>
 		</div>
-		<div style="margin-top:var(--mq-space-5); display:flex; gap:18px; flex-wrap:wrap;">
-			<a href="/en/signup" class="btn-modern btn-accent fx-pop btn-pad-lg" aria-label="Sign up and begin your journey">Create Your Monkey</a>
-			<a href="/download" class="btn-modern btn-outline-jungle btn-pad-lg" aria-label="Download the launcher">Download Launcher</a>
+		<div class="intro-meta" role="group" aria-label="Server stats">
+			<div class="meta-pill" data-animate="meta-0" aria-live="polite"><strong>@Model.PlayerCount</strong><span>Online</span></div>
+			<div class="meta-pill" data-animate="meta-1"><strong>@Model.AccountCount</strong><span>Registered</span></div>
 		</div>
 	</div>
-	<div aria-hidden="true" style="position:absolute; inset:0; background:radial-gradient(circle at 22% 32%,rgba(209,221,97,.20),transparent 60%), radial-gradient(circle at 78% 68%,rgba(232,163,46,.18),transparent 65%); opacity:.9; mix-blend-mode:overlay;"></div>
+	<div class="intro-bg" aria-hidden="true"></div>
 </section>
 
 <section class="mq-container mt-space reveal" data-reveal>
@@ -47,23 +47,23 @@
 		<div class="grid-auto" style="margin-top:1.5rem;">
 			<div class="feature-card" data-accent="amber">
 				<h5 style="display:flex; align-items:center; gap:.4rem;">Sea Dragons</h5>
-				<p style="font-size:.7rem; line-height:1.45;">Fire pirates of the Coconut Isles (Smugglers Highway). Founder Dragontail; Captain Blacktail now commands Dragontail Square.</p>
+				<p style="font-size:.7rem; line-height:1.45;">Pirates of the Smugglers Highway. Find Captain Blacktail commanding Dragontail Square.</p>
 			</div>
 			<div class="feature-card" data-accent="lime">
 				<h5>Chim Foo</h5>
-				<p style="font-size:.7rem; line-height:1.45;">Air ninjas in hidden Iron Mountain fortresses. Founded by Mist; Grand Master Whisper leads the order.</p>
+				<p style="font-size:.7rem; line-height:1.45;">Ninjas hidden in Iron Mountain's fortresses. Led by Grand Master Whisper.</p>
 			</div>
 			<div class="feature-card" data-accent="mist">
 				<h5>Ootu Mystics</h5>
-				<p style="font-size:.7rem; line-height:1.45;">Earth sages of the Swamps (Fire Canyon Highway). Founded by Mama Ootu; Mama Babu now keeps the glades.</p>
+				<p style="font-size:.7rem; line-height:1.45;">Sages of the Swamps inside Fire Canyon Highway. Seek out Mama Babu.</p>
 			</div>
 			<div class="feature-card" data-accent="lime">
 				<h5>Ice Raiders</h5>
-				<p style="font-size:.7rem; line-height:1.45;">Ice / water daredevils on the northern heights. Founded by Grapp; Sigthor holds the mantle.</p>
+				<p style="font-size:.7rem; line-height:1.45;">Ice vikings of the caverns. Sigthor holds the mantle.</p>
 			</div>
 			<div class="feature-card" data-accent="amber">
 				<h5>Mek-Tek</h5>
-				<p style="font-size:.7rem; line-height:1.45;">Inventors by Fire Canyon Highway. Founded by Trunket. Not joinable; famed for engineering (Clock Tower) and rumored lightning tech.</p>
+				<p style="font-size:.7rem; line-height:1.45;">Founded by Trunket and famed for engineering Clock Tower Square.</p>
 			</div>
 		</div>
 	</div>
