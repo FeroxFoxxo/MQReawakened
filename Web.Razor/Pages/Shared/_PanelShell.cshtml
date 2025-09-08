@@ -4,29 +4,29 @@
     {
         if (Model.CenterHeader)
         {
-            <div class="panel-header-center" style="text-align:center; margin-bottom:.5rem; display:flex; flex-direction:column; align-items:center; gap:.55rem;">
+            <div class="panel-header-center heading-block heading-center h-gap">
                 <div style="max-width:680px;">
-                    @if(!string.IsNullOrEmpty(Model.Kicker)) { <div class="t-sub" style="margin-bottom:.3rem;">@Model.Kicker</div>; }
-                    @if(!string.IsNullOrEmpty(Model.Title)) { <h2 class="t-display" style="font-size:clamp(1.5rem,2.4vw,2.15rem); margin:0;">@Model.Title</h2>; }
-                    @if(!string.IsNullOrEmpty(Model.Description)) { <p class="t-lead" style="font-size:.83rem; margin-top:.4rem; max-width:560px; margin-left:auto; margin-right:auto;">@Model.Description</p>; }
+                    @if(!string.IsNullOrEmpty(Model.Kicker)) { <div class="t-sub h-gap-sm">@Model.Kicker</div>; }
+                    @if(!string.IsNullOrEmpty(Model.Title)) { <h2 class="t-display h-tight">@Model.Title</h2>; }
+                    @if(!string.IsNullOrEmpty(Model.Description)) { <p class="t-lead" style="max-width:560px; margin:.4rem auto 0;">@Model.Description</p>; }
                 </div>
                 @if (Model.Actions != null)
                 {
-                    <div class="d-flex" style="gap:.5rem; flex-wrap:wrap; justify-content:center;">@Model.Actions</div>
+                    <div class="heading-actions justify-content-center">@Model.Actions</div>
                 }
             </div>
         }
         else
         {
-            <div class="d-flex align-items-start justify-content-between" style="gap:1rem; margin-bottom:.5rem;">
+            <div class="heading-inline h-gap">
                 <div>
-                    @if(!string.IsNullOrEmpty(Model.Kicker)) { <div class="t-sub" style="margin-bottom:.3rem;">@Model.Kicker</div>; }
-                    @if(!string.IsNullOrEmpty(Model.Title)) { <h2 class="t-display" style="font-size:clamp(1.4rem,2.15vw,1.95rem); margin:0;">@Model.Title</h2>; }
-                    @if(!string.IsNullOrEmpty(Model.Description)) { <p class="t-lead" style="font-size:.83rem; margin-top:.3rem; max-width:560px;">@Model.Description</p>; }
+                    @if(!string.IsNullOrEmpty(Model.Kicker)) { <div class="t-sub h-gap-sm">@Model.Kicker</div>; }
+                    @if(!string.IsNullOrEmpty(Model.Title)) { <h2 class="t-display h-tight">@Model.Title</h2>; }
+                    @if(!string.IsNullOrEmpty(Model.Description)) { <p class="t-lead" style="max-width:560px; margin-top:.3rem;">@Model.Description</p>; }
                 </div>
                 @if (Model.Actions != null)
                 {
-                    <div class="d-flex" style="gap:.5rem; flex-shrink:0;">@Model.Actions</div>
+                    <div class="heading-actions" style="flex-shrink:0;">@Model.Actions</div>
                 }
             </div>
         }

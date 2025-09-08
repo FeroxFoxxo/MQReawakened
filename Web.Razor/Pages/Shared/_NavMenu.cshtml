@@ -6,7 +6,7 @@
     <li class="nav-item"><a class="nav-link @(path=="/patchnotes" ? "active" : null)" href="/patchnotes"><span class="nav-label">Patch Notes</span></a></li>
     <li class="nav-item"><a class="nav-link @(path=="/download" ? "active" : null)" href="/download"><span class="nav-label">Download</span></a></li>
     <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle @((path.StartsWith("/en/signup") || path=="/en/signup/forgot-username" || path=="/en/signup/forgot-password") ? "active" : null)" href="#" id="accountDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="nav-label">Account</span></a>
+        <a class="nav-link dropdown-toggle nav-dropdown-toggle @((path.StartsWith("/en/signup") || path=="/en/signup/forgot-username" || path=="/en/signup/forgot-password") ? "active" : null)" href="#" id="accountDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="nav-label">Account</span></a>
         <div class="dropdown-menu dropdown-menu-right nav-dropdown" aria-labelledby="accountDropdown">
             <a class="dropdown-item @(path=="/en/signup" ? "active" : null)" href="/en/signup">Sign Up</a>
             <a class="dropdown-item @(path=="/en/signup/forgot-username" ? "active" : null)" href="/en/signup/forgot-username">Forgot Username</a>
@@ -14,7 +14,7 @@
         </div>
     </li>
     <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle @(path=="/commands" || path=="/colliders" ? "active" : null)" href="#" id="adminDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="nav-label">Admin</span></a>
+        <a class="nav-link dropdown-toggle nav-dropdown-toggle @(path=="/commands" || path=="/colliders" ? "active" : null)" href="#" id="adminDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="nav-label">Admin</span></a>
         <div class="dropdown-menu dropdown-menu-right nav-dropdown" aria-labelledby="adminDropdown">
             <a class="dropdown-item @(path=="/commands" ? "active" : null)" href="/commands">Commands</a>
             <a class="dropdown-item @(path=="/colliders" ? "active" : null)" href="/colliders">Colliders</a>
