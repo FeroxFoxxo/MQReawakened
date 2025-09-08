@@ -6,7 +6,6 @@
 @section Stylesheets {
     <style>
         :root {
-            /* Colliders page – jungle theme overrides */
             --c-bg-panel: linear-gradient(145deg,#0c1e14,#102a1b 55%,#08170f);
             --c-border-panel: #1f3b2a;
             --c-border-subtle: #1a2d22;
@@ -29,6 +28,11 @@
             --danger: #ff6b6b;
             --ok: #7ddf5b;
             --focus-ring: 0 0 0 2px rgba(232,163,46,.9), 0 0 12px -2px rgba(181,247,61,.6);
+        }
+
+        html[data-theme="light"] {
+            --c-text:#27341e;
+            --c-text-dim:#5a6d33;
         }
 
     #colliderCanvas { width:100%; height:70vh; border:1px solid #1b3a27; background:radial-gradient(circle at 35% 40%, #123820 0%, #0d2517 60%, #08170f 100%); cursor:grab; border-radius:18px; box-shadow:0 0 0 1px #0d2a18, 0 6px 26px -6px rgba(0,0,0,0.6), inset 0 0 42px -8px rgba(232,163,46,0.15); position:relative; }
