@@ -39,6 +39,14 @@
             --grid-line-minor: rgba(120,140,70,0.35);
             --grid-line-major: rgba(200,170,60,0.45);
             --grid-axis: rgba(70,60,25,0.5);
+    }
+    html[data-theme="light"] .status-group > div { background:linear-gradient(135deg,rgba(255,255,255,0.85),rgba(241,244,205,0.85)); color:#27341e !important; text-shadow:0 1px 0 rgba(255,255,255,0.6); box-shadow:0 0 0 1px #d1dd61,0 4px 12px -6px rgba(0,0,0,.18), inset 0 0 0 1px rgba(255,255,255,0.6); }
+    html[data-theme="light"] .status-group > div:before { background:linear-gradient(120deg,rgba(232,163,46,.35),rgba(209,221,97,0) 65%); opacity:.4; }
+    html[data-theme="light"] #displayToggles button.toggle-btn:not(.active),
+    html[data-theme="light"] #displayToggles #btnFit { background:linear-gradient(145deg,#f2f6dd,#e9f2d1); color:#27341e; border:1px solid #d1dd61; box-shadow:0 0 0 1px #d1dd61,0 2px 6px -3px rgba(0,0,0,.15); }
+    html[data-theme="light"] #displayToggles button.toggle-btn:not(.active):hover,
+    html[data-theme="light"] #displayToggles #btnFit:hover { background:linear-gradient(145deg,#ffffff,#f1f4cd); color:#27341e; }
+    html[data-theme="light"] #displayToggles button.toggle-btn.active { background:linear-gradient(145deg,#e8a32e,#d69c35); color:#2c1c06; box-shadow:0 0 0 1px #e8a32e,0 0 10px -2px rgba(232,163,46,.45); }
         }
 
     #colliderCanvas { width:100%; height:70vh; border:1px solid #1b3a27; background:radial-gradient(circle at 35% 40%, #123820 0%, #0d2517 60%, #08170f 100%); cursor:grab; border-radius:18px; box-shadow:0 0 0 1px #0d2a18, 0 6px 26px -6px rgba(0,0,0,0.6), inset 0 0 42px -8px rgba(232,163,46,0.15); position:relative; }
