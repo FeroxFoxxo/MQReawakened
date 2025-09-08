@@ -112,7 +112,7 @@
     <div class="flow" style="margin-top:1rem;">
         @if ((Model.ServerCommands == null || !Model.ServerCommands.Any()) && (Model.ClientCommands == null || !Model.ClientCommands.Any()))
         {
-            <div class="panel-glass" style="background:rgba(255,255,255,0.02); padding:1.25rem; border-radius:16px; border:1px dashed #1e5166;">
+            <div class="panel-glass" style="background:rgba(255,255,255,0.02); padding:1.25rem; border-radius:16px; border:1px dashed var(--mq-color-border-accent);">
                 <p style="font-size:.75rem; letter-spacing:.4px; color:var(--mq-color-text-dim); margin:0;">No commands are currently loaded. This usually means the server hasn't finished starting or command bundles are still initializing. Refresh in a moment.</p>
             </div>
         }

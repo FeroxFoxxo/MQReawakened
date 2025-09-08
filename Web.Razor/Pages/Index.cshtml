@@ -6,39 +6,102 @@
 	ViewData["Title"] = "Home Page";
 }
 
-<section class="hero fade-in">
-    <div class="mq-container hero-content">
-		<h1 class="t-display">Relive the memory of Ook in <span class="server-name-accent">@Model.ServerName</span></h1>
-		<p class="t-lead" style="max-width:800px;">Embark on a legendary journey across the world of Ook. Complete quests, fight monsters, and fend off Ka's shadow army once again!</p>
-		<div class="hero-stats" role="group" aria-label="Server statistics">
+<section class="hero fade-in" style="position:relative;">
+	<div class="mq-container hero-content" style="position:relative; z-index:2;">
+		<h1 class="t-display swing-slow" style="max-width:980px; font-size:clamp(2.4rem,4.2vw,3.6rem); line-height:1.05;">
+			Return to <span class="server-name-accent" style="white-space:nowrap;">Ook</span>
+		</h1>
+		<p class="t-lead" style="max-width:880px;">
+			The Monkey King is gone, Ka's shadow still stirs, and five tribes stand ready: Sea Dragons, Chim Foo, Ootu Mystics, Ice Raiders and Mek‑Tek. Reclaim lost trails, master elements, craft gear and help rebuild a world full of secrets.
+		</p>
+		<div class="hero-stats" role="group" aria-label="Server statistics" style="display:flex; gap:10px; flex-wrap:wrap;">
 			<div class="stat-pill" aria-live="polite">Online: <strong>@Model.PlayerCount</strong></div>
 			<div class="stat-pill">Registered: <strong>@Model.AccountCount</strong></div>
 		</div>
-		<div class="mt-space">
-			<a href="/en/signup" class="btn-modern btn-accent fx-pop" style="font-size:.95rem; padding:16px 34px;">Join the Adventure</a>
+		<div style="margin-top:var(--mq-space-5); display:flex; gap:18px; flex-wrap:wrap;">
+			<a href="/en/signup" class="btn-modern btn-accent fx-pop btn-pad-lg" aria-label="Sign up and begin your journey">Create Your Monkey</a>
+			<a href="/download" class="btn-modern btn-outline-jungle btn-pad-lg" aria-label="Download the launcher">Download Launcher</a>
+		</div>
+	</div>
+	<div aria-hidden="true" style="position:absolute; inset:0; background:radial-gradient(circle at 22% 32%,rgba(209,221,97,.20),transparent 60%), radial-gradient(circle at 78% 68%,rgba(232,163,46,.18),transparent 65%); opacity:.9; mix-blend-mode:overlay;"></div>
+</section>
+
+<section class="mq-container mt-space reveal" data-reveal>
+	<div class="panel-glass panel-p-lg jungle-frame" style="--frame-accent:var(--mq-color-accent);">
+		<h2 class="t-section" style="margin-top:0; font-size:clamp(1.4rem,2.4vw,2.1rem); letter-spacing:.5px;">About Ook</h2>
+		<p class="lead" style="font-size:.88rem; line-height:1.55; max-width:860px;">
+			After the Monkey King's last stand against Ka, ruin and strange energy settled over trails and towns. Companions and builders rose up, shaping refuge out of wreckage. New monkeys now pick up the work: clearing shadow creatures, reopening highways and reviving tribe legacies.
+		</p>
+		<div class="vine-divider" style="margin:1.5rem 0;"></div>
+		<p style="font-size:.78rem; line-height:1.55; max-width:880px;">
+			Get gear, learn recipes, unlock movement tools and element powers while helping diplomats and founders' successors. Every trail pushed forward brings Ook closer to what it was—before Ka stirred again.
+		</p>
+	</div>
+</section>
+
+<section class="mq-container mt-space reveal" data-reveal>
+	<div class="ui-card card-gradient-border" style="padding:2.25rem 2rem;">
+		<div class="ui-card-header" style="display:flex; align-items:center; gap:.75rem;">
+			<span style="font-size:1.05rem; font-weight:600; letter-spacing:.5px;">The Five Tribes</span>
+		</div>
+		<div class="grid-auto" style="margin-top:1.5rem;">
+			<div class="feature-card" data-accent="amber">
+				<h5 style="display:flex; align-items:center; gap:.4rem;">Sea Dragons</h5>
+				<p style="font-size:.7rem; line-height:1.45;">Fire pirates of the Coconut Isles (Smugglers Highway). Founder Dragontail. Captain Blacktail leads from Dragontail Square. Gifts: Dragon Flame Sword, Parachute, Novice Pirate Hat. Sacred: Boom Plate Armor.</p>
+			</div>
+			<div class="feature-card" data-accent="lime">
+				<h5>Chim Foo</h5>
+				<p style="font-size:.7rem; line-height:1.45;">Air ninjas high in the Iron Mountains. Founder Mist; Grand Master Whisper now guides secret fortresses. Tools: Grappling Hook, Throwing Stars, Trainee Cap. Sacred: Dread Plate Armor.</p>
+			</div>
+			<div class="feature-card" data-accent="mist">
+				<h5>Ootu Mystics</h5>
+				<p style="font-size:.7rem; line-height:1.45;">Earth wise-folk of the Swamps (Fire Canyon Highway). Mama Ootu founded; Mama Babu leads. Gifts: Mystic Charm, Flytrap Staff, Apprentice Top Hat. Sacred: Venom Plate Armor.</p>
+			</div>
+			<div class="feature-card" data-accent="lime">
+				<h5>Ice Raiders</h5>
+				<p style="font-size:.7rem; line-height:1.45;">Ice / water daredevils north on Smugglers Highway. Founder Grapp; Sigthor won leadership. Gear: Snowboard, Frostbite Axe, Raider Helmet. Sacred: Frost Plate Armor.</p>
+			</div>
+			<div class="feature-card" data-accent="amber">
+				<h5>Mek-Tek</h5>
+				<p style="font-size:.7rem; line-height:1.45;">Engineers near Fire Canyon Highway. Founder Trunket. Not joinable (concept builds). Rumored element: electricity. Clock Tower builders. Legendary: Blazing Dragon Plate Armor.</p>
+			</div>
 		</div>
 	</div>
 </section>
 
-<section class="mq-container mt-space">
-	<div class="ui-card card-gradient-border flow">
-		<div class="ui-card-header">What Awaits You</div>
-		<div class="grid-auto">
-			<div class="feature-card">
-				<h5>Uncover the Mysteries of Ook</h5>
-				<p>Explore ancient paths and solve the Monkey King's secrets across lush jungle realms.</p>
-			</div>
-			<div class="feature-card">
-				<h5>Gear Up Your Monkey</h5>
-				<p>Defeat shadow creatures to forge and discover powerful equipment and relics.</p>
-			</div>
-			<div class="feature-card">
-				<h5>Quest With Friends</h5>
-				<p>Join a tribe and band together to complete challenges and defend the wilds.</p>
-			</div>
+<section class="mq-container mt-space reveal" data-reveal>
+	<div class="grid-auto" style="--mq-space-4:2rem; grid-template-columns:repeat(auto-fit,minmax(280px,1fr));">
+		<div class="panel-glass panel-p-md fx-pop" style="position:relative;">
+			<h3 style="margin-top:0; font-size:1rem; letter-spacing:.5px; display:flex; align-items:center; gap:.4rem;">
+				<span class="tribe-tag" data-tribe="amber">Questing</span>
+			</h3>
+			<p style="font-size:.8rem; line-height:1.5;">Ka's shadow minions have choked key trails, isolating regions and threatening trade. Yet these dangers open paths for fearless monkeys to earn renown, gear and experience as they liberate routes and aid allies.</p>
+			<p style="font-size:.7rem; opacity:.75;">Allies across Ook eagerly trade rewards for your courage.</p>
 		</div>
-		<div class="center">
-			<a href="/download" class="btn-modern btn-amber" style="padding:14px 30px; font-size:.85rem;">Download Launcher</a>
+		<div class="panel-glass panel-p-md fx-pop" style="position:relative;">
+			<h3 style="margin-top:0; font-size:1rem; letter-spacing:.5px;">
+				<span class="tribe-tag" data-tribe="lime">Crafting</span>
+			</h3>
+			<p style="font-size:.8rem; line-height:1.5;">Why buy gear when you can make it? Recipes—found, rewarded or purchased—unlock tools, equipment and curios. Gather ingredients across zones and forge items directly from your Book of Recipes.</p>
+			<p style="font-size:.7rem; opacity:.75;">Create for yourself, friends, or to barter.</p>
 		</div>
+		<div class="panel-glass panel-p-md fx-pop" style="position:relative;">
+			<h3 style="margin-top:0; font-size:1rem; letter-spacing:.5px;">
+				<span class="tribe-tag" data-tribe="mist">Bestiary</span>
+			</h3>
+			<p style="font-size:.8rem; line-height:1.5;">Shadow creatures and wild natives block trails and guard loot. Learn their patterns, earn materials and clear the way for tribe progress.</p>
+			<p style="font-size:.7rem; opacity:.75;">Knowledge makes tougher fights easier.</p>
+		</div>
+	</div>
+</section>
+
+<section class="mq-container mt-space reveal" data-reveal>
+	<div class="panel-glass panel-p-lg center" style="display:flex; flex-direction:column; gap:1.5rem;">
+		<h2 style="margin:0; font-size:1.4rem; letter-spacing:.5px;">Ready to Return to Ook?</h2>
+		<div style="display:flex; gap:1rem; flex-wrap:wrap; justify-content:center;">
+			<a href="/en/signup" class="btn-modern btn-accent btn-pad-md fx-pop">Create Your Monkey</a>
+			<a href="/download" class="btn-modern btn-outline-jungle btn-pad-md">Get the Launcher</a>
+		</div>
+		<p style="font-size:.7rem; opacity:.65; margin:0;">Fan remake project – not affiliated with the original publisher.</p>
 	</div>
 </section>
