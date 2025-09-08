@@ -203,12 +203,11 @@
     html[data-theme="light"] #colliderCanvas:focus { outline:2px solid var(--c-accent,#e8a32e); outline-offset:4px; }
     .colliders-page .collider-side { top:0; padding-top:14px; }
     .colliders-page .canvas-wrapper { margin-top:2px; }
-    /* (Removed custom .colliders-title styles; using .t-section utility) */
     </style>
 }
 <div class="container-fluid mt-3 colliders-page">
-    <div class="panel-glass panel-spacious" aria-labelledby="colliders-heading" role="region">
-    <h1 id="colliders-heading" class="t-section" style="margin:0 0 1.25rem; font-size:clamp(1.15rem,1.6vw,1.3rem); letter-spacing:.5px;">Room Colliders</h1>
+    <div class="panel-glass panel-spacious" role="region">
+    @await Html.PartialAsync("_PanelShell", new Web.Razor.Pages.Shared.PanelShellModel { Title = "Room Colliders", Description = "Inspect, filter, and visualize room collider data.", AdditionalClasses = "flow" })
         <div class="row">
         <div class="col-md-3">
             <button class="btn btn-outline-dark w-100 d-md-none mb-2" id="toggleSidebar" type="button" aria-expanded="true" aria-controls="roomsSidebar">Hide Panel</button>
