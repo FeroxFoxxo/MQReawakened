@@ -120,6 +120,9 @@
 
     .status-group > div { border-radius:14px !important; padding:4px 10px !important; background:linear-gradient(135deg,rgba(34,92,55,0.65),rgba(18,55,34,0.65)); backdrop-filter:blur(4px); box-shadow:0 0 0 1px rgba(232,163,46,0.2), 0 4px 14px -6px rgba(0,0,0,.65); position:relative; overflow:hidden; }
     .status-group > div:before { content:""; position:absolute; inset:0; background:linear-gradient(120deg,rgba(232,163,46,.28),rgba(232,163,46,0) 65%); mix-blend-mode:overlay; opacity:.25; pointer-events:none; }
+    /* Empty state badge variant */
+    .status-group #status.empty-state { background:linear-gradient(135deg,#2d3a2f,#233027); color:#c2d659 !important; font-style:italic; }
+    html[data-theme="light"] .status-group #status.empty-state { background:linear-gradient(135deg,#fff7e0,#f2f6dd); color:#624100 !important; box-shadow:0 0 0 1px #e8a32e,0 2px 6px -2px rgba(0,0,0,.15); }
     #hoverInfo { font-weight:500; }
     .canvas-wrapper:focus-within #colliderCanvas { outline:2px solid var(--c-accent); outline-offset:4px; }
         ul.compact-list { list-style:disc; padding-left:16px; margin:0; display:flex; flex-direction:column; gap:2px; }
@@ -203,7 +206,6 @@
 }
 <div class="container-fluid mt-3 colliders-page">
     <div class="panel-glass panel-spacious">
-        <div class="vine-divider vine-full" aria-hidden="true"></div>
         <div class="row">
         <div class="col-md-3">
             <button class="btn btn-outline-dark w-100 d-md-none mb-2" id="toggleSidebar" type="button" aria-expanded="true" aria-controls="roomsSidebar">Hide Panel</button>
@@ -378,10 +380,15 @@
                 const maxX = Math.ceil(centerWorldX + visibleWorldW / 2) + 2;
                 const minY = Math.floor(centerWorldY - visibleWorldH / 2) - 2;
                 const maxY = Math.ceil(centerWorldY + visibleWorldH / 2) + 2;
-                const styles = getComputedStyle(document.documentElement);
-                const minor = styles.getPropertyValue('--grid-line-minor').trim() || 'rgba(50,105,70,0.35)';
-                const major = styles.getPropertyValue('--grid-line-major').trim() || 'rgba(181,247,61,0.22)';
-                const axis = styles.getPropertyValue('--grid-axis').trim() || 'rgba(255,255,255,0.35)';
+                // Read grid colors from nearest scoped container (light mode overrides live under .colliders-page)
+                const scopeEl = canvas.closest('.colliders-page') || document.documentElement;
+                const styles = getComputedStyle(scopeEl);
+                const fallbackMinor = 'rgba(50,105,70,0.35)';
+                const fallbackMajor = 'rgba(181,247,61,0.22)';
+                const fallbackAxis = 'rgba(255,255,255,0.35)';
+                const minor = (styles.getPropertyValue('--grid-line-minor') || '').trim() || fallbackMinor;
+                const major = (styles.getPropertyValue('--grid-line-major') || '').trim() || fallbackMajor;
+                const axis = (styles.getPropertyValue('--grid-axis') || '').trim() || fallbackAxis;
                 ctx.lineWidth = 1 / zoom;
                 for (let x = minX; x <= maxX; x++) { ctx.beginPath(); ctx.strokeStyle = (x % 5 === 0) ? major : minor; ctx.moveTo(x * gridSize, -(minY) * gridSize); ctx.lineTo(x * gridSize, -(maxY) * gridSize); ctx.stroke(); }
                 for (let y = minY; y <= maxY; y++) { ctx.beginPath(); ctx.strokeStyle = (y % 5 === 0) ? major : minor; ctx.moveTo(minX * gridSize, -y * gridSize); ctx.lineTo(maxX * gridSize, -y * gridSize); ctx.stroke(); }
@@ -478,7 +485,14 @@
                 ctx.restore();
             }
             ctx.restore();
-            document.getElementById('status').innerText = currentRoom ? `${currentRoom.name} | V${version} | Colliders: ${colliders.length} | Zoom: ${zoom.toFixed(2)} | FPS: ${fps.toFixed(0)} | Flash:${window._flashState?.quality || 'high'}` : 'No room selected';
+            const statusEl = document.getElementById('status');
+            if (currentRoom) {
+                statusEl.classList.remove('empty-state');
+                statusEl.innerText = `${currentRoom.name} | V${version} | Colliders: ${colliders.length} | Zoom: ${zoom.toFixed(2)} | FPS: ${fps.toFixed(0)} | Flash:${window._flashState?.quality || 'high'}`;
+            } else {
+                statusEl.classList.add('empty-state');
+                statusEl.innerText = 'No room selected';
+            }
             const vcEl = document.getElementById('viewerCount');
             if (vcEl) {
                 if (currentRoom) {
