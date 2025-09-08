@@ -78,6 +78,8 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
 
     private readonly object _sync = new();
 
+    private bool _pendingDestroy;
+
     public bool HasLinkedArena => _arenaComp != null;
     public int Difficulty => _breakableComp != null ? _breakableComp.Damageable.DifficultyLevel : Room.LevelInfo.Difficulty;
     public int Stars => _breakableComp != null ? _breakableComp.Damageable.Stars : _stars;
@@ -449,6 +451,12 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
                         _updatedSpawnCycle += SpawnCycleCount;
                     
                     _nextSpawnRequestTime = 0;
+                    
+                    if (_pendingDestroy)
+                    {
+                        Room.RemoveEnemy(Id);
+                        _pendingDestroy = false;
+                    }
                 }
             }
         }
@@ -458,5 +466,17 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
 
     private bool CanSpawnMoreThisCycle() => SpawnCycleCount <= 0 || _spawnedEntityCount < _updatedSpawnCycle;
 
-    public void Destroy() => Room.RemoveEnemy(Id);
+    public void Destroy()
+    {
+        lock (_sync)
+        {
+            if (LinkedEnemies.Count > 0)
+            {
+                _pendingDestroy = true;
+                return;
+            }
+        }
+        
+        Room.RemoveEnemy(Id);
+    }
 }

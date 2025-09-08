@@ -315,7 +315,7 @@ public abstract class BaseEnemy : IDestructible
         Room.KillEntity(Id);
     }
 
-        private void SendRewards(Player player)
+    private void SendRewards(Player player)
     {
         //The XP Reward here is not accurate, but pretty close
         var xpAward = player != null ? DeathXp - (player.Character.GlobalLevel - 1) * 5 : DeathXp;
@@ -340,12 +340,6 @@ public abstract class BaseEnemy : IDestructible
                 }
             }
 
-            //Achievements
-            player.CheckAchievement(AchConditionType.DefeatEnemy, [PrefabName], InternalAchievement, Logger);
-            player.CheckAchievement(AchConditionType.DefeatEnemy, [Enum.GetName(EnemyModel.EnemyCategory)], InternalAchievement, Logger);
-            player.CheckAchievement(AchConditionType.DefeatEnemy, [EnemyController.PrefabName], InternalAchievement, Logger);
-            player.CheckAchievement(AchConditionType.DefeatEnemyInLevel, [player.Room.LevelInfo.Name], InternalAchievement, Logger);
-            
             foreach (var roomPlayer in Room.GetPlayers())
             {
                 roomPlayer.CheckObjective(ObjectiveEnum.Score, Id, EnemyController.PrefabName, 1, QuestCatalog);
@@ -354,6 +348,11 @@ public abstract class BaseEnemy : IDestructible
         }
         
         Room.SendSyncEvent(AISyncEventHelper.AIDie(Id, Room.Time, string.Empty, xpAward > 0 ? xpAward : 1, true, player == null ? "0" : player.GameObjectId, false));
+
+        player.CheckAchievement(AchConditionType.DefeatEnemy, [PrefabName], InternalAchievement, Logger);
+        player.CheckAchievement(AchConditionType.DefeatEnemy, [Enum.GetName(EnemyModel.EnemyCategory)], InternalAchievement, Logger);
+        player.CheckAchievement(AchConditionType.DefeatEnemy, [EnemyController.PrefabName], InternalAchievement, Logger);
+        player.CheckAchievement(AchConditionType.DefeatEnemyInLevel, [player.Room.LevelInfo.Name], InternalAchievement, Logger);
     }
 
     public abstract void SendAiData(Player player);
