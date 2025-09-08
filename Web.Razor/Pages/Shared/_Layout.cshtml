@@ -46,19 +46,7 @@
 					    <img src="/_content/Web.Razor/logo.png" alt="Site Logo" class="brand-logo" />
 						<span class="sr-only">@ViewData["ServerName"]</span>
 					</a>
-					<ul class="navbar-nav ml-auto align-items-lg-center d-none d-lg-flex main-nav">
-						<li class="nav-item"><a class="nav-link @(path=="/" || path=="" ? "active" : null)" href="/"><span class="nav-label">Home</span></a></li>
-						<li class="nav-item"><a class="nav-link @(path=="/patchnotes" ? "active" : null)" href="/patchnotes"><span class="nav-label">Patch Notes</span></a></li>
-						<li class="nav-item"><a class="nav-link @(path.StartsWith("/en/signup") ? "active" : null)" href="/en/signup"><span class="nav-label">Sign Up</span></a></li>
-						<li class="nav-item"><a class="nav-link @(path=="/download" ? "active" : null)" href="/download"><span class="nav-label">Download</span></a></li>
-						<li class="nav-item dropdown">
-							<a class="nav-link dropdown-toggle @(path=="/commands" || path=="/colliders" ? "active" : null)" href="#" id="adminDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="nav-label">Admin</span></a>
-							<div class="dropdown-menu dropdown-menu-right admin-dropdown" aria-labelledby="adminDropdown">
-								<a class="dropdown-item @(path=="/commands" ? "active" : null)" href="/commands">Commands</a>
-								<a class="dropdown-item @(path=="/colliders" ? "active" : null)" href="/colliders">Colliders</a>
-							</div>
-						</li>
-					</ul>
+					@await Html.PartialAsync("_NavMenu")
 					<div class="nav-actions d-flex align-items-center" style="gap:10px;">
 						<button id="themeToggle" class="theme-toggle" aria-label="Toggle theme" title="Toggle theme">
 							<svg id="themeToggleIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a1 1 0 0 1 1 1 7 7 0 0 0 7 7 1 1 0 0 1 0 2 7 7 0 0 0-7 7 1 1 0 0 1-2 0 7 7 0 0 0-7-7 1 1 0 0 1 0-2 7 7 0 0 0 7-7 1 1 0 0 1 1-1Z" /></svg>
