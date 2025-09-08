@@ -58,7 +58,7 @@
     #status, #stats, #hoverInfo, #colliderDetail { background:rgba(24,45,32,0.55); backdrop-filter:blur(2px); border:1px solid rgba(var(--c-accent-rgb),0.25); border-radius:var(--radius-sm); padding:2px 6px; color:var(--c-text) !important; font-weight:500; text-shadow:0 0 3px rgba(0,0,0,0.7); }
         .auto-hide:empty { display:none !important; }
     #hoverInfo { margin-top:0; }
-    #roomList { max-height:28vh; overflow-y:auto; overflow-x:hidden; border:1px solid var(--c-border-subtle); border-radius:var(--radius-sm); scroll-behavior:smooth; }
+    #roomList { max-height:28vh; overflow-y:auto; overflow-x:visible; border:1px solid var(--c-border-subtle); border-radius:var(--radius-sm); scroll-behavior:smooth; padding-right:4px; }
         .collider-item { font-size:12px; line-height:1.15; padding:4px 8px; }
         #roomList .list-group-item.collider-item { background:#142d1f; color:#f0f6ee; border:0; border-bottom:1px solid #102318; }
         #roomList .list-group-item.collider-item:last-child { border-bottom:0; }
@@ -115,7 +115,7 @@
     #roomList .collider-item { --pill-line-height:16px; font-size:12px; line-height:var(--pill-line-height); border-radius:10px; margin:2px 4px; background:linear-gradient(145deg,#142f22,#102619); border:1px solid #1d3f2c; transition:background .25s, transform .25s, box-shadow .25s, opacity .28s ease, max-height .28s ease, padding .28s ease, margin .28s ease; display:block; white-space:normal; word-break:break-word; overflow-wrap:anywhere; padding:4px 8px; font-weight:500; position:relative; }
     #roomList .collider-item.fade-out { opacity:0; transform:translateX(-6px); pointer-events:none; }
     #roomList .collider-item:hover { background:#1e3e2b; transform:translateY(-1px); line-height:var(--pill-line-height); }
-    #roomList .collider-item.active-room { background:linear-gradient(145deg,#2d5a3e,#244f36); box-shadow:0 0 0 1px var(--c-accent), 0 0 10px -2px rgba(var(--c-accent-rgb),.55); font-weight:600; line-height:var(--pill-line-height); }
+    #roomList .collider-item.active-room { background:linear-gradient(145deg,#2d5a3e,#244f36); box-shadow:0 0 0 1px var(--c-accent), 0 0 0 2px rgba(var(--c-accent-rgb),.35), 0 0 10px -2px rgba(var(--c-accent-rgb),.55); font-weight:600; line-height:var(--pill-line-height); }
 
     #roomList::-webkit-scrollbar { width:10px; }
     #roomList::-webkit-scrollbar-track { background:#102418; border-radius:8px; }
