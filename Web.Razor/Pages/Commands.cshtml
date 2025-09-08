@@ -33,7 +33,7 @@
 }
 
 <section class="mq-container mt-space fade-in">
-    @await Html.PartialAsync("_PanelShell", new Web.Razor.Pages.Shared.PanelShellModel { Title = (string)ViewData["ServerName"] + " Command Reference", Description = "Note: Some commands may not be fully implemented or may not work on older versions.", Center = false, CenterHeader = true, AdditionalClasses = "flow panel-p-lg", Reveal = false })
+    @await Html.PartialAsync("_PanelShell", new Web.Razor.Pages.Shared.PanelShellModel { Title = (string)ViewData["ServerName"] + " Command Reference", Description = "Note: Some commands may not be fully implemented or may not work on older versions.", CenterHeader = true, AdditionalClasses = "flow panel-p-lg", Reveal = false })
     @functions {
         private static int _optCounter = 0;
         private void RenderParameter(ParameterModel parameter, string parentId)

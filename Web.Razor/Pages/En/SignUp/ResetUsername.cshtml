@@ -6,7 +6,7 @@
 }
 
 <section class="mq-container mt-space fade-in">
-    @await Html.PartialAsync("_PanelShell", new Web.Razor.Pages.Shared.PanelShellModel { Title = "Reset Username", Description = "Enter and confirm your new username below.", Center = false, AdditionalClasses = "panel-p-lg flow" })
+    @await Html.PartialAsync("_PanelShell", new Web.Razor.Pages.Shared.PanelShellModel { Title = "Reset Username", Description = "Enter and confirm your new username below.", AdditionalClasses = "panel-p-lg flow" })
         <div data-reveal>
                 <form asp-action="ResetUsername" method="post" class="form-modern" novalidate>
                     <div class="field">
