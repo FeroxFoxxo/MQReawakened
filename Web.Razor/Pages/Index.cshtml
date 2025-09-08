@@ -19,8 +19,14 @@
 			</div>
 		</div>
 		<div class="intro-meta" role="group" aria-label="Server stats">
-			<div class="meta-pill" data-animate="meta-0" aria-live="polite"><strong>@Model.PlayerCount</strong><span>Online</span></div>
-			<div class="meta-pill" data-animate="meta-1"><strong>@Model.AccountCount</strong><span>Registered</span></div>
+			<div class="meta-pill" data-animate="meta-0" aria-live="polite" aria-label="Currently online players">
+				<span class="meta-label">Currently online:</span>
+				<strong class="meta-value">@Model.PlayerCount</strong>
+			</div>
+			<div class="meta-pill" data-animate="meta-1" aria-label="Registered player accounts">
+				<span class="meta-label">Registered players:</span>
+				<strong class="meta-value">@Model.AccountCount</strong>
+			</div>
 		</div>
 	</div>
 	<div class="intro-bg" aria-hidden="true"></div>
