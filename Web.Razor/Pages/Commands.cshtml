@@ -12,7 +12,7 @@
         (function(){
             function findLocalToggle(el){
                 const id = el.id;
-                return $(el).parent().find('> .options-toggle[data-target="#'+id+'"]');
+                return $(el).siblings('.options-toggle[data-target="#'+id+'"]').first();
             }
             $(document).on('show.bs.collapse', '.options-collapse', function(){
                 const $btn = findLocalToggle(this);
