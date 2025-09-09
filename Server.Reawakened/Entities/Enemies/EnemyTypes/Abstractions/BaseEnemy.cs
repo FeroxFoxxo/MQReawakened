@@ -177,9 +177,6 @@ public abstract class BaseEnemy : IDestructible
 
         Logger.LogDebug("Generating hitbox for enemy {PrefabName} (ID: {Id})", PrefabName, Id);
 
-        Logger.LogDebug("Found components - Status: {Status}, ServerObjectSizeInfo: {ServerSize}, ObjectSizeInfo: {ObjectSize}", 
-            Status != null ? "Yes" : "No", serverObjectSize != null ? "Yes" : "No", objectSize != null ? "Yes" : "No");
-
         IObjectSizeInfo box = serverObjectSize != null ? serverObjectSize : objectSize;
 
         if (box == null || EnemyController.Scale == null)

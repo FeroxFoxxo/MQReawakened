@@ -1,26 +1,17 @@
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Server.Colliders.Abstractions;
 using Server.Colliders.DTOs;
+using Server.Colliders.Services;
 using Web.Razor.Hubs;
 
 namespace Web.Razor.Services;
 
-public class ColliderPushService : BackgroundService
+public class ColliderPushService(ColliderSnapshotProvider _snapshots, IHubContext<ColliderHub> _hub, ILogger<ColliderPushService> _logger, InMemoryRoomVersionTracker _versions, InMemoryColliderSubscriptionTracker _subs) : BackgroundService
 {
-    private readonly IColliderSnapshotProvider _snapshots;
-    private readonly IHubContext<ColliderHub> _hub;
-    private readonly ILogger<ColliderPushService> _logger;
-    private readonly IRoomVersionTracker _versions;
-    private readonly IColliderSubscriptionTracker _subs;
-
     private readonly int _baseIntervalMs = Math.Clamp(int.TryParse(Environment.GetEnvironmentVariable("COLLIDER_BASE_INTERVAL_MS"), out var envBase) ? envBase : 250, 20, 5000);
     private int _currentIntervalMs = Math.Clamp(int.TryParse(Environment.GetEnvironmentVariable("COLLIDER_BASE_INTERVAL_MS"), out var envStart) ? envStart : 250, 20, 5000);
     private const int MaxIdleInterval = 5000;
-
-    public ColliderPushService(IColliderSnapshotProvider snapshots, IHubContext<ColliderHub> hub, ILogger<ColliderPushService> logger, IRoomVersionTracker versions, IColliderSubscriptionTracker subs)
-    { _snapshots = snapshots; _hub = hub; _logger = logger; _versions = versions; _subs = subs; }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {

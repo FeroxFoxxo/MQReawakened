@@ -6,11 +6,10 @@ using Server.Colliders.DTOs;
 
 namespace Server.Colliders.Services;
 
-public class ColliderPushService(IColliderSnapshotProvider _snapshots,
-    IColliderDiffCalculator _diffs,
-    IRoomVersionTracker _versions,
+public class ColliderPushService(ColliderSnapshotProvider _snapshots,
+    InMemoryRoomVersionTracker _versions,
     IColliderUpdatePublisher _publisher,
-    IColliderSubscriptionTracker _subs,
+    InMemoryColliderSubscriptionTracker _subs,
     ILogger<ColliderPushService> _logger) : BackgroundService, IService
 {
     private readonly Dictionary<(int, int), RoomCollidersDto> _last = [];
@@ -70,7 +69,7 @@ public class ColliderPushService(IColliderSnapshotProvider _snapshots,
                         continue;
                     }
 
-                    var diff = _diffs.Calculate(prev, room);
+                    var diff = ColliderDiffCalculator.Calculate(prev, room);
                     if (diff.Added.Length == 0 && diff.Removed.Length == 0 && diff.Updated.Length == 0)
                     { _last[key] = room; continue; }
                     var versionWithIncrement = _versions.Increment(room.LevelId, room.RoomInstanceId);

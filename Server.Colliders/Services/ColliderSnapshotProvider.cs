@@ -1,14 +1,11 @@
 using Server.Base.Core.Abstractions;
-using Server.Colliders.Abstractions;
 using Server.Colliders.DTOs;
 using Server.Reawakened.Rooms.Services;
 
 namespace Server.Colliders.Services;
 
-public class ColliderSnapshotProvider : IService, IColliderSnapshotProvider
+public class ColliderSnapshotProvider(WorldHandler _world) : IService
 {
-    private readonly WorldHandler _world;
-    public ColliderSnapshotProvider(WorldHandler world) => _world = world;
     public void Initialize() { }
 
     public RoomCollidersDto[] GetSnapshots() => [.. _world.GetOpenRooms().Select(room =>
@@ -23,6 +20,7 @@ public class ColliderSnapshotProvider : IService, IColliderSnapshotProvider
                 c.Position.y,
                 c.BoundingBox.width,
                 c.BoundingBox.height)).ToArray();
+            
             var instance = int.Parse(room.ToString().Split('_').Last());
             return new RoomCollidersDto(room.LevelInfo.LevelId, instance, room.LevelInfo.Name, colliders);
         })];
