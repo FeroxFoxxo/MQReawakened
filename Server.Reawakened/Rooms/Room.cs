@@ -512,7 +512,13 @@ public class Room : Timer
     public void RemoveProjectile(string projectileId)
     {
         lock (_roomLock)
-            _projectiles.Remove(projectileId);
+        {
+            if (_projectiles.TryGetValue(projectileId, out var projectile))
+            {
+                RemoveCollider(projectile.Collider.Id);
+                _projectiles.Remove(projectileId);
+            }
+        }
     }
 
     public int CreateProjectileId()
