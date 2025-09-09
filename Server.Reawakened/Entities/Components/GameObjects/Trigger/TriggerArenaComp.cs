@@ -67,7 +67,6 @@ public class TriggerArenaComp : BaseTriggerStatueComp<TriggerArena>
 
         _timer = Room.Time + ActiveDuration;
 
-        //Failsafe to prevent respawn issues when arena is defeated too quickly
         _minClearTime = Room.Time + 5;
     }
 

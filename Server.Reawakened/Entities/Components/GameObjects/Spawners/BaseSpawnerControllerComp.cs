@@ -157,8 +157,10 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
         var triggerSpawn = false;
         var triggerFinalize = false;
 
+        var currentSpawned = _arenaComp != null ? _arenaComp.ArenaEntities.Count(e => e.StartsWith(Id + "_") && !Room.IsObjectKilled(e)) : LinkedEnemies.Count;
+
         if (Room.IsPlayerNearby(position, DetectionRadius) &&
-            LinkedEnemies.Count < MaxSimultanousSpawned &&
+            currentSpawned < MaxSimultanousSpawned &&
             _nextSpawnRequestTime <= 0)
         {
             triggerSpawn = true;
@@ -178,7 +180,8 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
     {
         _nextSpawnRequestTime = _nextSpawnRequestTime == NotScheduled ? Room.Time + InitialSpawnDelay : Room.Time + MinSpawnInterval;
 
-        if (CanSpawnMoreThisCycle() && LinkedEnemies.Count < MaxSimultanousSpawned)
+        var currentSpawned = _arenaComp != null ? _arenaComp.ArenaEntities.Count(e => e.StartsWith(Id + "_") && !Room.IsObjectKilled(e)) : LinkedEnemies.Count;
+        if (CanSpawnMoreThisCycle() && currentSpawned < MaxSimultanousSpawned)
             _spawnRequested = true;
     }
 
