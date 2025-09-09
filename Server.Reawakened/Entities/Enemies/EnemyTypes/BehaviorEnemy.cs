@@ -81,13 +81,30 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
 
     public override void InternalUpdate()
     {
-        if (CurrentBehavior.ShouldDetectPlayers)
-            RunPlayerDetection();
+        var hasDetected = false;
 
-        Position.SetPosition(AiData.Sync_PosX, AiData.Sync_PosY, AiData.Sync_PosZ);
+        if (CurrentBehavior.ShouldDetectPlayers)
+            hasDetected = HasDetectedPlayers();
+
+        if (!hasDetected)
+        {
+            if (CurrentBehavior.TryUpdate())
+                if (AiData.Intern_FireProjectile)
+                    FireProjectile(false);
+
+            if (Global != null && (CurrentState == Global.AwareBehavior || CurrentState == StateType.LookAround))
+                if (Room.Time >= _lastUpdate + CurrentBehavior.GetBehaviorTime())
+                    CurrentBehavior.NextState();
+        }
+
+        Position.SetPosition(
+            AiData.Sync_PosX,
+            AiData.Sync_PosY,
+            AiData.Sync_PosZ
+        );
     }
 
-    private void RunPlayerDetection()
+    public bool HasDetectedPlayers()
     {
         var rect = new Rect(
             Hitbox.Position.x - (AiData.Intern_Dir < 0 ? Global.Global_FrontDetectionRangeX : Global.Global_BackDetectionRangeX) - Hitbox.BoundingBox.width / 2,
@@ -100,30 +117,27 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
 
         foreach (var player in Room.GetPlayers())
         {
+            if (player == null)
+                continue;
+
             var temp = player.TempData;
             var character = player.Character;
             var statusEffects = character?.StatusEffects;
 
             var collides = enemyCollider.CheckCollision(new PlayerCollider(player));
-            var withinPatrol = !Global.Global_DetectionLimitedByPatrolLine ||  temp.Position.x > AiData.Intern_MinPointX && temp.Position.x < AiData.Intern_MaxPointX;
+            var withinPatrol = !Global.Global_DetectionLimitedByPatrolLine || temp != null && temp.Position.x > AiData.Intern_MinPointX && temp.Position.x < AiData.Intern_MaxPointX;
             var samePlane = ParentPlane == player.GetPlayersPlaneString();
-            var invisible = statusEffects.HasEffect(ItemEffectType.Invisibility);
-            var alive = character.CurrentLife > 0;
+            var invisible = statusEffects?.HasEffect(ItemEffectType.Invisibility) ?? false;
+            var alive = (character?.CurrentLife ?? 0) > 0;
 
             if (collides && withinPatrol && samePlane && !invisible && alive)
             {
                 EnemyAggroPlayer(player);
-                return;
+                return true;
             }
         }
 
-        if (CurrentBehavior.TryUpdate())
-            if (AiData.Intern_FireProjectile)
-                FireProjectile(false);
-
-        if (Global != null && (CurrentState == Global.AwareBehavior || CurrentState == StateType.LookAround))
-            if (Room.Time >= _lastUpdate + CurrentBehavior.GetBehaviorTime())
-                CurrentBehavior.NextState();
+        return false;
     }
 
     public void FireProjectile(bool isGrenade)
