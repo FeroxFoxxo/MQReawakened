@@ -186,9 +186,18 @@ public class Room : Timer
 
     public override void OnTick()
     {
-        var entitiesCopy = _entities.Values.SelectMany(s => s).ToList();
-        var projectilesCopy = _projectiles.Values.ToList();
-        var enemiesCopy = _enemies.Values.ToList();
+        List<BaseComponent> entitiesCopy;
+        List<BaseProjectile> projectilesCopy;
+        List<BaseEnemy> enemiesCopy;
+        List<Player> playersCopy;
+
+        lock (_roomLock)
+        {
+            entitiesCopy = [.. _entities.Values.SelectMany(s => s)];
+            projectilesCopy = [.. _projectiles.Values];
+            enemiesCopy = [.. _enemies.Values];
+            playersCopy = [.. _players.Values];
+        }
 
         foreach (var entityComponent in entitiesCopy)
             if (!IsObjectKilled(entityComponent.Id))
@@ -200,7 +209,7 @@ public class Room : Timer
         foreach (var enemy in enemiesCopy)
             enemy.Update();
 
-        foreach (var player in _players?.Values)
+        foreach (var player in playersCopy)
         {
             if (GetTime.GetCurrentUnixMilliseconds() - player.TempData.CurrentPing > _config.KickAfterTime)
             {
