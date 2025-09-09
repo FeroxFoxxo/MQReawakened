@@ -1,10 +1,9 @@
 using System.Collections.Concurrent;
 using Server.Base.Core.Abstractions;
-using Server.Colliders.Abstractions;
 
 namespace Server.Colliders.Services;
 
-public class InMemoryRoomVersionTracker : IRoomVersionTracker, IService
+public class InMemoryRoomVersionTracker : IService
 {
     private readonly ConcurrentDictionary<string,long> _versions = new();
     private static string Key(int levelId,int room) => $"{levelId}:{room}";

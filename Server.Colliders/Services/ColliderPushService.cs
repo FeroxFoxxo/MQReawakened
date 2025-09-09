@@ -6,11 +6,11 @@ using Server.Colliders.DTOs;
 
 namespace Server.Colliders.Services;
 
-public class ColliderPushService(IColliderSnapshotProvider _snapshots,
-    IColliderDiffCalculator _diffs,
-    IRoomVersionTracker _versions,
+public class ColliderPushService(ColliderSnapshotProvider _snapshots,
+    ColliderDiffCalculator _diffs,
+    InMemoryRoomVersionTracker _versions,
     IColliderUpdatePublisher _publisher,
-    IColliderSubscriptionTracker _subs,
+    InMemoryColliderSubscriptionTracker _subs,
     ILogger<ColliderPushService> _logger) : BackgroundService, IService
 {
     private readonly Dictionary<(int, int), RoomCollidersDto> _last = [];

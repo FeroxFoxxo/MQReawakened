@@ -1,9 +1,8 @@
 using System.Collections.Concurrent;
-using Server.Colliders.Abstractions;
 
 namespace Server.Colliders.Services;
 
-public class InMemoryColliderSubscriptionTracker : IColliderSubscriptionTracker
+public class InMemoryColliderSubscriptionTracker
 {
     private readonly ConcurrentDictionary<(int,int), ConcurrentDictionary<string, byte>> _roomSubs = new();
     private readonly ConcurrentDictionary<string, HashSet<(int,int)>> _connIndex = new();

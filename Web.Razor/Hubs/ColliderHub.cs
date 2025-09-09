@@ -1,15 +1,15 @@
 using Microsoft.AspNetCore.SignalR;
-using Server.Colliders.Abstractions;
 using Server.Colliders.DTOs;
+using Server.Colliders.Services;
 
 namespace Web.Razor.Hubs;
 
 public class ColliderHub : Hub
 {
-    private readonly IColliderSnapshotProvider _snapshots;
-    private readonly IColliderSubscriptionTracker _subs;
+    private readonly ColliderSnapshotProvider _snapshots;
+    private readonly InMemoryColliderSubscriptionTracker _subs;
 
-    public ColliderHub(IColliderSnapshotProvider snapshots, IColliderSubscriptionTracker subs)
+    public ColliderHub(ColliderSnapshotProvider snapshots, InMemoryColliderSubscriptionTracker subs)
     { _snapshots = snapshots; _subs = subs; }
 
     public static async Task<string> Ping() => await Task.FromResult("pong");

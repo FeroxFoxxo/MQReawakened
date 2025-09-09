@@ -1,11 +1,10 @@
 using Server.Base.Core.Abstractions;
-using Server.Colliders.Abstractions;
 using Server.Colliders.DTOs;
 using Server.Reawakened.Rooms.Services;
 
 namespace Server.Colliders.Services;
 
-public class ColliderSnapshotProvider : IService, IColliderSnapshotProvider
+public class ColliderSnapshotProvider : IService
 {
     private readonly WorldHandler _world;
     public ColliderSnapshotProvider(WorldHandler world) => _world = world;

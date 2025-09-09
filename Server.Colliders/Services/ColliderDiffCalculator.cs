@@ -1,9 +1,8 @@
-using Server.Colliders.Abstractions;
 using Server.Colliders.DTOs;
 
 namespace Server.Colliders.Services;
 
-public class ColliderDiffCalculator : IColliderDiffCalculator
+public class ColliderDiffCalculator
 {
     public ColliderDiffResult Calculate(RoomCollidersDto previous, RoomCollidersDto current)
     {
