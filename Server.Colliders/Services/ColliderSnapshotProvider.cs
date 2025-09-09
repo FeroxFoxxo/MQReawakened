@@ -4,10 +4,8 @@ using Server.Reawakened.Rooms.Services;
 
 namespace Server.Colliders.Services;
 
-public class ColliderSnapshotProvider : IService
+public class ColliderSnapshotProvider(WorldHandler _world) : IService
 {
-    private readonly WorldHandler _world;
-    public ColliderSnapshotProvider(WorldHandler world) => _world = world;
     public void Initialize() { }
 
     public RoomCollidersDto[] GetSnapshots() => [.. _world.GetOpenRooms().Select(room =>

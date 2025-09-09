@@ -32,26 +32,26 @@ public class InMemoryColliderSubscriptionTracker
         }
     }
 
-        public IReadOnlyCollection<(int levelId,int roomInstanceId)> RemoveAll(string connectionId)
+    public IReadOnlyCollection<(int levelId,int roomInstanceId)> RemoveAll(string connectionId)
+    {
+        var removed = new List<(int,int)>();
+        if (_connIndex.TryRemove(connectionId, out var rooms))
         {
-            var removed = new List<(int,int)>();
-            if (_connIndex.TryRemove(connectionId, out var rooms))
+            lock(rooms)
             {
-                lock(rooms)
+                foreach (var key in rooms)
                 {
-                    foreach (var key in rooms)
+                    if (_roomSubs.TryGetValue(key, out var set))
                     {
-                        if (_roomSubs.TryGetValue(key, out var set))
-                        {
-                            set.TryRemove(connectionId, out _);
-                            if (set.IsEmpty) _roomSubs.TryRemove(key, out _);
-                        }
-                        removed.Add(key);
+                        set.TryRemove(connectionId, out _);
+                        if (set.IsEmpty) _roomSubs.TryRemove(key, out _);
                     }
+                    removed.Add(key);
                 }
             }
-            return removed;
         }
+        return removed;
+    }
 
     public bool HasAnySubscribers() => _roomSubs.Any(static kvp => !kvp.Value.IsEmpty);
 
