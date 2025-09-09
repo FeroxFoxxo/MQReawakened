@@ -278,8 +278,6 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
             )
         );
 
-        _arenaComp?.ArenaEntities.Add($"{Id}_{nextSpawnNumber}");
-
         Room.SendSyncEvent(new Spawn_SyncEvent(Id, Room.Time, nextSpawnNumber));
 
         TimerThread.RunDelayed(DelayedSpawnData, new DelayedEnemySpawn() { Spawner = this, TemplateId = templateId, PrefabName = selectedPrefab }, TimeSpan.FromSeconds(delay));
@@ -351,6 +349,8 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
         }
 
         spawner.Room.AddEntity(spawnedEntityId, builtComponents);
+
+        spawner._arenaComp?.ArenaEntities.Add(spawnedEntityId);
 
         foreach (var component in builtComponents)
         {
