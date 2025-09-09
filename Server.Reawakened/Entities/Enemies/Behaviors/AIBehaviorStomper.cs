@@ -15,5 +15,5 @@ public class AIBehaviorStomper(BehaviorEnemy enemy, StomperProperties fallback) 
     public override StateType GetStateType() => StateType.Stomper;
 
     public override void NextState() =>
-        enemy.ChangeBehavior(StateType.LookAround, enemy.Position.x, enemy.Position.y, enemy.Generic.Patrol_ForceDirectionX);
+        enemy.ChangeBehavior(StateType.LookAround, enemy.Position.X, enemy.Position.Y, enemy.Generic.Patrol_ForceDirectionX);
 }

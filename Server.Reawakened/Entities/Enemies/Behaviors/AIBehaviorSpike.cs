@@ -26,5 +26,5 @@ public class AIBehaviorSpike(BehaviorEnemy enemy, SpikeProperties fallback) : AI
     public override StateType GetStateType() => StateType.Spike;
 
     public override void NextState() =>
-        enemy.ChangeBehavior(enemy.Global.AwareBehavior, enemy.Position.x, enemy.Position.y, _aiData.Intern_Dir);
+        enemy.ChangeBehavior(enemy.Global.AwareBehavior, enemy.Position.X, enemy.Position.Y, _aiData.Intern_Dir);
 }

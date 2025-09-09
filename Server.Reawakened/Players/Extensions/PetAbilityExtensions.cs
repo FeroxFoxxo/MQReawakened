@@ -176,8 +176,8 @@ public static class PetAbilityExtensions
             pet.AbilityParams.EnemyInDetectionZone(enemy, petPosition)))
         {
             var distanceFromPlayer = (int)Math.Sqrt(
-                Math.Pow(petPosition.x - enemy.Position.x, 2) +
-                Math.Pow(petPosition.y - enemy.Position.y, 2));
+                Math.Pow(petPosition.x - enemy.Position.X, 2) +
+                Math.Pow(petPosition.y - enemy.Position.Y, 2));
 
             enemies.TryAdd(distanceFromPlayer, enemy);
         }
@@ -195,16 +195,16 @@ public static class PetAbilityExtensions
     }
 
     private static bool EnemyInDetectionZone(this PetAbilityParams abilityParams, BaseEnemy enemy, Vector3 petPosition) =>
-       petPosition.x + abilityParams.DetectionZone.x >= enemy.Position.x &&
-          petPosition.y + abilityParams.DetectionZone.y >= enemy.Position.y &&
-          petPosition.x - abilityParams.DetectionZoneOffset.x <= enemy.Position.x &&
-          petPosition.y - abilityParams.DetectionZoneOffset.y <= enemy.Position.y;
+       petPosition.x + abilityParams.DetectionZone.x >= enemy.Position.X &&
+        petPosition.y + abilityParams.DetectionZone.y >= enemy.Position.Y &&
+        petPosition.x - abilityParams.DetectionZoneOffset.x <= enemy.Position.X &&
+        petPosition.y - abilityParams.DetectionZoneOffset.y <= enemy.Position.Y;
 
     private static bool EnemyInDamageZone(this PetAbilityParams abilityParams, BaseEnemy enemy, Vector3 petPosition) =>
-        petPosition.x + abilityParams.DamageArea.x >= enemy.Position.x &&
-        petPosition.y + abilityParams.DamageArea.y >= enemy.Position.y &&
-        petPosition.x - abilityParams.DamageAreaOffset.x <= enemy.Position.x &&
-        petPosition.y - abilityParams.DamageAreaOffset.y <= enemy.Position.y;
+        petPosition.x + abilityParams.DamageArea.x >= enemy.Position.X &&
+        petPosition.y + abilityParams.DamageArea.y >= enemy.Position.Y &&
+        petPosition.x - abilityParams.DamageAreaOffset.x <= enemy.Position.X &&
+        petPosition.y - abilityParams.DamageAreaOffset.y <= enemy.Position.Y;
 
     public static bool IsAttackAbility(this PetAbilityParams abilityParams) =>
         abilityParams.AbilityType is
