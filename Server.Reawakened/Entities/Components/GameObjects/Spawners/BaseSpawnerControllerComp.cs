@@ -63,6 +63,7 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
     public Dictionary<string, EnemyModel> EnemyModels;
 
     private int _spawnedEntityCount;
+    private long _persistentSpawnCounter;
     private float _nextSpawnRequestTime;
     private bool _spawnRequested;
     private bool _activated;
@@ -313,7 +314,7 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
         spawner._nextSpawnRequestTime = 0;
 
         var room = spawner.Room;
-        var spawnedEntityId = $"{spawner.Id}_{spawner._spawnedEntityCount}";
+        var spawnedEntityId = $"{spawner.Id}_{++spawner._persistentSpawnCounter}";
 
         var templateGo = room?.Planes?.Values
             .SelectMany(p => p.GameObjects)
@@ -350,7 +351,22 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
 
         spawner.Room.AddEntity(spawnedEntityId, builtComponents);
 
-        spawner._arenaComp?.ArenaEntities.Add(spawnedEntityId);
+        if (spawner._arenaComp != null)
+        {
+            if (!spawner._arenaComp.ArenaEntities.Contains(spawnedEntityId))
+            {
+                spawner._arenaComp.ArenaEntities.Add(spawnedEntityId);
+                spawner.Logger?.LogDebug("Added spawned enemy {SpawnedId} to arena (arena id: {ArenaId})", spawnedEntityId, spawner._arenaComp.Id);
+            }
+            else
+            {
+                spawner.Logger?.LogWarning("Duplicate spawned enemy id {SpawnedId} attempted to be added to arena {ArenaId}", spawnedEntityId, spawner._arenaComp.Id);
+            }
+        }
+        else
+        {
+            spawner.Logger?.LogDebug("Spawner {SpawnerId} spawned {SpawnedId} but no arena linked", spawner.Id, spawnedEntityId);
+        }
 
         foreach (var component in builtComponents)
         {
@@ -385,7 +401,10 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
                 newEnemy.IsFromSpawner = true;
             }
 
-            spawner.LinkedEnemies.Add(spawnedEntityId, newEnemy);
+            if (!spawner.LinkedEnemies.ContainsKey(spawnedEntityId))
+                spawner.LinkedEnemies.Add(spawnedEntityId, newEnemy);
+            else
+                spawner.Logger?.LogWarning("Attempted to add duplicate LinkedEnemies key {SpawnedId} to spawner {SpawnerId}", spawnedEntityId, spawner.Id);
         }
     }
 
@@ -395,6 +414,12 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
         bool moreThisCycle;
 
         LinkedEnemies.Remove(id);
+
+        if (_arenaComp != null)
+        {
+            var removed = _arenaComp.ArenaEntities.Remove(id);
+            if (removed) Logger?.LogDebug("Removed spawned enemy {SpawnedId} from arena (arena id: {ArenaId})", id, _arenaComp.Id);
+        }
 
         waveCleared = LinkedEnemies.Count == 0;
         moreThisCycle = CanSpawnMoreThisCycle();

@@ -39,7 +39,40 @@ public class TriggerArenaComp : BaseTriggerStatueComp<TriggerArena>
 
         if (HasStarted)
         {
-            if (ArenaEntities.All(Room.IsObjectKilled) && Room.Time >= _minClearTime)
+            var allSpawnersDead = true;
+
+            if (_spawners != null && _spawners.Count > 0)
+            {
+                allSpawnersDead = _spawners.All(s => s != null && Room.IsObjectKilled(s.Id.ToString()));
+            }
+            else if (ArenaEntities != null && ArenaEntities.Count > 0)
+            {
+                allSpawnersDead = ArenaEntities.All(Room.IsObjectKilled);
+            }
+
+            var allSpawnedEnemiesDead = true;
+
+            if (_spawners != null && _spawners.Count > 0)
+            {
+                foreach (var sp in _spawners)
+                {
+                    if (sp == null)
+                        continue;
+
+                    if (sp.LinkedEnemies != null && sp.LinkedEnemies.Count > 0)
+                    {
+                        var anyAlive = sp.LinkedEnemies.Keys.Any(eid => !Room.IsObjectKilled(eid));
+
+                        if (anyAlive)
+                        {
+                            allSpawnedEnemiesDead = false;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            if (allSpawnersDead && allSpawnedEnemiesDead && Room.Time >= _minClearTime)
                 outStatus = ArenaStatus.Win;
             else if (Room.Time >= _timer)
                 outStatus = ArenaStatus.Lose;
