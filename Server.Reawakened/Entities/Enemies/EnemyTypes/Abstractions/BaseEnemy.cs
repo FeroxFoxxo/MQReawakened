@@ -56,27 +56,27 @@ public abstract class BaseEnemy : IDestructible
     public float HealthModifier;
     public float ScaleModifier;
     public float ResistanceModifier;
+    public int Stars;
 
     public BaseSpawnerControllerComp LinkedSpawner;
-    public InterObjStatusComp Status;
-    public IObjectSizeInfo Box;
 
-    public readonly BaseComponent Entity;
     public readonly IEnemyController EnemyController;
     public readonly EnemyModel EnemyModel;
+    public InterObjStatusComp Status;
 
     public Vector3Model Position => EnemyController.Position;
 
-    protected IServiceProvider Services;
+    public IServiceProvider Services;
 
     public BaseEnemy(EnemyData data)
     {
         Room = data.Room;
         Id = data.EntityId;
         PrefabName = data.PrefabName;
-        Services = data.Services;
         EnemyController = data.EnemyController;
         EnemyModel = data.EnemyModel;
+        Services = data.Services;
+
         IsFromSpawner = false;
 
         Logger = Services.GetRequiredService<ILogger<BaseEnemy>>();
@@ -94,7 +94,6 @@ public abstract class BaseEnemy : IDestructible
         switch (ParentPlane)
         {
             case "TemplatePlane":
-                CheckForSpawner();
                 break;
             case "Plane1":
                 zPosition = 20;
@@ -112,6 +111,8 @@ public abstract class BaseEnemy : IDestructible
             EnemyController.Position.Y,
             zPosition
         );
+
+        Status = Room.GetEntityFromId<InterObjStatusComp>(Id);
 
         OnDeathTargetId = EnemyController.OnDeathTargetID;
 
@@ -155,16 +156,10 @@ public abstract class BaseEnemy : IDestructible
 
     private void SyncHitboxPosition() => Hitbox.Position = Position.ToUnityVector3();
 
-    public virtual void CheckForSpawner()
+    public void LinkSpawner(BaseSpawnerControllerComp linkedSpawner)
     {
+        LinkedSpawner = linkedSpawner;
         IsFromSpawner = true;
-
-        var spawnerId = Id.Split("_");
-
-        LinkedSpawner = Room.GetEntityFromId<BaseSpawnerControllerComp>(spawnerId[0]);
-
-        if (LinkedSpawner == null)
-            return;
 
         Position.SetPosition(
             LinkedSpawner.Position.X + LinkedSpawner.SpawningOffsetX,
@@ -177,8 +172,6 @@ public abstract class BaseEnemy : IDestructible
 
     public void GenerateHitbox()
     {
-        Status = Room.GetEntityFromId<InterObjStatusComp>(Id);
-
         var serverObjectSize = Room.GetEntityFromId<ServerObjectSizeInfoComp>(Id);
         var objectSize = Room.GetEntityFromId<ObjectSizeInfoComp>(Id);
 
@@ -187,15 +180,12 @@ public abstract class BaseEnemy : IDestructible
         Logger.LogDebug("Found components - Status: {Status}, ServerObjectSizeInfo: {ServerSize}, ObjectSizeInfo: {ObjectSize}", 
             Status != null ? "Yes" : "No", serverObjectSize != null ? "Yes" : "No", objectSize != null ? "Yes" : "No");
 
-        if (serverObjectSize != null)
-            Box = serverObjectSize;
-        else if (objectSize != null)
-            Box = objectSize;
+        IObjectSizeInfo box = serverObjectSize != null ? serverObjectSize : objectSize;
 
-        if (Box == null || EnemyController.Scale == null)
+        if (box == null || EnemyController.Scale == null)
         {
             Logger.LogError("Box or Scale is null for enemy {PrefabName} with ID {Id}. Cannot generate hitbox.", PrefabName, Id);
-            Logger.LogError("Box: {Box}, Scale: {Scale}", Box != null ? "Present" : "Null", EnemyController.Scale != null ? "Present" : "Null");
+            Logger.LogError("Box: {Box}, Scale: {Scale}", box != null ? "Present" : "Null", EnemyController.Scale != null ? "Present" : "Null");
             
             var allComponents = Room.GetEntitiesFromId<BaseComponent>(Id);
             
@@ -205,8 +195,8 @@ public abstract class BaseEnemy : IDestructible
             return;
         }
 
-        var size = Box.GetSize();
-        var offset = Box.GetOffset();
+        var size = box.GetSize();
+        var offset = box.GetOffset();
 
         var width = size.x * EnemyController.Scale.X * (EnemyController.Scale.X < 0 ? -1 : 1);
         var height = size.y * EnemyController.Scale.Y * (EnemyController.Scale.Y < 0 ? -1 : 1);
