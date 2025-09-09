@@ -32,6 +32,8 @@ public abstract class BaseEnemyControllerComp<T> : Component<T>, IEnemyControlle
     public IServiceProvider ServiceProvider { get; set; }
     public ILogger<IEnemyController> Logger { get; set; }
 
+    public BaseEnemy Enemy { get; private set; }
+
     public override void NotifyCollision(NotifyCollision_SyncEvent notifyCollisionEvent, Player player)
     {
     }
@@ -41,41 +43,34 @@ public abstract class BaseEnemyControllerComp<T> : Component<T>, IEnemyControlle
         if (ParentPlane.Equals("TemplatePlane"))
             return;
 
-        CreateEnemy(Id, PrefabName);
-    }
-
-    public override void SendDelayedData(Player player)
-    {
-        if (Room.IsObjectKilled(Id))
-            player.SendSyncEventToPlayer(new AiHealth_SyncEvent(Id, Room.Time, 0, 0, 0, 0, "now", false, false));
-    }
-
-    public BaseEnemy CreateEnemy(string id, string prefabName)
-    {
-        if (!InternalEnemyData.EnemyInfoCatalog.TryGetValue(prefabName, out var enemyModel))
+        if (!InternalEnemyData.EnemyInfoCatalog.TryGetValue(PrefabName, out var enemyModel))
         {
-            Logger.LogError("Could not find enemy with name {EnemyPrefab}! Returning null...", prefabName);
-            return null;
+            Logger.LogError("Could not find enemy with name {EnemyPrefab}! Returning null...", PrefabName);
+            return;
         }
 
-        var enemyData = new EnemyData(Room, id, prefabName, this, enemyModel, ServiceProvider);
+        var enemyData = new EnemyData(Room, Id, PrefabName, this, enemyModel, ServiceProvider);
 
         if (enemyModel.AiType == AiType.Unknown)
         {
-            Logger.LogError("{EnemyPrefab} type was unknown!", prefabName);
-            return null;
+            Logger.LogError("{EnemyPrefab} type was unknown!", PrefabName);
+            return;
         }
 
-        BaseEnemy enemy = enemyModel.AiType switch
+        Enemy = enemyModel.AiType switch
         {
             AiType.Behavior => new BehaviorEnemy(enemyData),
             AiType.State => new AIStateEnemy(enemyData),
             _ => null,
         };
 
-        if (enemy != null)
-            Room.AddEnemy(enemy);
+        if (Enemy != null)
+            Room.AddEnemy(Enemy);
+    }
 
-        return enemy;
+    public override void SendDelayedData(Player player)
+    {
+        if (Room.IsObjectKilled(Id))
+            player.SendSyncEventToPlayer(new AiHealth_SyncEvent(Id, Room.Time, 0, 0, 0, 0, "now", false, false));
     }
 }

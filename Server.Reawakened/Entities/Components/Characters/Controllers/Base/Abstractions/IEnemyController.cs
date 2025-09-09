@@ -4,6 +4,7 @@ using Server.Reawakened.Rooms.Models.Planes;
 using UnityEngine;
 
 namespace Server.Reawakened.Entities.Components.Characters.Controllers.Base.Abstractions;
+
 public interface IEnemyController
 {
     string Name { get; }
@@ -28,5 +29,5 @@ public interface IEnemyController
     bool CanAutoScaleResistance { get; }
     bool CanAutoScaleDamage { get; }
     ItemEffectType EnemyEffectType { get; }
-    BaseEnemy CreateEnemy(string id, string prefabName);
+    BaseEnemy Enemy { get; }
 }
