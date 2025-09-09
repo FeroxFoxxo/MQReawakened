@@ -111,7 +111,7 @@ public class PagesService(InternalRwConfig iConfig, ServerRConfig sConfig,
             while (idx < entryName.Length)
             {
                 var next = entryName.IndexOf('/', idx);
-                var segment = next == -1 ? entryName.Substring(idx) : entryName.Substring(idx, next - idx);
+                var segment = next == -1 ? entryName[idx..] : entryName[idx..next];
                 if (segment.Equals("__MACOSX", StringComparison.OrdinalIgnoreCase) ||
                     segment.Equals(".git", StringComparison.OrdinalIgnoreCase) ||
                     segment.Equals(".svn", StringComparison.OrdinalIgnoreCase))

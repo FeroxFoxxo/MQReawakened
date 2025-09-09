@@ -7,14 +7,12 @@ public class InMemoryColliderSubscriptionTracker
     private readonly ConcurrentDictionary<(int,int), ConcurrentDictionary<string, byte>> _roomSubs = new();
     private readonly ConcurrentDictionary<string, HashSet<(int,int)>> _connIndex = new();
 
-    public int TotalSubscribers => _roomSubs.Values.Sum(d => d.Count);
-
     public void Subscribe(string connectionId, int levelId, int roomInstanceId)
     {
         var key = (levelId, roomInstanceId);
         var set = _roomSubs.GetOrAdd(key, _ => new ConcurrentDictionary<string, byte>());
         set[connectionId] = 1;
-        _connIndex.AddOrUpdate(connectionId, _ => new HashSet<(int,int)> { key }, (_, existing) => { lock(existing) existing.Add(key); return existing; });
+        _connIndex.AddOrUpdate(connectionId, _ => [key], (_, existing) => { lock(existing) existing.Add(key); return existing; });
     }
 
     public void Unsubscribe(string connectionId, int levelId, int roomInstanceId)

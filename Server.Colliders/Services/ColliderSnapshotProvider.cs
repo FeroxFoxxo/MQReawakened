@@ -20,6 +20,7 @@ public class ColliderSnapshotProvider(WorldHandler _world) : IService
                 c.Position.y,
                 c.BoundingBox.width,
                 c.BoundingBox.height)).ToArray();
+            
             var instance = int.Parse(room.ToString().Split('_').Last());
             return new RoomCollidersDto(room.LevelInfo.LevelId, instance, room.LevelInfo.Name, colliders);
         })];

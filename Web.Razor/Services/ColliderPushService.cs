@@ -7,20 +7,11 @@ using Web.Razor.Hubs;
 
 namespace Web.Razor.Services;
 
-public class ColliderPushService : BackgroundService
+public class ColliderPushService(ColliderSnapshotProvider _snapshots, IHubContext<ColliderHub> _hub, ILogger<ColliderPushService> _logger, InMemoryRoomVersionTracker _versions, InMemoryColliderSubscriptionTracker _subs) : BackgroundService
 {
-    private readonly ColliderSnapshotProvider _snapshots;
-    private readonly IHubContext<ColliderHub> _hub;
-    private readonly ILogger<ColliderPushService> _logger;
-    private readonly InMemoryRoomVersionTracker _versions;
-    private readonly InMemoryColliderSubscriptionTracker _subs;
-
     private readonly int _baseIntervalMs = Math.Clamp(int.TryParse(Environment.GetEnvironmentVariable("COLLIDER_BASE_INTERVAL_MS"), out var envBase) ? envBase : 250, 20, 5000);
     private int _currentIntervalMs = Math.Clamp(int.TryParse(Environment.GetEnvironmentVariable("COLLIDER_BASE_INTERVAL_MS"), out var envStart) ? envStart : 250, 20, 5000);
     private const int MaxIdleInterval = 5000;
-
-    public ColliderPushService(ColliderSnapshotProvider snapshots, IHubContext<ColliderHub> hub, ILogger<ColliderPushService> logger, InMemoryRoomVersionTracker versions, InMemoryColliderSubscriptionTracker subs)
-    { _snapshots = snapshots; _hub = hub; _logger = logger; _versions = versions; _subs = subs; }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {

@@ -2,9 +2,9 @@ using Server.Colliders.DTOs;
 
 namespace Server.Colliders.Services;
 
-public class ColliderDiffCalculator
+public static class ColliderDiffCalculator
 {
-    public ColliderDiffResult Calculate(RoomCollidersDto previous, RoomCollidersDto current)
+    public static ColliderDiffResult Calculate(RoomCollidersDto previous, RoomCollidersDto current)
     {
         var prevMap = previous.Colliders.ToDictionary(c => c.Id, c => c);
         var currMap = current.Colliders.ToDictionary(c => c.Id, c => c);

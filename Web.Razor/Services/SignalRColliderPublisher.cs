@@ -5,11 +5,8 @@ using Web.Razor.Hubs;
 
 namespace Web.Razor.Services;
 
-public class SignalRColliderPublisher : IColliderUpdatePublisher
+public class SignalRColliderPublisher(IHubContext<ColliderHub> _hub) : IColliderUpdatePublisher
 {
-    private readonly IHubContext<ColliderHub> _hub;
-    public SignalRColliderPublisher(IHubContext<ColliderHub> hubContext) => _hub = hubContext;
-
     private static string Group(int levelId,int roomInstanceId) => $"room:{levelId}:{roomInstanceId}";
 
     public Task PublishResetAsync(RoomCollidersDto snapshot, long version, ColliderBoundsDto bounds, ColliderStatsDto stats, CancellationToken ct) =>

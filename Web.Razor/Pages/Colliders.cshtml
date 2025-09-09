@@ -6,15 +6,13 @@
 @section Stylesheets {
     <style>
         .colliders-page {
-            /* Colliders page design tokens (migrated to new accent palette) */
             --c-bg-panel: linear-gradient(145deg,#0c1e14,#102a1b 55%,#08170f);
             --c-border-panel: #1f3b2a;
             --c-border-subtle: #1a2d22;
             --c-border-strong: #224a32;
-            /* New accent mapping: #ffa000 (accent) / #df7f0a (deep) */
             --c-accent: var(--mq-color-accent, #ffa000);
             --c-accent-deep: var(--mq-color-amber-deep, #df7f0a);
-            --c-accent-rgb: 255,160,0; /* rgb for rgba() usage of accent */
+            --c-accent-rgb: 255,160,0;
             --c-accent-soft: var(--mq-color-highlight, #b5f73d);
             --c-text: #ecf7e9;
             --c-text-dim: #b4c9b7;
@@ -382,7 +380,6 @@
                 const maxX = Math.ceil(centerWorldX + visibleWorldW / 2) + 2;
                 const minY = Math.floor(centerWorldY - visibleWorldH / 2) - 2;
                 const maxY = Math.ceil(centerWorldY + visibleWorldH / 2) + 2;
-                // Read grid colors from nearest scoped container (light mode overrides live under .colliders-page)
                 const scopeEl = canvas.closest('.colliders-page') || document.documentElement;
                 const styles = getComputedStyle(scopeEl);
                 const fallbackMinor = 'rgba(50,105,70,0.35)';
