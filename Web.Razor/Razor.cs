@@ -13,12 +13,11 @@ public class Razor(ILogger<Razor> logger) : WebModule(logger)
 {
     public override void AddServices(IServiceCollection services, Module[] modules)
     {
-        services.AddSingleton<PagesService>();
+        services.AddSingleton<PagesService>()
+            .AddSingleton<IColliderUpdatePublisher, SignalRColliderPublisher>();
 
         services.AddSignalR();
         services.AddRazorPages();
-
-        services.AddSingleton<IColliderUpdatePublisher, SignalRColliderPublisher>();
     }
 
     public override void PostWebBuild(WebApplication app)
