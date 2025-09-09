@@ -408,7 +408,7 @@ public class Room : Timer
     }
 
     public List<BaseCollider> GetCollidersById(string id) =>
-        _colliders.TryGetValue(id, out var value) ? value : null;
+        _colliders.TryGetValue(id, out var value) ? value : [];
 
     public BaseCollider[] GetColliders() =>
         [.. _colliders.Values.SelectMany(x => x)];
