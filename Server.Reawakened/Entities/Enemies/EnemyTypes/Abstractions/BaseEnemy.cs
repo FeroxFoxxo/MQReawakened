@@ -19,6 +19,7 @@ using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
+using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.XMLs.Bundles.Base;
 using Server.Reawakened.XMLs.Bundles.Internal;
 using Server.Reawakened.XMLs.Data.Achievements;
@@ -40,7 +41,6 @@ public abstract class BaseEnemy : IDestructible
     public bool Init;
 
     public string Id;
-    public Vector3 Position;
     public EnemyCollider Hitbox;
     public string ParentPlane;
     public bool IsFromSpawner;
@@ -65,6 +65,8 @@ public abstract class BaseEnemy : IDestructible
     public readonly IEnemyController EnemyController;
     public readonly EnemyModel EnemyModel;
 
+    public Vector3Model Position => EnemyController.Position;
+
     protected IServiceProvider Services;
 
     public BaseEnemy(EnemyData data)
@@ -86,7 +88,8 @@ public abstract class BaseEnemy : IDestructible
         Logger.LogDebug("Creating enemy {PrefabName} with ID {Id}", PrefabName, Id);
 
         ParentPlane = EnemyController.ParentPlane;
-        Position = new Vector3(EnemyController.Position.X, EnemyController.Position.Y, EnemyController.Position.Z);
+
+        var zPosition = EnemyController.Position.Z;
 
         switch (ParentPlane)
         {
@@ -94,15 +97,21 @@ public abstract class BaseEnemy : IDestructible
                 CheckForSpawner();
                 break;
             case "Plane1":
-                Position.z = 20;
+                zPosition = 20;
                 break;
             case "Plane0":
-                Position.z = 0;
+                zPosition = 0;
                 break;
             default:
                 Logger.LogError("Unknown plane: '{Plane}' for enemy {Name}", ParentPlane, PrefabName);
                 break;
         }
+
+        EnemyController.Position.SetPosition(
+            EnemyController.Position.X,
+            EnemyController.Position.Y,
+            zPosition
+        );
 
         OnDeathTargetId = EnemyController.OnDeathTargetID;
 
@@ -114,7 +123,6 @@ public abstract class BaseEnemy : IDestructible
         Health = MaxHealth;
         Logger.LogTrace("Spawn health for {PrefabName} (ID: {Id}) => {Health}/{Max}", PrefabName, Id, Health, MaxHealth);
 
-        // Temporary values
         HealthModifier = 1;
         ScaleModifier = 1;
         ResistanceModifier = 1;
@@ -122,6 +130,7 @@ public abstract class BaseEnemy : IDestructible
 
     public virtual void Initialize() {
         Logger.LogDebug("Initializing enemy {PrefabName} (ID: {Id})", PrefabName, Id);
+
         GenerateHitbox();
         
         Init = true;
@@ -144,7 +153,7 @@ public abstract class BaseEnemy : IDestructible
 
     protected virtual bool ApplyFlipYOffset() => EnemyController?.Scale != null && EnemyController.Scale.Y < 0;
 
-    private void SyncHitboxPosition() => Hitbox.Position = Position;
+    private void SyncHitboxPosition() => Hitbox.Position = Position.ToUnityVector3();
 
     public virtual void CheckForSpawner()
     {
@@ -157,7 +166,7 @@ public abstract class BaseEnemy : IDestructible
         if (LinkedSpawner == null)
             return;
 
-        Position = new Vector3(
+        Position.SetPosition(
             LinkedSpawner.Position.X + LinkedSpawner.SpawningOffsetX,
             LinkedSpawner.Position.Y + LinkedSpawner.SpawningOffsetY,
             LinkedSpawner.Position.Z
@@ -209,7 +218,7 @@ public abstract class BaseEnemy : IDestructible
 
         Logger.LogTrace("Created enemy hitbox at {Position} of size {Size}", Position, rect);
 
-        Hitbox = new EnemyCollider(Id, Position, rect, ParentPlane, Room);
+        Hitbox = new EnemyCollider(Id, Position.ToUnityVector3(), rect, ParentPlane, Room);
 
         Room.AddCollider(Hitbox);
     }
@@ -266,7 +275,6 @@ public abstract class BaseEnemy : IDestructible
             foreach (var trigger in Room.GetEntitiesFromId<TriggerReceiverComp>(OnDeathTargetId))
                 trigger.TriggerStateChange(TriggerType.Activate, true, Id);
 
-        //For spawners
         if (IsFromSpawner)
             LinkedSpawner.NotifyEnemyDefeat(Id);
 
@@ -293,13 +301,11 @@ public abstract class BaseEnemy : IDestructible
 
     private void SendRewards(Player player)
     {
-        //The XP Reward here is not accurate, but pretty close
         var xpAward = player != null ? DeathXp - (player.Character.GlobalLevel - 1) * 5 : DeathXp;
 
         if (xpAward < 1)
             xpAward = 1;
 
-        //Dynamic Loot Drop
         if (player != null)
         {
             player.AddReputation(xpAward > 0 ? xpAward : 1, ServerRConfig);
