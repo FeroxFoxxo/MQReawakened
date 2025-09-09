@@ -32,6 +32,8 @@ public class SpiderBossControllerComp : BaseAIStateMachine<SpiderBossController>
         Phase02Trans = baseComp.HealthRatioPhase02Trans;
         TeaserEndLifeRatio = baseComp.TeaserEndLifeRatio;
         TeaserEndTimeLimit = baseComp.TeaserEndTimeLimit;
+
+        Room.AddUpdatingKilledEnemy(Id);
     }
 
     public void RecievedTrigger(bool triggered)

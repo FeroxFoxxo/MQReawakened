@@ -3,7 +3,6 @@ using Server.Reawakened.Entities.Components.GameObjects.Trigger.Abstractions;
 using Server.Reawakened.Entities.Components.GameObjects.Trigger.Enums;
 using Server.Reawakened.Rooms;
 using SmartFoxClientAPI.Data;
-using Microsoft.Extensions.Logging;
 
 namespace Server.Reawakened.Entities.Components.GameObjects.Trigger;
 

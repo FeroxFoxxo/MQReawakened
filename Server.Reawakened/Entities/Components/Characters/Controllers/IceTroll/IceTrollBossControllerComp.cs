@@ -7,26 +7,15 @@ using Server.Reawakened.Rooms;
 namespace Server.Reawakened.Entities.Components.Characters.Controllers.IceTroll;
 public class IceTrollBossControllerComp : BaseAIStateMachine<IceTrollBossController>, IRecieverTriggered, IDestructible
 {
-    /* 
-    * -- AI STATES --
-    * AIStateTrollArmorBreak
-    * AIStateTrollBase
-    * AIStateTrollBreath
-    * AIStateTrollDeactivated
-    * [DONE] AIStateTrollEntrance
-    * AIStateTrollIdle
-    * AIStateTrollPhase1
-    * AIStateTrollPhase2
-    * AIStateTrollPhase3
-    * AIStateTrollPhaseTrans
-    * [DONE] AIStateTrollRetreat
-    * AIStateTrollSmash
-    * AIStateTrollTaunt
-    * AIStateTrollVacuum
-    */
-
     public int CurrentPhase = 0;
     public bool Broken = false;
+
+    public override void InitializeComponent()
+    {
+        base.InitializeComponent();
+        
+        Room.AddUpdatingKilledEnemy(Id);
+    }
 
     public void RecievedTrigger(bool triggered)
     {

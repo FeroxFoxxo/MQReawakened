@@ -53,6 +53,7 @@ public class Room : Timer
 
     private readonly HashSet<string> _gameObjectIds;
     private readonly HashSet<string> _killedObjects;
+    private readonly HashSet<string> _killedUpdatingObjects;
 
     public ILogger<Room> Logger;
 
@@ -107,11 +108,13 @@ public class Room : Timer
 
         _players = [];
         _gameObjectIds = [];
-        DuplicateEntities = [];
         _killedObjects = [];
-        LoggedComponentKeys = [];
+        _killedUpdatingObjects = [];
         _enemies = [];
         _colliders = [];
+
+        DuplicateEntities = [];
+        LoggedComponentKeys = [];
 
         if (LevelInfo.Type == LevelType.Unknown)
         {
@@ -200,7 +203,7 @@ public class Room : Timer
         }
 
         foreach (var entityComponent in entitiesCopy)
-            if (!IsObjectKilled(entityComponent.Id))
+            if (!IsObjectKilled(entityComponent.Id) || _killedUpdatingObjects.Contains(entityComponent.Id))
                 entityComponent.Update();
 
         foreach (var projectile in projectilesCopy)
@@ -605,6 +608,19 @@ public class Room : Timer
         }
 
         AddKilledEnemy(id);
+    }
+
+    // Updating Killed Enemies
+    public void AddUpdatingKilledEnemy(string killedEnemy)
+    {
+        lock (_roomLock)
+            _killedUpdatingObjects.Add(killedEnemy);
+    }
+
+    public void RemoveUpdatingKilledEnemy(string killedEnemy)
+    {
+        lock (_roomLock)
+            _killedUpdatingObjects.Remove(killedEnemy);
     }
 
     // Enemies

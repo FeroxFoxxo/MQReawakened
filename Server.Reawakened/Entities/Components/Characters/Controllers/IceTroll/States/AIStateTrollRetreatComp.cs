@@ -37,5 +37,10 @@ public class AIStateTrollRetreatComp : BaseAIState<AIStateTrollRetreat, AI_State
             trigReceiver.Trigger(true, Id);
     }
 
-    public void Shake() => Logger.LogTrace("Shake called for {StateName} on {PrefabName}", StateName, PrefabName);
+    public void Shake()
+    {
+        Logger.LogTrace("Shake called for {StateName} on {PrefabName}", StateName, PrefabName);
+
+        Room.RemoveUpdatingKilledEnemy(Id);
+    }
 }

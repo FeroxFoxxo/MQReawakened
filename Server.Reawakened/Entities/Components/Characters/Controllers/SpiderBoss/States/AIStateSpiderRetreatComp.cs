@@ -29,6 +29,8 @@ public class AIStateSpiderRetreatComp : BaseAIState<AIStateSpiderRetreat, AI_Sta
         Logger.LogTrace("Die called for {StateName} on {PrefabName}", StateName, PrefabName);
 
         OpenDoor();
+
+        Room.RemoveUpdatingKilledEnemy(Id);
     }
 
     public void OpenDoor()
