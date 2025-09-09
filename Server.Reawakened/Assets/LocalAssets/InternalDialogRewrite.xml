@@ -1,30 +1,69 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <DialogRewrites>
-    <Dialog oldDialogName="CRS_Hoop01" newDialogName="CTS_Hoop01" />
-	<Dialog oldDialogName="DAY_CRS_TS01" newDialogName="Daily_CRS_TS01" />
-	<Dialog oldDialogName="DAY_CRS_IND01" newDialogName="Daily_CRS_IND01" />
-    <Dialog oldDialogName="DAY_CRS01_1" newDialogName="Daily_CRS01" />
-	<Dialog oldDialogName="DAY_CRS02_1" newDialogName="Daily_Score01 dup_145" />
-	<Dialog oldDialogName="DAY_CRS03_1" newDialogName="Daily_CRS03" />
-	<Dialog oldDialogName="DAY_CRS04_1" newDialogName="Daily_Score01 dup_145" />
-	<Dialog oldDialogName="DAY_CRS05_1" newDialogName="Daily_Score01 dup_145" />
-	<Dialog oldDialogName="DAY_CRS06_1" newDialogName="Daily_CRS06" />
-	<Dialog oldDialogName="DAY_SHD01_1" newDialogName="Daily_SHD01" />
-	<Dialog oldDialogName="DAY_SHD02_1" newDialogName="Daily_Score01 dup_145" />
-	<Dialog oldDialogName="DAY_SHD03_1" newDialogName="Daily_Score01 dup_145" />
-	<Dialog oldDialogName="DAY_SHD04_1" newDialogName="Daily_Score01 dup_145" />
-	<Dialog oldDialogName="DAY_SHD05_1" newDialogName="Daily_Score01 dup_145" />
-	<Dialog oldDialogName="DAY_SHD06_1" newDialogName="Daily_SHD06" />
-	<Dialog oldDialogName="DAY_OUT01_1" newDialogName="Daily_OUT01" />
-	<Dialog oldDialogName="DAY_OUT02_1" newDialogName="Daily_OUT02" />
-	<Dialog oldDialogName="DAY_OUT03_1" newDialogName="Daily_OUT03" />
-	<Dialog oldDialogName="DAY_OUT04_1" newDialogName="Daily_scoreArena01" />
-	<Dialog oldDialogName="DAY_OUT05_1" newDialogName="Daily_OUT05" />
-	<Dialog oldDialogName="DAY_OUT06_1" newDialogName="Daily_Score01 dup_145" />
-	<Dialog oldDialogName="DAY_BON01_1" newDialogName="Daily_BON01" />
-	<Dialog oldDialogName="DAY_BON02_1" newDialogName="Daily_BON02" />
-	<Dialog oldDialogName="DAY_BON03_1" newDialogName="Daily_BON03" />
-	<Dialog oldDialogName="DAY_BON04_1" newDialogName="Daily_BON04" />
-	<Dialog oldDialogName="DAY_BON05_1" newDialogName="Daily_scoreArena01" />
-	<Dialog oldDialogName="DAY_BON06_1" newDialogName="Daily_Score01 dup_145" />
+	<GameVersion version="vLate2014">
+        <Dialog oldDialogName="T1CF_02_00" newDialogName="T0CR_10_00cvalidator" />
+        <Dialog oldDialogName="T2SD_02_00" newDialogName="T0CR_10_00bvalidator" />
+        <Dialog oldDialogName="T3OM_02_00" newDialogName="T0CR_10_00dvalidator" />
+        <Dialog oldDialogName="T4IR_00_00" newDialogName="T0CR_10_00validator" />
+    </GameVersion>
+    <GameVersion version="vPetMasters2014">
+        <Dialog oldDialogName="T1CF_02_00" newDialogName="T0CR_10_00cvalidator" />
+        <Dialog oldDialogName="T2SD_02_00" newDialogName="T0CR_10_00bvalidator" />
+        <Dialog oldDialogName="T3OM_02_00" newDialogName="T0CR_10_00dvalidator" />
+        <Dialog oldDialogName="T4IR_00_00" newDialogName="T0CR_10_00validator" />
+    </GameVersion>
+    <GameVersion version="vEarly2014">
+		<Dialog oldDialogName="CRS_Hoop01" newDialogName="CTS_Hoop01" />
+		<Dialog oldDialogName="CRS_Hoop01D" newDialogName="CTS_Hoop01D" />
+		<Dialog oldDialogName="T1CF_02_00" newDialogName="T0CR_10_00cvalidator" />
+		<Dialog oldDialogName="T2SD_02_00" newDialogName="T0CR_10_00bvalidator" />
+		<Dialog oldDialogName="T3OM_02_00" newDialogName="T0CR_10_00dvalidator" />
+		<Dialog oldDialogName="T4IR_00_00" newDialogName="T0CR_10_00validator" />
+    </GameVersion>
+    <GameVersion version="vLate2013">
+    </GameVersion>
+    <GameVersion version="vEarly2013">
+    </GameVersion>
+    <GameVersion version="vLate2012">
+		<Dialog oldDialogName="DAY_CRS_TS01" newDialogName="Daily_CRS_TS01" />
+		<Dialog oldDialogName="DAY_CRS_IND01" newDialogName="Daily_CRS_IND01" />
+		<Dialog oldDialogName="DAY_CRS01_1" newDialogName="Daily_CRS01" />
+		<Dialog oldDialogName="DAY_CRS02_1" newDialogName="Daily_Score01 dup_145" />
+		<Dialog oldDialogName="DAY_CRS03_1" newDialogName="Daily_CRS03" />
+		<Dialog oldDialogName="DAY_CRS04_1" newDialogName="Daily_Score01 dup_145" />
+		<Dialog oldDialogName="DAY_CRS05_1" newDialogName="Daily_Score01 dup_145" />
+		<Dialog oldDialogName="DAY_CRS06_1" newDialogName="Daily_CRS06" />
+		<Dialog oldDialogName="DAY_SHD01_1" newDialogName="Daily_SHD01" />
+		<Dialog oldDialogName="DAY_SHD02_1" newDialogName="Daily_Score01 dup_145" />
+		<Dialog oldDialogName="DAY_SHD03_1" newDialogName="Daily_Score01 dup_145" />
+		<Dialog oldDialogName="DAY_SHD04_1" newDialogName="Daily_Score01 dup_145" />
+		<Dialog oldDialogName="DAY_SHD05_1" newDialogName="Daily_Score01 dup_145" />
+		<Dialog oldDialogName="DAY_SHD06_1" newDialogName="Daily_SHD06" />
+		<Dialog oldDialogName="DAY_OUT01_1" newDialogName="Daily_OUT01" />
+		<Dialog oldDialogName="DAY_OUT02_1" newDialogName="Daily_OUT02" />
+		<Dialog oldDialogName="DAY_OUT03_1" newDialogName="Daily_OUT03" />
+		<Dialog oldDialogName="DAY_OUT04_1" newDialogName="Daily_scoreArena01" />
+		<Dialog oldDialogName="DAY_OUT05_1" newDialogName="Daily_OUT05" />
+		<Dialog oldDialogName="DAY_OUT06_1" newDialogName="Daily_Score01 dup_145" />
+		<Dialog oldDialogName="DAY_BON01_1" newDialogName="Daily_BON01" />
+		<Dialog oldDialogName="DAY_BON02_1" newDialogName="Daily_BON02" />
+		<Dialog oldDialogName="DAY_BON03_1" newDialogName="Daily_BON03" />
+		<Dialog oldDialogName="DAY_BON04_1" newDialogName="Daily_BON04" />
+		<Dialog oldDialogName="DAY_BON05_1" newDialogName="Daily_scoreArena01" />
+		<Dialog oldDialogName="DAY_BON06_1" newDialogName="Daily_Score01 dup_145" />
+		<Dialog oldDialogName="T0CR_10_00" newDialogName="T0CR_10_00validator" />
+		<Dialog oldDialogName="T0CR_14_00" newDialogName="T0CR_14_00validator" />
+		<Dialog oldDialogName="T1CF_02_00" newDialogName="T0CR_10_00validator" />
+		<Dialog oldDialogName="T2SD_02_00" newDialogName="T0CR_12_00validator" />
+		<Dialog oldDialogName="T3OM_02_00" newDialogName="T0CR_14_00validator" />
+		<Dialog oldDialogName="T4IR_00_00" newDialogName="T4IR_00_01" />
+    </GameVersion>
+    <GameVersion version="vMinigames2012">
+    </GameVersion>
+    <GameVersion version="vPets2012">
+    </GameVersion>
+    <GameVersion version="vEarly2012">
+    </GameVersion>
+    <GameVersion version="v2011">
+    </GameVersion>
 </DialogRewrites>
