@@ -15,5 +15,5 @@ public class AIBehaviorGrenadier(BehaviorEnemy enemy, GrenadierProperties fallba
     public override StateType GetStateType() => StateType.Grenadier;
 
     public override void NextState() =>
-        enemy.ChangeBehavior(enemy.Global.AwareBehavior, enemy.Position.x, enemy.Position.y, _aiData.Intern_Dir);
+        enemy.ChangeBehavior(enemy.Global.AwareBehavior, enemy.Position.X, enemy.Position.Y, _aiData.Intern_Dir);
 }

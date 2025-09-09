@@ -19,6 +19,7 @@ using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
+using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.XMLs.Bundles.Base;
 using Server.Reawakened.XMLs.Bundles.Internal;
 using Server.Reawakened.XMLs.Data.Achievements;
@@ -40,7 +41,6 @@ public abstract class BaseEnemy : IDestructible
     public bool Init;
 
     public string Id;
-    public Vector3 Position;
     public EnemyCollider Hitbox;
     public string ParentPlane;
     public bool IsFromSpawner;
@@ -56,25 +56,27 @@ public abstract class BaseEnemy : IDestructible
     public float HealthModifier;
     public float ScaleModifier;
     public float ResistanceModifier;
+    public int Stars;
 
     public BaseSpawnerControllerComp LinkedSpawner;
-    public InterObjStatusComp Status;
-    public IObjectSizeInfo Box;
 
-    public readonly BaseComponent Entity;
     public readonly IEnemyController EnemyController;
     public readonly EnemyModel EnemyModel;
+    public InterObjStatusComp Status;
 
-    protected IServiceProvider Services;
+    public Vector3Model Position => EnemyController.Position;
+
+    public IServiceProvider Services;
 
     public BaseEnemy(EnemyData data)
     {
         Room = data.Room;
         Id = data.EntityId;
         PrefabName = data.PrefabName;
-        Services = data.Services;
         EnemyController = data.EnemyController;
         EnemyModel = data.EnemyModel;
+        Services = data.Services;
+
         IsFromSpawner = false;
 
         Logger = Services.GetRequiredService<ILogger<BaseEnemy>>();
@@ -86,23 +88,31 @@ public abstract class BaseEnemy : IDestructible
         Logger.LogDebug("Creating enemy {PrefabName} with ID {Id}", PrefabName, Id);
 
         ParentPlane = EnemyController.ParentPlane;
-        Position = new Vector3(EnemyController.Position.X, EnemyController.Position.Y, EnemyController.Position.Z);
+
+        var zPosition = EnemyController.Position.Z;
 
         switch (ParentPlane)
         {
             case "TemplatePlane":
-                CheckForSpawner();
                 break;
             case "Plane1":
-                Position.z = 20;
+                zPosition = 20;
                 break;
             case "Plane0":
-                Position.z = 0;
+                zPosition = 0;
                 break;
             default:
                 Logger.LogError("Unknown plane: '{Plane}' for enemy {Name}", ParentPlane, PrefabName);
                 break;
         }
+
+        EnemyController.Position.SetPosition(
+            EnemyController.Position.X,
+            EnemyController.Position.Y,
+            zPosition
+        );
+
+        Status = Room.GetEntityFromId<InterObjStatusComp>(Id);
 
         OnDeathTargetId = EnemyController.OnDeathTargetID;
 
@@ -114,7 +124,6 @@ public abstract class BaseEnemy : IDestructible
         Health = MaxHealth;
         Logger.LogTrace("Spawn health for {PrefabName} (ID: {Id}) => {Health}/{Max}", PrefabName, Id, Health, MaxHealth);
 
-        // Temporary values
         HealthModifier = 1;
         ScaleModifier = 1;
         ResistanceModifier = 1;
@@ -122,6 +131,7 @@ public abstract class BaseEnemy : IDestructible
 
     public virtual void Initialize() {
         Logger.LogDebug("Initializing enemy {PrefabName} (ID: {Id})", PrefabName, Id);
+
         GenerateHitbox();
         
         Init = true;
@@ -142,44 +152,16 @@ public abstract class BaseEnemy : IDestructible
 
     public virtual void InternalUpdate() { }
 
-    protected virtual bool TryGetAuthoritativePosition(out float x, out float y, out float z)
-    {
-        x = Position.x; y = Position.y; z = Position.z; return true;
-    }
-
     protected virtual bool ApplyFlipYOffset() => EnemyController?.Scale != null && EnemyController.Scale.Y < 0;
 
-    private void SyncHitboxPosition()
+    private void SyncHitboxPosition() => Hitbox.Position = Position.ToUnityVector3();
+
+    public void LinkSpawner(BaseSpawnerControllerComp linkedSpawner)
     {
-        if (Hitbox == null || Room.IsObjectKilled(Id))
-            return;
-
-        if (!TryGetAuthoritativePosition(out var ax, out var ay, out var az))
-            return;
-
-        if (Position.x != ax || Position.y != ay || Position.z != az)
-        {
-            Position.x = ax; Position.y = ay; Position.z = az;
-        }
-
-        var finalY = Position.y - (ApplyFlipYOffset() ? Hitbox.BoundingBox.height : 0f);
-
-        if (Hitbox.Position.x != Position.x || Hitbox.Position.y != finalY || Hitbox.Position.z != Position.z)
-            Hitbox.Position = new Vector3(Position.x, finalY, Position.z);
-    }
-
-    public virtual void CheckForSpawner()
-    {
+        LinkedSpawner = linkedSpawner;
         IsFromSpawner = true;
 
-        var spawnerId = Id.Split("_");
-
-        LinkedSpawner = Room.GetEntityFromId<BaseSpawnerControllerComp>(spawnerId[0]);
-
-        if (LinkedSpawner == null)
-            return;
-
-        Position = new Vector3(
+        Position.SetPosition(
             LinkedSpawner.Position.X + LinkedSpawner.SpawningOffsetX,
             LinkedSpawner.Position.Y + LinkedSpawner.SpawningOffsetY,
             LinkedSpawner.Position.Z
@@ -190,8 +172,6 @@ public abstract class BaseEnemy : IDestructible
 
     public void GenerateHitbox()
     {
-        Status = Room.GetEntityFromId<InterObjStatusComp>(Id);
-
         var serverObjectSize = Room.GetEntityFromId<ServerObjectSizeInfoComp>(Id);
         var objectSize = Room.GetEntityFromId<ObjectSizeInfoComp>(Id);
 
@@ -200,15 +180,12 @@ public abstract class BaseEnemy : IDestructible
         Logger.LogDebug("Found components - Status: {Status}, ServerObjectSizeInfo: {ServerSize}, ObjectSizeInfo: {ObjectSize}", 
             Status != null ? "Yes" : "No", serverObjectSize != null ? "Yes" : "No", objectSize != null ? "Yes" : "No");
 
-        if (serverObjectSize != null)
-            Box = serverObjectSize;
-        else if (objectSize != null)
-            Box = objectSize;
+        IObjectSizeInfo box = serverObjectSize != null ? serverObjectSize : objectSize;
 
-        if (Box == null || EnemyController.Scale == null)
+        if (box == null || EnemyController.Scale == null)
         {
             Logger.LogError("Box or Scale is null for enemy {PrefabName} with ID {Id}. Cannot generate hitbox.", PrefabName, Id);
-            Logger.LogError("Box: {Box}, Scale: {Scale}", Box != null ? "Present" : "Null", EnemyController.Scale != null ? "Present" : "Null");
+            Logger.LogError("Box: {Box}, Scale: {Scale}", box != null ? "Present" : "Null", EnemyController.Scale != null ? "Present" : "Null");
             
             var allComponents = Room.GetEntitiesFromId<BaseComponent>(Id);
             
@@ -218,8 +195,8 @@ public abstract class BaseEnemy : IDestructible
             return;
         }
 
-        var size = Box.GetSize();
-        var offset = Box.GetOffset();
+        var size = box.GetSize();
+        var offset = box.GetOffset();
 
         var width = size.x * EnemyController.Scale.X * (EnemyController.Scale.X < 0 ? -1 : 1);
         var height = size.y * EnemyController.Scale.Y * (EnemyController.Scale.Y < 0 ? -1 : 1);
@@ -227,13 +204,11 @@ public abstract class BaseEnemy : IDestructible
         var offsetX = offset.x * EnemyController.Scale.X - width / 2 * (EnemyController.Scale.X < 0 ? -1 : 1);
         var offsetY = offset.y * EnemyController.Scale.Y - height / 2 * (EnemyController.Scale.Y < 0 ? -1 : 1);
 
-        var position = new Vector3(Position.x, Position.y, Position.z);
-
         var rect = new Rect(offsetX, offsetY, width, height);
 
-        Logger.LogTrace("Created enemy hitbox at {Position} of size {Size}", position, rect);
+        Logger.LogTrace("Created enemy hitbox at {Position} of size {Size}", Position, rect);
 
-        Hitbox = new EnemyCollider(Id, position, rect, ParentPlane, Room);
+        Hitbox = new EnemyCollider(Id, Position.ToUnityVector3(), rect, ParentPlane, Room);
 
         Room.AddCollider(Hitbox);
     }
@@ -290,14 +265,13 @@ public abstract class BaseEnemy : IDestructible
             foreach (var trigger in Room.GetEntitiesFromId<TriggerReceiverComp>(OnDeathTargetId))
                 trigger.TriggerStateChange(TriggerType.Activate, true, Id);
 
-        SendRewards(player);
-
-        //For spawners
         if (IsFromSpawner)
             LinkedSpawner.NotifyEnemyDefeat(Id);
 
         Destroy(Room, Id);
         Room.KillEntity(Id);
+
+        SendRewards(player);
     }
 
     public void DamagedEnemy(bool isDead)
@@ -317,19 +291,15 @@ public abstract class BaseEnemy : IDestructible
 
     private void SendRewards(Player player)
     {
-        //The XP Reward here is not accurate, but pretty close
         var xpAward = player != null ? DeathXp - (player.Character.GlobalLevel - 1) * 5 : DeathXp;
 
         if (xpAward < 1)
             xpAward = 1;
 
-        Room.SendSyncEvent(AISyncEventHelper.AIDie(Id, Room.Time, string.Empty, xpAward > 0 ? xpAward : 1, true, player == null ? "0" : player.GameObjectId, false));
-
-        //Dynamic Loot Drop
         if (player != null)
         {
             player.AddReputation(xpAward > 0 ? xpAward : 1, ServerRConfig);
-
+            
             if (EnemyModel.EnemyLootTable != null)
             {
                 var random = new System.Random();
@@ -342,18 +312,19 @@ public abstract class BaseEnemy : IDestructible
                 }
             }
 
-            //Achievements
             foreach (var roomPlayer in Room.GetPlayers())
             {
                 roomPlayer.CheckObjective(ObjectiveEnum.Score, Id, EnemyController.PrefabName, 1, QuestCatalog);
                 roomPlayer.CheckObjective(ObjectiveEnum.Scoremultiple, Id, EnemyController.PrefabName, 1, QuestCatalog);
             }
-
-            player.CheckAchievement(AchConditionType.DefeatEnemy, [PrefabName], InternalAchievement, Logger);
-            player.CheckAchievement(AchConditionType.DefeatEnemy, [Enum.GetName(EnemyModel.EnemyCategory)], InternalAchievement, Logger);
-            player.CheckAchievement(AchConditionType.DefeatEnemy, [EnemyController.PrefabName], InternalAchievement, Logger);
-            player.CheckAchievement(AchConditionType.DefeatEnemyInLevel, [player.Room.LevelInfo.Name], InternalAchievement, Logger);
         }
+        
+        Room.SendSyncEvent(AISyncEventHelper.AIDie(Id, Room.Time, string.Empty, xpAward > 0 ? xpAward : 1, true, player == null ? "0" : player.GameObjectId, false));
+
+        player.CheckAchievement(AchConditionType.DefeatEnemy, [PrefabName], InternalAchievement, Logger);
+        player.CheckAchievement(AchConditionType.DefeatEnemy, [Enum.GetName(EnemyModel.EnemyCategory)], InternalAchievement, Logger);
+        player.CheckAchievement(AchConditionType.DefeatEnemy, [EnemyController.PrefabName], InternalAchievement, Logger);
+        player.CheckAchievement(AchConditionType.DefeatEnemyInLevel, [player.Room.LevelInfo.Name], InternalAchievement, Logger);
     }
 
     public abstract void SendAiData(Player player);

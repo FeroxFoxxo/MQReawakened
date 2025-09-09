@@ -26,8 +26,8 @@ public class AIBehaviorAggro(BehaviorEnemy enemy, AggroProperties fallback) : AI
     public override void NextState() =>
         enemy.ChangeBehavior(
             enemy.Global.AwareBehavior,
-            enemy.Global.UnawareBehavior == StateType.ComeBack ? enemy.Position.x : _aiData.Sync_TargetPosX,
-            enemy.Global.UnawareBehavior == StateType.ComeBack ? enemy.Position.y : _aiData.Sync_TargetPosY,
+            enemy.Global.UnawareBehavior == StateType.ComeBack ? enemy.Position.X : _aiData.Sync_TargetPosX,
+            enemy.Global.UnawareBehavior == StateType.ComeBack ? enemy.Position.Y : _aiData.Sync_TargetPosY,
             _aiData.Intern_Dir
         );
 }

@@ -69,6 +69,8 @@ public class Room : Timer
 
     public WorldHandler World;
 
+    public HashSet<string> LoggedComponentKeys { get; }
+
     public CheckpointControllerComp LastCheckpoint { get; set; }
 
     public LevelInfo LevelInfo => _level.LevelInfo;
@@ -107,6 +109,7 @@ public class Room : Timer
         _gameObjectIds = [];
         DuplicateEntities = [];
         _killedObjects = [];
+        LoggedComponentKeys = [];
         _enemies = [];
 
         if (LevelInfo.Type == LevelType.Unknown)

@@ -25,8 +25,8 @@ public class AIBehaviorLookAround(BehaviorEnemy enemy, LookAroundProperties fall
     {
         enemy.ChangeBehavior(
             enemy.Global.UnawareBehavior,
-            enemy.Position.x,
-            enemy.Global.UnawareBehavior == StateType.ComeBack ? _aiData.Intern_SpawnPosY : enemy.Position.y,
+            enemy.Position.X,
+            enemy.Global.UnawareBehavior == StateType.ComeBack ? _aiData.Intern_SpawnPosY : enemy.Position.Y,
             _aiData.Intern_Dir
         );
 
