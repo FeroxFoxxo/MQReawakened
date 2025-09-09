@@ -68,7 +68,6 @@ public class InternalDialogRewrite : InternalXml
                         }
 
                     _rewrites[gameVersion].Add(oldDialogName, newDialogName);
-                    Logger.LogTrace("Added {OldDialogName} with {RewrittenName} for {GameVersion}.", oldDialogName, newDialogName, gameVersion);
                 }
             }
         }
