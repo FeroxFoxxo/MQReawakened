@@ -46,8 +46,9 @@ public abstract class BaseCollider
         var invis = Room.GetEntityFromId<InvisibilityControllerComp>(Id);
         IsInvisible = invis != null && invis.ApplyInvisibility;
 
-        // MUST be at bottom so collider generates correctly.
         Position = new Vector3(position.x, position.y, position.z);
+
+        Room.AddColliderToList(this);
     }
 
     public virtual string[] IsColliding() => [];

@@ -206,8 +206,6 @@ public abstract class BaseEnemy : IDestructible
         Logger.LogTrace("Created enemy hitbox at {Position} of size {Size}", Position, rect);
 
         Hitbox = new EnemyCollider(Id, Position.ToUnityVector3(), rect, ParentPlane, Room);
-
-        Room.AddCollider(Hitbox);
     }
 
     public virtual void Damage(Player player, int damage)

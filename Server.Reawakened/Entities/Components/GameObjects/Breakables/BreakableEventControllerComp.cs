@@ -53,7 +53,7 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
         if (ObjStatus == null)
             return;
 
-        Room.AddCollider(new BreakableCollider(Id, position, box, ParentPlane, Room, ObjStatus.EnemyTarget));
+        _ = new BreakableCollider(Id, position, box, ParentPlane, Room, ObjStatus.EnemyTarget);
     }
 
     public void Damage(int damage, Elemental damageType, Player origin)

@@ -37,8 +37,6 @@ public class LinearPlatformComp : BaseMovingObjectControllerComp<LinearPlatform>
             Room
          );
 
-        Room.AddCollider(_collider);
-
         base.InitializeComponent();
     }
 

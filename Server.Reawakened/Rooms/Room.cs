@@ -49,7 +49,7 @@ public class Room : Timer
     private readonly Dictionary<string, BaseProjectile> _projectiles;
     private readonly Dictionary<string, BaseEnemy> _enemies;
     private readonly Dictionary<string, Player> _players;
-    private readonly Dictionary<string, BaseCollider> _colliders;
+    private readonly Dictionary<string, List<BaseCollider>> _colliders;
 
     private readonly HashSet<string> _gameObjectIds;
     private readonly HashSet<string> _killedObjects;
@@ -111,12 +111,12 @@ public class Room : Timer
         _killedObjects = [];
         LoggedComponentKeys = [];
         _enemies = [];
+        _colliders = [];
 
         if (LevelInfo.Type == LevelType.Unknown)
         {
             Planes = [];
             _entities = [];
-            _colliders = [];
 
             return;
         }
@@ -129,7 +129,7 @@ public class Room : Timer
         _entities = this.LoadEntities(services);
         Logger.LogTrace("Loaded entities");
         
-        _colliders = this.LoadTerrainColliders();
+        this.LoadTerrainColliders();
         Logger.LogTrace("Loaded colliders");
 
         _defaultSpawn = GetEntitiesFromType<SpawnPointComp>().MinBy(p => p.Index);
@@ -363,16 +363,34 @@ public class Room : Timer
 
     // Colliders
 
-    public void AddCollider(BaseCollider collider)
+    private void AddColliderList(string colliderId)
     {
         lock (_roomLock)
-            _colliders.TryAdd(collider.Id, collider);
+        {
+            if (!_colliders.ContainsKey(colliderId))
+                _colliders.Add(colliderId, []);
+        }
+    }
+
+    public void AddColliderToList(BaseCollider collider)
+    {
+        AddColliderList(collider.Id);
+
+        lock (_roomLock)
+        {
+            _colliders[collider.Id].Add(collider);
+        }
     }
 
     public void OverwriteCollider(BaseCollider collider)
     {
+        AddColliderList(collider.Id);
+        
         lock (_roomLock)
-            _colliders[collider.Id] = collider;
+        {
+            _colliders[collider.Id].Clear();
+            _colliders[collider.Id].Add(collider);
+        }
     }
 
     public void RemoveCollider(string colliderId)
@@ -385,14 +403,15 @@ public class Room : Timer
     {
         if (_colliders.TryGetValue(colliderId, out var collider))
             lock (_roomLock)
-                collider.Active = active;
+                foreach (var col in collider)
+                    col.Active = active;
     }
 
-    public BaseCollider GetColliderById(string id) =>
+    public List<BaseCollider> GetCollidersById(string id) =>
         _colliders.TryGetValue(id, out var value) ? value : null;
 
     public BaseCollider[] GetColliders() =>
-        [.. _colliders.Values];
+        [.. _colliders.Values.SelectMany(x => x)];
 
     // Spawn Points
 

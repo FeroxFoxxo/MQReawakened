@@ -34,12 +34,12 @@ public class Vector3Model
         if (_room == null)
             return;
 
-        var collider = _room.GetColliderById(_id);
+        var colliders = _room.GetCollidersById(_id);
 
-        if (collider == null)
-            return;
-
-        collider.Position = new Vector3(x, y, z);
+        foreach (var collider in colliders)
+        {
+            collider.Position = new Vector3(x, y, z);
+        }
     }
 
     public void SetPositionViaPlane(string parentPlane, string prefabName, Microsoft.Extensions.Logging.ILogger logger)

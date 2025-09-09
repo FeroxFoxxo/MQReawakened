@@ -17,23 +17,14 @@ public static class LoadRoomData
 {
     public static readonly JsonSerializerOptions _jsonSerializerOptions = new() { WriteIndented = true };
 
-    public static Dictionary<string, BaseCollider> LoadTerrainColliders(this Room room)
+    public static void LoadTerrainColliders(this Room room)
     {
-        var outColliderList = new Dictionary<string, BaseCollider>();
-        var idCounter = 0;
-
         foreach (var collider in room.ColliderCatalog.GetTerrainColliders(room.LevelInfo.LevelId))
         {
-            idCounter--;
-
-            var id = idCounter.ToString();
-
             var position = new Vector3(collider.Position.x, collider.Position.y, collider.Position.z);
 
-            outColliderList.Add(id, new TCCollider(id, position, new Rect(0, 0, collider.Width, collider.Height), collider.Plane, room));
+            _ = new TCCollider("-1", position, new Rect(0, 0, collider.Width, collider.Height), collider.Plane, room);
         }
-
-        return outColliderList;
     }
 
     public static Dictionary<string, PlaneModel> LoadPlanes(this LevelInfo levelInfo, Room room, ServerRConfig config)

@@ -98,7 +98,7 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
             var box = new Rect(Rectangle.X, Rectangle.Y, Rectangle.Width, Rectangle.Height);
             var position = new Vector3(Position.X, Position.Y, Position.Z);
 
-            Room.AddCollider(new HazardEffectCollider(_id, position, box, ParentPlane, Room, Logger));
+            _ = new HazardEffectCollider(_id, position, box, ParentPlane, Room, Logger);
         }
     }
 
@@ -246,11 +246,16 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
         if (data is not PoisonEffect poison)
             return;
 
-        var collider = poison.Hazzard.Room.GetColliderById(poison.Hazzard._id);
+        var colliders = poison.Hazzard.Room.GetCollidersById(poison.Hazzard._id);
 
-        if (collider != null)
-            if (!collider.CheckCollision(new PlayerCollider(poison.Player)))
-                return;
+        if (colliders != null)
+        {
+            foreach (var collider in colliders)
+            {
+                if (!collider.CheckCollision(new PlayerCollider(poison.Player)))
+                    return;
+            }
+        }
 
         poison.Player.StartPoisonDamage(poison.Hazzard._id, poison.Hazzard.Damage,
             (int)poison.Hazzard.HurtLength, poison.Hazzard.ServerRConfig, poison.Hazzard.TimerThread);

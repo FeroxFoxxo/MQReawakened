@@ -1,13 +1,24 @@
-﻿using Server.Reawakened.Entities.Enemies.EnemyTypes;
+﻿using Server.Reawakened.Entities.Colliders.Abstractions;
+using Server.Reawakened.Entities.Enemies.EnemyTypes;
 
 namespace Server.Reawakened.Entities.Enemies.Services;
 public class Collisions(BehaviorEnemy enemy) : ICollisions
 {
+    private List<BaseCollider> colliders = [];
+
     public override void enable(bool enable)
     {
         if (enable)
-            enemy.Room.AddCollider(enemy.Hitbox);
+        {
+            foreach (var collider in colliders)
+            {
+                enemy.Room.AddColliderToList(collider);
+            }
+        }
         else
-            enemy.Room.RemoveCollider(enemy.Hitbox.Id);
+        {
+            colliders = enemy.Room.GetCollidersById(enemy.Id);
+            enemy.Room.RemoveCollider(enemy.Id);
+        }
     }
 }

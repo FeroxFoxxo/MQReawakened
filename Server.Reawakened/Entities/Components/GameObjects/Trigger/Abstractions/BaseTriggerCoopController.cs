@@ -198,7 +198,7 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
         {
             var box = new Rect(Rectangle.X, Rectangle.Y, Rectangle.Width, Rectangle.Height);
             var position = new Vector3(Position.X, Position.Y, Position.Z);
-            Room.AddCollider(new TriggerableTargetCollider(Id, position, box, ParentPlane, Room));
+            _ = new TriggerableTargetCollider(Id, position, box, ParentPlane, Room);
         }
     }
 

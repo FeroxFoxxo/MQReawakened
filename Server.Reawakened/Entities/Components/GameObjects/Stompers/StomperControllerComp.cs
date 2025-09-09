@@ -37,10 +37,7 @@ public class StomperControllerComp : BaseMovingObjectControllerComp<StomperContr
             Hazard,
             TimerThread,
             ServerRConfig
-         );
-
-        Room.AddCollider(_collider);
-
+        );
 
         base.InitializeComponent();
     }
