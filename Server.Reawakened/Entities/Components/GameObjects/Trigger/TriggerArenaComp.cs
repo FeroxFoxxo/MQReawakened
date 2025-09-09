@@ -3,6 +3,7 @@ using Server.Reawakened.Entities.Components.GameObjects.Trigger.Abstractions;
 using Server.Reawakened.Entities.Components.GameObjects.Trigger.Enums;
 using Server.Reawakened.Rooms;
 using SmartFoxClientAPI.Data;
+using Microsoft.Extensions.Logging;
 
 namespace Server.Reawakened.Entities.Components.GameObjects.Trigger;
 
@@ -39,8 +40,14 @@ public class TriggerArenaComp : BaseTriggerStatueComp<TriggerArena>
 
         if (HasStarted)
         {
-            var allSpawnersDead = true;
+            try
+            {
+                if (ArenaEntities != null && ArenaEntities.Count > 0)
+                    ArenaEntities = ArenaEntities.Where(e => !Room.IsObjectKilled(e)).ToList();
+            }
+            catch { }
 
+            var allSpawnersDead = true;
             if (_spawners != null && _spawners.Count > 0)
             {
                 allSpawnersDead = _spawners.All(s => s != null && Room.IsObjectKilled(s.Id.ToString()));
@@ -51,7 +58,6 @@ public class TriggerArenaComp : BaseTriggerStatueComp<TriggerArena>
             }
 
             var allSpawnedEnemiesDead = true;
-
             if (_spawners != null && _spawners.Count > 0)
             {
                 foreach (var sp in _spawners)
@@ -62,7 +68,6 @@ public class TriggerArenaComp : BaseTriggerStatueComp<TriggerArena>
                     if (sp.LinkedEnemies != null && sp.LinkedEnemies.Count > 0)
                     {
                         var anyAlive = sp.LinkedEnemies.Keys.Any(eid => !Room.IsObjectKilled(eid));
-
                         if (anyAlive)
                         {
                             allSpawnedEnemiesDead = false;
@@ -71,6 +76,19 @@ public class TriggerArenaComp : BaseTriggerStatueComp<TriggerArena>
                     }
                 }
             }
+
+            try
+            {
+                var arenaTotal = ArenaEntities?.Count ?? 0;
+                var arenaAlive = ArenaEntities?.Count(e => !Room.IsObjectKilled(e)) ?? 0;
+                var spawnerCount = _spawners?.Count ?? 0;
+                var spawnersDeadCount = _spawners?.Count(s => s == null || Room.IsObjectKilled(s.Id.ToString())) ?? 0;
+                var linkedAlive = _spawners?.Sum(s => s.LinkedEnemies?.Count(e => !Room.IsObjectKilled(e.Key)) ?? 0) ?? 0;
+
+                Room?.Logger?.LogDebug("ArenaStatus debug: spawners {SpawnerCount} (dead {SpawnersDead}), arenaEntities total {ArenaTotal} (alive {ArenaAlive}), linkedEnemies alive {LinkedAlive}, time {Time} minClear {MinClear} timer {Timer}",
+                    spawnerCount, spawnersDeadCount, arenaTotal, arenaAlive, linkedAlive, Room.Time, _minClearTime, _timer);
+            }
+            catch { }
 
             if (allSpawnersDead && allSpawnedEnemiesDead && Room.Time >= _minClearTime)
                 outStatus = ArenaStatus.Win;

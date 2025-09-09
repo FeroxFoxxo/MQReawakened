@@ -380,13 +380,10 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
             }
         }
 
-        spawner.Room.RemoveKilledEnemy(spawnedEntityId);
-
         var enemyController = room.GetEnemyFromId(spawnedEntityId);
         var generic = room.GetEntityFromId<AIStatsGenericComp>(spawnedEntityId);
         var hazard = room.GetEntityFromId<HazardControllerComp>(spawnedEntityId);
 
-        hazard?.SetId(spawnedEntityId);
         generic?.SetPatrolRange(spawner.PatrolDistance);
 
         var newEnemy = enemyController.CreateEnemy(spawnedEntityId, prefabName);
@@ -395,15 +392,7 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
         {
             newEnemy.LinkSpawner(spawner);
 
-            if (newEnemy.LinkedSpawner == null)
-            {
-                newEnemy.LinkedSpawner = spawner;
-                newEnemy.IsFromSpawner = true;
-            }
-
-            if (!spawner.LinkedEnemies.ContainsKey(spawnedEntityId))
-                spawner.LinkedEnemies.Add(spawnedEntityId, newEnemy);
-            else
+            if (!spawner.LinkedEnemies.TryAdd(spawnedEntityId, newEnemy))
                 spawner.Logger?.LogWarning("Attempted to add duplicate LinkedEnemies key {SpawnedId} to spawner {SpawnerId}", spawnedEntityId, spawner.Id);
         }
     }
