@@ -19,7 +19,7 @@ public class StomperZoneCollider(string id, Vector3 position,
     {
         var colliders = Room.GetColliders();
 
-        List<string> collidedWith = [];
+        var collidedWith = new  HashSet<string>();
 
         foreach (var collider in colliders)
         {

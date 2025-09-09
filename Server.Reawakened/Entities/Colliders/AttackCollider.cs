@@ -3,6 +3,7 @@ using Server.Reawakened.Entities.Colliders.Abstractions;
 using Server.Reawakened.Entities.Colliders.Enums;
 using Server.Reawakened.Players;
 using Server.Reawakened.Rooms;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Server.Reawakened.Entities.Colliders;
@@ -23,7 +24,7 @@ public class AttackCollider(string id, Vector3 position,
     {
         var colliders = Room.GetColliders();
 
-        List<string> collidedWith = [];
+        var collidedWith = new HashSet<string>();
 
         var time = Room.Time;
 
