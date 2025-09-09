@@ -51,7 +51,7 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
         if ((Global == null || Generic == null) && LinkedSpawner != null)
         {
             var templateId = LinkedSpawner.TemplateIds.FirstOrDefault();
-            
+
             if (!string.IsNullOrEmpty(templateId))
             {
                 Global ??= Room.GetEntityFromId<AIStatsGlobalComp>(templateId);
@@ -138,15 +138,10 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
                 if (Room.Time >= _lastUpdate + CurrentBehavior.GetBehaviorTime())
                     CurrentBehavior.NextState();
         }
-    }
 
-    protected override bool TryGetAuthoritativePosition(out float x, out float y, out float z)
-    {
-        x = AiData.Sync_PosX;
-        y = AiData.Sync_PosY;
-        z = AiData.Sync_PosZ != 0 ? AiData.Sync_PosZ : Position.z;
-        
-        return true;
+        Position.x = AiData.Sync_PosX;
+        Position.y = AiData.Sync_PosY;
+        Position.z = AiData.Sync_PosZ;
     }
 
     public bool HasDetectedPlayers()
@@ -170,7 +165,7 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
             var statusEffects = character?.StatusEffects;
 
             var collides = enemyCollider.CheckCollision(new PlayerCollider(player));
-            var withinPatrol = !Global.Global_DetectionLimitedByPatrolLine || (temp != null && temp.Position.x > AiData.Intern_MinPointX && temp.Position.x < AiData.Intern_MaxPointX);
+            var withinPatrol = !Global.Global_DetectionLimitedByPatrolLine || temp != null && temp.Position.x > AiData.Intern_MinPointX && temp.Position.x < AiData.Intern_MaxPointX;
             var samePlane = ParentPlane == player.GetPlayersPlaneString();
             var invisible = statusEffects?.HasEffect(ItemEffectType.Invisibility) ?? false;
             var alive = (character?.CurrentLife ?? 0) > 0;

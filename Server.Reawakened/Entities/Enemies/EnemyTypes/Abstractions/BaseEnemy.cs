@@ -142,31 +142,9 @@ public abstract class BaseEnemy : IDestructible
 
     public virtual void InternalUpdate() { }
 
-    protected virtual bool TryGetAuthoritativePosition(out float x, out float y, out float z)
-    {
-        x = Position.x; y = Position.y; z = Position.z; return true;
-    }
-
     protected virtual bool ApplyFlipYOffset() => EnemyController?.Scale != null && EnemyController.Scale.Y < 0;
 
-    private void SyncHitboxPosition()
-    {
-        if (Hitbox == null || Room.IsObjectKilled(Id))
-            return;
-
-        if (!TryGetAuthoritativePosition(out var ax, out var ay, out var az))
-            return;
-
-        if (Position.x != ax || Position.y != ay || Position.z != az)
-        {
-            Position.x = ax; Position.y = ay; Position.z = az;
-        }
-
-        var finalY = Position.y - (ApplyFlipYOffset() ? Hitbox.BoundingBox.height : 0f);
-
-        if (Hitbox.Position.x != Position.x || Hitbox.Position.y != finalY || Hitbox.Position.z != Position.z)
-            Hitbox.Position = new Vector3(Position.x, finalY, Position.z);
-    }
+    private void SyncHitboxPosition() => Hitbox.Position = Position;
 
     public virtual void CheckForSpawner()
     {
@@ -227,13 +205,11 @@ public abstract class BaseEnemy : IDestructible
         var offsetX = offset.x * EnemyController.Scale.X - width / 2 * (EnemyController.Scale.X < 0 ? -1 : 1);
         var offsetY = offset.y * EnemyController.Scale.Y - height / 2 * (EnemyController.Scale.Y < 0 ? -1 : 1);
 
-        var position = new Vector3(Position.x, Position.y, Position.z);
-
         var rect = new Rect(offsetX, offsetY, width, height);
 
-        Logger.LogTrace("Created enemy hitbox at {Position} of size {Size}", position, rect);
+        Logger.LogTrace("Created enemy hitbox at {Position} of size {Size}", Position, rect);
 
-        Hitbox = new EnemyCollider(Id, position, rect, ParentPlane, Room);
+        Hitbox = new EnemyCollider(Id, Position, rect, ParentPlane, Room);
 
         Room.AddCollider(Hitbox);
     }
