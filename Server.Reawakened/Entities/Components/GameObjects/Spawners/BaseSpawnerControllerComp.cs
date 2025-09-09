@@ -5,19 +5,20 @@ using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Entities.Components.AI.Stats;
 using Server.Reawakened.Entities.Components.GameObjects.Breakables;
-using Server.Reawakened.Entities.Enemies.Behaviors.Abstractions;
 using Server.Reawakened.Entities.Components.GameObjects.Hazards;
 using Server.Reawakened.Entities.Components.GameObjects.Trigger;
+using Server.Reawakened.Entities.Components.GameObjects.Trigger.Enums;
+using Server.Reawakened.Entities.Enemies.Behaviors.Abstractions;
 using Server.Reawakened.Entities.Enemies.EnemyTypes.Abstractions;
 using Server.Reawakened.Entities.Enemies.Extensions;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
+using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.Rooms.Services;
 using Server.Reawakened.XMLs.Bundles.Internal;
 using Server.Reawakened.XMLs.Data.Enemy.Abstractions;
 using Server.Reawakened.XMLs.Data.Enemy.Enums;
 using Server.Reawakened.XMLs.Data.Enemy.Models;
-using Server.Reawakened.Rooms.Models.Planes;
 using UnityEngine;
 
 namespace Server.Reawakened.Entities.Components.GameObjects.Spawners;
@@ -417,6 +418,9 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
             }
         }
 
+        if (SpawnCycleCount == 1)
+            PingDeathTargets();
+
         _protectArenaComp?.AddDefeat();
     }
 
@@ -431,5 +435,11 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
         }
         
         Room.RemoveEnemy(Id);
+    }
+
+    public void PingDeathTargets()
+    {
+        foreach (var trigger in Room.GetEntitiesFromId<TriggerReceiverComp>(OnDeathTargetID))
+            trigger.TriggerStateChange(TriggerType.Activate, true, Id);
     }
 }
