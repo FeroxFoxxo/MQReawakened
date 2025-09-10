@@ -191,11 +191,14 @@ public abstract class BaseEnemy : IDestructible
         var size = box.GetSize();
         var offset = box.GetOffset();
 
-        var width = size.x * EnemyController.Scale.X * (EnemyController.Scale.X < 0 ? -1 : 1);
-        var height = size.y * EnemyController.Scale.Y * (EnemyController.Scale.Y < 0 ? -1 : 1);
+        var width = size.x * Math.Abs(EnemyController.Scale.X);
+        var height = size.y * Math.Abs(EnemyController.Scale.Y);
 
-        var offsetX = offset.x * EnemyController.Scale.X - width / 2 * (EnemyController.Scale.X < 0 ? -1 : 1);
-        var offsetY = offset.y * EnemyController.Scale.Y - height / 2 * (EnemyController.Scale.Y < 0 ? -1 : 1);
+        var centerX = offset.x * EnemyController.Scale.X;
+        var centerY = offset.y * EnemyController.Scale.Y;
+
+        var offsetX = centerX - width / 2f;
+        var offsetY = centerY - height / 2f;
 
         var rect = new RectModel(offsetX, offsetY, width, height);
 
