@@ -107,7 +107,7 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
 
     public bool HasDetectedPlayers()
     {
-        if (!this.TryGetDetectionCollider(out var enemyCollider))
+        if (!DetectionExtensions.TryGetDetectionCollider(this, Room.Logger, out var enemyCollider))
             return false;
 
         foreach (var player in Room.GetPlayers())
