@@ -111,7 +111,7 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
 
         var rect = new RectModel(
             Hitbox.BoundingBox.X - (isLookingLeft ? Global.Global_FrontDetectionRangeX : Global.Global_BackDetectionRangeX),
-            Hitbox.BoundingBox.Y - (isLookingLeft ? Global.Global_FrontDetectionRangeDownY : Global.Global_BackDetectionRangeDownY),
+            Hitbox.BoundingBox.Y - Global.Global_FrontDetectionRangeDownY,
             Hitbox.BoundingBox.Width + Global.Global_FrontDetectionRangeX + Global.Global_BackDetectionRangeX,
             Hitbox.BoundingBox.Height + Global.Global_BackDetectionRangeDownY + Global.Global_FrontDetectionRangeDownY
         );
@@ -127,7 +127,7 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
             var character = player.Character;
             var statusEffects = character?.StatusEffects;
 
-            var collides = player.TempData.PlayerCollider != null && enemyCollider.CheckCollision(player.TempData.PlayerCollider);
+            var collides = temp.PlayerCollider != null && enemyCollider.CheckCollision(temp.PlayerCollider);
             var withinPatrol = !Global.Global_DetectionLimitedByPatrolLine || temp != null && temp.Position.X > AiData.Intern_MinPointX && temp.Position.X < AiData.Intern_MaxPointX;
             var samePlane = ParentPlane == player.GetPlayersPlaneString();
             var invisible = statusEffects?.HasEffect(ItemEffectType.Invisibility) ?? false;
