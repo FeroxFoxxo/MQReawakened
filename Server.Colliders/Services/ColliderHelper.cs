@@ -27,7 +27,7 @@ public static class ColliderHelper
             {
                 if (enemy is BehaviorEnemy behavior)
                 {
-                    if (!DetectionExtensions.TryGetDetectionCollider(behavior, room.Logger, out var detect))
+                    if (!behavior.TryGetDetectionCollider(out var detect))
                         continue;
 
                     colliders.Add(new ColliderDto(
