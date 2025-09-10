@@ -195,10 +195,10 @@ public abstract class BaseEnemy : IDestructible
         var height = size.y * Math.Abs(EnemyController.Scale.Y);
 
         var centerX = offset.x * EnemyController.Scale.X;
-        var centerY = offset.y * EnemyController.Scale.Y;
+        var bottomY = offset.y * EnemyController.Scale.Y;
 
         var offsetX = centerX - width / 2f;
-        var offsetY = centerY - height / 2f;
+        var offsetY = bottomY - height;
 
         var rect = new RectModel(offsetX, offsetY, width, height);
 
