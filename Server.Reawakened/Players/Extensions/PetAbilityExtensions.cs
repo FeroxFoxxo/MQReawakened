@@ -214,10 +214,5 @@ public static class PetAbilityExtensions
             PetAbilityType.DamageOverTimeFromAbove;
 
     private static Vector3 GetCurrentPetPos(this Player petOwner) =>
-        new()
-        {
-            x = petOwner.TempData.Position.x,
-            y = petOwner.TempData.Position.y,
-            z = petOwner.TempData.Position.z
-        };
+        petOwner.TempData.Position.ToUnityVector3();
 }

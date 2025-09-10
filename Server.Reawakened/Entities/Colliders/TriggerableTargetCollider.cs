@@ -2,12 +2,20 @@
 using Server.Reawakened.Entities.Colliders.Enums;
 using Server.Reawakened.Entities.Components.GameObjects.Trigger;
 using Server.Reawakened.Rooms;
-using UnityEngine;
+using Server.Reawakened.Rooms.Models.Entities;
+using Server.Reawakened.Rooms.Models.Planes;
 
 namespace Server.Reawakened.Entities.Colliders;
-public class TriggerableTargetCollider(string gameObjectId, Vector3 position, Rect box, string plane, Room room) :
-    BaseCollider(gameObjectId, position, box, plane, room, ColliderType.TerrainCube)
+
+public class TriggerableTargetCollider(BaseComponent baseTriggerCoop) : BaseCollider
 {
+    public override Vector3Model Position => baseTriggerCoop.Position;
+    public override Room Room => baseTriggerCoop.Room;
+    public override string Id => baseTriggerCoop.Id;
+    public override RectModel BoundingBox => baseTriggerCoop.Rectangle;
+    public override string Plane => baseTriggerCoop.ParentPlane;
+    public override ColliderType Type => ColliderType.TerrainCube;
+
     public override void SendCollisionEvent(BaseCollider received)
     {
         if (received is AttackCollider attackCollider)

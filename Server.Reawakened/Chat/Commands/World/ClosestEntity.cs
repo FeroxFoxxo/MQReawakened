@@ -25,8 +25,8 @@ public class ClosestEntity : SlashCommand
 
         var closestGameObjects = plane.Select(gameObject =>
         {
-            var x = gameObject.ObjectInfo.Position.X - player.TempData.Position.x;
-            var y = gameObject.ObjectInfo.Position.Y - player.TempData.Position.y;
+            var x = gameObject.ObjectInfo.Position.X - player.TempData.Position.X;
+            var y = gameObject.ObjectInfo.Position.Y - player.TempData.Position.Y;
 
             var distance = Math.Round(Math.Sqrt(Math.Pow(Math.Abs(x), 2) + Math.Pow(Math.Abs(y), 2)));
 

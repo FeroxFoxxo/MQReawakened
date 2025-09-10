@@ -25,7 +25,7 @@ public static class PlayerExtensions
         player.JoinRoom(worldHandler.GetRoomFromLevelId(id, player), out reason);
 
     public static string GetPlayersPlaneString(this Player player)
-        => player.TempData.Position.z > 0 ? "Plane1" : "Plane0";
+        => player.TempData.Position.Z > 0 ? "Plane1" : "Plane0";
 
     public static int GetLevelId(this Player player) =>
         player.Character?.LevelId ?? -1;
@@ -110,7 +110,7 @@ public static class PlayerExtensions
 
     public static List<GameObjectModel> GetPlaneEntities(this Player player)
     {
-        var planeName = player.TempData.Position.z > 10 ? "Plane1" : "Plane0";
+        var planeName = player.TempData.Position.Z > 10 ? "Plane1" : "Plane0";
         return [.. player.Room.Planes[planeName].GameObjects.Values.SelectMany(x => x)];
     }
 

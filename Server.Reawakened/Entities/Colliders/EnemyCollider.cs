@@ -3,27 +3,29 @@ using Server.Reawakened.Entities.Colliders.Enums;
 using Server.Reawakened.Entities.Components.GameObjects.InterObjs.Interfaces;
 using Server.Reawakened.Entities.Enemies.EnemyTypes.Abstractions;
 using Server.Reawakened.Rooms;
-using UnityEngine;
+using Server.Reawakened.Rooms.Models.Planes;
 
 namespace Server.Reawakened.Entities.Colliders;
-public class EnemyCollider(BaseEnemy enemy, Vector3 position, Rect box, string plane, Room room, bool isDetection = false) :
-    BaseCollider(enemy.Id, position, box, plane, room, ColliderType.Enemy, !isDetection)
+public class EnemyCollider(BaseEnemy enemy, RectModel box, bool isDetection = false) : BaseCollider(!isDetection)
 {
-    public BaseEnemy Enemy => enemy;
-
-    protected override Vector3 InternalPosition => Enemy.Position.ToUnityVector3();
+    public override Vector3Model Position => enemy.Position;
+    public override Room Room => enemy.Room;
+    public override string Id => enemy.Id;
+    public override RectModel BoundingBox => box;
+    public override string Plane => enemy.ParentPlane;
+    public override ColliderType Type => ColliderType.Enemy;
 
     public override void SendCollisionEvent(BaseCollider received)
     {
         if (received is AttackCollider attack)
         {
-            var damage = Room.GetEntityFromId<IDamageable>(Enemy.Id)
-                .GetDamageAmount(attack.Damage, attack.DamageType);
-
-            if (Room.IsObjectKilled(Enemy.Id))
+            if (Room.IsObjectKilled(enemy.Id))
                 return;
 
-            Enemy.Damage(attack.Owner, damage);
+            var damage = Room.GetEntityFromId<IDamageable>(enemy.Id)
+                .GetDamageAmount(attack.Damage, attack.DamageType);
+
+            enemy.Damage(attack.Owner, damage);
         }
     }
 }

@@ -61,7 +61,7 @@ public class AIStateSpiderlingAttackComp : BaseAIState<AIStateSpiderlingAttackMQ
             var projectileSpeed = projectileDirection * ProjectileSpeed;
 
             EnemyController.FireProjectile(
-                Position.ToUnityVector3(),
+                Position,
                 projectileSpeed,
                 false
             );

@@ -11,8 +11,6 @@ public class CircularPlatformComp : BaseMovingObjectControllerComp<CircularPlatf
     public float FullTurnTime => ComponentData.FullTurnTime;
     public bool CounterClockwise => ComponentData.CounterClockwise;
 
-    private MovingPlatformCollider _collider;
-
     public override void InitializeComponent()
     {
         Movement = new Platform_Circular_Movement(RadiusX, RadiusY, FullTurnTime, CounterClockwise);
@@ -22,20 +20,8 @@ public class CircularPlatformComp : BaseMovingObjectControllerComp<CircularPlatf
             true, Room.Time, InitialProgressRatio
         );
 
-        _collider = new MovingPlatformCollider(
-            Id,
-            Position.ToUnityVector3(),
-            new Rect(Rectangle.X, Rectangle.Y, Rectangle.Width, Rectangle.Height),
-            ParentPlane,
-            Room
-         );
+        _ = new MovingPlatformCollider(this);
 
         base.InitializeComponent();
-    }
-
-    public override void Update()
-    {
-        base.Update();
-        _collider.Position = Position.ToUnityVector3();
     }
 }

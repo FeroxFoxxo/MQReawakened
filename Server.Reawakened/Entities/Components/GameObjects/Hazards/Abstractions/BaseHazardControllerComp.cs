@@ -39,7 +39,6 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
     public int Damage;
 
     private IEnemyController _enemyController;
-    private string _id;
 
     public TimerThread TimerThread { get; set; }
     public ItemRConfig ItemRConfig { get; set; }
@@ -52,7 +51,7 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
 
     public override void InitializeComponent()
     {
-        SetId(Id);
+        _enemyController = Room.GetEnemyFromId(Id);
 
         //Activate timed hazards.
         if (ActiveDuration > 0 && DeactivationDuration > 0)
@@ -95,17 +94,8 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
             if (EffectType == ItemEffectType.SlowStatusEffect)
                 Rectangle.X = 0;
 
-            var box = new Rect(Rectangle.X, Rectangle.Y, Rectangle.Width, Rectangle.Height);
-            var position = new Vector3(Position.X, Position.Y, Position.Z);
-
-            _ = new HazardEffectCollider(_id, position, box, ParentPlane, Room, Logger);
+            _ = new HazardEffectCollider(this, Logger);
         }
-    }
-
-    public void SetId(string id)
-    {
-        _id = id;
-        _enemyController = Room.GetEnemyFromId(id);
     }
 
     //Timed Hazards
@@ -169,7 +159,8 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
 
         Damage = (int)Math.Ceiling(player.Character.MaxLife * HealthRatioDamage);
 
-        var enemy = Room.GetEnemy(_id);
+        var enemy = Room.GetEnemy(Id);
+
         if (enemy != null)
             Damage = WorldStatistics.GetValue(ItemEffectType.AbilityPower, WorldStatisticsGroup.Enemy, enemy.Level) -
                      player.Character.CalculateDefense(EffectType, ItemCatalog);
@@ -188,7 +179,7 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
                 ApplySlowEffect(player);
                 break;
             case ItemEffectType.BluntDamage:
-                player.ApplyCharacterDamage(Damage, _id, DamageDelay, ServerRConfig, TimerThread);
+                player.ApplyCharacterDamage(Damage, Id, DamageDelay, ServerRConfig, TimerThread);
                 break;
             case ItemEffectType.PoisonDamage:
                 TimerThread.RunDelayed(ApplyPoisonEffect, new PoisonEffect() { Hazzard = this, Player = player }, TimeSpan.FromSeconds(InitialDamageDelay));
@@ -199,7 +190,7 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
             default:
                 Logger.LogInformation("Unknown status effect {statusEffect} from {prefabName}", HurtEffect, PrefabName);
 
-                Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, Room.Time, (int)ItemEffectType.BluntDamage, 1, 1, true, _id, false));
+                Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, Room.Time, (int)ItemEffectType.BluntDamage, 1, 1, true, Id, false));
                 player.ApplyCharacterDamage(Damage, Id, DamageDelay, ServerRConfig, TimerThread);
 
                 break;
@@ -214,7 +205,7 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
             return;
 
         Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, Room.Time,
-                    (int)ItemEffectType.WaterBreathing, 1, 1, true, _id, false));
+                    (int)ItemEffectType.WaterBreathing, 1, 1, true, Id, false));
 
         player.StartUnderwater(player.Character.MaxLife / ServerRConfig.UnderwaterDamageRatio, TimerThread, ServerRConfig);
 
@@ -246,7 +237,7 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
         if (data is not PoisonEffect poison)
             return;
 
-        var colliders = poison.Hazzard.Room.GetCollidersById(poison.Hazzard._id);
+        var colliders = poison.Hazzard.Room.GetCollidersById(poison.Hazzard.Id);
 
         if (colliders != null)
         {
@@ -257,7 +248,7 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
             }
         }
 
-        poison.Player.StartPoisonDamage(poison.Hazzard._id, poison.Hazzard.Damage,
+        poison.Player.StartPoisonDamage(poison.Hazzard.Id, poison.Hazzard.Damage,
             (int)poison.Hazzard.HurtLength, poison.Hazzard.ServerRConfig, poison.Hazzard.TimerThread);
     }
 
@@ -265,7 +256,7 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
 
     private void ApplySlowEffect(Player player)
     {
-        player.ApplySlowEffect(_id, Damage);
+        player.ApplySlowEffect(Id, Damage);
 
         // Reduces slow status effect log spam.  
         player.TempData.IsSlowed = true;

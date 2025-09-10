@@ -8,6 +8,7 @@ using Server.Reawakened.Entities.Projectiles;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
+using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.Rooms.Models.Timers;
 using Server.Reawakened.XMLs.Bundles.Base;
 using Server.Reawakened.XMLs.Bundles.Internal;
@@ -181,7 +182,7 @@ public class UseSlot : ExternalProtocol
         var prjId = Player.Room.CreateProjectileId().ToString();
 
         // Add weapon stats later
-        var prj = new MeleeEntity(prjId, position, Player, direction, 0.51f, usedItem,
+        var prj = new MeleeEntity(prjId, new Vector3Model(position.x, position.y, position.z), Player, direction, 0.51f, usedItem,
             Player.Character.CalculateDamage(usedItem, ItemCatalog),
             usedItem.Elemental, ServerRConfig, ItemRConfig);
 

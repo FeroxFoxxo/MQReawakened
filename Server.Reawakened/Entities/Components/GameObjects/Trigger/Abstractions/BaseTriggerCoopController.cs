@@ -195,11 +195,7 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
 
         if (TriggerOnNormalDamage || TriggerOnAirDamage || TriggerOnEarthDamage
             || TriggerOnFireDamage || TriggerOnIceDamage || TriggerOnLightningDamage)
-        {
-            var box = new Rect(Rectangle.X, Rectangle.Y, Rectangle.Width, Rectangle.Height);
-            var position = new Vector3(Position.X, Position.Y, Position.Z);
-            _ = new TriggerableTargetCollider(Id, position, box, ParentPlane, Room);
-        }
+            _ = new TriggerableTargetCollider(this);
     }
 
     public override void DelayedComponentInitialization() => RunTrigger(null);

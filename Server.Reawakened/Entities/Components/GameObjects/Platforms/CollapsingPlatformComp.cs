@@ -1,7 +1,6 @@
 ﻿using Server.Reawakened.Entities.Colliders;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
-using UnityEngine;
 
 namespace Server.Reawakened.Entities.Components.GameObjects.Platforms;
 
@@ -17,10 +16,7 @@ public class CollapsingPlatformComp : Component<CollapsingPlatform>
     {
         Position.SetPosition(Position.X, Position.Y + Rectangle.Y, Position.Z);
 
-        var box = new Rect(Rectangle.X, Rectangle.Y, Rectangle.Width, Rectangle.Height);
-        var position = new Vector3(Position.X, Position.Y, Position.Z);
-
-        _ = new BreakableCollider(Id, position, box, ParentPlane, Room, false);
+        _ = new BreakableCollider(this, false);
     }
 
     public override void Update()

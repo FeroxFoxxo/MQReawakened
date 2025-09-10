@@ -35,7 +35,7 @@ public class TriggerReceiverComp : Component<TriggerReceiver>, ICoopTriggered
 
     public override void InitializeComponent()
     {
-        _collider = new TriggerReceiverCollider(Id, Position.ToUnityVector3(), Rectangle.ToRect(), ParentPlane, Room);
+        _collider = new TriggerReceiverCollider(this);
 
         if (CollisionType == TriggerReceiver.ReceiverCollisionType.Never)
             _collider.Active = false;

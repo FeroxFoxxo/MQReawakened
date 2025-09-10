@@ -2,24 +2,28 @@
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Entities.Colliders.Abstractions;
 using Server.Reawakened.Entities.Colliders.Enums;
+using Server.Reawakened.Entities.Components.GameObjects.Stompers;
 using Server.Reawakened.Rooms;
-using UnityEngine;
+using Server.Reawakened.Rooms.Models.Planes;
 
 namespace Server.Reawakened.Entities.Colliders;
-public class StomperZoneCollider(string id, Vector3 position,
-    Rect box, string plane, Room room, bool hazard, TimerThread timerThread, ServerRConfig config) :
-    BaseCollider(id, position, box, plane, room, ColliderType.Stomper)
+public class StomperZoneCollider(StomperControllerComp stomperController) : BaseCollider
 {
-
-    public bool Hazard = hazard;
-    public TimerThread TimerThread = timerThread;
-    public ServerRConfig ServerRConfig = config;
+    public bool Hazard => stomperController.Hazard;
+    public TimerThread TimerThread => stomperController.TimerThread;
+    public ServerRConfig ServerRConfig => stomperController.ServerRConfig;
+    public override Vector3Model Position => stomperController.Position;
+    public override Room Room => stomperController.Room;
+    public override string Id => stomperController.Id;
+    public override RectModel BoundingBox => stomperController.Rectangle;
+    public override string Plane => stomperController.ParentPlane;
+    public override ColliderType Type => ColliderType.Stomper;
 
     public override string[] IsColliding()
     {
         var colliders = Room.GetColliders();
 
-        var collidedWith = new  HashSet<string>();
+        var collidedWith = new HashSet<string>();
 
         foreach (var collider in colliders)
         {

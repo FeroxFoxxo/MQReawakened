@@ -322,9 +322,9 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
             ObjectId = spawnedEntityId,
             PrefabName = prefabName,
             ParentPlane = spawner.ParentPlane,
-            Position = new Vector3Model(spawner.Position.X + spawner.SpawningOffsetX, spawner.Position.Y + spawner.SpawningOffsetY, spawner.Position.Z, spawnedEntityId, room),
-            Rotation = new Vector3Model(templateGo.ObjectInfo.Rotation.X, templateGo.ObjectInfo.Rotation.Y, templateGo.ObjectInfo.Rotation.Z, spawnedEntityId, room),
-            Scale = new Vector3Model(templateGo.ObjectInfo.Scale.X, templateGo.ObjectInfo.Scale.Y, templateGo.ObjectInfo.Scale.Z, spawnedEntityId, room),
+            Position = new Vector3Model(spawner.Position.X + spawner.SpawningOffsetX, spawner.Position.Y + spawner.SpawningOffsetY, spawner.Position.Z),
+            Rotation = new Vector3Model(templateGo.ObjectInfo.Rotation.X, templateGo.ObjectInfo.Rotation.Y, templateGo.ObjectInfo.Rotation.Z),
+            Scale = new Vector3Model(templateGo.ObjectInfo.Scale.X, templateGo.ObjectInfo.Scale.Y, templateGo.ObjectInfo.Scale.Z),
             Rectangle = templateGo.ObjectInfo.Rectangle,
             Components = templateGo.ObjectInfo.Components.ToDictionary(k => k.Key, v => new ComponentModel { ComponentAttributes = new Dictionary<string, string>(v.Value.ComponentAttributes) })
         };

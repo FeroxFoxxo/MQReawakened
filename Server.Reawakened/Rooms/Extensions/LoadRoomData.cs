@@ -19,11 +19,13 @@ public static class LoadRoomData
 
     public static void LoadTerrainColliders(this Room room)
     {
+        var colliderIndex = -1;
         foreach (var collider in room.ColliderCatalog.GetTerrainColliders(room.LevelInfo.LevelId))
         {
-            var position = new Vector3(collider.Position.x, collider.Position.y, collider.Position.z);
+            var position = new Vector3Model(collider.Position.x, collider.Position.y, collider.Position.z);
+            var box = new RectModel(0, 0, collider.Width, collider.Height);
 
-            _ = new TCCollider("-1", position, new Rect(0, 0, collider.Width, collider.Height), collider.Plane, room);
+            _ = new TCCollider(colliderIndex.ToString(), position, box, collider.Plane, room);
         }
     }
 

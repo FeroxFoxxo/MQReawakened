@@ -48,7 +48,7 @@ public class AIStateSpiderWebsComp : BaseAIState<AIStateSpiderWebs, AI_State>
     {
     var randX = (float)(System.Random.Shared.NextDouble() * 2 - 1) * ProjectileSpeedMaxX;
         var speed = new Vector2(randX, ProjectileSpeedY);
-        Room.AddRangedProjectile(Id, Position.ToUnityVector3(), speed, 3, 1, ItemEffectType.BluntDamage, false);
+        Room.AddRangedProjectile(Id, Position, speed, 3, 1, ItemEffectType.BluntDamage, false);
     }
 
     public void WebOut()

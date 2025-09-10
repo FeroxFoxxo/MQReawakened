@@ -146,15 +146,11 @@ public abstract class BaseEnemy : IDestructible
             return;
 
         InternalUpdate();
-
-        SyncHitboxPosition();
     }
 
     public virtual void InternalUpdate() { }
 
     protected virtual bool ApplyFlipYOffset() => EnemyController?.Scale != null && EnemyController.Scale.Y < 0;
-
-    private void SyncHitboxPosition() => Hitbox.Position = Position.ToUnityVector3();
 
     public void LinkSpawner(BaseSpawnerControllerComp linkedSpawner)
     {
@@ -201,11 +197,11 @@ public abstract class BaseEnemy : IDestructible
         var offsetX = offset.x * EnemyController.Scale.X - width / 2 * (EnemyController.Scale.X < 0 ? -1 : 1);
         var offsetY = offset.y * EnemyController.Scale.Y - height / 2 * (EnemyController.Scale.Y < 0 ? -1 : 1);
 
-        var rect = new Rect(offsetX, offsetY, width, height);
+        var rect = new RectModel(offsetX, offsetY, width, height);
 
         Logger.LogTrace("Created enemy hitbox at {Position} of size {Size}", Position, rect);
 
-        Hitbox = new EnemyCollider(this, Position.ToUnityVector3(), rect, ParentPlane, Room);
+        Hitbox = new EnemyCollider(this, rect);
     }
 
     public virtual void Damage(Player player, int damage)
@@ -336,7 +332,7 @@ public abstract class BaseEnemy : IDestructible
         Room.SendSyncEvent(new AiHealth_SyncEvent(Id.ToString(), Room.Time, Health, healPoints, 0, 0, string.Empty, false, true));
     }
 
-    public void FireProjectile(Vector3 position, Vector2 speed, bool isGrenade) =>
+    public void FireProjectile(Vector3Model position, Vector2 speed, bool isGrenade) =>
         Room.AddRangedProjectile(Id, position, speed, 3, GetDamage(), EnemyController.EnemyEffectType, isGrenade);
 
     public int GetDamage() =>

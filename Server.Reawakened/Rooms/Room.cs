@@ -557,19 +557,22 @@ public class Room : Timer
         }
     }
 
-    public void AddRangedProjectile(string ownerId, Vector3 position, Vector2 speed,
+    public void AddRangedProjectile(string ownerId, Vector3Model position, Vector2 speed,
         float lifeTime, int damage, ItemEffectType effect, bool isGrenade)
     {
         var projectileId = CreateProjectileId();
 
+        var size = new RectModel(0.5f, 0.5f, 0.5f, 0.5f);
+        var prjPosition = new Vector3Model(position.X, position.Y, position.Z);
+
         var aiProjectile = new AIProjectile(
-            this, ownerId, projectileId.ToString(), position, speed,
-            lifeTime, _timerThread, damage, effect, isGrenade, _config, ItemCatalog, _itemConfig
+            this, ownerId, projectileId.ToString(), prjPosition, size,
+            speed, lifeTime, _timerThread, damage, effect, isGrenade, _config, ItemCatalog, _itemConfig
         );
 
         this.SendSyncEvent(
             AISyncEventHelper.AILaunchItem(
-                ownerId, Time, position, speed, lifeTime, projectileId, isGrenade
+                ownerId, Time, position.ToUnityVector3(), speed, lifeTime, projectileId, isGrenade
             )
         );
 

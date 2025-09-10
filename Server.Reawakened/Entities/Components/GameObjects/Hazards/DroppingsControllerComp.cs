@@ -6,6 +6,7 @@ using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Players;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
+using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.XMLs.Bundles.Base;
 using UnityEngine;
 
@@ -18,11 +19,11 @@ public class DroppingsControllerComp : Component<DroppingsController>
     public ItemCatalog ItemCatalog { get; set; }
     public ServerRConfig ServerRConfig { get; set; }
 
-    private Vector3 _startPosition;
+    private Vector3Model _startPosition;
 
     public override void InitializeComponent()
     {
-        _startPosition = new Vector3(Position.X, Position.Y, Position.Z);
+        _startPosition = new Vector3Model(Position.X, Position.Y, Position.Z);
         WaitDrop();
     }
 
@@ -48,7 +49,7 @@ public class DroppingsControllerComp : Component<DroppingsController>
         var damage = 0;
         var effect = ItemEffectType.Freezing;
 
-        dropping.Room.AddRangedProjectile(dropping.Id, dropping._startPosition, speed, 3, damage, effect, false);
+        dropping.Room.AddRangedProjectile(dropping.Id, dropping.Position, speed, 3, damage, effect, false);
 
         dropping.WaitDrop();
     }

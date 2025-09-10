@@ -44,16 +44,14 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
         Damageable ??= Room.GetEntityFromId<SpiderBreakableComp>(Id);
 
         _spawner = Room.GetEntityFromId<BaseSpawnerControllerComp>(Id);
+        
         if (_spawner is not null && _spawner.HasLinkedArena)
             CanBreak = false;
-
-        var box = new Rect(Rectangle.X, Rectangle.Y, Rectangle.Width, Rectangle.Height);
-        var position = new Vector3(Position.X, Position.Y, Position.Z);
 
         if (ObjStatus == null)
             return;
 
-        _ = new BreakableCollider(Id, position, box, ParentPlane, Room, ObjStatus.EnemyTarget);
+        _ = new BreakableCollider(this, ObjStatus.EnemyTarget);
     }
 
     public void Damage(int damage, Elemental damageType, Player origin)

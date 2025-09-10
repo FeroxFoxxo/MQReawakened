@@ -19,6 +19,6 @@ public class Scanner(BehaviorEnemy enemy) : IScan
 
         var closestPos = firstPlayer.TempData.Position;
 
-        return new vector3(closestPos.x, closestPos.y, closestPos.z);
+        return closestPos.ToVector3();
     }
 }

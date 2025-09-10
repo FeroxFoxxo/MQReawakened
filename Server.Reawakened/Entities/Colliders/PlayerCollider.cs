@@ -5,20 +5,19 @@ using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;
-using UnityEngine;
+using Server.Reawakened.Rooms.Models.Planes;
 
 namespace Server.Reawakened.Entities.Colliders;
-public class PlayerCollider(Player player, bool addToRoom = true) :
-    BaseCollider(player.TempData.GameObjectId, player.TempData.CopyPosition(),
-        new Rect(-0.5f, 0, 1, 1), player.GetPlayersPlaneString(), player.Room, ColliderType.Player, addToRoom)
+
+public class PlayerCollider(Player player) : BaseCollider
 {
     public Player Player => player;
-
-    protected override Vector3 InternalPosition
-    {
-        get => Player.TempData.CopyPosition();
-        set => Player.TempData.Position = value;
-    }
+    public override Vector3Model Position => Player.TempData.Position;
+    public override Room Room => player.Room;
+    public override string Id => player.TempData.GameObjectId;
+    public override RectModel BoundingBox => new (-0.5f, 0, 1, 1);
+    public override string Plane => player.GetPlayersPlaneString();
+    public override ColliderType Type => ColliderType.Player;
 
     public override void SendCollisionEvent(BaseCollider received)
     {
@@ -34,7 +33,7 @@ public class PlayerCollider(Player player, bool addToRoom = true) :
             player.ApplyCharacterDamage(damage, aiProjectileCollider.Id, 1, aiProjectileCollider.ServerRConfig, aiProjectileCollider.TimerThread);
             player.TemporaryInvincibility(aiProjectileCollider.TimerThread, aiProjectileCollider.ServerRConfig, 1);
 
-            Room.RemoveCollider(aiProjectileCollider.PrjId);
+            Room.RemoveCollider(aiProjectileCollider.Id);
         }
 
         if (received is HazardEffectCollider hazard)

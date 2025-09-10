@@ -13,6 +13,7 @@ using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;
+using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.XMLs.Data.Enemy.Enums;
 using Server.Reawakened.XMLs.Data.Enemy.Models;
 using UnityEngine;
@@ -106,14 +107,14 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
 
     public bool HasDetectedPlayers()
     {
-        var rect = new Rect(
-            Hitbox.Position.x - (AiData.Intern_Dir < 0 ? Global.Global_FrontDetectionRangeX : Global.Global_BackDetectionRangeX) - Hitbox.BoundingBox.width / 2,
-            Hitbox.Position.y - (AiData.Intern_Dir < 0 ? Global.Global_FrontDetectionRangeDownY : Global.Global_BackDetectionRangeDownY) - Hitbox.BoundingBox.height / 2,
-            Global.Global_FrontDetectionRangeX + Global.Global_BackDetectionRangeX + Hitbox.BoundingBox.width,
-            Global.Global_BackDetectionRangeDownY + Global.Global_FrontDetectionRangeDownY + Hitbox.BoundingBox.height
+        var rect = new RectModel(
+            Hitbox.Position.X - (AiData.Intern_Dir < 0 ? Global.Global_FrontDetectionRangeX : Global.Global_BackDetectionRangeX) - Hitbox.BoundingBox.Width / 2,
+            Hitbox.Position.Y - (AiData.Intern_Dir < 0 ? Global.Global_FrontDetectionRangeDownY : Global.Global_BackDetectionRangeDownY) - Hitbox.BoundingBox.Height / 2,
+            Global.Global_FrontDetectionRangeX + Global.Global_BackDetectionRangeX + Hitbox.BoundingBox.Width,
+            Global.Global_BackDetectionRangeDownY + Global.Global_FrontDetectionRangeDownY + Hitbox.BoundingBox.Height
         );
 
-        var enemyCollider = new EnemyCollider(this, Hitbox.Position, rect, ParentPlane, Room, true);
+        var enemyCollider = new EnemyCollider(this, rect, true);
 
         foreach (var player in Room.GetPlayers())
         {
@@ -125,7 +126,7 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
             var statusEffects = character?.StatusEffects;
 
             var collides = player.TempData.PlayerCollider != null && enemyCollider.CheckCollision(player.TempData.PlayerCollider);
-            var withinPatrol = !Global.Global_DetectionLimitedByPatrolLine || temp != null && temp.Position.x > AiData.Intern_MinPointX && temp.Position.x < AiData.Intern_MaxPointX;
+            var withinPatrol = !Global.Global_DetectionLimitedByPatrolLine || temp != null && temp.Position.X > AiData.Intern_MinPointX && temp.Position.X < AiData.Intern_MaxPointX;
             var samePlane = ParentPlane == player.GetPlayersPlaneString();
             var invisible = statusEffects?.HasEffect(ItemEffectType.Invisibility) ?? false;
             var alive = (character?.CurrentLife ?? 0) > 0;
@@ -142,12 +143,11 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
 
     public void FireProjectile(bool isGrenade)
     {
-        var position = new Vector3
-        {
-            x = Position.X + AiData.Intern_Dir * Global.Global_ShootOffsetX,
-            y = Position.Y + Global.Global_ShootOffsetY,
-            z = Position.Z
-        };
+        var position = new Vector3Model (
+            Position.X + AiData.Intern_Dir * Global.Global_ShootOffsetX,
+            Position.Y + Global.Global_ShootOffsetY,
+            Position.Z
+        );
 
         var speed = new Vector2
         {
@@ -229,12 +229,12 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
             return;
         }
 
-        AiData.Sync_TargetPosX = player.TempData.Position.x;
-        AiData.Sync_TargetPosY = player.TempData.Position.y;
+        AiData.Sync_TargetPosX = player.TempData.Position.X;
+        AiData.Sync_TargetPosY = player.TempData.Position.Y;
 
         ChangeBehavior(
             Global.AttackBehavior,
-            player.TempData.Position.x, player.TempData.Position.y,
+            player.TempData.Position.X, player.TempData.Position.Y,
             Generic.Patrol_ForceDirectionX
         );
     }

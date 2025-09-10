@@ -6,7 +6,6 @@ using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Core.Enums;
-using Server.Reawakened.Entities.Colliders;
 using Server.Reawakened.Entities.Projectiles;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
@@ -14,6 +13,7 @@ using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
+using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.Rooms.Models.Timers;
 using Server.Reawakened.Rooms.Services;
 using Server.Reawakened.XMLs.Bundles;
@@ -88,9 +88,9 @@ public class State : ExternalProtocol
 
                     var chargeAttackProjectile = new ChargeAttackProjectile(
                         Player.GameObjectId, Player,
-                        new Vector3() { x = attack.PosX, y = attack.PosY, z = Player.TempData.Position.z },
-                        new Vector3() { x = attack.MaxPosX, y = attack.MaxPosY, z = Player.TempData.Position.z },
-                        new Vector2() { x = attack.SpeedX, y = attack.SpeedY },
+                        new Vector3Model(attack.PosX, attack.PosY, Player.TempData.Position.Z),
+                        new Vector3(attack.MaxPosX, attack.MaxPosY, Player.TempData.Position.Z),
+                        new Vector2(attack.SpeedX, attack.SpeedY),
                         15, attack.ItemId, attack.ZoneId, superStompDamage,
                         Elemental.Standard, ServerRConfig, TimerThread
                     );
@@ -120,12 +120,11 @@ public class State : ExternalProtocol
                 case SyncEvent.EventType.PhysicBasic:
                     var physicsBasicEvent = new PhysicBasic_SyncEvent(syncEvent);
 
-                    newPlayer.TempData.Position = new Vector3
-                    {
-                        x = physicsBasicEvent.PositionX,
-                        y = physicsBasicEvent.PositionY,
-                        z = physicsBasicEvent.PositionZ
-                    };
+                    newPlayer.TempData.Position = new Vector3Model(
+                        physicsBasicEvent.PositionX,
+                        physicsBasicEvent.PositionY,
+                        physicsBasicEvent.PositionZ
+                    );
 
                     newPlayer.TempData.Velocity = new Vector3
                     {

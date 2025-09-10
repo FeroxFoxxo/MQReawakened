@@ -1,4 +1,5 @@
 ﻿using Server.Reawakened.Entities.Enemies.EnemyTypes;
+using Server.Reawakened.Rooms.Models.Planes;
 using UnityEngine;
 
 namespace Server.Reawakened.Entities.Enemies.Services;
@@ -6,7 +7,7 @@ public class Shooter(BehaviorEnemy enemy) : IShoot
 {
     public override int projectile(float clockTime, float speedX, float speedY, float posX, float posY, float posZ, bool isLob)
     {
-        var position = new Vector3(posX, posY, posZ);
+        var position = new Vector3Model(posX, posY, posZ);
         var velocity = new Vector2(speedX, speedY);
 
         enemy.FireProjectile(position, velocity, isLob);
@@ -29,7 +30,7 @@ public class Shooter(BehaviorEnemy enemy) : IShoot
         var vx = Convert.ToSingle(distance / totalTime);
         var vy = Convert.ToSingle(gravity * timeToPeak);
 
-        var position = new Vector3(pos.x, pos.y, pos.z);
+        var position = new Vector3Model(pos.x, pos.y, pos.z);
         var velocity = new Vector2(vx, vy);
 
         enemy.FireProjectile(position, velocity, true);
@@ -41,10 +42,10 @@ public class Shooter(BehaviorEnemy enemy) : IShoot
     {
         var velocities = new List<Vector3>();
 
-        var origin = new Vector3(inOrg.x, inOrg.y, inOrg.z);
+        var origin = new Vector3Model(inOrg.x, inOrg.y, inOrg.z);
         var target = new Vector3(inTarg.x, inTarg.y, inTarg.z);
 
-        var direction = (target - origin).normalized;
+        var direction = (target - origin.ToUnityVector3()).normalized;
         var startRotation = Quaternion.LookRotation(direction);
         var startSpread = Quaternion.AngleAxis(-spreadAngle / 2, Vector3.up);
 

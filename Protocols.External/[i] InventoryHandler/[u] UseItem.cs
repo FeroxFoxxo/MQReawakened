@@ -38,15 +38,12 @@ public class UseItem : ExternalProtocol
             return;
         }
 
-        var position = Player.TempData.Position;
-        var direction = Player.TempData.Direction;
-
         var subCategoryId = usedItem.SubCategoryId;
 
         switch (subCategoryId)
         {
             case ItemSubCategory.Bomb:
-                HandleBomb(usedItem, position, direction);
+                HandleBomb(usedItem, Player.TempData.Position.ToUnityVector3(), Player.TempData.Direction);
                 break;
             case ItemSubCategory.Nut:
             case ItemSubCategory.Usable:

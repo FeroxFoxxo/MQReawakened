@@ -10,6 +10,7 @@ using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Rooms.Extensions;
+using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.Rooms.Models.Timers;
 using Server.Reawakened.XMLs.Bundles.Base;
 using UnityEngine;
@@ -199,15 +200,15 @@ public class PetModel()
 
     public bool InCoopState() => InCoopJumpState || InCoopSwitchState;
 
-    public static string GetPetPosition(Vector3 position, bool OnButton, ItemRConfig itemConfig)
+    public static string GetPetPosition(Vector3Model position, bool OnButton, ItemRConfig itemConfig)
     {
         var syncParams = new SeparatedStringBuilder('|');
 
         var yOffset = OnButton ? 0 : itemConfig.PetPosYOffset;
 
-        syncParams.Append(position.x);
-        syncParams.Append(position.y + yOffset);
-        syncParams.Append(position.z);
+        syncParams.Append(position.X);
+        syncParams.Append(position.Y + yOffset);
+        syncParams.Append(position.Z);
 
         return syncParams.ToString();
     }

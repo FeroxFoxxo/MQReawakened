@@ -9,37 +9,17 @@ public class Vector3Model
     public float Y { get; private set; }
     public float Z { get; private set; }
 
-    private readonly string _id;
-    private readonly Room _room;
+    public Vector3Model(float x, float y, float z) => SetPosition(x, y, z);
 
-    public Vector3Model(float x, float y, float z, string id, Room room)
-    {
-        SetPosition(x, y, z, true);
-        _id = id;
-        _room = room;
-    }
-
+    public void SetPosition(Vector3Model position) => SetPosition(position.X, position.Y, position.Z);
     public void SetPosition(Vector3 position) => SetPosition(position.x, position.y, position.z);
     public void SetPosition(vector3 position) => SetPosition(position.x, position.y, position.z);
 
-    public void SetPosition(float x, float y, float z, bool init = false)
+    public void SetPosition(float x, float y, float z)
     {
         X = x;
         Y = y;
         Z = z;
-
-        if (init)
-            return;
-
-        if (_room == null)
-            return;
-
-        var colliders = _room.GetCollidersById(_id);
-
-        foreach (var collider in colliders)
-        {
-            collider.Position = new Vector3(x, y, z);
-        }
     }
 
     public void SetPositionViaPlane(string parentPlane, string prefabName, Microsoft.Extensions.Logging.ILogger logger)
@@ -57,9 +37,6 @@ public class Vector3Model
                 break;
         }
     }
-
-    public static float Distance(Vector3Model left, Vector3Model right) =>
-        Mathf.Sqrt(Mathf.Pow(left.X - right.X, 2) + Mathf.Pow(left.Y - right.Y, 2) + Mathf.Pow(left.Z - right.Z, 2));
 
     public vector3 ToVector3() => new(X, Y, Z);
     public Vector3 ToUnityVector3() => new(X, Y, Z);

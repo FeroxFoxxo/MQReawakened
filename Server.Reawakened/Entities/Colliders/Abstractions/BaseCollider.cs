@@ -1,54 +1,39 @@
 ﻿using Server.Reawakened.Entities.Colliders.Enums;
 using Server.Reawakened.Entities.Components.GameObjects.Attributes;
 using Server.Reawakened.Rooms;
+using Server.Reawakened.Rooms.Models.Planes;
 using UnityEngine;
 
 namespace Server.Reawakened.Entities.Colliders.Abstractions;
 public abstract class BaseCollider
 {
-    public readonly Room Room;
-    public readonly string Id;
-    public readonly string Plane;
-    public readonly ColliderType Type;
-    public readonly Vector3 SpawnPosition;
-    public readonly Rect BoundingBox;
-    public readonly bool IsInvisible;
+    public abstract Room Room { get; }
+    public abstract string Id { get; }
+    public abstract Vector3Model Position { get; }
+    public abstract RectModel BoundingBox { get; }
+    public abstract string Plane { get; }
+    public abstract ColliderType Type { get; }
 
-    private Rect colliderBox = new(0, 0, 0, 0);
+    public bool IsInvisible { get; private set; }
+    public bool Active { get; set; }
+    public Vector3 SpawnPosition { get; private set; }
 
-    public bool Active;
 
-    protected virtual Vector3 InternalPosition { get; set; } = Vector3.zero;
+    private Rect ColliderBox => new(
+            Position.X + BoundingBox.X,
+            Position.Y + BoundingBox.Y,
+            BoundingBox.Width,
+            BoundingBox.Height
+        );
 
-    public Vector3 Position
+    protected BaseCollider(bool addToRoom = true)
     {
-        get => InternalPosition;
-        set
-        {
-            InternalPosition = value;
-            colliderBox = new Rect(
-                InternalPosition.x + BoundingBox.x,
-                InternalPosition.y + BoundingBox.y,
-                BoundingBox.width,
-                BoundingBox.height
-            );
-        }
-    }
-
-    protected BaseCollider(string id, Vector3 position, Rect boundingBox, string plane, Room room, ColliderType colliderType, bool addToRoom = true)
-    {
-        Room = room;
-        Id = id;
-        Plane = plane;
-        Type = colliderType;
-        BoundingBox = boundingBox;
-        SpawnPosition = new Vector3(position.x, position.y, position.z);
+        SpawnPosition = Position.ToUnityVector3();
         Active = true;
 
-        var invis = Room.GetEntityFromId<InvisibilityControllerComp>(Id);
-        IsInvisible = invis != null && invis.ApplyInvisibility;
+        var invisible = Room.GetEntityFromId<InvisibilityControllerComp>(Id);
 
-        Position = new Vector3(position.x, position.y, position.z);
+        IsInvisible = invisible != null && invisible.ApplyInvisibility;
 
         if (addToRoom)
             Room.AddColliderToList(this);
@@ -70,5 +55,5 @@ public abstract class BaseCollider
         rA.x < rB.x + rB.width && rA.x + rA.width > rB.x && rA.y < rB.y + rB.height && rA.y + rA.height > rB.y;
     
     public bool CheckCollision(BaseCollider collided) =>
-        RectOverlapsRect(collided.colliderBox, colliderBox) && Plane == collided.Plane;
+        RectOverlapsRect(collided.ColliderBox, ColliderBox) && Plane == collided.Plane;
 }

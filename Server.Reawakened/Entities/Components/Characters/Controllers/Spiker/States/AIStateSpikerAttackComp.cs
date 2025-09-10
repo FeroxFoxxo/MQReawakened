@@ -61,7 +61,7 @@ public class AIStateSpikerAttackComp : BaseAIState<AIStateSpikerAttackMQR, AI_St
             var projectileSpeed = projectileDirection * ProjectileSpeed;
 
             EnemyController.FireProjectile(
-                Position.ToUnityVector3(),
+                Position,
                 projectileSpeed,
                 false
             );

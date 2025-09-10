@@ -5,13 +5,20 @@ using Server.Reawakened.Entities.Components.GameObjects.Hazards;
 using Server.Reawakened.Entities.Components.GameObjects.Hazards.Abstractions;
 using Server.Reawakened.Players;
 using Server.Reawakened.Rooms;
-using UnityEngine;
+using Server.Reawakened.Rooms.Models.Entities;
+using Server.Reawakened.Rooms.Models.Planes;
 
 namespace Server.Reawakened.Entities.Colliders;
-public class HazardEffectCollider(string hazardId, Vector3 position, Rect box, string plane,
-    Room room, ILogger<BaseHazardControllerComp<HazardController>> logger) :
-    BaseCollider(hazardId, position, box, plane, room, ColliderType.Hazard)
+
+public class HazardEffectCollider(BaseComponent hazardController, ILogger<BaseHazardControllerComp<HazardController>> logger) : BaseCollider
 {
+    public override Room Room => hazardController.Room;
+    public override string Id => hazardController.Id;
+    public override Vector3Model Position => hazardController.Position;
+    public override RectModel BoundingBox => hazardController.Rectangle;
+    public override string Plane => hazardController.ParentPlane;
+    public override ColliderType Type => ColliderType.Hazard;
+
     public override void SendCollisionEvent(BaseCollider received)
     {
         if (received is not PlayerCollider playerCollider)

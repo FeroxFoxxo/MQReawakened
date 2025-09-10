@@ -111,7 +111,7 @@ public class AIStateSpiderVenomComp : BaseAIState<AIStateSpiderVenom, AI_State>
 
         var speed = new Vector2(first ? component.FirstProjectileSpeedX : component.SecondProjectileSpeedX, component.SecondProjectileSpeedY);
 
-        component.Room.AddRangedProjectile(component.Id, component.Position.ToUnityVector3(), speed, component.CooldownTime, 1, ItemEffectType.BluntDamage, false);
+        component.Room.AddRangedProjectile(component.Id, component.Position, speed, component.CooldownTime, 1, ItemEffectType.BluntDamage, false);
     }
 
     public void Cooldown()

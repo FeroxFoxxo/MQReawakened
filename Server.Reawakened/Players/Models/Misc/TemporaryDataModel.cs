@@ -3,6 +3,7 @@ using Server.Reawakened.Entities.Colliders;
 using Server.Reawakened.Players.Models.Groups;
 using Server.Reawakened.Players.Models.Trade;
 using Server.Reawakened.Rooms.Models.Entities;
+using Server.Reawakened.Rooms.Models.Planes;
 using UnityEngine;
 using Timer = Server.Base.Timers.Timer;
 
@@ -31,7 +32,7 @@ public class TemporaryDataModel
     public List<string> CollidingHazards { get; set; } = [];
     public Dictionary<int, bool> VotedForItem { get; set; } = [];
 
-    public Vector3 Position { get; set; } = new Vector3();
+    public Vector3Model Position { get; set; } = new Vector3Model(0, 0, 0);
     public Vector3 Velocity { get; set; } = new Vector3();
 
     public TradeModel TradeModel { get; set; }
@@ -45,5 +46,5 @@ public class TemporaryDataModel
     public PlayerCollider PlayerCollider { get; set; }
 
     public Vector3 CopyPosition() =>
-        new(Position.x, Position.y, Position.z);
+        new(Position.X, Position.Y, Position.Z);
 }

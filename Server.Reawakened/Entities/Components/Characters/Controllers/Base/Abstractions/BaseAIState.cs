@@ -128,7 +128,7 @@ public abstract class BaseAIState<T, T2> : Component<T>, IAIState where T2 : cla
     public Vector3 GetDirectionToPlayer(Player player)
     {
         var spikerPosition = Position.ToUnityVector3();
-        var playerPosition = player.TempData.Position;
+        var playerPosition = player.TempData.Position.ToUnityVector3();
 
         return (playerPosition - spikerPosition).normalized;
     }

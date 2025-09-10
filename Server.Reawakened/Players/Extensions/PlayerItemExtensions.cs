@@ -57,7 +57,7 @@ public static class PlayerItemExtensions
         var player = drop.Player;
 
         var dropItem = new LaunchItem_SyncEvent(player.GameObjectId.ToString(), player.Room.Time,
-            player.TempData.Position.x + drop.DropDirection, player.TempData.Position.y, player.TempData.Position.z,
+            player.TempData.Position.X + drop.DropDirection, player.TempData.Position.Y, player.TempData.Position.Z,
             0, 0, 3, 0, drop.UsedItem.PrefabName);
 
         player.Room.SendSyncEvent(dropItem);

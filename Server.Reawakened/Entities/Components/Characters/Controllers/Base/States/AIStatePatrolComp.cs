@@ -118,10 +118,10 @@ public class AIStatePatrolComp : BaseAIState<AIStatePatrol, AI_State_Patrol>
         var playerPos = player.TempData.Position;
         var enemyPos = Position.ToUnityVector3();
 
-        if (Mathf.Abs(playerPos.y - enemyPos.y) > MaximumYDifferenceOnDetection)
+        if (Mathf.Abs(playerPos.Y - enemyPos.y) > MaximumYDifferenceOnDetection)
             return false;
 
-        var distance = Vector3.Distance(enemyPos, playerPos);
+        var distance = Vector3.Distance(enemyPos, playerPos.ToUnityVector3());
 
         return distance >= MinimumRange && distance <= DetectionRange && (!DetectOnlyInPatrolZone || IsPlayerInPatrolZone(player));
     }
@@ -135,6 +135,6 @@ public class AIStatePatrolComp : BaseAIState<AIStatePatrol, AI_State_Patrol>
         var minY = Mathf.Min(Position.Y + Patrol1.y, Position.Y + Patrol2.y) - PatrolZoneSizeOffset;
         var maxY = Mathf.Max(Position.Y + Patrol1.y, Position.Y + Patrol2.y) + PatrolZoneSizeOffset;
 
-        return playerPos.x >= minX && playerPos.x <= maxX && playerPos.y >= minY && playerPos.y <= maxY;
+        return playerPos.X >= minX && playerPos.X <= maxX && playerPos.Y >= minY && playerPos.Y <= maxY;
     }
 }
