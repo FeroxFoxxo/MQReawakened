@@ -2,6 +2,7 @@ using Server.Colliders.DTOs;
 using Server.Reawakened.Rooms;
 using Server.Reawakened.Entities.Enemies.EnemyTypes;
 using Server.Reawakened.Entities.Enemies.Extensions;
+using Server.Reawakened.Entities.Colliders.Enums;
 
 namespace Server.Colliders.Services;
 
@@ -31,7 +32,7 @@ public static class ColliderHelper
 
                     colliders.Add(new ColliderDto(
                         behavior.Id + "_detection",
-                        "EnemyDetection",
+                        ColliderType.Enemy.ToString(),
                         behavior.ParentPlane,
                         true,
                         detect.IsInvisible,
