@@ -70,8 +70,8 @@ public class ColliderPushService(ColliderSnapshotProvider _snapshots, IHubContex
                         continue;
                     }
 
-                    var prevMap = prev.Colliders.ToDictionary(c => c.Id, c => c);
-                    var currMap = room.Colliders.ToDictionary(c => c.Id, c => c);
+                    var prevMap = prev.Colliders.GroupBy(c => c.Id).ToDictionary(g => g.Key, g => g.Last());
+                    var currMap = room.Colliders.GroupBy(c => c.Id).ToDictionary(g => g.Key, g => g.Last());
 
                     var added = currMap.Keys.Except(prevMap.Keys).Select(id => currMap[id]).ToArray();
                     var removed = prevMap.Keys.Except(currMap.Keys).ToArray();
