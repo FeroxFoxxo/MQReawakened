@@ -82,6 +82,12 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
 
     public override void InternalUpdate()
     {
+        Position.SetPosition(
+            AiData.Sync_PosX,
+            AiData.Sync_PosY,
+            AiData.Sync_PosZ
+        );
+
         var hasDetected = false;
 
         if (CurrentBehavior.ShouldDetectPlayers)
@@ -97,12 +103,6 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
                 if (Room.Time >= _lastUpdate + CurrentBehavior.GetBehaviorTime())
                     CurrentBehavior.NextState();
         }
-
-        Position.SetPosition(
-            AiData.Sync_PosX,
-            AiData.Sync_PosY,
-            AiData.Sync_PosZ
-        );
     }
 
     public bool HasDetectedPlayers()
@@ -231,6 +231,8 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
             return;
         }
 
+        Logger.LogTrace("Enemy {PrefabName} aggroed on player {PlayerName}", PrefabName, player.CharacterName);
+        
         AiData.Sync_TargetPosX = player.TempData.Position.X;
         AiData.Sync_TargetPosY = player.TempData.Position.Y;
 
