@@ -197,7 +197,7 @@ public abstract class BaseEnemy : IDestructible
         var bottomX = offset.x * EnemyController.Scale.X;
         var bottomY = offset.y * EnemyController.Scale.Y;
 
-        var rect = new RectModel(bottomX, bottomY, width, height);
+        var rect = new RectModel(bottomX - width, bottomY, width, height);
 
         Logger.LogTrace("Created enemy hitbox at {Position} of size {Size}", Position, rect);
 
