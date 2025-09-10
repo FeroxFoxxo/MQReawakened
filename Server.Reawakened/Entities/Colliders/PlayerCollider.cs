@@ -15,6 +15,12 @@ public class PlayerCollider(Player player) :
 {
     public Player Player => player;
 
+    protected override Vector3 InternalPosition
+    {
+        get => Player.TempData.CopyPosition();
+        set => Player.TempData.Position = value;
+    }
+
     public override void SendCollisionEvent(BaseCollider received)
     {
         if (received.Type is ColliderType.Player or ColliderType.Attack)

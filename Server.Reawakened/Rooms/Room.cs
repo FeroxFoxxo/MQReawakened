@@ -221,8 +221,7 @@ public class Room : Timer
             }
             else
             {
-                var playerCollider = new PlayerCollider(player);
-                playerCollider.IsColliding(false);
+                player.TempData.PlayerCollider?.IsColliding(false);
             }
         }
 
@@ -252,6 +251,8 @@ public class Room : Timer
                 currentPlayer.TempData.GameObjectId = gameObjectId.ToString();
 
                 _players.Add(gameObjectId.ToString(), currentPlayer);
+
+                currentPlayer.TempData.PlayerCollider = new PlayerCollider(currentPlayer);
 
                 this.GroupMemberRoomChanged(currentPlayer);
 
@@ -291,7 +292,10 @@ public class Room : Timer
         {
             _players.Remove(player.GameObjectId);
             _gameObjectIds.Remove(player.GameObjectId);
+            RemoveCollider(player.GameObjectId);
         }
+
+        player.TempData.PlayerCollider = null;
 
         if (LevelInfo.LevelId <= 0)
             return;
@@ -400,17 +404,6 @@ public class Room : Timer
         }
     }
 
-    public void OverwriteCollider(BaseCollider collider)
-    {
-        AddColliderList(collider.Id);
-        
-        lock (_roomLock)
-        {
-            _colliders[collider.Id].Clear();
-            _colliders[collider.Id].Add(collider);
-        }
-    }
-
     public void RemoveCollider(string colliderId)
     {
         lock (_roomLock)
@@ -482,12 +475,6 @@ public class Room : Timer
                 _entities[id] = entity;
     }
 
-    public void RemoveEntity(string id)
-    {
-        lock (_roomLock)
-            _entities.Remove(id);
-    }
-
     public bool ContainsEntity(string id)
     {
         lock (_roomLock)
@@ -546,12 +533,6 @@ public class Room : Timer
             _projectiles.Add(projectile.ProjectileId, projectile);
     }
 
-    public void SetProjectile(BaseProjectile projectile)
-    {
-        lock (_roomLock)
-            _projectiles[projectile.ProjectileId] = projectile;
-    }
-
     public void RemoveProjectile(string projectileId)
     {
         lock (_roomLock)
@@ -601,12 +582,6 @@ public class Room : Timer
     {
         lock (_roomLock)
             _killedObjects.Add(killedEnemy);
-    }
-
-    public void RemoveKilledEnemy(string killedEnemy)
-    {
-        lock (_roomLock)
-            _killedObjects.Remove(killedEnemy);
     }
 
     public bool IsObjectKilled(string id)

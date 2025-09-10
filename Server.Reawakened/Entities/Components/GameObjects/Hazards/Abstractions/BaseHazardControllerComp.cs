@@ -252,7 +252,7 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
         {
             foreach (var collider in colliders)
             {
-                if (!collider.CheckCollision(new PlayerCollider(poison.Player)))
+                if (poison.Player.TempData.PlayerCollider != null && !collider.CheckCollision(poison.Player.TempData.PlayerCollider))
                     return;
             }
         }

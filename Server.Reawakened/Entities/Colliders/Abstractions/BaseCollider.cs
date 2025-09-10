@@ -14,19 +14,21 @@ public abstract class BaseCollider
     public readonly Rect BoundingBox;
     public readonly bool IsInvisible;
 
-    private Vector3 internalPosition = Vector3.zero;
     private Rect colliderBox = new(0, 0, 0, 0);
 
     public bool Active;
+
+    protected virtual Vector3 InternalPosition { get; set; } = Vector3.zero;
+    
     public Vector3 Position
     {
-        get => internalPosition;
+        get => InternalPosition;
         set
         {
-            internalPosition = value;
+            InternalPosition = value;
             colliderBox = new Rect(
-                internalPosition.x + BoundingBox.x,
-                internalPosition.y + BoundingBox.y,
+                InternalPosition.x + BoundingBox.x,
+                InternalPosition.y + BoundingBox.y,
                 BoundingBox.width,
                 BoundingBox.height
             );

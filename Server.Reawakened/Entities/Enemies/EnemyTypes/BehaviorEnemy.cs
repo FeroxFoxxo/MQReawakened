@@ -124,7 +124,7 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
             var character = player.Character;
             var statusEffects = character?.StatusEffects;
 
-            var collides = enemyCollider.CheckCollision(new PlayerCollider(player));
+            var collides = player.TempData.PlayerCollider != null && enemyCollider.CheckCollision(player.TempData.PlayerCollider);
             var withinPatrol = !Global.Global_DetectionLimitedByPatrolLine || temp != null && temp.Position.x > AiData.Intern_MinPointX && temp.Position.x < AiData.Intern_MaxPointX;
             var samePlane = ParentPlane == player.GetPlayersPlaneString();
             var invisible = statusEffects?.HasEffect(ItemEffectType.Invisibility) ?? false;
