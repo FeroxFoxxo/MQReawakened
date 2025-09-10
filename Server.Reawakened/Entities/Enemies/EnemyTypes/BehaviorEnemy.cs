@@ -113,7 +113,7 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
             Global.Global_BackDetectionRangeDownY + Global.Global_FrontDetectionRangeDownY + Hitbox.BoundingBox.height
         );
 
-        var enemyCollider = new EnemyCollider(Id, Vector3.zero, rect, ParentPlane, Room, false);
+        var enemyCollider = new EnemyCollider(this, Hitbox.Position, rect, ParentPlane, Room, true);
 
         foreach (var player in Room.GetPlayers())
         {
