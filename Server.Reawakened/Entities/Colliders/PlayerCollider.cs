@@ -8,10 +8,9 @@ using Server.Reawakened.Rooms.Extensions;
 using UnityEngine;
 
 namespace Server.Reawakened.Entities.Colliders;
-public class PlayerCollider(Player player) :
+public class PlayerCollider(Player player, bool addToRoom = true) :
     BaseCollider(player.TempData.GameObjectId, player.TempData.CopyPosition(),
-        new Rect(-0.5f, 0, 1, 1), player.GetPlayersPlaneString(), player.Room, ColliderType.Player
-    )
+        new Rect(-0.5f, 0, 1, 1), player.GetPlayersPlaneString(), player.Room, ColliderType.Player, addToRoom)
 {
     public Player Player => player;
 

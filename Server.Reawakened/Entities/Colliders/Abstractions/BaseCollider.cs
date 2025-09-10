@@ -19,7 +19,7 @@ public abstract class BaseCollider
     public bool Active;
 
     protected virtual Vector3 InternalPosition { get; set; } = Vector3.zero;
-    
+
     public Vector3 Position
     {
         get => InternalPosition;
@@ -35,7 +35,7 @@ public abstract class BaseCollider
         }
     }
 
-    protected BaseCollider(string id, Vector3 position, Rect boundingBox, string plane, Room room, ColliderType colliderType)
+    protected BaseCollider(string id, Vector3 position, Rect boundingBox, string plane, Room room, ColliderType colliderType, bool addToRoom = true)
     {
         Room = room;
         Id = id;
@@ -50,7 +50,8 @@ public abstract class BaseCollider
 
         Position = new Vector3(position.x, position.y, position.z);
 
-        Room.AddColliderToList(this);
+        if (addToRoom)
+            Room.AddColliderToList(this);
     }
 
     public virtual string[] IsColliding() => [];

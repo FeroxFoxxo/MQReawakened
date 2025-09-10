@@ -5,8 +5,8 @@ using Server.Reawakened.Rooms;
 using UnityEngine;
 
 namespace Server.Reawakened.Entities.Colliders;
-public class EnemyCollider(string id, Vector3 position, Rect box, string plane, Room room) :
-    BaseCollider(id, position, box, plane, room, ColliderType.Enemy)
+public class EnemyCollider(string id, Vector3 position, Rect box, string plane, Room room, bool addToRoom = true) :
+    BaseCollider(id, position, box, plane, room, ColliderType.Enemy, addToRoom)
 {
     public override void SendCollisionEvent(BaseCollider received)
     {
