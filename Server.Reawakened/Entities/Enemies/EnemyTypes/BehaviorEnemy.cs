@@ -107,11 +107,13 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
 
     public bool HasDetectedPlayers()
     {
+        var isLookingLeft = AiData.Intern_Dir < 0;
+
         var rect = new RectModel(
-            Hitbox.Position.X - (AiData.Intern_Dir < 0 ? Global.Global_FrontDetectionRangeX : Global.Global_BackDetectionRangeX) - Hitbox.BoundingBox.Width / 2,
-            Hitbox.Position.Y - (AiData.Intern_Dir < 0 ? Global.Global_FrontDetectionRangeDownY : Global.Global_BackDetectionRangeDownY) - Hitbox.BoundingBox.Height / 2,
-            Global.Global_FrontDetectionRangeX + Global.Global_BackDetectionRangeX + Hitbox.BoundingBox.Width,
-            Global.Global_BackDetectionRangeDownY + Global.Global_FrontDetectionRangeDownY + Hitbox.BoundingBox.Height
+            Hitbox.BoundingBox.X - (isLookingLeft ? Global.Global_FrontDetectionRangeX : Global.Global_BackDetectionRangeX),
+            Hitbox.BoundingBox.Y - (isLookingLeft ? Global.Global_FrontDetectionRangeDownY : Global.Global_BackDetectionRangeDownY),
+            Hitbox.BoundingBox.Width + Global.Global_FrontDetectionRangeX + Global.Global_BackDetectionRangeX,
+            Hitbox.BoundingBox.Height + Global.Global_BackDetectionRangeDownY + Global.Global_FrontDetectionRangeDownY
         );
 
         var enemyCollider = new EnemyCollider(this, rect, true);
