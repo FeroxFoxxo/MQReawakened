@@ -18,7 +18,7 @@ public abstract class BaseCollider
     public bool Active { get; set; }
     public Vector3 SpawnPosition { get; private set; }
 
-    private Rect ColliderBox => new(
+    public Rect ColliderBox => new(
             Position.X + BoundingBox.X,
             Position.Y + BoundingBox.Y,
             BoundingBox.Width,

@@ -31,10 +31,10 @@ public class ColliderBroadcastService(WorldHandler _world, IHubContext<ColliderH
                         plane = c.Plane,
                         active = c.Active,
                         invisible = c.IsInvisible,
-                        x = (float)c.Position.X,
-                        y = (float)c.Position.Y,
-                        width = (float)c.BoundingBox.Width,
-                        height = (float)c.BoundingBox.Height
+                        c.ColliderBox.x,
+                        c.ColliderBox.y,
+                        c.ColliderBox.width,
+                        c.ColliderBox.height
                     }).ToArray();
 
                     var version = _versions?.Get(levelId, roomInstanceId) ?? 0L;
