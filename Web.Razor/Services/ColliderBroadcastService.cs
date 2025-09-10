@@ -4,10 +4,11 @@ using Server.Base.Core.Abstractions;
 using Server.Reawakened.Rooms.Services;
 using Web.Razor.Hubs;
 using Microsoft.AspNetCore.SignalR;
+using Server.Colliders.Services;
 
 namespace Web.Razor.Services;
 
-public class ColliderBroadcastService(WorldHandler _world, IHubContext<ColliderHub> _hub, ILogger<ColliderBroadcastService> _logger) : BackgroundService, IService
+public class ColliderBroadcastService(WorldHandler _world, IHubContext<ColliderHub> _hub, ILogger<ColliderBroadcastService> _logger, InMemoryRoomVersionTracker _versions) : BackgroundService, IService
 {
     public void Initialize() { }
 
@@ -36,10 +37,12 @@ public class ColliderBroadcastService(WorldHandler _world, IHubContext<ColliderH
                         height = (float)c.BoundingBox.Height
                     }).ToArray();
 
+                    var version = _versions?.Get(levelId, roomInstanceId) ?? 0L;
                     var payload = new
                     {
                         levelId,
                         roomInstanceId,
+                        version,
                         colliders = colliderData
                     };
                     await _hub.Clients.Group(group).SendAsync("collidersUpdated", payload, stoppingToken);
