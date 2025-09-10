@@ -30,8 +30,8 @@ public class ColliderBroadcastService(WorldHandler _world, IHubContext<ColliderH
                         plane = c.Plane,
                         active = c.Active,
                         invisible = c.IsInvisible,
-                        c.Position.X,
-                        c.Position.Y,
+                        x = (float)c.Position.X,
+                        y = (float)c.Position.Y,
                         width = (float)c.BoundingBox.Width,
                         height = (float)c.BoundingBox.Height
                     }).ToArray();

@@ -12,7 +12,10 @@ public class InMemoryColliderSubscriptionTracker
         var key = (levelId, roomInstanceId);
         var set = _roomSubs.GetOrAdd(key, _ => new ConcurrentDictionary<string, byte>());
         set[connectionId] = 1;
-        _connIndex.AddOrUpdate(connectionId, _ => [key], (_, existing) => { lock(existing) existing.Add(key); return existing; });
+        _connIndex.AddOrUpdate(connectionId,
+            _ => [key],
+            (_, existing) => { lock (existing) { existing.Add(key); } return existing; }
+        );
     }
 
     public void Unsubscribe(string connectionId, int levelId, int roomInstanceId)

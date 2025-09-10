@@ -819,7 +819,19 @@
                 }
             });
             hub.onreconnecting(err => console.warn('Collider hub reconnecting...', err));
-            hub.onreconnected(id => console.info('Collider hub reconnected', id));
+            hub.onreconnected(async id => {
+                console.info('Collider hub reconnected', id);
+                try {
+                    if (currentRoom) {
+                        await hub.invoke('SubscribeRoom', currentRoom.levelId, currentRoom.roomInstanceId);
+                        try { currentSubscriberCount = await hub.invoke('GetSubscriberCount', currentRoom.levelId, currentRoom.roomInstanceId); } catch (_) { currentSubscriberCount = 0; }
+                    } else {
+                        loadRooms();
+                    }
+                } catch (e) {
+                    console.error('Failed to restore collider subscription after reconnect', e);
+                }
+            });
             hub.start().then(() => { loadRooms(); resizeCanvas(); }).catch(err => console.error('Collider hub start failed', err));
             document.addEventListener('visibilitychange', () => { if (document.hidden) { suspendPage(); } else { resumePage(); } });
             window.addEventListener('beforeunload', () => { suspendPage(); });
