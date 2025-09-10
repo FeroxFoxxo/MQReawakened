@@ -18,7 +18,6 @@ public abstract class BaseCollider
     public bool Active { get; set; }
     public Vector3 SpawnPosition { get; private set; }
 
-
     private Rect ColliderBox => new(
             Position.X + BoundingBox.X,
             Position.Y + BoundingBox.Y,
@@ -39,21 +38,12 @@ public abstract class BaseCollider
             Room.AddColliderToList(this);
     }
 
-    public virtual string[] IsColliding() => [];
-
-    public virtual string[] IsColliding(bool isAttack) => [];
+    public virtual string[] RunCollisionDetection(bool isAttack) => [];
 
     public virtual void SendCollisionEvent(BaseCollider received)
     {
     }
-
-    public virtual void SendNonCollisionEvent(BaseCollider received)
-    {
-    }
-
-    private static bool RectOverlapsRect(Rect rA, Rect rB) =>
-        rA.x < rB.x + rB.width && rA.x + rA.width > rB.x && rA.y < rB.y + rB.height && rA.y + rA.height > rB.y;
     
     public bool CheckCollision(BaseCollider collided) =>
-        RectOverlapsRect(collided.ColliderBox, ColliderBox) && Plane == collided.Plane;
+        collided.ColliderBox.Overlaps(ColliderBox) && Plane == collided.Plane;
 }

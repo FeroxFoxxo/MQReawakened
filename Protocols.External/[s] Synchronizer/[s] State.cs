@@ -187,7 +187,7 @@ public class State : ExternalProtocol
                 LogEvent(syncEvent, entityId, Player.Room);
     }
 
-    private static void UpdatePlayerCollider(Player player) => player.TempData.PlayerCollider?.IsColliding(false);
+    private static void UpdatePlayerCollider(Player player) => player.TempData.PlayerCollider?.RunCollisionDetection(false);
 
     private void RequestRespawn(string entityId, float triggerTime)
     {

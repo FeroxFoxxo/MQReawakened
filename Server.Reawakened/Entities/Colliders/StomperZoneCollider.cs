@@ -19,7 +19,7 @@ public class StomperZoneCollider(StomperControllerComp stomperController) : Base
     public override string Plane => stomperController.ParentPlane;
     public override ColliderType Type => ColliderType.Stomper;
 
-    public override string[] IsColliding()
+    public override string[] RunCollisionDetection(bool isAttack)
     {
         var colliders = Room.GetColliders();
 

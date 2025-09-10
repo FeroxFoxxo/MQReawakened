@@ -35,7 +35,7 @@ public abstract class BaseProjectile(string id, float lifetime,
 
         var time = room.Time;
 
-        var collisions = Collider.IsColliding(true);
+        var collisions = Collider.RunCollisionDetection(true);
 
         if (collisions.Length > 0)
             foreach (var collision in collisions)

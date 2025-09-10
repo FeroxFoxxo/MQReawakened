@@ -29,7 +29,7 @@ public class AIProjectileCollider(string id, string ownerId, Room room,
     public override string Plane => plane;
     public override ColliderType Type => ColliderType.Attack;
 
-    public override string[] IsColliding(bool isAttack)
+    public override string[] RunCollisionDetection(bool isAttack)
     {
         var colliders = Room.GetColliders();
         List<string> collidedWith = [];

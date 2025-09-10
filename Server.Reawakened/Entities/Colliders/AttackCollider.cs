@@ -26,7 +26,7 @@ public class AttackCollider(string id, Vector3Model position,
     public readonly float OffsetTime = player.Room.Time + offset;
     public readonly float LifeTime = player.Room.Time + lifeTime;
 
-    public override string[] IsColliding(bool isAttack)
+    public override string[] RunCollisionDetection(bool isAttack)
     {
         var colliders = Room.GetColliders();
 
@@ -46,16 +46,20 @@ public class AttackCollider(string id, Vector3Model position,
         if (isAttack)
             foreach (var collider in colliders)
             {
-                var collided = CheckCollision(collider);
                 var isCollidable = collider.Type is not ColliderType.Attack and not
                     ColliderType.Player and not ColliderType.Hazard and not ColliderType.AiAttack
                     && collider.Active && (!collider.IsInvisible || CanSeeInvisible);
 
-                if (collided && isCollidable)
-                {
-                    collidedWith.Add(collider.Id);
-                    collider.SendCollisionEvent(this);
-                }
+                if (!isCollidable)
+                    continue;
+
+                var collided = CheckCollision(collider);
+
+                if (!collided)
+                    continue;
+
+                collidedWith.Add(collider.Id);
+                collider.SendCollisionEvent(this);
             }
 
         return [.. collidedWith];

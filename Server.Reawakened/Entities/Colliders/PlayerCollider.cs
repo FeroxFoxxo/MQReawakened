@@ -52,7 +52,7 @@ public class PlayerCollider(Player player) : BaseCollider
         }
     }
 
-    public override string[] IsColliding(bool isAttack)
+    public override string[] RunCollisionDetection(bool isAttack)
     {
         var colliders = Room.GetColliders();
 
