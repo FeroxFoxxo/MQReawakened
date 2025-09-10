@@ -24,17 +24,19 @@ public class ColliderBroadcastService(WorldHandler _world, IHubContext<ColliderH
                     var roomInstanceId = int.Parse(room.ToString().Split('_').Last());
                     var group = $"room:{levelId}:{roomInstanceId}";
 
-                    var colliderData = room.GetColliders().Select(c => new
+                    var colliderDtos = ColliderHelper.BuildCollidersForRoom(room);
+
+                    var colliderData = colliderDtos.Select(c => new
                     {
                         id = c.Id,
-                        type = c.Type.ToString(),
+                        type = c.Type,
                         plane = c.Plane,
                         active = c.Active,
-                        invisible = c.IsInvisible,
-                        c.ColliderBox.x,
-                        c.ColliderBox.y,
-                        c.ColliderBox.width,
-                        c.ColliderBox.height
+                        invisible = c.Invisible,
+                        x = c.X,
+                        y = c.Y,
+                        width = c.Width,
+                        height = c.Height
                     }).ToArray();
 
                     var version = _versions?.Get(levelId, roomInstanceId) ?? 0L;
@@ -45,6 +47,7 @@ public class ColliderBroadcastService(WorldHandler _world, IHubContext<ColliderH
                         version,
                         colliders = colliderData
                     };
+
                     await _hub.Clients.Group(group).SendAsync("collidersUpdated", payload, stoppingToken);
                 }
             }
