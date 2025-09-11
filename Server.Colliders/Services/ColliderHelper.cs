@@ -2,7 +2,6 @@ using Server.Colliders.DTOs;
 using Server.Reawakened.Rooms;
 using Server.Reawakened.Entities.Enemies.EnemyTypes;
 using Server.Reawakened.Entities.Enemies.Extensions;
-using Server.Reawakened.Entities.Colliders.Enums;
 using Server.Reawakened.Entities.Colliders.Abstractions;
 
 namespace Server.Colliders.Services;
