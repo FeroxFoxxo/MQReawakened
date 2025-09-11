@@ -43,19 +43,10 @@ public class AIStateSpiderlingAttackComp : BaseAIState<AIStateSpiderlingAttackMQ
         if (targetPlayer == null)
             return;
 
-        var targetPos = targetPlayer.TempData.Position;
+        var directionToPlayer = GetDirectionToPlayer(targetPlayer);
+        var baseAngle = Mathf.Atan2(directionToPlayer.y, directionToPlayer.x) * Mathf.Rad2Deg;
 
-        var toTarget = targetPos.ToUnityVector3() - Position.ToUnityVector3();
-        var dir = toTarget;
-
-        if (dir.sqrMagnitude <= 0f)
-        {
-            var forceX = 1f;
-            try { forceX = StateMachine.GetForceDirectionX(); } catch { }
-            dir = new Vector3(forceX, 0f, 0f);
-        }
-
-        var baseAngle = Mathf.Atan2(dir.y, dir.x);
+        var startingAngle = baseAngle + FirstProjectileAngleOffset;
 
         if (NumberOfProjectiles <= 0)
         {
@@ -63,17 +54,23 @@ public class AIStateSpiderlingAttackComp : BaseAIState<AIStateSpiderlingAttackMQ
             return;
         }
 
-        var startOffsetDeg = FirstProjectileAngleOffset;
-        var betweenDeg = AngleBetweenProjectiles;
-
         for (var i = 0; i < NumberOfProjectiles; i++)
         {
-            var angleDeg = startOffsetDeg + i * betweenDeg;
-            var angle = baseAngle + angleDeg * Mathf.Deg2Rad;
+            var currentAngle = startingAngle + i * AngleBetweenProjectiles;
+            var angleInRadians = currentAngle * Mathf.Deg2Rad;
 
-            var velocity = new Vector2(Mathf.Cos(angle) * ProjectileSpeed, Mathf.Sin(angle) * ProjectileSpeed);
+            var projectileDirection = new Vector2(
+                Mathf.Cos(angleInRadians),
+                Mathf.Sin(angleInRadians)
+            );
 
-            EnemyController.FireProjectile(Position, velocity, false);
+            var projectileSpeed = projectileDirection * ProjectileSpeed;
+
+            EnemyController.FireProjectile(
+                Position,
+                projectileSpeed,
+                false
+            );
         }
     }
 }
