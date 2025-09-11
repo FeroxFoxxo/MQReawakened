@@ -1,4 +1,5 @@
 ﻿using A2m.Server;
+using Microsoft.Extensions.Logging;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Entities.Colliders.Abstractions;
@@ -13,7 +14,7 @@ public class AIProjectileCollider(string id, string ownerId, Room room,
     Vector3Model position, RectModel size, string plane, float lifeTime, TimerThread timerThread, int damage, ItemEffectType effect,
     ItemCatalog itemCatalog, ServerRConfig serverRConfig) : BaseCollider
 {
-    public float LifeTime => lifeTime + room.Time;
+    public float LifeTime = lifeTime + room.Time;
     public string OwnderId => ownerId;
     public TimerThread TimerThread => timerThread;
     public int Damage => damage;
@@ -35,6 +36,7 @@ public class AIProjectileCollider(string id, string ownerId, Room room,
 
         if (LifeTime <= Room.Time)
         {
+            Room.Logger.LogTrace("Removing projectile collider {ColliderId} due to lifetime expiry.", Id);
             Room.RemoveCollider(Id);
             return ["0"];
         }

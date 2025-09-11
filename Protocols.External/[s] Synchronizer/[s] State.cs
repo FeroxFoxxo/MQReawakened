@@ -6,7 +6,6 @@ using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Core.Enums;
-using Server.Reawakened.Entities.Colliders;
 using Server.Reawakened.Entities.Projectiles;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
@@ -87,8 +86,12 @@ public class State : ExternalProtocol
                         attack.IsCharging, attack.PosX, attack.PosY, attack.StartDelay,
                         attack.SpeedX, attack.SpeedY, attack.MaxPosX, attack.MaxPosY, attack.ItemId, attack.ZoneId);
 
+                    Player.RemovePlayerProjectile();
+
+                    Player.TempData.ProjectileId = Player.Room.CreateProjectileId();
+
                     var chargeAttackProjectile = new ChargeAttackProjectile(
-                        Player.GameObjectId, Player,
+                        Player.TempData.ProjectileId.ToString(), Player,
                         new Vector3Model(attack.PosX, attack.PosY, Player.TempData.Position.Z),
                         new Vector3(attack.MaxPosX, attack.MaxPosY, Player.TempData.Position.Z),
                         new Vector2(attack.SpeedX, attack.SpeedY),
@@ -102,7 +105,8 @@ public class State : ExternalProtocol
                     Player.TempData.IsSuperStomping = false;
                     Player.TempData.Invincible = false;
 
-                    Player.Room.RemoveProjectile(Player.GameObjectId);
+                    Player.RemovePlayerProjectile();
+                    
                     break;
                 case SyncEvent.EventType.NotifyCollision:
                     var notifyCollisionEvent = new NotifyCollision_SyncEvent(syncEvent);

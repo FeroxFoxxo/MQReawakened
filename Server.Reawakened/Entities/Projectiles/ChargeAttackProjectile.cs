@@ -47,6 +47,6 @@ public class ChargeAttackProjectile : BaseProjectile
             )
         );
 
-        Room.RemoveProjectile(_player.GameObjectId);
+        Room.RemoveProjectile(ProjectileId);
     }
 }

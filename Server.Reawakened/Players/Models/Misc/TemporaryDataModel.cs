@@ -11,6 +11,7 @@ namespace Server.Reawakened.Players.Models.Misc;
 
 public class TemporaryDataModel
 {
+    public int ProjectileId { get; set; } = -1;
     public string GameObjectId { get; set; } = "0";
     public int Direction { get; set; } = 0;
     public int Locale { get; set; }

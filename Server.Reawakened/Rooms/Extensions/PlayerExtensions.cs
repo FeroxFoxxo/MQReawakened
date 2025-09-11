@@ -29,6 +29,15 @@ public static class PlayerExtensions
         player.TempData.PlayerCollider = new PlayerCollider(player);
     }
 
+    public static void RemovePlayerProjectile(this Player player)
+    {
+        if (player.TempData.ProjectileId <= 0)
+            return;
+
+        player.Room.RemoveProjectile(player.TempData.ProjectileId.ToString());
+        player.TempData.ProjectileId = -1;
+    }
+
     public static void QuickJoinRoom(this Player player, int id, WorldHandler worldHandler, out JoinReason reason) =>
         player.JoinRoom(worldHandler.GetRoomFromLevelId(id, player), out reason);
 
