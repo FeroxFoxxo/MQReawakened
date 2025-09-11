@@ -26,6 +26,7 @@ public class CollapsingPlatformComp : Component<CollapsingPlatform>
             IsBroken = false;
             Collapse(true);
         }
+        
         base.Update();
     }
 

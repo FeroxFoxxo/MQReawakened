@@ -28,21 +28,19 @@ public class LinearPlatformComp : BaseMovingObjectControllerComp<LinearPlatform>
             Movement.Activated, Room.Time, InitialProgressRatio
         );
 
-        _ = new MovingPlatformCollider(this);
-
         base.InitializeComponent();
+
+        _ = new MovingPlatformCollider(this);
     }
 
     public override void Update()
     {
-        if (Room == null)
-            return;
-
-        base.Update();
         var movement = (Platform_Linear_Movement)Movement;
         movement.UpdateState(Room.Time);
 
         if (!ComponentData.TriggeredBySwitch)
             movement.Activate(Room.Time);
+
+        base.Update();
     }
 }

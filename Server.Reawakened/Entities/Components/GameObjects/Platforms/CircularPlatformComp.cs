@@ -20,8 +20,8 @@ public class CircularPlatformComp : BaseMovingObjectControllerComp<CircularPlatf
             true, Room.Time, InitialProgressRatio
         );
 
-        _ = new MovingPlatformCollider(this);
-
         base.InitializeComponent();
+        
+        _ = new MovingPlatformCollider(this);
     }
 }
