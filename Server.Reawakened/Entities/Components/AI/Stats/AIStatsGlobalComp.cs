@@ -62,16 +62,9 @@ public class AIStatsGlobalComp : Component<AI_Stats_Global>
     public int GenericScript_HealthRegenerationAmount => ComponentData.GenericScript_HealthRegenerationAmount;
     public int GenericScript_HealthRegenerationFrequency => ComponentData.GenericScript_HealthRegenerationFrequency;
 
-    public StateType AttackBehavior = StateType.Unknown;
-    public StateType AwareBehavior = StateType.Unknown;
-    public StateType UnawareBehavior = StateType.Unknown;
-
-    public override void InitializeComponent()
-    {
-        AttackBehavior = Enum.Parse<StateType>(GenericScript_AttackBehavior, true);
-        AwareBehavior = Enum.Parse<StateType>(GenericScript_AwareBehavior, true);
-        UnawareBehavior = Enum.Parse<StateType>(GenericScript_UnawareBehavior, true);
-    }
+    public StateType AttackBehavior => Enum.Parse<StateType>(GenericScript_AttackBehavior, true);
+    public StateType AwareBehavior => Enum.Parse<StateType>(GenericScript_AwareBehavior, true);
+    public StateType UnawareBehavior => Enum.Parse<StateType>(GenericScript_UnawareBehavior, true);
 
     public override void NotifyCollision(NotifyCollision_SyncEvent notifyCollisionEvent, Player player)
     {

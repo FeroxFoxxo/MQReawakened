@@ -2,7 +2,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Server.Base.Timers.Services;
-using Server.Reawakened.Entities.Colliders;
 using Server.Reawakened.Entities.Components.AI.Stats;
 using Server.Reawakened.Entities.Enemies.Behaviors.Abstractions;
 using Server.Reawakened.Entities.Enemies.EnemyTypes.Abstractions;
@@ -41,6 +40,11 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
 
         Global = Room.GetEntityFromId<AIStatsGlobalComp>(Id);
         Generic = Room.GetEntityFromId<AIStatsGenericComp>(Id);
+
+        data.EnemyModel.GlobalProperties.ApplyGlobalPropertiesFromModel(Global);
+        data.EnemyModel.GenericScript?.ApplyGenericPropertiesFromModel(Global);
+
+        Generic.SetDefaultPatrolRange();
 
         AiData = new AIProcessData
         {
@@ -234,25 +238,4 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
             Generic.Patrol_ForceDirectionX
         );
     }
-
-    public override void OnCollideWithPlayer(Player player)
-    {
-        switch (EnemyModel.EnemyCategory)
-        {
-            case EnemyCategory.Boombug:
-                AggroBehaviourTransition(StateType.Bomber);;
-                break;
-            case EnemyCategory.Stomper:
-                AggroBehaviourTransition(StateType.Stomper);
-                break;
-        }
-    }
-
-    public void AggroBehaviourTransition(StateType nextBehaviour) => 
-        ChangeBehavior(
-            nextBehaviour,
-            Global.UnawareBehavior == StateType.ComeBack ? Position.X : AiData.Sync_TargetPosX,
-            Global.UnawareBehavior == StateType.ComeBack ? Position.Y : AiData.Sync_TargetPosY,
-            AiData.Intern_Dir
-        );
 }

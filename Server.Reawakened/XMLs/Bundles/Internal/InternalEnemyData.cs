@@ -540,6 +540,165 @@ public class InternalEnemyData : InternalXml
 
                                     enemyModel.BehaviorData = behaviors;
                                     break;
+
+                                case "GenericScript":
+                                    var attackBehavior = StateType.Unknown;
+                                    var awareBehavior = StateType.Unknown;
+                                    var unawareBehavior = StateType.Unknown;
+                                    var awareBehaviorDuration = 0f;
+                                    var healthRegenAmount = 0;
+                                    var healthRegenFrequency = 0;
+
+                                    foreach (XmlNode globalProperty in data.ChildNodes)
+                                    {
+                                        var gDataName = globalProperty.Name;
+                                        var gDataValue = string.Empty;
+
+                                        foreach (XmlAttribute globalPropValue in globalProperty.Attributes)
+                                            switch (globalPropValue.Name)
+                                            {
+                                                case "value":
+                                                    gDataValue = globalPropValue.Value;
+                                                    break;
+                                                default:
+                                                    Logger.LogWarning("Unknown global parameter: '{ParameterName}' for '{EnemyName}'", globalPropValue.Name, prefabName);
+                                                    break;
+                                            }
+
+                                        if (string.IsNullOrEmpty(gDataName) || string.IsNullOrEmpty(gDataValue))
+                                            continue;
+
+                                        switch (gDataName)
+                                        {
+                                            case "AttackBehavior":
+                                                attackBehavior = Enum.Parse<StateType>(gDataValue);
+                                                break;
+                                            case "AwareBehavior":
+                                                awareBehavior = Enum.Parse<StateType>(gDataValue);
+                                                break;
+                                            case "UnawareBehavior":
+                                                unawareBehavior = Enum.Parse<StateType>(gDataValue);
+                                                break;
+                                            case "AwareBehaviorDuration":
+                                                awareBehaviorDuration = Convert.ToSingle(gDataValue);
+                                                break;
+                                            case "HealthRegenAmount":
+                                                healthRegenAmount = Convert.ToInt32(gDataValue);
+                                                break;
+                                            case "HealthRegenFrequency":
+                                                healthRegenFrequency = Convert.ToInt32(gDataValue);
+                                                break;
+                                            default:
+                                                Logger.LogWarning("Unknown generic property: '{PropertyName}' for '{EnemyName}'", gDataName, prefabName);
+                                                break;
+                                        }
+                                    }
+
+                                    enemyModel.GenericScript = new GenericScriptModel(Enum.GetName(attackBehavior), Enum.GetName(awareBehavior), Enum.GetName(unawareBehavior), awareBehaviorDuration, healthRegenAmount, healthRegenFrequency);
+                                    break;
+                                case "GlobalProperties":
+                                    var detectionLimitedByPatrolLine = true;
+                                    var frontDetectionRangeX = 0f;
+                                    var frontDetectionRangeUpY = 0f;
+                                    var frontDetectionRangeDownY = 0f;
+                                    var backDetectionRangeX = 0f;
+                                    var backDetectionRangeUpY = 0f;
+                                    var backDetectionRangeDownY = 0f;
+                                    var attackBeyondPatrolLine = 0f;
+                                    var shootOffsetX = 0f;
+                                    var shootOffsetY = 0f;
+                                    var shootingProjectilePrefabName = "COL_PRJ_DamageProjectile";
+                                    var viewOffsetY = 0f;
+
+                                    // Values currently not specified in XML file
+                                    var script = string.Empty;
+                                    var disableCollision = false;
+                                    var detectionSourceOnPatrolLine = true;
+
+                                    foreach (XmlNode globalProperty in data.ChildNodes)
+                                    {
+                                        var gDataName = globalProperty.Name;
+                                        var gDataValue = string.Empty;
+
+                                        foreach (XmlAttribute globalPropValue in globalProperty.Attributes)
+                                            switch (globalPropValue.Name)
+                                            {
+                                                case "value":
+                                                    gDataValue = globalPropValue.Value;
+                                                    break;
+                                                default:
+                                                    Logger.LogWarning("Unknown global parameter: '{ParameterName}' for '{EnemyName}'", globalPropValue.Name, prefabName);
+                                                    break;
+                                            }
+
+                                        if (string.IsNullOrEmpty(gDataName) || string.IsNullOrEmpty(gDataValue))
+                                            continue;
+
+                                        switch (gDataName)
+                                        {
+                                            case "DetectionLimitedByPatrolLine":
+                                                detectionLimitedByPatrolLine = Convert.ToBoolean(gDataValue);
+                                                break;
+                                            case "FrontDetectionRangeX":
+                                                frontDetectionRangeX = Convert.ToSingle(gDataValue);
+                                                break;
+                                            case "FrontDetectionRangeUpY":
+                                                frontDetectionRangeUpY = Convert.ToSingle(gDataValue);
+                                                break;
+                                            case "FrontDetectionRangeDownY":
+                                                frontDetectionRangeDownY = Convert.ToSingle(gDataValue);
+                                                break;
+                                            case "BackDetectionRangeX":
+                                                backDetectionRangeX = Convert.ToSingle(gDataValue);
+                                                break;
+                                            case "BackDetectionRangeUpY":
+                                                backDetectionRangeUpY = Convert.ToSingle(gDataValue);
+                                                break;
+                                            case "BackDetectionRangeDownY":
+                                                backDetectionRangeDownY = Convert.ToSingle(gDataValue);
+                                                break;
+                                            case "AttackBeyondPatrolLine":
+                                                attackBeyondPatrolLine = Convert.ToSingle(gDataValue);
+                                                break;
+                                            case "ShootOffsetX":
+                                                shootOffsetX = Convert.ToSingle(gDataValue);
+                                                break;
+                                            case "ShootOffsetY":
+                                                shootOffsetY = Convert.ToSingle(gDataValue);
+                                                break;
+                                            case "ProjectilePrefabName":
+                                                shootingProjectilePrefabName = gDataValue;
+                                                break;
+                                            case "ViewOffsetY":
+                                                viewOffsetY = Convert.ToSingle(gDataValue);
+                                                break;
+                                            case "Script":
+                                                script = gDataValue;
+                                                break;
+                                            case "DisableCollision":
+                                                disableCollision = Convert.ToBoolean(gDataValue);
+                                                break;
+                                            case "DetectionSourceOnPatrolLine":
+                                                detectionSourceOnPatrolLine = Convert.ToBoolean(gDataValue);
+                                                break;
+                                            default:
+                                                Logger.LogWarning("Unknown global property: '{PropertyName}' for '{EnemyName}'", gDataName, prefabName);
+                                                break;
+                                        }
+                                    }
+
+                                    enemyModel.GlobalProperties =
+                                        new GlobalPropertyModel(
+                                            detectionLimitedByPatrolLine, backDetectionRangeX,
+                                            viewOffsetY, backDetectionRangeUpY,
+                                            backDetectionRangeDownY, shootOffsetX,
+                                            shootOffsetY, frontDetectionRangeX,
+                                            frontDetectionRangeUpY, frontDetectionRangeDownY,
+                                            script, shootingProjectilePrefabName,
+                                            disableCollision, detectionSourceOnPatrolLine,
+                                            attackBeyondPatrolLine
+                                        );
+                                    break;
                                 case "LootTable":
                                     var lootTable = new List<EnemyDropModel>();
 

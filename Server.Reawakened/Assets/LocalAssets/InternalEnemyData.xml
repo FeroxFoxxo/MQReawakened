@@ -15,6 +15,32 @@
         <EnemyCategory name="Bombird">
             <!-- Razorwing (Mini-Boss) -->
             <Enemy name="PF_Critter_Bird_Boss">
+                <GenericScript>
+                    <AttackBehavior value="Shooting" />
+                    <AwareBehaviorDuration value="0.5" />
+                    <AwareBehavior value="LookAround" />
+                    <UnawareBehavior value="Patrol" />
+                    <HealthRegenAmount value="0" />
+                    <HealthRegenFrequency value="0" />
+                </GenericScript>
+                <GlobalProperties>
+                    <DetectionLimitedByPatrolLine value="true" />
+                    <FrontDetectionRangeX value="0.25" />
+                    <FrontDetectionRangeUpY value="0" />
+                    <FrontDetectionRangeDownY value="8" />
+                    <BackDetectionRangeX value="0.25" />
+                    <BackDetectionRangeUpY value="0" />
+                    <BackDetectionRangeDownY value="8" />
+                    <ViewOffsetY value="0" />
+                    <ProjectilePrefabName value="COL_PRJ_WaterMelon" />
+                </GlobalProperties>
+                <Behaviors>
+                    <Patrol speed="3.6" smoothMove="false" endPathWaitTime="0" />
+                    <LookAround lookTime="1.8" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                    <Shooting nbBulletsPerRound="3" fireSpreadAngle="30" delayBetweenBullet="0.05" delayShoot_Anim="0.5" nbFireRounds="1" delayBetweenFireRound="0.6" startCoolDownTime="0.0" endCoolDownTime="0" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="-105">
+                        <Resource type="PROJ" name="COL_PRJ_WaterMelon" />
+                    </Shooting>
+                </Behaviors>
                 <LootTable>
                     <Drop type="item" id="1583" chance="0.8" minLevel="5" maxLevel="65" />
                     <Drop type="item" id="1582" chance="0.5" minLevel="6" maxLevel="65" />
@@ -22,20 +48,27 @@
                     <Drop type="item" id="1601" chance="0.5" minLevel="6" maxLevel="65" />
                     <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
                 </LootTable>
-                <Behaviors>
-                    <Patrol speed="3.6" smoothMove="false" endPathWaitTime="0" />
-                    <LookAround lookTime="1.8" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
-                    <Shooting nbBulletsPerRound="3" fireSpreadAngle="30" delayBetweenBullet="0.05" delayShoot_Anim="0.5" nbFireRounds="1" delayBetweenFireRound="0.6" startCoolDownTime="0.0" endCoolDownTime="0" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="-105">
-                        <Resource type="PROJ" name="COL_PRJ_WaterMelon" />
-                    </Shooting>
-                </Behaviors>
             </Enemy>
             <Enemy name="PF_Critter_Bird01">
-                <LootTable>
-                    <Drop type="item" id="1583" chance="0.2" minLevel="5" maxLevel="65" />
-                    <Drop type="item" id="1582" chance="0.1" minLevel="6" maxLevel="65" />
-                    <Drop type="item" id="1581" chance="0.02" minLevel="7" maxLevel="65" />
-                </LootTable>
+                <GenericScript>
+                    <AttackBehavior value="Shooting" />
+                    <AwareBehaviorDuration value="0.5" />
+                    <AwareBehavior value="LookAround" />
+                    <UnawareBehavior value="Patrol" />
+                    <HealthRegenAmount value="0" />
+                    <HealthRegenFrequency value="0" />
+                </GenericScript>
+                <GlobalProperties>
+                    <DetectionLimitedByPatrolLine value="true" />
+                    <FrontDetectionRangeX value="0.25" />
+                    <FrontDetectionRangeUpY value="0" />
+                    <FrontDetectionRangeDownY value="8" />
+                    <BackDetectionRangeX value="0.25" />
+                    <BackDetectionRangeUpY value="0" />
+                    <BackDetectionRangeDownY value="8" />
+                    <ViewOffsetY value="0" />
+                    <ProjectilePrefabName value="COL_PRJ_WaterMelon" />
+                </GlobalProperties>
                 <Behaviors>
                     <Patrol speed="3.2" smoothMove="false" endPathWaitTime="0" />
                     <LookAround lookTime="1.8" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
@@ -43,14 +76,32 @@
                         <Resource type="PROJ" name="COL_PRJ_WaterMelon" />
                     </Shooting>
                 </Behaviors>
+                <LootTable>
+                    <Drop type="item" id="1583" chance="0.2" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="1582" chance="0.1" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1581" chance="0.02" minLevel="7" maxLevel="65" />
+                </LootTable>
             </Enemy>
             <Enemy name="PF_Critter_Bird02">
-                <LootTable>
-                    <Drop type="item" id="1583" chance="0.5" minLevel="5" maxLevel="65" />
-                    <Drop type="item" id="1582" chance="0.2" minLevel="6" maxLevel="65" />
-                    <Drop type="item" id="1581" chance="0.05" minLevel="7" maxLevel="65" />
-                    <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
-                </LootTable>
+                <GenericScript>
+                    <AttackBehavior value="Shooting" />
+                    <AwareBehaviorDuration value="0.5" />
+                    <AwareBehavior value="LookAround" />
+                    <UnawareBehavior value="Patrol" />
+                    <HealthRegenAmount value="0" />
+                    <HealthRegenFrequency value="0" />
+                </GenericScript>
+                <GlobalProperties>
+                    <DetectionLimitedByPatrolLine value="true" />
+                    <FrontDetectionRangeX value="0.25" />
+                    <FrontDetectionRangeUpY value="0" />
+                    <FrontDetectionRangeDownY value="8" />
+                    <BackDetectionRangeX value="0.25" />
+                    <BackDetectionRangeUpY value="0" />
+                    <BackDetectionRangeDownY value="8" />
+                    <ViewOffsetY value="0" />
+                    <ProjectilePrefabName value="COL_PRJ_WaterMelon" />
+                </GlobalProperties>
                 <Behaviors>
                     <Patrol speed="3.6" smoothMove="false" endPathWaitTime="0" />
                     <LookAround lookTime="1.8" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
@@ -58,13 +109,33 @@
                         <Resource type="PROJ" name="COL_PRJ_WaterMelon" />
                     </Shooting>
                 </Behaviors>
+                <LootTable>
+                    <Drop type="item" id="1583" chance="0.5" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="1582" chance="0.2" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1581" chance="0.05" minLevel="7" maxLevel="65" />
+                    <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
+                </LootTable>
             </Enemy>
             <Enemy name="PF_Critter_Bird03">
-                <LootTable>
-                    <Drop type="item" id="1583" chance="0.2" minLevel="5" maxLevel="65" />
-                    <Drop type="item" id="1582" chance="0.1" minLevel="6" maxLevel="65" />
-                    <Drop type="item" id="1581" chance="0.02" minLevel="7" maxLevel="65" />
-                </LootTable>
+                <GenericScript>
+                    <AttackBehavior value="Shooting" />
+                    <AwareBehaviorDuration value="0.5" />
+                    <AwareBehavior value="LookAround" />
+                    <UnawareBehavior value="Patrol" />
+                    <HealthRegenAmount value="0" />
+                    <HealthRegenFrequency value="0" />
+                </GenericScript>
+                <GlobalProperties>
+                    <DetectionLimitedByPatrolLine value="true" />
+                    <FrontDetectionRangeX value="0.25" />
+                    <FrontDetectionRangeUpY value="0" />
+                    <FrontDetectionRangeDownY value="8" />
+                    <BackDetectionRangeX value="0.25" />
+                    <BackDetectionRangeUpY value="0" />
+                    <BackDetectionRangeDownY value="8" />
+                    <ViewOffsetY value="0" />
+                    <ProjectilePrefabName value="COL_PRJ_WaterMelon" />
+                </GlobalProperties>
                 <Behaviors>
                     <Patrol speed="3.2" smoothMove="false" endPathWaitTime="0" />
                     <LookAround lookTime="1.8" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
@@ -72,14 +143,32 @@
                         <Resource type="PROJ" name="COL_PRJ_WaterMelon" />
                     </Shooting>
                 </Behaviors>
+                <LootTable>
+                    <Drop type="item" id="1583" chance="0.2" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="1582" chance="0.1" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1581" chance="0.02" minLevel="7" maxLevel="65" />
+                </LootTable>
             </Enemy>
             <Enemy name="PF_Critter_Bird04">
-                <LootTable>
-                    <Drop type="item" id="1583" chance="0.5" minLevel="5" maxLevel="65" />
-                    <Drop type="item" id="1582" chance="0.2" minLevel="6" maxLevel="65" />
-                    <Drop type="item" id="1581" chance="0.05" minLevel="7" maxLevel="65" />
-                    <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
-                </LootTable>
+                <GenericScript>
+                    <AttackBehavior value="Shooting" />
+                    <AwareBehaviorDuration value="0.5" />
+                    <AwareBehavior value="LookAround" />
+                    <UnawareBehavior value="Patrol" />
+                    <HealthRegenAmount value="0" />
+                    <HealthRegenFrequency value="0" />
+                </GenericScript>
+                <GlobalProperties>
+                    <DetectionLimitedByPatrolLine value="true" />
+                    <FrontDetectionRangeX value="0.25" />
+                    <FrontDetectionRangeUpY value="0" />
+                    <FrontDetectionRangeDownY value="8" />
+                    <BackDetectionRangeX value="0.25" />
+                    <BackDetectionRangeUpY value="0" />
+                    <BackDetectionRangeDownY value="8" />
+                    <ViewOffsetY value="0" />
+                    <ProjectilePrefabName value="COL_PRJ_WaterMelon" />
+                </GlobalProperties>
                 <Behaviors>
                     <Patrol speed="3.6" smoothMove="false" endPathWaitTime="0" />
                     <LookAround lookTime="1.8" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
@@ -87,11 +176,42 @@
                         <Resource type="PROJ" name="COL_PRJ_WaterMelon" />
                     </Shooting>
                 </Behaviors>
+                <LootTable>
+                    <Drop type="item" id="1583" chance="0.5" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="1582" chance="0.2" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1581" chance="0.05" minLevel="7" maxLevel="65" />
+                    <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
+                </LootTable>
             </Enemy>
         </EnemyCategory>
         <EnemyCategory name="Spinefish">
             <!-- Shadow Spinefish (Mini-Boss) -->
             <Enemy name="PF_Critter_Fish_Boss">
+                <GenericScript>
+                    <AttackBehavior value="Aggro" />
+                    <AwareBehaviorDuration value="0.5" />
+                    <AwareBehavior value="LookAround" />
+                    <UnawareBehavior value="ComeBack" />
+                    <HealthRegenAmount value="0" />
+                    <HealthRegenFrequency value="0" />
+                </GenericScript>
+                <GlobalProperties>
+                    <DetectionLimitedByPatrolLine value="true" />
+                    <FrontDetectionRangeX value="6" />
+                    <FrontDetectionRangeUpY value="4" />
+                    <FrontDetectionRangeDownY value="4" />
+                    <BackDetectionRangeX value="3" />
+                    <BackDetectionRangeUpY value="2" />
+                    <BackDetectionRangeDownY value="2" />
+                    <ViewOffsetY value="0" />
+                    <ProjectilePrefabName value="" />
+                </GlobalProperties>
+                <Behaviors>
+                    <Patrol speed="4.0" smoothMove="false" endPathWaitTime="2" />
+                    <Aggro speed="4.0" moveBeyondTargetDistance="0" stayOnPatrolPath="false" attackBeyondPatrolLine="0" detectionRangeUpY="6" detectionRangeDownY="6" />
+                    <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                    <ComeBack speed="4.0" />
+                </Behaviors>
                 <LootTable>
                     <Drop type="item" id="868" chance="0.8" minLevel="5" maxLevel="65" />
                     <Drop type="item" id="1602" chance="0.5" minLevel="6" maxLevel="65" />
@@ -99,78 +219,160 @@
                     <Drop type="item" id="1601" chance="0.5" minLevel="6" maxLevel="65" />
                     <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
                 </LootTable>
-                <Behaviors>
-                    <Patrol speed="4.0" smoothMove="false" endPathWaitTime="2" />
-                    <Aggro speed="4.0" moveBeyondTargetDistance="0" stayOnPatrolPath="false" attackBeyondPatrolLine="0" detectionRangeUpY="6" detectionRangeDownY="6" />
-                    <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
-                    <ComeBack speed="4.0" />
-                </Behaviors>
             </Enemy>
             <!-- Spinefish -->
             <Enemy name="PF_Critter_Fish01">
-                <LootTable>
-                    <Drop type="item" id="868" chance="0.2" minLevel="5" maxLevel="65" />
-                    <Drop type="item" id="1602" chance="0.1" minLevel="6" maxLevel="65" />
-                    <Drop type="item" id="1603" chance="0.02" minLevel="7" maxLevel="65" />
-                </LootTable>
+                <GenericScript>
+                    <AttackBehavior value="Aggro" />
+                    <AwareBehaviorDuration value="0.5" />
+                    <AwareBehavior value="LookAround" />
+                    <UnawareBehavior value="ComeBack" />
+                    <HealthRegenAmount value="0" />
+                    <HealthRegenFrequency value="0" />
+                </GenericScript>
+                <GlobalProperties>
+                    <DetectionLimitedByPatrolLine value="true" />
+                    <FrontDetectionRangeX value="6" />
+                    <FrontDetectionRangeUpY value="4" />
+                    <FrontDetectionRangeDownY value="4" />
+                    <BackDetectionRangeX value="3" />
+                    <BackDetectionRangeUpY value="2" />
+                    <BackDetectionRangeDownY value="2" />
+                    <ViewOffsetY value="0" />
+                    <ProjectilePrefabName value="" />
+                </GlobalProperties>
                 <Behaviors>
                     <Patrol speed="3.2" smoothMove="false" endPathWaitTime="2" />
                     <Aggro speed="3.2" moveBeyondTargetDistance="0" stayOnPatrolPath="false" attackBeyondPatrolLine="0" detectionRangeUpY="4" detectionRangeDownY="4" />
                     <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
                     <ComeBack speed="3.2" />
                 </Behaviors>
+                <LootTable>
+                    <Drop type="item" id="868" chance="0.2" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="1602" chance="0.1" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1603" chance="0.02" minLevel="7" maxLevel="65" />
+                </LootTable>
             </Enemy>
             <Enemy name="PF_Critter_Fish02">
-                <LootTable>
-                    <Drop type="item" id="868" chance="0.2" minLevel="5" maxLevel="65" />
-                    <Drop type="item" id="1602" chance="0.1" minLevel="6" maxLevel="65" />
-                    <Drop type="item" id="1603" chance="0.02" minLevel="7" maxLevel="65" />
-                </LootTable>
+                <GenericScript>
+                    <AttackBehavior value="Aggro" />
+                    <AwareBehaviorDuration value="0.5" />
+                    <AwareBehavior value="LookAround" />
+                    <UnawareBehavior value="ComeBack" />
+                    <HealthRegenAmount value="0" />
+                    <HealthRegenFrequency value="0" />
+                </GenericScript>
+                <GlobalProperties>
+                    <DetectionLimitedByPatrolLine value="true" />
+                    <FrontDetectionRangeX value="6" />
+                    <FrontDetectionRangeUpY value="4" />
+                    <FrontDetectionRangeDownY value="4" />
+                    <BackDetectionRangeX value="3" />
+                    <BackDetectionRangeUpY value="2" />
+                    <BackDetectionRangeDownY value="2" />
+                    <ViewOffsetY value="0" />
+                    <ProjectilePrefabName value="" />
+                </GlobalProperties>
                 <Behaviors>
                     <Patrol speed="3.2" smoothMove="false" endPathWaitTime="2" />
                     <Aggro speed="3.2" moveBeyondTargetDistance="0" stayOnPatrolPath="false" attackBeyondPatrolLine="0" detectionRangeUpY="4" detectionRangeDownY="4" />
                     <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
                     <ComeBack speed="3.2" />
                 </Behaviors>
+                <LootTable>
+                    <Drop type="item" id="868" chance="0.2" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="1602" chance="0.1" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1603" chance="0.02" minLevel="7" maxLevel="65" />
+                </LootTable>
             </Enemy>
             <Enemy name="PF_Critter_Fish03">
-                <LootTable>
-                    <Drop type="item" id="868" chance="0.2" minLevel="5" maxLevel="65" />
-                    <Drop type="item" id="1602" chance="0.1" minLevel="6" maxLevel="65" />
-                    <Drop type="item" id="1603" chance="0.02" minLevel="7" maxLevel="65" />
-                </LootTable>
+                <GenericScript>
+                    <AttackBehavior value="Aggro" />
+                    <AwareBehaviorDuration value="0.5" />
+                    <AwareBehavior value="LookAround" />
+                    <UnawareBehavior value="ComeBack" />
+                    <HealthRegenAmount value="0" />
+                    <HealthRegenFrequency value="0" />
+                </GenericScript>
+                <GlobalProperties>
+                    <DetectionLimitedByPatrolLine value="true" />
+                    <FrontDetectionRangeX value="6" />
+                    <FrontDetectionRangeUpY value="4" />
+                    <FrontDetectionRangeDownY value="4" />
+                    <BackDetectionRangeX value="3" />
+                    <BackDetectionRangeUpY value="2" />
+                    <BackDetectionRangeDownY value="2" />
+                    <ViewOffsetY value="0" />
+                    <ProjectilePrefabName value="" />
+                </GlobalProperties>
                 <Behaviors>
                     <Patrol speed="3.2" smoothMove="false" endPathWaitTime="2" />
                     <Aggro speed="3.2" moveBeyondTargetDistance="0" stayOnPatrolPath="false" attackBeyondPatrolLine="0" detectionRangeUpY="4" detectionRangeDownY="4" />
                     <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
                     <ComeBack speed="3.2" />
                 </Behaviors>
+                <LootTable>
+                    <Drop type="item" id="868" chance="0.2" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="1602" chance="0.1" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1603" chance="0.02" minLevel="7" maxLevel="65" />
+                </LootTable>
             </Enemy>
             <Enemy name="PF_Critter_Fish04">
-                <LootTable>
-                    <Drop type="item" id="868" chance="0.5" minLevel="5" maxLevel="65" />
-                    <Drop type="item" id="1602" chance="0.2" minLevel="6" maxLevel="65" />
-                    <Drop type="item" id="1603" chance="0.05" minLevel="7" maxLevel="65" />
-                    <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
-                </LootTable>
+                <GenericScript>
+                    <AttackBehavior value="Aggro" />
+                    <AwareBehaviorDuration value="0.5" />
+                    <AwareBehavior value="LookAround" />
+                    <UnawareBehavior value="ComeBack" />
+                    <HealthRegenAmount value="0" />
+                    <HealthRegenFrequency value="0" />
+                </GenericScript>
+                <GlobalProperties>
+                    <DetectionLimitedByPatrolLine value="true" />
+                    <FrontDetectionRangeX value="6" />
+                    <FrontDetectionRangeUpY value="4" />
+                    <FrontDetectionRangeDownY value="4" />
+                    <BackDetectionRangeX value="3" />
+                    <BackDetectionRangeUpY value="2" />
+                    <BackDetectionRangeDownY value="2" />
+                    <ViewOffsetY value="0" />
+                    <ProjectilePrefabName value="" />
+                </GlobalProperties>
                 <Behaviors>
                     <Patrol speed="3.6" smoothMove="false" endPathWaitTime="2" />
                     <Aggro speed="3.6" moveBeyondTargetDistance="0" stayOnPatrolPath="false" attackBeyondPatrolLine="0" detectionRangeUpY="6" detectionRangeDownY="6" />
                     <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
                     <ComeBack speed="3.6" />
                 </Behaviors>
+                <LootTable>
+                    <Drop type="item" id="868" chance="0.5" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="1602" chance="0.2" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1603" chance="0.05" minLevel="7" maxLevel="65" />
+                    <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
+                </LootTable>
             </Enemy>
         </EnemyCategory>
         <EnemyCategory name="Rachnoid">
             <!-- Grimfang (Mini-Boss) -->
             <Enemy name="PF_Critter_Spider_Boss">
-                <LootTable>
-                    <Drop type="item" id="1599" chance="0.8" minLevel="5" maxLevel="65" />
-                    <Drop type="item" id="1065" chance="0.5" minLevel="6" maxLevel="65" />
-                    <Drop type="item" id="1600" chance="0.2" minLevel="7" maxLevel="65" />
-                    <Drop type="item" id="1601" chance="0.5" minLevel="6" maxLevel="65" />
-                    <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
-                </LootTable>
+                <GenericScript>
+                    <AttackBehavior value="Aggro" />
+                    <AwareBehaviorDuration value="0.5" />
+                    <AwareBehavior value="LookAround" />
+                    <UnawareBehavior value="Patrol" />
+                    <HealthRegenAmount value="0" />
+                    <HealthRegenFrequency value="0" />
+                </GenericScript>
+                <GlobalProperties>
+                    <DetectionLimitedByPatrolLine value="true" />
+                    <FrontDetectionRangeX value="8" />
+                    <FrontDetectionRangeUpY value="1" />
+                    <FrontDetectionRangeDownY value="0.25" />
+                    <BackDetectionRangeX value="4" />
+                    <BackDetectionRangeUpY value="1" />
+                    <BackDetectionRangeDownY value="0" />
+                    <ViewOffsetY value="0" />
+                    <ProjectilePrefabName value="" />
+                </GlobalProperties>
                 <Behaviors>
                     <Patrol speed="5.6" smoothMove="false" endPathWaitTime="2" />
                     <Aggro speed="6.4" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0" />
@@ -179,8 +381,6 @@
                         <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1" />
                     </Shooting>
                 </Behaviors>
-            </Enemy>
-            <Enemy name="PF_Critter_Spider_Boss_Ceiling_Shoot">
                 <LootTable>
                     <Drop type="item" id="1599" chance="0.8" minLevel="5" maxLevel="65" />
                     <Drop type="item" id="1065" chance="0.5" minLevel="6" maxLevel="65" />
@@ -188,6 +388,28 @@
                     <Drop type="item" id="1601" chance="0.5" minLevel="6" maxLevel="65" />
                     <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
                 </LootTable>
+            </Enemy>
+            <Enemy name="PF_Critter_Spider_Boss_Ceiling_Shoot">
+                <GenericScript>
+                    <AttackBehavior value="Shooting" />
+                    <AwareBehaviorDuration value="0.5" />
+                    <AwareBehavior value="LookAround" />
+                    <UnawareBehavior value="Patrol" />
+                    <HealthRegenAmount value="0" />
+                    <HealthRegenFrequency value="0" />
+                </GenericScript>
+                <GlobalProperties>
+                    <DetectionLimitedByPatrolLine value="false" />
+                    <FrontDetectionRangeX value="8" />
+                    <FrontDetectionRangeUpY value="1" />
+                    <FrontDetectionRangeDownY value="8" />
+                    <BackDetectionRangeX value="4" />
+                    <BackDetectionRangeUpY value="1" />
+                    <BackDetectionRangeDownY value="0" />
+                    <ViewOffsetY value="0" />
+                    <ShootOffsetY value="-2.9" />
+                    <ProjectilePrefabName value="COL_PRJ_PoisonProjectile_Lv1" />
+                </GlobalProperties>
                 <Behaviors>
                     <Patrol speed="5.6" smoothMove="false" endPathWaitTime="2" />
                     <Aggro speed="6.4" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0" />
@@ -196,8 +418,6 @@
                         <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1" />
                     </Shooting>
                 </Behaviors>
-            </Enemy>
-            <Enemy name="PF_Critter_Spider_Boss_Shoot">
                 <LootTable>
                     <Drop type="item" id="1599" chance="0.8" minLevel="5" maxLevel="65" />
                     <Drop type="item" id="1065" chance="0.5" minLevel="6" maxLevel="65" />
@@ -205,6 +425,28 @@
                     <Drop type="item" id="1601" chance="0.5" minLevel="6" maxLevel="65" />
                     <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
                 </LootTable>
+            </Enemy>
+            <Enemy name="PF_Critter_Spider_Boss_Shoot">
+                <GenericScript>
+                    <AttackBehavior value="Shooting" />
+                    <AwareBehaviorDuration value="0.5" />
+                    <AwareBehavior value="LookAround" />
+                    <UnawareBehavior value="Patrol" />
+                    <HealthRegenAmount value="0" />
+                    <HealthRegenFrequency value="0" />
+                </GenericScript>
+                <GlobalProperties>
+                    <DetectionLimitedByPatrolLine value="false" />
+                    <FrontDetectionRangeX value="8" />
+                    <FrontDetectionRangeUpY value="5" />
+                    <FrontDetectionRangeDownY value="1" />
+                    <BackDetectionRangeX value="4" />
+                    <BackDetectionRangeUpY value="1" />
+                    <BackDetectionRangeDownY value="0" />
+                    <ViewOffsetY value="0" />
+                    <ShootOffsetY value="2.9" />
+                    <ProjectilePrefabName value="COL_PRJ_PoisonProjectile_Lv1" />
+                </GlobalProperties>
                 <Behaviors>
                     <Patrol speed="5.6" smoothMove="false" endPathWaitTime="2" />
                     <Aggro speed="6.4" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0" />
@@ -213,24 +455,64 @@
                         <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1" />
                     </Shooting>
                 </Behaviors>
+                <LootTable>
+                    <Drop type="item" id="1599" chance="0.8" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="1065" chance="0.5" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1600" chance="0.2" minLevel="7" maxLevel="65" />
+                    <Drop type="item" id="1601" chance="0.5" minLevel="6" maxLevel="65" />
+                    <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
+                </LootTable>
             </Enemy>
             <!-- Shadowy Spiderling (Elite) -->
             <Enemy name="PF_Critter_Spider_Newb">
-                <LootTable>
-                </LootTable>
+                <GenericScript>
+                    <AttackBehavior value="Aggro" />
+                    <AwareBehaviorDuration value="0.5" />
+                    <AwareBehavior value="LookAround" />
+                    <UnawareBehavior value="Patrol" />
+                    <HealthRegenAmount value="0" />
+                    <HealthRegenFrequency value="0" />
+                </GenericScript>
+                <GlobalProperties>
+                    <DetectionLimitedByPatrolLine value="true" />
+                    <FrontDetectionRangeX value="6" />
+                    <FrontDetectionRangeUpY value="1" />
+                    <FrontDetectionRangeDownY value="0.25" />
+                    <BackDetectionRangeX value="3" />
+                    <BackDetectionRangeUpY value="1" />
+                    <BackDetectionRangeDownY value="0" />
+                    <ViewOffsetY value="0" />
+                    <ProjectilePrefabName value="" />
+                </GlobalProperties>
                 <Behaviors>
                     <Patrol speed="4.0" smoothMove="false" endPathWaitTime="2" />
                     <Aggro speed="5.0" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0" />
                     <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
                 </Behaviors>
+                <LootTable>
+                </LootTable>
             </Enemy>
             <!-- Poison Rachnoid -->
             <Enemy name="PF_Critter_Spider01">
-                <LootTable>
-                    <Drop type="item" id="1599" chance="0.2" minLevel="5" maxLevel="65" />
-                    <Drop type="item" id="1065" chance="0.01" minLevel="6" maxLevel="65" />
-                    <Drop type="item" id="1600" chance="0.02" minLevel="7" maxLevel="65" />
-                </LootTable>
+                <GenericScript>
+                    <AttackBehavior value="Aggro" />
+                    <AwareBehaviorDuration value="0.5" />
+                    <AwareBehavior value="LookAround" />
+                    <UnawareBehavior value="Patrol" />
+                    <HealthRegenAmount value="0" />
+                    <HealthRegenFrequency value="0" />
+                </GenericScript>
+                <GlobalProperties>
+                    <DetectionLimitedByPatrolLine value="true" />
+                    <FrontDetectionRangeX value="6" />
+                    <FrontDetectionRangeUpY value="1" />
+                    <FrontDetectionRangeDownY value="0.25" />
+                    <BackDetectionRangeX value="3" />
+                    <BackDetectionRangeUpY value="1" />
+                    <BackDetectionRangeDownY value="0" />
+                    <ViewOffsetY value="0" />
+                    <ProjectilePrefabName value="" />
+                </GlobalProperties>
                 <Behaviors>
                     <Patrol speed="5.0" smoothMove="false" endPathWaitTime="2" />
                     <Aggro speed="5.6" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0" />
@@ -239,13 +521,33 @@
                         <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1" />
                     </Shooting>
                 </Behaviors>
+                <LootTable>
+                    <Drop type="item" id="1599" chance="0.2" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="1065" chance="0.01" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1600" chance="0.02" minLevel="7" maxLevel="65" />
+                </LootTable>
             </Enemy>
             <Enemy name="PF_Critter_Spider01_Ceiling_Shoot">
-                <LootTable>
-                    <Drop type="item" id="1599" chance="0.2" minLevel="5" maxLevel="65" />
-                    <Drop type="item" id="1065" chance="0.01" minLevel="6" maxLevel="65" />
-                    <Drop type="item" id="1600" chance="0.02" minLevel="7" maxLevel="65" />
-                </LootTable>
+                <GenericScript>
+                    <AttackBehavior value="Shooting" />
+                    <AwareBehaviorDuration value="0.5" />
+                    <AwareBehavior value="LookAround" />
+                    <UnawareBehavior value="Patrol" />
+                    <HealthRegenAmount value="0" />
+                    <HealthRegenFrequency value="0" />
+                </GenericScript>
+                <GlobalProperties>
+                    <DetectionLimitedByPatrolLine value="false" />
+                    <FrontDetectionRangeX value="6" />
+                    <FrontDetectionRangeUpY value="0" />
+                    <FrontDetectionRangeDownY value="6" />
+                    <BackDetectionRangeX value="3" />
+                    <BackDetectionRangeUpY value="1" />
+                    <BackDetectionRangeDownY value="0" />
+                    <ViewOffsetY value="0" />
+                    <ShootOffsetY value="-1" />
+                    <ProjectilePrefabName value="COL_PRJ_PoisonProjectile_Lv1" />
+                </GlobalProperties>
                 <Behaviors>
                     <Patrol speed="5.0" smoothMove="false" endPathWaitTime="2" />
                     <Aggro speed="5.6" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0" />
@@ -254,13 +556,33 @@
                         <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1" />
                     </Shooting>
                 </Behaviors>
-            </Enemy>
-            <Enemy name="PF_Critter_Spider01_Shoot">
                 <LootTable>
                     <Drop type="item" id="1599" chance="0.2" minLevel="5" maxLevel="65" />
                     <Drop type="item" id="1065" chance="0.01" minLevel="6" maxLevel="65" />
                     <Drop type="item" id="1600" chance="0.02" minLevel="7" maxLevel="65" />
                 </LootTable>
+            </Enemy>
+            <Enemy name="PF_Critter_Spider01_Shoot">
+                <GenericScript>
+                    <AttackBehavior value="Shooting" />
+                    <AwareBehaviorDuration value="0.5" />
+                    <AwareBehavior value="LookAround" />
+                    <UnawareBehavior value="Patrol" />
+                    <HealthRegenAmount value="0" />
+                    <HealthRegenFrequency value="0" />
+                </GenericScript>
+                <GlobalProperties>
+                    <DetectionLimitedByPatrolLine value="false" />
+                    <FrontDetectionRangeX value="6" />
+                    <FrontDetectionRangeUpY value="4" />
+                    <FrontDetectionRangeDownY value="1" />
+                    <BackDetectionRangeX value="3" />
+                    <BackDetectionRangeUpY value="1" />
+                    <BackDetectionRangeDownY value="0" />
+                    <ViewOffsetY value="0" />
+                    <ShootOffsetY value="1" />
+                    <ProjectilePrefabName value="COL_PRJ_PoisonProjectile_Lv1" />
+                </GlobalProperties>
                 <Behaviors>
                     <Patrol speed="5.0" smoothMove="false" endPathWaitTime="2" />
                     <Aggro speed="5.6" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0" />
@@ -269,14 +591,32 @@
                         <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1" />
                     </Shooting>
                 </Behaviors>
+                <LootTable>
+                    <Drop type="item" id="1599" chance="0.2" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="1065" chance="0.01" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1600" chance="0.02" minLevel="7" maxLevel="65" />
+                </LootTable>
             </Enemy>
             <Enemy name="PF_Critter_Spider02">
-                <LootTable>
-                    <Drop type="item" id="1599" chance="0.5" minLevel="5" maxLevel="65" />
-                    <Drop type="item" id="1065" chance="0.2" minLevel="6" maxLevel="65" />
-                    <Drop type="item" id="1600" chance="0.05" minLevel="7" maxLevel="65" />
-                    <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
-                </LootTable>
+                <GenericScript>
+                    <AttackBehavior value="Aggro" />
+                    <AwareBehaviorDuration value="0.5" />
+                    <AwareBehavior value="LookAround" />
+                    <UnawareBehavior value="Patrol" />
+                    <HealthRegenAmount value="0" />
+                    <HealthRegenFrequency value="0" />
+                </GenericScript>
+                <GlobalProperties>
+                    <DetectionLimitedByPatrolLine value="true" />
+                    <FrontDetectionRangeX value="6" />
+                    <FrontDetectionRangeUpY value="1" />
+                    <FrontDetectionRangeDownY value="0.25" />
+                    <BackDetectionRangeX value="3" />
+                    <BackDetectionRangeUpY value="1" />
+                    <BackDetectionRangeDownY value="0" />
+                    <ViewOffsetY value="0" />
+                    <ProjectilePrefabName value="" />
+                </GlobalProperties>
                 <Behaviors>
                     <Patrol speed="5.0" smoothMove="false" endPathWaitTime="2" />
                     <Aggro speed="5.6" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0" />
@@ -285,14 +625,34 @@
                         <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1" />
                     </Shooting>
                 </Behaviors>
-            </Enemy>
-            <Enemy name="PF_Critter_Spider02_Ceiling_Shoot">
                 <LootTable>
                     <Drop type="item" id="1599" chance="0.5" minLevel="5" maxLevel="65" />
                     <Drop type="item" id="1065" chance="0.2" minLevel="6" maxLevel="65" />
                     <Drop type="item" id="1600" chance="0.05" minLevel="7" maxLevel="65" />
                     <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
                 </LootTable>
+            </Enemy>
+            <Enemy name="PF_Critter_Spider02_Ceiling_Shoot">
+                <GenericScript>
+                    <AttackBehavior value="Shooting" />
+                    <AwareBehaviorDuration value="0.5" />
+                    <AwareBehavior value="LookAround" />
+                    <UnawareBehavior value="Patrol" />
+                    <HealthRegenAmount value="0" />
+                    <HealthRegenFrequency value="0" />
+                </GenericScript>
+                <GlobalProperties>
+                    <DetectionLimitedByPatrolLine value="false" />
+                    <FrontDetectionRangeX value="6" />
+                    <FrontDetectionRangeUpY value="0" />
+                    <FrontDetectionRangeDownY value="6" />
+                    <BackDetectionRangeX value="3" />
+                    <BackDetectionRangeUpY value="1" />
+                    <BackDetectionRangeDownY value="0" />
+                    <ViewOffsetY value="0" />
+                    <ShootOffsetY value="-2" />
+                    <ProjectilePrefabName value="COL_PRJ_PoisonProjectile_Lv1" />
+                </GlobalProperties>
                 <Behaviors>
                     <Patrol speed="5.0" smoothMove="false" endPathWaitTime="2" />
                     <Aggro speed="5.6" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0" />
@@ -301,14 +661,34 @@
                         <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1" />
                     </Shooting>
                 </Behaviors>
-            </Enemy>
-            <Enemy name="PF_Critter_Spider02_Shoot">
                 <LootTable>
                     <Drop type="item" id="1599" chance="0.5" minLevel="5" maxLevel="65" />
                     <Drop type="item" id="1065" chance="0.2" minLevel="6" maxLevel="65" />
                     <Drop type="item" id="1600" chance="0.05" minLevel="7" maxLevel="65" />
                     <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
                 </LootTable>
+            </Enemy>
+            <Enemy name="PF_Critter_Spider02_Shoot">
+                <GenericScript>
+                    <AttackBehavior value="Shooting" />
+                    <AwareBehaviorDuration value="0.5" />
+                    <AwareBehavior value="LookAround" />
+                    <UnawareBehavior value="Patrol" />
+                    <HealthRegenAmount value="0" />
+                    <HealthRegenFrequency value="0" />
+                </GenericScript>
+                <GlobalProperties>
+                    <DetectionLimitedByPatrolLine value="false" />
+                    <FrontDetectionRangeX value="6" />
+                    <FrontDetectionRangeUpY value="4" />
+                    <FrontDetectionRangeDownY value="1" />
+                    <BackDetectionRangeX value="3" />
+                    <BackDetectionRangeUpY value="1" />
+                    <BackDetectionRangeDownY value="0" />
+                    <ViewOffsetY value="0" />
+                    <ShootOffsetY value="2" />
+                    <ProjectilePrefabName value="COL_PRJ_PoisonProjectile_Lv1" />
+                </GlobalProperties>
                 <Behaviors>
                     <Patrol speed="5.0" smoothMove="false" endPathWaitTime="2" />
                     <Aggro speed="5.6" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0" />
@@ -317,13 +697,33 @@
                         <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1" />
                     </Shooting>
                 </Behaviors>
+                <LootTable>
+                    <Drop type="item" id="1599" chance="0.5" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="1065" chance="0.2" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1600" chance="0.05" minLevel="7" maxLevel="65" />
+                    <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
+                </LootTable>
             </Enemy>
             <Enemy name="PF_Critter_Spider03">
-                <LootTable>
-                    <Drop type="item" id="1599" chance="0.2" minLevel="5" maxLevel="65" />
-                    <Drop type="item" id="1065" chance="0.1" minLevel="6" maxLevel="65" />
-                    <Drop type="item" id="1600" chance="0.02" minLevel="7" maxLevel="65" />
-                </LootTable>
+                <GenericScript>
+                    <AttackBehavior value="Aggro" />
+                    <AwareBehaviorDuration value="0.5" />
+                    <AwareBehavior value="LookAround" />
+                    <UnawareBehavior value="Patrol" />
+                    <HealthRegenAmount value="0" />
+                    <HealthRegenFrequency value="0" />
+                </GenericScript>
+                <GlobalProperties>
+                    <DetectionLimitedByPatrolLine value="true" />
+                    <FrontDetectionRangeX value="6" />
+                    <FrontDetectionRangeUpY value="1" />
+                    <FrontDetectionRangeDownY value="0.25" />
+                    <BackDetectionRangeX value="3" />
+                    <BackDetectionRangeUpY value="1" />
+                    <BackDetectionRangeDownY value="0" />
+                    <ViewOffsetY value="0" />
+                    <ProjectilePrefabName value="" />
+                </GlobalProperties>
                 <Behaviors>
                     <Patrol speed="5.0" smoothMove="false" endPathWaitTime="2" />
                     <Aggro speed="5.6" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0" />
@@ -332,13 +732,33 @@
                         <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1" />
                     </Shooting>
                 </Behaviors>
-            </Enemy>
-            <Enemy name="PF_Critter_Spider03_Ceiling_Shoot">
                 <LootTable>
                     <Drop type="item" id="1599" chance="0.2" minLevel="5" maxLevel="65" />
                     <Drop type="item" id="1065" chance="0.1" minLevel="6" maxLevel="65" />
                     <Drop type="item" id="1600" chance="0.02" minLevel="7" maxLevel="65" />
                 </LootTable>
+            </Enemy>
+            <Enemy name="PF_Critter_Spider03_Ceiling_Shoot">
+                <GenericScript>
+                    <AttackBehavior value="Shooting" />
+                    <AwareBehaviorDuration value="0.5" />
+                    <AwareBehavior value="LookAround" />
+                    <UnawareBehavior value="Patrol" />
+                    <HealthRegenAmount value="0" />
+                    <HealthRegenFrequency value="0" />
+                </GenericScript>
+                <GlobalProperties>
+                    <DetectionLimitedByPatrolLine value="false" />
+                    <FrontDetectionRangeX value="6" />
+                    <FrontDetectionRangeUpY value="0" />
+                    <FrontDetectionRangeDownY value="6" />
+                    <BackDetectionRangeX value="3" />
+                    <BackDetectionRangeUpY value="1" />
+                    <BackDetectionRangeDownY value="0" />
+                    <ViewOffsetY value="0" />
+                    <ShootOffsetY value="-1.5" />
+                    <ProjectilePrefabName value="COL_PRJ_PoisonProjectile_Lv1" />
+                </GlobalProperties>
                 <Behaviors>
                     <Patrol speed="5.0" smoothMove="false" endPathWaitTime="2" />
                     <Aggro speed="5.6" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0" />
@@ -347,13 +767,33 @@
                         <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1" />
                     </Shooting>
                 </Behaviors>
-            </Enemy>
-            <Enemy name="PF_Critter_Spider03_Shoot">
                 <LootTable>
                     <Drop type="item" id="1599" chance="0.2" minLevel="5" maxLevel="65" />
                     <Drop type="item" id="1065" chance="0.1" minLevel="6" maxLevel="65" />
                     <Drop type="item" id="1600" chance="0.02" minLevel="7" maxLevel="65" />
                 </LootTable>
+            </Enemy>
+            <Enemy name="PF_Critter_Spider03_Shoot">
+                <GenericScript>
+                    <AttackBehavior value="Shooting" />
+                    <AwareBehaviorDuration value="0.5" />
+                    <AwareBehavior value="LookAround" />
+                    <UnawareBehavior value="Patrol" />
+                    <HealthRegenAmount value="0" />
+                    <HealthRegenFrequency value="0" />
+                </GenericScript>
+                <GlobalProperties>
+                    <DetectionLimitedByPatrolLine value="false" />
+                    <FrontDetectionRangeX value="6" />
+                    <FrontDetectionRangeUpY value="4" />
+                    <FrontDetectionRangeDownY value="1" />
+                    <BackDetectionRangeX value="3" />
+                    <BackDetectionRangeUpY value="1" />
+                    <BackDetectionRangeDownY value="0" />
+                    <ViewOffsetY value="0" />
+                    <ShootOffsetY value="1" />
+                    <ProjectilePrefabName value="COL_PRJ_PoisonProjectile_Lv1" />
+                </GlobalProperties>
                 <Behaviors>
                     <Patrol speed="5.0" smoothMove="false" endPathWaitTime="2" />
                     <Aggro speed="5.6" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0" />
@@ -362,14 +802,32 @@
                         <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1" />
                     </Shooting>
                 </Behaviors>
+                <LootTable>
+                    <Drop type="item" id="1599" chance="0.2" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="1065" chance="0.1" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1600" chance="0.02" minLevel="7" maxLevel="65" />
+                </LootTable>
             </Enemy>
             <Enemy name="PF_Critter_Spider04">
-                <LootTable>
-                    <Drop type="item" id="1599" chance="0.5" minLevel="5" maxLevel="65" />
-                    <Drop type="item" id="1065" chance="0.2" minLevel="6" maxLevel="65" />
-                    <Drop type="item" id="1600" chance="0.05" minLevel="7" maxLevel="65" />
-                    <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
-                </LootTable>
+                <GenericScript>
+                    <AttackBehavior value="Aggro" />
+                    <AwareBehaviorDuration value="0.5" />
+                    <AwareBehavior value="LookAround" />
+                    <UnawareBehavior value="Patrol" />
+                    <HealthRegenAmount value="0" />
+                    <HealthRegenFrequency value="0" />
+                </GenericScript>
+                <GlobalProperties>
+                    <DetectionLimitedByPatrolLine value="true" />
+                    <FrontDetectionRangeX value="6" />
+                    <FrontDetectionRangeUpY value="1" />
+                    <FrontDetectionRangeDownY value="0.25" />
+                    <BackDetectionRangeX value="3" />
+                    <BackDetectionRangeUpY value="1" />
+                    <BackDetectionRangeDownY value="0" />
+                    <ViewOffsetY value="0" />
+                    <ProjectilePrefabName value="" />
+                </GlobalProperties>
                 <Behaviors>
                     <Patrol speed="5.6" smoothMove="false" endPathWaitTime="2" />
                     <Aggro speed="6.4" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0" />
@@ -378,14 +836,34 @@
                         <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1" />
                     </Shooting>
                 </Behaviors>
-            </Enemy>
-            <Enemy name="PF_Critter_Spider04_Ceiling_Shoot">
                 <LootTable>
                     <Drop type="item" id="1599" chance="0.5" minLevel="5" maxLevel="65" />
                     <Drop type="item" id="1065" chance="0.2" minLevel="6" maxLevel="65" />
                     <Drop type="item" id="1600" chance="0.05" minLevel="7" maxLevel="65" />
                     <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
                 </LootTable>
+            </Enemy>
+            <Enemy name="PF_Critter_Spider04_Ceiling_Shoot">
+                <GenericScript>
+                    <AttackBehavior value="Shooting" />
+                    <AwareBehaviorDuration value="0.5" />
+                    <AwareBehavior value="LookAround" />
+                    <UnawareBehavior value="Patrol" />
+                    <HealthRegenAmount value="0" />
+                    <HealthRegenFrequency value="0" />
+                </GenericScript>
+                <GlobalProperties>
+                    <DetectionLimitedByPatrolLine value="false" />
+                    <FrontDetectionRangeX value="6" />
+                    <FrontDetectionRangeUpY value="0" />
+                    <FrontDetectionRangeDownY value="6" />
+                    <BackDetectionRangeX value="3" />
+                    <BackDetectionRangeUpY value="1" />
+                    <BackDetectionRangeDownY value="0" />
+                    <ViewOffsetY value="0" />
+                    <ShootOffsetY value="-2.2" />
+                    <ProjectilePrefabName value="COL_PRJ_PoisonProjectile_Lv1" />
+                </GlobalProperties>
                 <Behaviors>
                     <Patrol speed="5.6" smoothMove="false" endPathWaitTime="2" />
                     <Aggro speed="6.4" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0" />
@@ -394,14 +872,34 @@
                         <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1" />
                     </Shooting>
                 </Behaviors>
-            </Enemy>
-            <Enemy name="PF_Critter_Spider04_Shoot">
                 <LootTable>
                     <Drop type="item" id="1599" chance="0.5" minLevel="5" maxLevel="65" />
                     <Drop type="item" id="1065" chance="0.2" minLevel="6" maxLevel="65" />
                     <Drop type="item" id="1600" chance="0.05" minLevel="7" maxLevel="65" />
                     <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
                 </LootTable>
+            </Enemy>
+            <Enemy name="PF_Critter_Spider04_Shoot">
+                <GenericScript>
+                    <AttackBehavior value="Shooting" />
+                    <AwareBehaviorDuration value="0.5" />
+                    <AwareBehavior value="LookAround" />
+                    <UnawareBehavior value="Patrol" />
+                    <HealthRegenAmount value="0" />
+                    <HealthRegenFrequency value="0" />
+                </GenericScript>
+                <GlobalProperties>
+                    <DetectionLimitedByPatrolLine value="false" />
+                    <FrontDetectionRangeX value="6" />
+                    <FrontDetectionRangeUpY value="4" />
+                    <FrontDetectionRangeDownY value="1" />
+                    <BackDetectionRangeX value="3" />
+                    <BackDetectionRangeUpY value="1" />
+                    <BackDetectionRangeDownY value="0" />
+                    <ViewOffsetY value="0" />
+                    <ShootOffsetY value="2.2" />
+                    <ProjectilePrefabName value="COL_PRJ_PoisonProjectile_Lv1" />
+                </GlobalProperties>
                 <Behaviors>
                     <Patrol speed="5.6" smoothMove="false" endPathWaitTime="2" />
                     <Aggro speed="6.4" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0" />
@@ -410,14 +908,33 @@
                         <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1" />
                     </Shooting>
                 </Behaviors>
+                <LootTable>
+                    <Drop type="item" id="1599" chance="0.5" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="1065" chance="0.2" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1600" chance="0.05" minLevel="7" maxLevel="65" />
+                    <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
+                </LootTable>
             </Enemy>
             <Enemy name="PF_Critter_Spider01_Zombie">
-                <LootTable>
-                    <Drop type="item" id="134" chance="0.5" minLevel="1" maxLevel="65" />
-                    <Drop type="item" id="135" chance="0.2" minLevel="5" maxLevel="65" />
-                    <Drop type="item" id="136" chance="0.05" minLevel="10" maxLevel="65" />
-                    <Drop type="randomArmor" chance="0.01" minLevel="1" maxLevel="50" />
-                </LootTable>
+                <GenericScript>
+                    <AttackBehavior value="Aggro" />
+                    <AwareBehaviorDuration value="0.5" />
+                    <AwareBehavior value="LookAround" />
+                    <UnawareBehavior value="Patrol" />
+                    <HealthRegenAmount value="0" />
+                    <HealthRegenFrequency value="0" />
+                </GenericScript>
+                <GlobalProperties>
+                    <DetectionLimitedByPatrolLine value="true" />
+                    <FrontDetectionRangeX value="6" />
+                    <FrontDetectionRangeUpY value="1" />
+                    <FrontDetectionRangeDownY value="0.25" />
+                    <BackDetectionRangeX value="3" />
+                    <BackDetectionRangeUpY value="1" />
+                    <BackDetectionRangeDownY value="0" />
+                    <ViewOffsetY value="0" />
+                    <ProjectilePrefabName value="" />
+                </GlobalProperties>
                 <Behaviors>
                     <Patrol speed="5.6" smoothMove="false" endPathWaitTime="2" />
                     <Aggro speed="6.4" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0" />
@@ -426,14 +943,34 @@
                         <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1" />
                     </Shooting>
                 </Behaviors>
-            </Enemy>
-            <Enemy name="PF_Critter_Spider01_Ceiling_Shoot_Zombie">
                 <LootTable>
                     <Drop type="item" id="134" chance="0.5" minLevel="1" maxLevel="65" />
                     <Drop type="item" id="135" chance="0.2" minLevel="5" maxLevel="65" />
                     <Drop type="item" id="136" chance="0.05" minLevel="10" maxLevel="65" />
                     <Drop type="randomArmor" chance="0.01" minLevel="1" maxLevel="50" />
                 </LootTable>
+            </Enemy>
+            <Enemy name="PF_Critter_Spider01_Ceiling_Shoot_Zombie">
+                <GenericScript>
+                    <AttackBehavior value="Shooting" />
+                    <AwareBehaviorDuration value="0.5" />
+                    <AwareBehavior value="LookAround" />
+                    <UnawareBehavior value="Patrol" />
+                    <HealthRegenAmount value="0" />
+                    <HealthRegenFrequency value="0" />
+                </GenericScript>
+                <GlobalProperties>
+                    <DetectionLimitedByPatrolLine value="false" />
+                    <FrontDetectionRangeX value="6" />
+                    <FrontDetectionRangeUpY value="0" />
+                    <FrontDetectionRangeDownY value="6" />
+                    <BackDetectionRangeX value="3" />
+                    <BackDetectionRangeUpY value="1" />
+                    <BackDetectionRangeDownY value="0" />
+                    <ViewOffsetY value="0" />
+                    <ShootOffsetY value="-2.2" />
+                    <ProjectilePrefabName value="COL_PRJ_PoisonProjectile_Lv1" />
+                </GlobalProperties>
                 <Behaviors>
                     <Patrol speed="5.6" smoothMove="false" endPathWaitTime="2" />
                     <Aggro speed="6.4" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0" />
@@ -442,26 +979,42 @@
                         <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1" />
                     </Shooting>
                 </Behaviors>
+                <LootTable>
+                    <Drop type="item" id="134" chance="0.5" minLevel="1" maxLevel="65" />
+                    <Drop type="item" id="135" chance="0.2" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="136" chance="0.05" minLevel="10" maxLevel="65" />
+                    <Drop type="randomArmor" chance="0.01" minLevel="1" maxLevel="50" />
+                </LootTable>
             </Enemy>
         </EnemyCategory>
         <EnemyCategory name="Bathog">
             <!-- Shadow Bathog (Mini-Boss) -->
             <Enemy name="PF_Spite_Bathog_Boss">
-                <LootTable>
-                    <Drop type="item" id="864" chance="0.8" minLevel="5" maxLevel="65" />
-                    <Drop type="item" id="866" chance="0.5" minLevel="6" maxLevel="65" />
-                    <Drop type="item" id="865" chance="0.2" minLevel="7" maxLevel="65" />
-                    <Drop type="item" id="1601" chance="0.5" minLevel="6" maxLevel="65" />
-                    <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
-                </LootTable>
+                <GenericScript>
+                    <AttackBehavior value="Aggro" />
+                    <AwareBehaviorDuration value="0.5" />
+                    <AwareBehavior value="LookAround" />
+                    <UnawareBehavior value="ComeBack" />
+                    <HealthRegenAmount value="0" />
+                    <HealthRegenFrequency value="0" />
+                </GenericScript>
+                <GlobalProperties>
+                    <DetectionLimitedByPatrolLine value="true" />
+                    <FrontDetectionRangeX value="5" />
+                    <FrontDetectionRangeUpY value="3" />
+                    <FrontDetectionRangeDownY value="6" />
+                    <BackDetectionRangeX value="2" />
+                    <BackDetectionRangeUpY value="2" />
+                    <BackDetectionRangeDownY value="6" />
+                    <ViewOffsetY value="0" />
+                    <ProjectilePrefabName value="" />
+                </GlobalProperties>
                 <Behaviors>
                     <Patrol speed="2.4" smoothMove="false" endPathWaitTime="2" />
                     <Aggro speed="3.2" moveBeyondTargetDistance="0" stayOnPatrolPath="false" attackBeyondPatrolLine="0" detectionRangeUpY="3" detectionRangeDownY="5" />
                     <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
                     <ComeBack speed="3.2" />
                 </Behaviors>
-            </Enemy>
-            <Enemy name="PF_Spite_Bathog_Shoot_Boss">
                 <LootTable>
                     <Drop type="item" id="864" chance="0.8" minLevel="5" maxLevel="65" />
                     <Drop type="item" id="866" chance="0.5" minLevel="6" maxLevel="65" />
@@ -469,6 +1022,27 @@
                     <Drop type="item" id="1601" chance="0.5" minLevel="6" maxLevel="65" />
                     <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
                 </LootTable>
+            </Enemy>
+            <Enemy name="PF_Spite_Bathog_Shoot_Boss">
+                <GenericScript>
+                    <AttackBehavior value="Shooting" />
+                    <AwareBehaviorDuration value="0.5" />
+                    <AwareBehavior value="LookAround" />
+                    <UnawareBehavior value="ComeBack" />
+                    <HealthRegenAmount value="0" />
+                    <HealthRegenFrequency value="0" />
+                </GenericScript>
+                <GlobalProperties>
+                    <DetectionLimitedByPatrolLine value="false" />
+                    <FrontDetectionRangeX value="5" />
+                    <FrontDetectionRangeUpY value="3" />
+                    <FrontDetectionRangeDownY value="6" />
+                    <BackDetectionRangeX value="2" />
+                    <BackDetectionRangeUpY value="2" />
+                    <BackDetectionRangeDownY value="6" />
+                    <ViewOffsetY value="0" />
+                    <ProjectilePrefabName value="COL_PRJ_DamageSuperProjectile" />
+                </GlobalProperties>
                 <Behaviors>
                     <Patrol speed="2.4" smoothMove="false" endPathWaitTime="2" />
                     <Aggro speed="3.2" moveBeyondTargetDistance="0" stayOnPatrolPath="false" attackBeyondPatrolLine="0" detectionRangeUpY="3" detectionRangeDownY="5" />
@@ -478,25 +1052,41 @@
                     </Shooting>
                     <ComeBack speed="3.2" />
                 </Behaviors>
+                <LootTable>
+                    <Drop type="item" id="864" chance="0.8" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="866" chance="0.5" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="865" chance="0.2" minLevel="7" maxLevel="65" />
+                    <Drop type="item" id="1601" chance="0.5" minLevel="6" maxLevel="65" />
+                    <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
+                </LootTable>
             </Enemy>
             <!-- Mist Bathog (Elite) -->
             <Enemy name="PF_Spite_Bathog_Invis">
-                <LootTable>
-                    <Drop type="item" id="864" chance="0.5" minLevel="5" maxLevel="65" />
-                    <Drop type="item" id="866" chance="0.2" minLevel="6" maxLevel="65" />
-                    <Drop type="item" id="865" chance="0.05" minLevel="7" maxLevel="65" />
-                    <Drop type="item" id="1598" chance="0.1" minLevel="6" maxLevel="65" />
-                    <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65" />
-                    <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
-                </LootTable>
+                <GenericScript>
+                    <AttackBehavior value="Aggro" />
+                    <AwareBehaviorDuration value="0.5" />
+                    <AwareBehavior value="LookAround" />
+                    <UnawareBehavior value="ComeBack" />
+                    <HealthRegenAmount value="0" />
+                    <HealthRegenFrequency value="0" />
+                </GenericScript>
+                <GlobalProperties>
+                    <DetectionLimitedByPatrolLine value="true" />
+                    <FrontDetectionRangeX value="5" />
+                    <FrontDetectionRangeUpY value="3" />
+                    <FrontDetectionRangeDownY value="6" />
+                    <BackDetectionRangeX value="2" />
+                    <BackDetectionRangeUpY value="2" />
+                    <BackDetectionRangeDownY value="6" />
+                    <ViewOffsetY value="0" />
+                    <ProjectilePrefabName value="" />
+                </GlobalProperties>
                 <Behaviors>
                     <Patrol speed="1.8" smoothMove="false" endPathWaitTime="2" />
                     <Aggro speed="2.4" moveBeyondTargetDistance="0" stayOnPatrolPath="false" attackBeyondPatrolLine="0" detectionRangeUpY="3" detectionRangeDownY="5" />
                     <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
                     <ComeBack speed="2.4" />
                 </Behaviors>
-            </Enemy>
-            <Enemy name="PF_Spite_Bathog_Shoot_Invis">
                 <LootTable>
                     <Drop type="item" id="864" chance="0.5" minLevel="5" maxLevel="65" />
                     <Drop type="item" id="866" chance="0.2" minLevel="6" maxLevel="65" />
@@ -505,6 +1095,28 @@
                     <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65" />
                     <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
                 </LootTable>
+            </Enemy>
+            <Enemy name="PF_Spite_Bathog_Shoot_Invis">
+                <GenericScript>
+                    <AttackBehavior value="Shooting" />
+                    <AwareBehaviorDuration value="0.5" />
+                    <AwareBehavior value="LookAround" />
+                    <UnawareBehavior value="ComeBack" />
+                    <HealthRegenAmount value="0" />
+                    <HealthRegenFrequency value="0" />
+                </GenericScript>
+                <GlobalProperties>
+                    <DetectionLimitedByPatrolLine value="false" />
+                    <FrontDetectionRangeX value="5" />
+                    <FrontDetectionRangeUpY value="3" />
+                    <FrontDetectionRangeDownY value="6" />
+                    <BackDetectionRangeX value="2" />
+                    <BackDetectionRangeUpY value="2" />
+                    <BackDetectionRangeDownY value="6" />
+                    <ViewOffsetY value="0" />
+                    <ShootOffsetY value="1" />
+                    <ProjectilePrefabName value="COL_PRJ_DamageProjectile" />
+                </GlobalProperties>
                 <Behaviors>
                     <Patrol speed="1.8" smoothMove="false" endPathWaitTime="2" />
                     <Aggro speed="2.4" moveBeyondTargetDistance="0" stayOnPatrolPath="false" attackBeyondPatrolLine="0" detectionRangeUpY="3" detectionRangeDownY="5" />
@@ -514,25 +1126,42 @@
                     </Shooting>
                     <ComeBack speed="2.4" />
                 </Behaviors>
-            </Enemy>
-            <!-- Magma Bathog (Elite) -->
-            <Enemy name="PF_Spite_Bathog_Lava">
                 <LootTable>
                     <Drop type="item" id="864" chance="0.5" minLevel="5" maxLevel="65" />
                     <Drop type="item" id="866" chance="0.2" minLevel="6" maxLevel="65" />
                     <Drop type="item" id="865" chance="0.05" minLevel="7" maxLevel="65" />
-                    <Drop type="item" id="1591" chance="0.1" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1598" chance="0.1" minLevel="6" maxLevel="65" />
                     <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65" />
                     <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
                 </LootTable>
+            </Enemy>
+            <!-- Magma Bathog (Elite) -->
+            <Enemy name="PF_Spite_Bathog_Lava">
+                <GenericScript>
+                    <AttackBehavior value="Aggro" />
+                    <AwareBehaviorDuration value="0.5" />
+                    <AwareBehavior value="LookAround" />
+                    <UnawareBehavior value="ComeBack" />
+                    <HealthRegenAmount value="0" />
+                    <HealthRegenFrequency value="0" />
+                </GenericScript>
+                <GlobalProperties>
+                    <DetectionLimitedByPatrolLine value="true" />
+                    <FrontDetectionRangeX value="5" />
+                    <FrontDetectionRangeUpY value="3" />
+                    <FrontDetectionRangeDownY value="6" />
+                    <BackDetectionRangeX value="2" />
+                    <BackDetectionRangeUpY value="2" />
+                    <BackDetectionRangeDownY value="6" />
+                    <ViewOffsetY value="0" />
+                    <ProjectilePrefabName value="" />
+                </GlobalProperties>
                 <Behaviors>
                     <Patrol speed="1.8" smoothMove="false" endPathWaitTime="2" />
                     <Aggro speed="2.4" moveBeyondTargetDistance="0" stayOnPatrolPath="false" attackBeyondPatrolLine="0" detectionRangeUpY="3" detectionRangeDownY="5" />
                     <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
                     <ComeBack speed="2.4" />
                 </Behaviors>
-            </Enemy>
-            <Enemy name="PF_Spite_Bathog_Shoot_Lava">
                 <LootTable>
                     <Drop type="item" id="864" chance="0.5" minLevel="5" maxLevel="65" />
                     <Drop type="item" id="866" chance="0.2" minLevel="6" maxLevel="65" />
@@ -541,6 +1170,28 @@
                     <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65" />
                     <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
                 </LootTable>
+            </Enemy>
+            <Enemy name="PF_Spite_Bathog_Shoot_Lava">
+                <GenericScript>
+                    <AttackBehavior value="Shooting" />
+                    <AwareBehaviorDuration value="0.5" />
+                    <AwareBehavior value="LookAround" />
+                    <UnawareBehavior value="ComeBack" />
+                    <HealthRegenAmount value="0" />
+                    <HealthRegenFrequency value="0" />
+                </GenericScript>
+                <GlobalProperties>
+                    <DetectionLimitedByPatrolLine value="false" />
+                    <FrontDetectionRangeX value="5" />
+                    <FrontDetectionRangeUpY value="3" />
+                    <FrontDetectionRangeDownY value="6" />
+                    <BackDetectionRangeX value="2" />
+                    <BackDetectionRangeUpY value="2" />
+                    <BackDetectionRangeDownY value="6" />
+                    <ViewOffsetY value="0" />
+                    <ShootOffsetY value="1" />
+                    <ProjectilePrefabName value="COL_PRJ_FireProjectile" />
+                </GlobalProperties>
                 <Behaviors>
                     <Patrol speed="1.8" smoothMove="false" endPathWaitTime="2" />
                     <Aggro speed="2.4" moveBeyondTargetDistance="0" stayOnPatrolPath="false" attackBeyondPatrolLine="0" detectionRangeUpY="3" detectionRangeDownY="5" />
@@ -550,27 +1201,69 @@
                     </Shooting>
                     <ComeBack speed="2.4" />
                 </Behaviors>
+                <LootTable>
+                    <Drop type="item" id="864" chance="0.5" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="866" chance="0.2" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="865" chance="0.05" minLevel="7" maxLevel="65" />
+                    <Drop type="item" id="1591" chance="0.1" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65" />
+                    <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
+                </LootTable>
             </Enemy>
             <!-- Bathog -->
             <Enemy name="PF_Spite_Bathog_Rock">
-                <LootTable>
-                    <Drop type="item" id="864" chance="0.2" minLevel="5" maxLevel="65" />
-                    <Drop type="item" id="866" chance="0.1" minLevel="6" maxLevel="65" />
-                    <Drop type="item" id="865" chance="0.02" minLevel="7" maxLevel="65" />
-                </LootTable>
+                <GenericScript>
+                    <AttackBehavior value="Aggro" />
+                    <AwareBehaviorDuration value="0.5" />
+                    <AwareBehavior value="LookAround" />
+                    <UnawareBehavior value="ComeBack" />
+                    <HealthRegenAmount value="0" />
+                    <HealthRegenFrequency value="0" />
+                </GenericScript>
+                <GlobalProperties>
+                    <DetectionLimitedByPatrolLine value="true" />
+                    <FrontDetectionRangeX value="5" />
+                    <FrontDetectionRangeUpY value="3" />
+                    <FrontDetectionRangeDownY value="6" />
+                    <BackDetectionRangeX value="2" />
+                    <BackDetectionRangeUpY value="2" />
+                    <BackDetectionRangeDownY value="6" />
+                    <ViewOffsetY value="0" />
+                    <ProjectilePrefabName value="" />
+                </GlobalProperties>
                 <Behaviors>
                     <Patrol speed="1.8" smoothMove="false" endPathWaitTime="2" />
                     <Aggro speed="2.4" moveBeyondTargetDistance="0" stayOnPatrolPath="false" attackBeyondPatrolLine="0" detectionRangeUpY="3" detectionRangeDownY="3" />
                     <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
                     <ComeBack speed="2.4" />
                 </Behaviors>
-            </Enemy>
-            <Enemy name="PF_Spite_Bathog_Shoot_Rock">
                 <LootTable>
                     <Drop type="item" id="864" chance="0.2" minLevel="5" maxLevel="65" />
                     <Drop type="item" id="866" chance="0.1" minLevel="6" maxLevel="65" />
                     <Drop type="item" id="865" chance="0.02" minLevel="7" maxLevel="65" />
                 </LootTable>
+            </Enemy>
+            <Enemy name="PF_Spite_Bathog_Shoot_Rock">
+                <GenericScript>
+                    <AttackBehavior value="Shooting" />
+                    <AwareBehaviorDuration value="0.5" />
+                    <AwareBehavior value="LookAround" />
+                    <UnawareBehavior value="ComeBack" />
+                    <HealthRegenAmount value="0" />
+                    <HealthRegenFrequency value="0" />
+                </GenericScript>
+                <GlobalProperties>
+                    <DetectionLimitedByPatrolLine value="false" />
+                    <FrontDetectionRangeX value="5" />
+                    <FrontDetectionRangeUpY value="3" />
+                    <FrontDetectionRangeDownY value="6" />
+                    <BackDetectionRangeX value="2" />
+                    <BackDetectionRangeUpY value="2" />
+                    <BackDetectionRangeDownY value="6" />
+                    <ViewOffsetY value="0" />
+                    <ShootOffsetY value="0.5" />
+                    <ProjectilePrefabName value="COL_PRJ_DamageProjectile" />
+                </GlobalProperties>
                 <Behaviors>
                     <Patrol speed="1.8" smoothMove="false" endPathWaitTime="2" />
                     <Aggro speed="2.4" moveBeyondTargetDistance="0" stayOnPatrolPath="false" attackBeyondPatrolLine="0" detectionRangeUpY="3" detectionRangeDownY="3" />
@@ -580,24 +1273,38 @@
                     </Shooting>
                     <ComeBack speed="2.4" />
                 </Behaviors>
+                <LootTable>
+                    <Drop type="item" id="864" chance="0.2" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="866" chance="0.1" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="865" chance="0.02" minLevel="7" maxLevel="65" />
+                </LootTable>
             </Enemy>
             <Enemy name="PF_Spite_Bathog_Swamp">
-                <LootTable>
-                    <Drop type="item" id="864" chance="0.5" minLevel="5" maxLevel="65" />
-                    <Drop type="item" id="866" chance="0.2" minLevel="6" maxLevel="65" />
-                    <Drop type="item" id="865" chance="0.05" minLevel="7" maxLevel="65" />
-                    <Drop type="item" id="1592" chance="0.1" minLevel="6" maxLevel="65" />
-                    <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65" />
-                    <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
-                </LootTable>
+                <GenericScript>
+                    <AttackBehavior value="Aggro" />
+                    <AwareBehaviorDuration value="0.5" />
+                    <AwareBehavior value="LookAround" />
+                    <UnawareBehavior value="ComeBack" />
+                    <HealthRegenAmount value="0" />
+                    <HealthRegenFrequency value="0" />
+                </GenericScript>
+                <GlobalProperties>
+                    <DetectionLimitedByPatrolLine value="true" />
+                    <FrontDetectionRangeX value="5" />
+                    <FrontDetectionRangeUpY value="3" />
+                    <FrontDetectionRangeDownY value="6" />
+                    <BackDetectionRangeX value="2" />
+                    <BackDetectionRangeUpY value="2" />
+                    <BackDetectionRangeDownY value="6" />
+                    <ViewOffsetY value="0" />
+                    <ProjectilePrefabName value="" />
+                </GlobalProperties>
                 <Behaviors>
                     <Patrol speed="1.8" smoothMove="false" endPathWaitTime="2" />
                     <Aggro speed="2.4" moveBeyondTargetDistance="0" stayOnPatrolPath="false" attackBeyondPatrolLine="0" detectionRangeUpY="3" detectionRangeDownY="5" />
                     <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
                     <ComeBack speed="2.4" />
                 </Behaviors>
-            </Enemy>
-            <Enemy name="PF_Spite_Bathog_Shoot_Swamp">
                 <LootTable>
                     <Drop type="item" id="864" chance="0.5" minLevel="5" maxLevel="65" />
                     <Drop type="item" id="866" chance="0.2" minLevel="6" maxLevel="65" />
@@ -606,6 +1313,28 @@
                     <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65" />
                     <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
                 </LootTable>
+            </Enemy>
+            <Enemy name="PF_Spite_Bathog_Shoot_Swamp">
+                <GenericScript>
+                    <AttackBehavior value="Shooting" />
+                    <AwareBehaviorDuration value="0.5" />
+                    <AwareBehavior value="LookAround" />
+                    <UnawareBehavior value="ComeBack" />
+                    <HealthRegenAmount value="0" />
+                    <HealthRegenFrequency value="0" />
+                </GenericScript>
+                <GlobalProperties>
+                    <DetectionLimitedByPatrolLine value="false" />
+                    <FrontDetectionRangeX value="5" />
+                    <FrontDetectionRangeUpY value="3" />
+                    <FrontDetectionRangeDownY value="6" />
+                    <BackDetectionRangeX value="2" />
+                    <BackDetectionRangeUpY value="2" />
+                    <BackDetectionRangeDownY value="6" />
+                    <ViewOffsetY value="0" />
+                    <ShootOffsetY value="1" />
+                    <ProjectilePrefabName value="COL_PRJ_PoisonProjectile_Lv1" />
+                </GlobalProperties>
                 <Behaviors>
                     <Patrol speed="1.8" smoothMove="false" endPathWaitTime="2" />
                     <Aggro speed="2.4" moveBeyondTargetDistance="0" stayOnPatrolPath="false" attackBeyondPatrolLine="0" detectionRangeUpY="3" detectionRangeDownY="5" />
@@ -615,8 +1344,41 @@
                     </Shooting>
                     <ComeBack speed="2.4" />
                 </Behaviors>
+                <LootTable>
+                    <Drop type="item" id="864" chance="0.5" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="866" chance="0.2" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="865" chance="0.05" minLevel="7" maxLevel="65" />
+                    <Drop type="item" id="1592" chance="0.1" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65" />
+                    <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
+                </LootTable>
             </Enemy>
             <Enemy name="PF_Spite_Bathog_Zombie">
+                <GenericScript>
+                    <AttackBehavior value="Aggro" />
+                    <AwareBehaviorDuration value="0.5" />
+                    <AwareBehavior value="LookAround" />
+                    <UnawareBehavior value="ComeBack" />
+                    <HealthRegenAmount value="0" />
+                    <HealthRegenFrequency value="0" />
+                </GenericScript>
+                <GlobalProperties>
+                    <DetectionLimitedByPatrolLine value="true" />
+                    <FrontDetectionRangeX value="5" />
+                    <FrontDetectionRangeUpY value="3" />
+                    <FrontDetectionRangeDownY value="6" />
+                    <BackDetectionRangeX value="2" />
+                    <BackDetectionRangeUpY value="2" />
+                    <BackDetectionRangeDownY value="6" />
+                    <ViewOffsetY value="0" />
+                    <ProjectilePrefabName value="" />
+                </GlobalProperties>
+                <Behaviors>
+                    <Patrol speed="1.8" smoothMove="false" endPathWaitTime="2" />
+                    <Aggro speed="2.4" moveBeyondTargetDistance="0" stayOnPatrolPath="false" attackBeyondPatrolLine="0" detectionRangeUpY="3" detectionRangeDownY="5" />
+                    <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                    <ComeBack speed="2.4" />
+                </Behaviors>
                 <LootTable>
                     <Drop type="item" id="107" chance="0.5" minLevel="1" maxLevel="65" />
                     <Drop type="item" id="109" chance="0.2" minLevel="5" maxLevel="65" />
@@ -625,20 +1387,30 @@
                     <Drop type="item" id="137" chance="0.05" minLevel="5" maxLevel="65" />
                     <Drop type="randomArmor" chance="0.01" minLevel="1" maxLevel="50" />
                 </LootTable>
-                <Behaviors>
-                    <Patrol speed="1.8" smoothMove="false" endPathWaitTime="2" />
-                    <Aggro speed="2.4" moveBeyondTargetDistance="0" stayOnPatrolPath="false" attackBeyondPatrolLine="0" detectionRangeUpY="3" detectionRangeDownY="5" />
-                    <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
-                    <ComeBack speed="2.4" />
-                </Behaviors>
             </Enemy>
         </EnemyCategory>
         <EnemyCategory name="Boombug">
             <!-- Magma Boombug (Elite) -->
             <Enemy name="PF_Spite_Bomber_Lava">
-                <LootTable>
-                    <Drop type="item" id="3052" chance="0.5" minLevel="5" maxLevel="65" />
-                </LootTable>
+                <GenericScript>
+                    <AttackBehavior value="Aggro" />
+                    <AwareBehaviorDuration value="0.5" />
+                    <AwareBehavior value="Bomber" />
+                    <UnawareBehavior value="Patrol" />
+                    <HealthRegenAmount value="0" />
+                    <HealthRegenFrequency value="0" />
+                </GenericScript>
+                <GlobalProperties>
+                    <DetectionLimitedByPatrolLine value="true" />
+                    <FrontDetectionRangeX value="8" />
+                    <FrontDetectionRangeUpY value="0.25" />
+                    <FrontDetectionRangeDownY value="0.25" />
+                    <BackDetectionRangeX value="4" />
+                    <BackDetectionRangeUpY value="2" />
+                    <BackDetectionRangeDownY value="0" />
+                    <ViewOffsetY value="0" />
+                    <ProjectilePrefabName value="" />
+                </GlobalProperties>
                 <Behaviors>
                     <Patrol speed="2.4" smoothMove="false" endPathWaitTime="2" />
                     <Aggro speed="5.0" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0" />
@@ -647,12 +1419,31 @@
                         <Resource type="EABIL" name="PF_EABIL_Spite_Bomber_Fire" />
                     </Bomber>
                 </Behaviors>
+                <LootTable>
+                    <Drop type="item" id="3052" chance="0.5" minLevel="5" maxLevel="65" />
+                </LootTable>
             </Enemy>
             <!-- Rock Boombug -->
             <Enemy name="PF_Spite_Bomber_Rock">
-                <LootTable>
-                    <Drop type="item" id="3052" chance="0.2" minLevel="5" maxLevel="65" />
-                </LootTable>
+                <GenericScript>
+                    <AttackBehavior value="Aggro" />
+                    <AwareBehaviorDuration value="0.5" />
+                    <AwareBehavior value="Bomber" />
+                    <UnawareBehavior value="Patrol" />
+                    <HealthRegenAmount value="0" />
+                    <HealthRegenFrequency value="0" />
+                </GenericScript>
+                <GlobalProperties>
+                    <DetectionLimitedByPatrolLine value="true" />
+                    <FrontDetectionRangeX value="8" />
+                    <FrontDetectionRangeUpY value="0.25" />
+                    <FrontDetectionRangeDownY value="0.25" />
+                    <BackDetectionRangeX value="4" />
+                    <BackDetectionRangeUpY value="2" />
+                    <BackDetectionRangeDownY value="0" />
+                    <ViewOffsetY value="0" />
+                    <ProjectilePrefabName value="" />
+                </GlobalProperties>
                 <Behaviors>
                     <Patrol speed="2.4" smoothMove="false" endPathWaitTime="2" />
                     <Aggro speed="5.0" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0" />
@@ -661,11 +1452,38 @@
                         <Resource type="EABIL" name="PF_EABIL_Spite_Bomber" />
                     </Bomber>
                 </Behaviors>
+                <LootTable>
+                    <Drop type="item" id="3052" chance="0.2" minLevel="5" maxLevel="65" />
+                </LootTable>
             </Enemy>
         </EnemyCategory>
         <EnemyCategory name="Cragcrawler">
             <!-- Shadow Cragcrawler (Mini-Boss) -->
             <Enemy name="PF_Spite_Crawler_Boss">
+                <GenericScript>
+                    <AttackBehavior value="Aggro" />
+                    <AwareBehaviorDuration value="0.5" />
+                    <AwareBehavior value="LookAround" />
+                    <UnawareBehavior value="Patrol" />
+                    <HealthRegenAmount value="0" />
+                    <HealthRegenFrequency value="0" />
+                </GenericScript>
+                <GlobalProperties>
+                    <DetectionLimitedByPatrolLine value="true" />
+                    <FrontDetectionRangeX value="6" />
+                    <FrontDetectionRangeUpY value="1" />
+                    <FrontDetectionRangeDownY value="0.25" />
+                    <BackDetectionRangeX value="3" />
+                    <BackDetectionRangeUpY value="1" />
+                    <BackDetectionRangeDownY value="0" />
+                    <ViewOffsetY value="0" />
+                    <ProjectilePrefabName value="" />
+                </GlobalProperties>
+                <Behaviors>
+                    <Patrol speed="1.8" smoothMove="false" endPathWaitTime="3" />
+                    <Aggro speed="4.8" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0" />
+                    <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                </Behaviors>
                 <LootTable>
                     <Drop type="item" id="1585" chance="0.8" minLevel="5" maxLevel="65" />
                     <Drop type="item" id="1586" chance="0.5" minLevel="6" maxLevel="65" />
@@ -673,14 +1491,33 @@
                     <Drop type="item" id="1601" chance="0.5" minLevel="6" maxLevel="65" />
                     <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
                 </LootTable>
-                <Behaviors>
-                    <Patrol speed="1.8" smoothMove="false" endPathWaitTime="3" />
-                    <Aggro speed="4.8" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0" />
-                    <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
-                </Behaviors>
             </Enemy>
             <!-- Magma Cragcrawler (Elite) -->
             <Enemy name="PF_Spite_Crawler_Lava">
+                <GenericScript>
+                    <AttackBehavior value="Aggro" />
+                    <AwareBehaviorDuration value="0.5" />
+                    <AwareBehavior value="LookAround" />
+                    <UnawareBehavior value="Patrol" />
+                    <HealthRegenAmount value="0" />
+                    <HealthRegenFrequency value="0" />
+                </GenericScript>
+                <GlobalProperties>
+                    <DetectionLimitedByPatrolLine value="true" />
+                    <FrontDetectionRangeX value="6" />
+                    <FrontDetectionRangeUpY value="1" />
+                    <FrontDetectionRangeDownY value="0.25" />
+                    <BackDetectionRangeX value="3" />
+                    <BackDetectionRangeUpY value="1" />
+                    <BackDetectionRangeDownY value="0" />
+                    <ViewOffsetY value="0" />
+                    <ProjectilePrefabName value="" />
+                </GlobalProperties>
+                <Behaviors>
+                    <Patrol speed="1.8" smoothMove="false" endPathWaitTime="3" />
+                    <Aggro speed="4.0" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0" />
+                    <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                </Behaviors>
                 <LootTable>
                     <Drop type="item" id="1585" chance="0.5" minLevel="5" maxLevel="65" />
                     <Drop type="item" id="1586" chance="0.2" minLevel="6" maxLevel="65" />
@@ -689,14 +1526,33 @@
                     <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65" />
                     <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
                 </LootTable>
+            </Enemy>
+            <!-- Mist Cragcrawler (Elite) -->
+            <Enemy name="PF_Spite_Crawler_Invis">
+                <GenericScript>
+                    <AttackBehavior value="Aggro" />
+                    <AwareBehaviorDuration value="0.5" />
+                    <AwareBehavior value="LookAround" />
+                    <UnawareBehavior value="Patrol" />
+                    <HealthRegenAmount value="0" />
+                    <HealthRegenFrequency value="0" />
+                </GenericScript>
+                <GlobalProperties>
+                    <DetectionLimitedByPatrolLine value="true" />
+                    <FrontDetectionRangeX value="6" />
+                    <FrontDetectionRangeUpY value="1" />
+                    <FrontDetectionRangeDownY value="0.25" />
+                    <BackDetectionRangeX value="3" />
+                    <BackDetectionRangeUpY value="1" />
+                    <BackDetectionRangeDownY value="0" />
+                    <ViewOffsetY value="0" />
+                    <ProjectilePrefabName value="" />
+                </GlobalProperties>
                 <Behaviors>
                     <Patrol speed="1.8" smoothMove="false" endPathWaitTime="3" />
                     <Aggro speed="4.0" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0" />
                     <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
                 </Behaviors>
-            </Enemy>
-            <!-- Mist Cragcrawler (Elite) -->
-            <Enemy name="PF_Spite_Crawler_Invis">
                 <LootTable>
                     <Drop type="item" id="1585" chance="0.5" minLevel="5" maxLevel="65" />
                     <Drop type="item" id="1586" chance="0.2" minLevel="6" maxLevel="65" />
@@ -705,14 +1561,33 @@
                     <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65" />
                     <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
                 </LootTable>
+            </Enemy>
+            <!-- Swamp Cragcrawler (Elite) -->
+            <Enemy name="PF_Spite_Crawler_Swamp">
+                <GenericScript>
+                    <AttackBehavior value="Aggro" />
+                    <AwareBehaviorDuration value="0.5" />
+                    <AwareBehavior value="LookAround" />
+                    <UnawareBehavior value="Patrol" />
+                    <HealthRegenAmount value="0" />
+                    <HealthRegenFrequency value="0" />
+                </GenericScript>
+                <GlobalProperties>
+                    <DetectionLimitedByPatrolLine value="true" />
+                    <FrontDetectionRangeX value="6" />
+                    <FrontDetectionRangeUpY value="1" />
+                    <FrontDetectionRangeDownY value="0.25" />
+                    <BackDetectionRangeX value="3" />
+                    <BackDetectionRangeUpY value="1" />
+                    <BackDetectionRangeDownY value="0" />
+                    <ViewOffsetY value="0" />
+                    <ProjectilePrefabName value="" />
+                </GlobalProperties>
                 <Behaviors>
                     <Patrol speed="1.8" smoothMove="false" endPathWaitTime="3" />
                     <Aggro speed="4.0" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0" />
                     <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
                 </Behaviors>
-            </Enemy>
-            <!-- Swamp Cragcrawler (Elite) -->
-            <Enemy name="PF_Spite_Crawler_Swamp">
                 <LootTable>
                     <Drop type="item" id="1585" chance="0.5" minLevel="5" maxLevel="65" />
                     <Drop type="item" id="1586" chance="0.2" minLevel="6" maxLevel="65" />
@@ -721,36 +1596,63 @@
                     <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65" />
                     <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
                 </LootTable>
-                <Behaviors>
-                    <Patrol speed="1.8" smoothMove="false" endPathWaitTime="3" />
-                    <Aggro speed="4.0" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0" />
-                    <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
-                </Behaviors>
             </Enemy>
             <!-- Cragcrawler -->
             <Enemy name="PF_Spite_Crawler_Rock">
-                <LootTable>
-                    <Drop type="item" id="1585" chance="0.2" minLevel="5" maxLevel="65" />
-                    <Drop type="item" id="1586" chance="0.1" minLevel="6" maxLevel="65" />
-                    <Drop type="item" id="1584" chance="0.02" minLevel="7" maxLevel="65" />
-                </LootTable>
+                <GenericScript>
+                    <AttackBehavior value="Aggro" />
+                    <AwareBehaviorDuration value="0.5" />
+                    <AwareBehavior value="LookAround" />
+                    <UnawareBehavior value="Patrol" />
+                    <HealthRegenAmount value="0" />
+                    <HealthRegenFrequency value="0" />
+                </GenericScript>
+                <GlobalProperties>
+                    <DetectionLimitedByPatrolLine value="true" />
+                    <FrontDetectionRangeX value="6" />
+                    <FrontDetectionRangeUpY value="1" />
+                    <FrontDetectionRangeDownY value="0.25" />
+                    <BackDetectionRangeX value="3" />
+                    <BackDetectionRangeUpY value="1" />
+                    <BackDetectionRangeDownY value="0" />
+                    <ViewOffsetY value="0" />
+                    <ProjectilePrefabName value="" />
+                </GlobalProperties>
                 <Behaviors>
                     <Patrol speed="1.6" smoothMove="false" endPathWaitTime="3" />
                     <Aggro speed="4.0" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0" />
                     <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
                 </Behaviors>
+                <LootTable>
+                    <Drop type="item" id="1585" chance="0.2" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="1586" chance="0.1" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1584" chance="0.02" minLevel="7" maxLevel="65" />
+                </LootTable>
             </Enemy>
         </EnemyCategory>
         <EnemyCategory name="Dragon">
             <!-- Shadow Dragon (Mini-Boss) -->
             <Enemy name="PF_Spite_Dragon_Boss">
-                <LootTable>
-                    <Drop type="item" id="1589" chance="0.8" minLevel="5" maxLevel="65" />
-                    <Drop type="item" id="1587" chance="0.5" minLevel="6" maxLevel="65" />
-                    <Drop type="item" id="1588" chance="0.2" minLevel="7" maxLevel="65" />
-                    <Drop type="item" id="1601" chance="0.5" minLevel="6" maxLevel="65" />
-                    <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
-                </LootTable>
+                <GenericScript>
+                    <AttackBehavior value="Shooting" />
+                    <AwareBehaviorDuration value="0.5" />
+                    <AwareBehavior value="LookAround" />
+                    <UnawareBehavior value="Patrol" />
+                    <HealthRegenAmount value="0" />
+                    <HealthRegenFrequency value="0" />
+                </GenericScript>
+                <GlobalProperties>
+                    <DetectionLimitedByPatrolLine value="false" />
+                    <FrontDetectionRangeX value="7" />
+                    <FrontDetectionRangeUpY value="3" />
+                    <FrontDetectionRangeDownY value="1" />
+                    <BackDetectionRangeX value="4" />
+                    <BackDetectionRangeUpY value="3" />
+                    <BackDetectionRangeDownY value="1" />
+                    <ShootOffsetX value="3.0" />
+                    <ShootOffsetY value="0.7" />
+                    <ProjectilePrefabName value="COL_PRJ_FireProjectile" />
+                </GlobalProperties>
                 <Behaviors>
                     <Patrol speed="1.8" smoothMove="false" endPathWaitTime="2" />
                     <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
@@ -758,9 +1660,43 @@
                         <Resource type="PROJ" name="COL_PRJ_FireProjectile" />
                     </Shooting>
                 </Behaviors>
+                <LootTable>
+                    <Drop type="item" id="1589" chance="0.8" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="1587" chance="0.5" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1588" chance="0.2" minLevel="7" maxLevel="65" />
+                    <Drop type="item" id="1601" chance="0.5" minLevel="6" maxLevel="65" />
+                    <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
+                </LootTable>
             </Enemy>
             <!-- Moss Dragon (Elite) -->
             <Enemy name="PF_Spite_Dragon_Swamp">
+                <GenericScript>
+                    <AttackBehavior value="Shooting" />
+                    <AwareBehaviorDuration value="0.5" />
+                    <AwareBehavior value="LookAround" />
+                    <UnawareBehavior value="Patrol" />
+                    <HealthRegenAmount value="0" />
+                    <HealthRegenFrequency value="0" />
+                </GenericScript>
+                <GlobalProperties>
+                    <DetectionLimitedByPatrolLine value="false" />
+                    <FrontDetectionRangeX value="7" />
+                    <FrontDetectionRangeUpY value="3" />
+                    <FrontDetectionRangeDownY value="1" />
+                    <BackDetectionRangeX value="4" />
+                    <BackDetectionRangeUpY value="3" />
+                    <BackDetectionRangeDownY value="1" />
+                    <ShootOffsetX value="2.0" />
+                    <ShootOffsetY value="0.6" />
+                    <ProjectilePrefabName value="COL_PRJ_PoisonProjectile_Lv1" />
+                </GlobalProperties>
+                <Behaviors>
+                    <Patrol speed="1.8" smoothMove="false" endPathWaitTime="2" />
+                    <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                    <Shooting nbBulletsPerRound="2" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.8" nbFireRounds="2" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1.5" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
+                        <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1" />
+                    </Shooting>
+                </Behaviors>
                 <LootTable>
                     <Drop type="item" id="1589" chance="0.5" minLevel="5" maxLevel="65" />
                     <Drop type="item" id="1587" chance="0.2" minLevel="6" maxLevel="65" />
@@ -769,16 +1705,36 @@
                     <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65" />
                     <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
                 </LootTable>
+            </Enemy>
+            <!-- Magma Dragon (Elite) -->
+            <Enemy name="PF_Spite_Dragon_Lava">
+                <GenericScript>
+                    <AttackBehavior value="Shooting" />
+                    <AwareBehaviorDuration value="0.5" />
+                    <AwareBehavior value="LookAround" />
+                    <UnawareBehavior value="Patrol" />
+                    <HealthRegenAmount value="0" />
+                    <HealthRegenFrequency value="0" />
+                </GenericScript>
+                <GlobalProperties>
+                    <DetectionLimitedByPatrolLine value="false" />
+                    <FrontDetectionRangeX value="7" />
+                    <FrontDetectionRangeUpY value="3" />
+                    <FrontDetectionRangeDownY value="1" />
+                    <BackDetectionRangeX value="4" />
+                    <BackDetectionRangeUpY value="3" />
+                    <BackDetectionRangeDownY value="1" />
+                    <ShootOffsetX value="2.0" />
+                    <ShootOffsetY value="0.6" />
+                    <ProjectilePrefabName value="COL_PRJ_FireProjectile" />
+                </GlobalProperties>
                 <Behaviors>
                     <Patrol speed="1.8" smoothMove="false" endPathWaitTime="2" />
                     <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
                     <Shooting nbBulletsPerRound="2" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.8" nbFireRounds="2" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1.5" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
-                        <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1" />
+                        <Resource type="PROJ" name="COL_PRJ_FireProjectile" />
                     </Shooting>
                 </Behaviors>
-            </Enemy>
-            <!-- Magma Dragon (Elite) -->
-            <Enemy name="PF_Spite_Dragon_Lava">
                 <LootTable>
                     <Drop type="item" id="1589" chance="0.5" minLevel="5" maxLevel="65" />
                     <Drop type="item" id="1587" chance="0.2" minLevel="6" maxLevel="65" />
@@ -787,6 +1743,29 @@
                     <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65" />
                     <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
                 </LootTable>
+            </Enemy>
+            <!-- Mist Dragon (Elite) -->
+            <Enemy name="PF_Spite_Dragon_Invis">
+                <GenericScript>
+                    <AttackBehavior value="Shooting" />
+                    <AwareBehaviorDuration value="0.5" />
+                    <AwareBehavior value="LookAround" />
+                    <UnawareBehavior value="Patrol" />
+                    <HealthRegenAmount value="0" />
+                    <HealthRegenFrequency value="0" />
+                </GenericScript>
+                <GlobalProperties>
+                    <DetectionLimitedByPatrolLine value="false" />
+                    <FrontDetectionRangeX value="7" />
+                    <FrontDetectionRangeUpY value="3" />
+                    <FrontDetectionRangeDownY value="1" />
+                    <BackDetectionRangeX value="4" />
+                    <BackDetectionRangeUpY value="3" />
+                    <BackDetectionRangeDownY value="1" />
+                    <ShootOffsetX value="2.0" />
+                    <ShootOffsetY value="0.6" />
+                    <ProjectilePrefabName value="COL_PRJ_FireProjectile" />
+                </GlobalProperties>
                 <Behaviors>
                     <Patrol speed="1.8" smoothMove="false" endPathWaitTime="2" />
                     <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
@@ -794,9 +1773,6 @@
                         <Resource type="PROJ" name="COL_PRJ_FireProjectile" />
                     </Shooting>
                 </Behaviors>
-            </Enemy>
-            <!-- Mist Dragon (Elite) -->
-            <Enemy name="PF_Spite_Dragon_Invis">
                 <LootTable>
                     <Drop type="item" id="1589" chance="0.5" minLevel="5" maxLevel="65" />
                     <Drop type="item" id="1587" chance="0.2" minLevel="6" maxLevel="65" />
@@ -805,21 +1781,29 @@
                     <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65" />
                     <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
                 </LootTable>
-                <Behaviors>
-                    <Patrol speed="1.8" smoothMove="false" endPathWaitTime="2" />
-                    <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
-                    <Shooting nbBulletsPerRound="2" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.8" nbFireRounds="2" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1.5" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
-                        <Resource type="PROJ" name="COL_PRJ_FireProjectile" />
-                    </Shooting>
-                </Behaviors>
             </Enemy>
             <!-- Dragon -->
             <Enemy name="PF_Spite_Dragon_Rock">
-                <LootTable>
-                    <Drop type="item" id="1589" chance="0.2" minLevel="5" maxLevel="65" />
-                    <Drop type="item" id="1587" chance="0.1" minLevel="6" maxLevel="65" />
-                    <Drop type="item" id="1588" chance="0.02" minLevel="7" maxLevel="65" />
-                </LootTable>
+                <GenericScript>
+                    <AttackBehavior value="Shooting" />
+                    <AwareBehaviorDuration value="0.5" />
+                    <AwareBehavior value="LookAround" />
+                    <UnawareBehavior value="Patrol" />
+                    <HealthRegenAmount value="0" />
+                    <HealthRegenFrequency value="0" />
+                </GenericScript>
+                <GlobalProperties>
+                    <DetectionLimitedByPatrolLine value="false" />
+                    <FrontDetectionRangeX value="6" />
+                    <FrontDetectionRangeUpY value="3" />
+                    <FrontDetectionRangeDownY value="1" />
+                    <BackDetectionRangeX value="3" />
+                    <BackDetectionRangeUpY value="3" />
+                    <BackDetectionRangeDownY value="1" />
+                    <ShootOffsetX value="1" />
+                    <ShootOffsetY value="0.5" />
+                    <ProjectilePrefabName value="COL_PRJ_FireProjectile" />
+                </GlobalProperties>
                 <Behaviors>
                     <Patrol speed="1.8" smoothMove="false" endPathWaitTime="2" />
                     <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
@@ -827,13 +1811,34 @@
                         <Resource type="PROJ" name="COL_PRJ_FireProjectile" />
                     </Shooting>
                 </Behaviors>
+                <LootTable>
+                    <Drop type="item" id="1589" chance="0.2" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="1587" chance="0.1" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1588" chance="0.02" minLevel="7" maxLevel="65" />
+                </LootTable>
             </Enemy>
         </EnemyCategory>
         <EnemyCategory name="Rumbler">
             <!-- Fire Rumbler (Elite) -->
             <Enemy name="PF_Spite_Grenadier_Lava">
-                <LootTable>
-                </LootTable>
+                <GenericScript>
+                    <AttackBehavior value="Grenadier" />
+                    <AwareBehaviorDuration value="0.5" />
+                    <AwareBehavior value="LookAround" />
+                    <UnawareBehavior value="Patrol" />
+                    <HealthRegenAmount value="0" />
+                    <HealthRegenFrequency value="0" />
+                </GenericScript>
+                <GlobalProperties>
+                    <DetectionLimitedByPatrolLine value="false" />
+                    <FrontDetectionRangeX value="8" />
+                    <FrontDetectionRangeUpY value="5" />
+                    <FrontDetectionRangeDownY value="1" />
+                    <BackDetectionRangeX value="8" />
+                    <BackDetectionRangeUpY value="4" />
+                    <BackDetectionRangeDownY value="1" />
+                    <ProjectilePrefabName value="COL_PRJ_GrenadierLava" />
+                </GlobalProperties>
                 <Behaviors>
                     <Patrol speed="1.8" smoothMove="false" endPathWaitTime="2" />
                     <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
@@ -842,11 +1847,29 @@
                         <Resource type="PROJ" name="COL_PRJ_GrenadierLava" />
                     </Grenadier>
                 </Behaviors>
+                <LootTable>
+                </LootTable>
             </Enemy>
             <!-- Rock Rumbler -->
             <Enemy name="PF_Spite_Grenadier_Rock">
-                <LootTable>
-                </LootTable>
+                <GenericScript>
+                    <AttackBehavior value="Grenadier" />
+                    <AwareBehaviorDuration value="0.5" />
+                    <AwareBehavior value="LookAround" />
+                    <UnawareBehavior value="Patrol" />
+                    <HealthRegenAmount value="0" />
+                    <HealthRegenFrequency value="0" />
+                </GenericScript>
+                <GlobalProperties>
+                    <DetectionLimitedByPatrolLine value="false" />
+                    <FrontDetectionRangeX value="8" />
+                    <FrontDetectionRangeUpY value="5" />
+                    <FrontDetectionRangeDownY value="1" />
+                    <BackDetectionRangeX value="8" />
+                    <BackDetectionRangeUpY value="4" />
+                    <BackDetectionRangeDownY value="1" />
+                    <ProjectilePrefabName value="COL_PRJ_GrenadierRock" />
+                </GlobalProperties>
                 <Behaviors>
                     <Patrol speed="1.8" smoothMove="false" endPathWaitTime="2" />
                     <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
@@ -855,11 +1878,29 @@
                         <Resource type="PROJ" name="COL_PRJ_GrenadierRock" />
                     </Grenadier>
                 </Behaviors>
+                <LootTable>
+                </LootTable>
             </Enemy>
             <!-- Moss Rumbler -->
             <Enemy name="PF_Spite_Grenadier_Swamp">
-                <LootTable>
-                </LootTable>
+                <GenericScript>
+                    <AttackBehavior value="Grenadier" />
+                    <AwareBehaviorDuration value="0.5" />
+                    <AwareBehavior value="LookAround" />
+                    <UnawareBehavior value="Patrol" />
+                    <HealthRegenAmount value="0" />
+                    <HealthRegenFrequency value="0" />
+                </GenericScript>
+                <GlobalProperties>
+                    <DetectionLimitedByPatrolLine value="false" />
+                    <FrontDetectionRangeX value="8" />
+                    <FrontDetectionRangeUpY value="5" />
+                    <FrontDetectionRangeDownY value="1" />
+                    <BackDetectionRangeX value="8" />
+                    <BackDetectionRangeUpY value="4" />
+                    <BackDetectionRangeDownY value="1" />
+                    <ProjectilePrefabName value="COL_PRJ_GrenadierSwamp" />
+                </GlobalProperties>
                 <Behaviors>
                     <Patrol speed="1.8" smoothMove="false" endPathWaitTime="2" />
                     <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
@@ -868,18 +1909,32 @@
                         <Resource type="PROJ" name="COL_PRJ_GrenadierSwamp" />
                     </Grenadier>
                 </Behaviors>
+                <LootTable>
+                </LootTable>
             </Enemy>
         </EnemyCategory>
         <EnemyCategory name="Orchid">
             <!-- Shadow Orchid (Mini-Boss) -->
             <Enemy name="PF_Spite_Orchid_Boss">
-                <LootTable>
-                    <Drop type="item" id="1593" chance="0.8" minLevel="5" maxLevel="65" />
-                    <Drop type="item" id="1595" chance="0.5" minLevel="6" maxLevel="65" />
-                    <Drop type="item" id="1594" chance="0.2" minLevel="7" maxLevel="65" />
-                    <Drop type="item" id="1601" chance="0.5" minLevel="6" maxLevel="65" />
-                    <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
-                </LootTable>
+                <GenericScript>
+                    <AttackBehavior value="Shooting" />
+                    <AwareBehaviorDuration value="0.5" />
+                    <AwareBehavior value="LookAround" />
+                    <UnawareBehavior value="Patrol" />
+                    <HealthRegenAmount value="0" />
+                    <HealthRegenFrequency value="0" />
+                </GenericScript>
+                <GlobalProperties>
+                    <DetectionLimitedByPatrolLine value="false" />
+                    <FrontDetectionRangeX value="10" />
+                    <FrontDetectionRangeUpY value="6" />
+                    <FrontDetectionRangeDownY value="1" />
+                    <BackDetectionRangeX value="10" />
+                    <BackDetectionRangeUpY value="6" />
+                    <BackDetectionRangeDownY value="1" />
+                    <ShootOffsetY value="2" />
+                    <ProjectilePrefabName value="COL_PRJ_DamageSuperProjectile" />
+                </GlobalProperties>
                 <Behaviors>
                     <Patrol speed="0" smoothMove="false" endPathWaitTime="0" />
                     <LookAround lookTime="4" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
@@ -887,8 +1942,6 @@
                         <Resource type="PROJ" name="COL_PRJ_DamageSuperProjectile" />
                     </Shooting>
                 </Behaviors>
-            </Enemy>
-            <Enemy name="PF_Spite_Orchid_Ceiling_Boss">
                 <LootTable>
                     <Drop type="item" id="1593" chance="0.8" minLevel="5" maxLevel="65" />
                     <Drop type="item" id="1595" chance="0.5" minLevel="6" maxLevel="65" />
@@ -896,6 +1949,27 @@
                     <Drop type="item" id="1601" chance="0.5" minLevel="6" maxLevel="65" />
                     <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
                 </LootTable>
+            </Enemy>
+            <Enemy name="PF_Spite_Orchid_Ceiling_Boss">
+                <GenericScript>
+                    <AttackBehavior value="Shooting" />
+                    <AwareBehaviorDuration value="0.5" />
+                    <AwareBehavior value="LookAround" />
+                    <UnawareBehavior value="Patrol" />
+                    <HealthRegenAmount value="0" />
+                    <HealthRegenFrequency value="0" />
+                </GenericScript>
+                <GlobalProperties>
+                    <DetectionLimitedByPatrolLine value="false" />
+                    <FrontDetectionRangeX value="10" />
+                    <FrontDetectionRangeUpY value="1" />
+                    <FrontDetectionRangeDownY value="8" />
+                    <BackDetectionRangeX value="10" />
+                    <BackDetectionRangeUpY value="1" />
+                    <BackDetectionRangeDownY value="8" />
+                    <ShootOffsetY value="-2" />
+                    <ProjectilePrefabName value="COL_PRJ_DamageSuperProjectile" />
+                </GlobalProperties>
                 <Behaviors>
                     <Patrol speed="0" smoothMove="false" endPathWaitTime="0" />
                     <LookAround lookTime="4" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
@@ -903,17 +1977,35 @@
                         <Resource type="PROJ" name="COL_PRJ_DamageSuperProjectile" />
                     </Shooting>
                 </Behaviors>
+                <LootTable>
+                    <Drop type="item" id="1593" chance="0.8" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="1595" chance="0.5" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1594" chance="0.2" minLevel="7" maxLevel="65" />
+                    <Drop type="item" id="1601" chance="0.5" minLevel="6" maxLevel="65" />
+                    <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
+                </LootTable>
             </Enemy>
             <!-- Magma Orchid (Elite) -->
             <Enemy name="PF_Spite_Orchid_Lava">
-                <LootTable>
-                    <Drop type="item" id="1593" chance="0.5" minLevel="5" maxLevel="65" />
-                    <Drop type="item" id="1595" chance="0.2" minLevel="6" maxLevel="65" />
-                    <Drop type="item" id="1594" chance="0.05" minLevel="7" maxLevel="65" />
-                    <Drop type="item" id="1591" chance="0.1" minLevel="6" maxLevel="65" />
-                    <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65" />
-                    <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
-                </LootTable>
+                <GenericScript>
+                    <AttackBehavior value="Shooting" />
+                    <AwareBehaviorDuration value="0.5" />
+                    <AwareBehavior value="LookAround" />
+                    <UnawareBehavior value="Patrol" />
+                    <HealthRegenAmount value="0" />
+                    <HealthRegenFrequency value="0" />
+                </GenericScript>
+                <GlobalProperties>
+                    <DetectionLimitedByPatrolLine value="false" />
+                    <FrontDetectionRangeX value="8" />
+                    <FrontDetectionRangeUpY value="4" />
+                    <FrontDetectionRangeDownY value="1" />
+                    <BackDetectionRangeX value="8" />
+                    <BackDetectionRangeUpY value="4" />
+                    <BackDetectionRangeDownY value="1" />
+                    <ShootOffsetY value="1" />
+                    <ProjectilePrefabName value="COL_PRJ_FireProjectile" />
+                </GlobalProperties>
                 <Behaviors>
                     <Patrol speed="0" smoothMove="false" endPathWaitTime="0" />
                     <LookAround lookTime="4" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
@@ -921,8 +2013,6 @@
                         <Resource type="PROJ" name="COL_PRJ_FireProjectile" />
                     </Shooting>
                 </Behaviors>
-            </Enemy>
-            <Enemy name="PF_Spite_Orchid_Ceiling_Lava">
                 <LootTable>
                     <Drop type="item" id="1593" chance="0.5" minLevel="5" maxLevel="65" />
                     <Drop type="item" id="1595" chance="0.2" minLevel="6" maxLevel="65" />
@@ -931,6 +2021,27 @@
                     <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65" />
                     <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
                 </LootTable>
+            </Enemy>
+            <Enemy name="PF_Spite_Orchid_Ceiling_Lava">
+                <GenericScript>
+                    <AttackBehavior value="Shooting" />
+                    <AwareBehaviorDuration value="0.5" />
+                    <AwareBehavior value="LookAround" />
+                    <UnawareBehavior value="Patrol" />
+                    <HealthRegenAmount value="0" />
+                    <HealthRegenFrequency value="0" />
+                </GenericScript>
+                <GlobalProperties>
+                    <DetectionLimitedByPatrolLine value="false" />
+                    <FrontDetectionRangeX value="8" />
+                    <FrontDetectionRangeUpY value="1" />
+                    <FrontDetectionRangeDownY value="6" />
+                    <BackDetectionRangeX value="8" />
+                    <BackDetectionRangeUpY value="1" />
+                    <BackDetectionRangeDownY value="6" />
+                    <ShootOffsetY value="-1" />
+                    <ProjectilePrefabName value="COL_PRJ_FireProjectile" />
+                </GlobalProperties>
                 <Behaviors>
                     <Patrol speed="0" smoothMove="false" endPathWaitTime="0" />
                     <LookAround lookTime="4" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
@@ -938,17 +2049,36 @@
                         <Resource type="PROJ" name="COL_PRJ_FireProjectile" />
                     </Shooting>
                 </Behaviors>
+                <LootTable>
+                    <Drop type="item" id="1593" chance="0.5" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="1595" chance="0.2" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1594" chance="0.05" minLevel="7" maxLevel="65" />
+                    <Drop type="item" id="1591" chance="0.1" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65" />
+                    <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
+                </LootTable>
             </Enemy>
             <!-- Moss Orchid (Elite) -->
             <Enemy name="PF_Spite_Orchid_Swamp">
-                <LootTable>
-                    <Drop type="item" id="1593" chance="0.5" minLevel="5" maxLevel="65" />
-                    <Drop type="item" id="1595" chance="0.2" minLevel="6" maxLevel="65" />
-                    <Drop type="item" id="1594" chance="0.05" minLevel="7" maxLevel="65" />
-                    <Drop type="item" id="1592" chance="0.1" minLevel="6" maxLevel="65" />
-                    <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65" />
-                    <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
-                </LootTable>
+                <GenericScript>
+                    <AttackBehavior value="Shooting" />
+                    <AwareBehaviorDuration value="0.5" />
+                    <AwareBehavior value="LookAround" />
+                    <UnawareBehavior value="Patrol" />
+                    <HealthRegenAmount value="0" />
+                    <HealthRegenFrequency value="0" />
+                </GenericScript>
+                <GlobalProperties>
+                    <DetectionLimitedByPatrolLine value="false" />
+                    <FrontDetectionRangeX value="8" />
+                    <FrontDetectionRangeUpY value="4" />
+                    <FrontDetectionRangeDownY value="1" />
+                    <BackDetectionRangeX value="8" />
+                    <BackDetectionRangeUpY value="4" />
+                    <BackDetectionRangeDownY value="1" />
+                    <ShootOffsetY value="1" />
+                    <ProjectilePrefabName value="COL_PRJ_PoisonProjectile_Lv1" />
+                </GlobalProperties>
                 <Behaviors>
                     <Patrol speed="0" smoothMove="false" endPathWaitTime="0" />
                     <LookAround lookTime="4" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
@@ -956,8 +2086,6 @@
                         <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1" />
                     </Shooting>
                 </Behaviors>
-            </Enemy>
-            <Enemy name="PF_Spite_Orchid_Ceiling_Swamp">
                 <LootTable>
                     <Drop type="item" id="1593" chance="0.5" minLevel="5" maxLevel="65" />
                     <Drop type="item" id="1595" chance="0.2" minLevel="6" maxLevel="65" />
@@ -966,6 +2094,27 @@
                     <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65" />
                     <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
                 </LootTable>
+            </Enemy>
+            <Enemy name="PF_Spite_Orchid_Ceiling_Swamp">
+                <GenericScript>
+                    <AttackBehavior value="Shooting" />
+                    <AwareBehaviorDuration value="0.5" />
+                    <AwareBehavior value="LookAround" />
+                    <UnawareBehavior value="Patrol" />
+                    <HealthRegenAmount value="0" />
+                    <HealthRegenFrequency value="0" />
+                </GenericScript>
+                <GlobalProperties>
+                    <DetectionLimitedByPatrolLine value="false" />
+                    <FrontDetectionRangeX value="8" />
+                    <FrontDetectionRangeUpY value="1" />
+                    <FrontDetectionRangeDownY value="6" />
+                    <BackDetectionRangeX value="8" />
+                    <BackDetectionRangeUpY value="1" />
+                    <BackDetectionRangeDownY value="6" />
+                    <ShootOffsetY value="-1" />
+                    <ProjectilePrefabName value="COL_PRJ_PoisonProjectile_Lv1" />
+                </GlobalProperties>
                 <Behaviors>
                     <Patrol speed="0" smoothMove="false" endPathWaitTime="0" />
                     <LookAround lookTime="4" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
@@ -973,17 +2122,36 @@
                         <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1" />
                     </Shooting>
                 </Behaviors>
-            </Enemy>
-            <!-- Mist Orchid (Elite) -->
-            <Enemy name="PF_Spite_Orchid_Invis">
                 <LootTable>
                     <Drop type="item" id="1593" chance="0.5" minLevel="5" maxLevel="65" />
                     <Drop type="item" id="1595" chance="0.2" minLevel="6" maxLevel="65" />
                     <Drop type="item" id="1594" chance="0.05" minLevel="7" maxLevel="65" />
-                    <Drop type="item" id="1591" chance="0.1" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1592" chance="0.1" minLevel="6" maxLevel="65" />
                     <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65" />
                     <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
                 </LootTable>
+            </Enemy>
+            <!-- Mist Orchid (Elite) -->
+            <Enemy name="PF_Spite_Orchid_Invis">
+                <GenericScript>
+                    <AttackBehavior value="Shooting" />
+                    <AwareBehaviorDuration value="0.5" />
+                    <AwareBehavior value="LookAround" />
+                    <UnawareBehavior value="Patrol" />
+                    <HealthRegenAmount value="0" />
+                    <HealthRegenFrequency value="0" />
+                </GenericScript>
+                <GlobalProperties>
+                    <DetectionLimitedByPatrolLine value="false" />
+                    <FrontDetectionRangeX value="8" />
+                    <FrontDetectionRangeUpY value="4" />
+                    <FrontDetectionRangeDownY value="1" />
+                    <BackDetectionRangeX value="8" />
+                    <BackDetectionRangeUpY value="4" />
+                    <BackDetectionRangeDownY value="1" />
+                    <ShootOffsetY value="1" />
+                    <ProjectilePrefabName value="COL_PRJ_DamageProjectile" />
+                </GlobalProperties>
                 <Behaviors>
                     <Patrol speed="0" smoothMove="false" endPathWaitTime="0" />
                     <LookAround lookTime="4" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
@@ -991,14 +2159,36 @@
                         <Resource type="PROJ" name="COL_PRJ_DamageProjectile" />
                     </Shooting>
                 </Behaviors>
+                <LootTable>
+                    <Drop type="item" id="1593" chance="0.5" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="1595" chance="0.2" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1594" chance="0.05" minLevel="7" maxLevel="65" />
+                    <Drop type="item" id="1591" chance="0.1" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65" />
+                    <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
+                </LootTable>
             </Enemy>
             <!-- Rock Orchid -->
             <Enemy name="PF_Spite_Orchid_Rock">
-                <LootTable>
-                    <Drop type="item" id="1593" chance="0.2" minLevel="5" maxLevel="65" />
-                    <Drop type="item" id="1595" chance="0.1" minLevel="6" maxLevel="65" />
-                    <Drop type="item" id="1594" chance="0.02" minLevel="7" maxLevel="65" />
-                </LootTable>
+                <GenericScript>
+                    <AttackBehavior value="Shooting" />
+                    <AwareBehaviorDuration value="0.5" />
+                    <AwareBehavior value="LookAround" />
+                    <UnawareBehavior value="Patrol" />
+                    <HealthRegenAmount value="0" />
+                    <HealthRegenFrequency value="0" />
+                </GenericScript>
+                <GlobalProperties>
+                    <DetectionLimitedByPatrolLine value="false" />
+                    <FrontDetectionRangeX value="8" />
+                    <FrontDetectionRangeUpY value="4" />
+                    <FrontDetectionRangeDownY value="1" />
+                    <BackDetectionRangeX value="8" />
+                    <BackDetectionRangeUpY value="4" />
+                    <BackDetectionRangeDownY value="1" />
+                    <ShootOffsetY value="1" />
+                    <ProjectilePrefabName value="COL_PRJ_DamageProjectile" />
+                </GlobalProperties>
                 <Behaviors>
                     <Patrol speed="0" smoothMove="false" endPathWaitTime="0" />
                     <LookAround lookTime="4" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
@@ -1006,13 +2196,32 @@
                         <Resource type="PROJ" name="COL_PRJ_DamageProjectile" />
                     </Shooting>
                 </Behaviors>
-            </Enemy>
-            <Enemy name="PF_Spite_Orchid_Ceiling_Rock">
                 <LootTable>
                     <Drop type="item" id="1593" chance="0.2" minLevel="5" maxLevel="65" />
                     <Drop type="item" id="1595" chance="0.1" minLevel="6" maxLevel="65" />
                     <Drop type="item" id="1594" chance="0.02" minLevel="7" maxLevel="65" />
                 </LootTable>
+            </Enemy>
+            <Enemy name="PF_Spite_Orchid_Ceiling_Rock">
+                <GenericScript>
+                    <AttackBehavior value="Shooting" />
+                    <AwareBehaviorDuration value="0.5" />
+                    <AwareBehavior value="LookAround" />
+                    <UnawareBehavior value="Patrol" />
+                    <HealthRegenAmount value="0" />
+                    <HealthRegenFrequency value="0" />
+                </GenericScript>
+                <GlobalProperties>
+                    <DetectionLimitedByPatrolLine value="false" />
+                    <FrontDetectionRangeX value="8" />
+                    <FrontDetectionRangeUpY value="1" />
+                    <FrontDetectionRangeDownY value="6" />
+                    <BackDetectionRangeX value="8" />
+                    <BackDetectionRangeUpY value="1" />
+                    <BackDetectionRangeDownY value="6" />
+                    <ShootOffsetY value="-1" />
+                    <ProjectilePrefabName value="COL_PRJ_DamageProjectile" />
+                </GlobalProperties>
                 <Behaviors>
                     <Patrol speed="0" smoothMove="false" endPathWaitTime="0" />
                     <LookAround lookTime="4" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
@@ -1020,11 +2229,40 @@
                         <Resource type="PROJ" name="COL_PRJ_DamageProjectile" />
                     </Shooting>
                 </Behaviors>
+                <LootTable>
+                    <Drop type="item" id="1593" chance="0.2" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="1595" chance="0.1" minLevel="6" maxLevel="65" />
+                    <Drop type="item" id="1594" chance="0.02" minLevel="7" maxLevel="65" />
+                </LootTable>
             </Enemy>
         </EnemyCategory>
         <EnemyCategory name="Pincer">
             <!-- Shadow Pincer (Mini-Boss) -->
             <Enemy name="PF_Spite_Pincer_Boss">
+                <GenericScript>
+                    <AttackBehavior value="Aggro" />
+                    <AwareBehaviorDuration value="0.5" />
+                    <AwareBehavior value="LookAround" />
+                    <UnawareBehavior value="Patrol" />
+                    <HealthRegenAmount value="0" />
+                    <HealthRegenFrequency value="0" />
+                </GenericScript>
+                <GlobalProperties>
+                    <DetectionLimitedByPatrolLine value="true" />
+                    <FrontDetectionRangeX value="6" />
+                    <FrontDetectionRangeUpY value="3" />
+                    <FrontDetectionRangeDownY value="0.25" />
+                    <BackDetectionRangeX value="6" />
+                    <BackDetectionRangeUpY value="3" />
+                    <BackDetectionRangeDownY value="0" />
+                    <ViewOffsetY value="0" />
+                    <ProjectilePrefabName value="" />
+                </GlobalProperties>
+                <Behaviors>
+                    <Patrol speed="2.4" smoothMove="false" endPathWaitTime="0" />
+                    <Aggro speed="4.0" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0" />
+                    <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                </Behaviors>
                 <LootTable>
                     <Drop type="item" id="867" chance="0.8" minLevel="5" maxLevel="65" />
                     <Drop type="item" id="1596" chance="0.5" minLevel="6" maxLevel="65" />
@@ -1032,14 +2270,33 @@
                     <Drop type="item" id="1601" chance="0.5" minLevel="6" maxLevel="65" />
                     <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
                 </LootTable>
+            </Enemy>
+            <!-- Mist Pincer (Elite) -->
+            <Enemy name="PF_Spite_Pincer_Invis">
+                <GenericScript>
+                    <AttackBehavior value="Aggro" />
+                    <AwareBehaviorDuration value="0.5" />
+                    <AwareBehavior value="LookAround" />
+                    <UnawareBehavior value="Patrol" />
+                    <HealthRegenAmount value="0" />
+                    <HealthRegenFrequency value="0" />
+                </GenericScript>
+                <GlobalProperties>
+                    <DetectionLimitedByPatrolLine value="true" />
+                    <FrontDetectionRangeX value="6" />
+                    <FrontDetectionRangeUpY value="1" />
+                    <FrontDetectionRangeDownY value="0.25" />
+                    <BackDetectionRangeX value="6" />
+                    <BackDetectionRangeUpY value="2" />
+                    <BackDetectionRangeDownY value="0" />
+                    <ViewOffsetY value="0" />
+                    <ProjectilePrefabName value="" />
+                </GlobalProperties>
                 <Behaviors>
                     <Patrol speed="2.4" smoothMove="false" endPathWaitTime="0" />
                     <Aggro speed="4.0" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0" />
                     <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
                 </Behaviors>
-            </Enemy>
-            <!-- Mist Pincer (Elite) -->
-            <Enemy name="PF_Spite_Pincer_Invis">
                 <LootTable>
                     <Drop type="item" id="867" chance="0.5" minLevel="5" maxLevel="65" />
                     <Drop type="item" id="1596" chance="0.2" minLevel="6" maxLevel="65" />
@@ -1048,14 +2305,33 @@
                     <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65" />
                     <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
                 </LootTable>
+            </Enemy>
+            <!-- Magma Pincer (Elite) -->
+            <Enemy name="PF_Spite_Pincer_Lava">
+                <GenericScript>
+                    <AttackBehavior value="Aggro" />
+                    <AwareBehaviorDuration value="0.5" />
+                    <AwareBehavior value="LookAround" />
+                    <UnawareBehavior value="Patrol" />
+                    <HealthRegenAmount value="0" />
+                    <HealthRegenFrequency value="0" />
+                </GenericScript>
+                <GlobalProperties>
+                    <DetectionLimitedByPatrolLine value="true" />
+                    <FrontDetectionRangeX value="6" />
+                    <FrontDetectionRangeUpY value="3" />
+                    <FrontDetectionRangeDownY value="0.25" />
+                    <BackDetectionRangeX value="6" />
+                    <BackDetectionRangeUpY value="2" />
+                    <BackDetectionRangeDownY value="0" />
+                    <ViewOffsetY value="0" />
+                    <ProjectilePrefabName value="" />
+                </GlobalProperties>
                 <Behaviors>
                     <Patrol speed="2.4" smoothMove="false" endPathWaitTime="0" />
                     <Aggro speed="4.0" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0" />
                     <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
                 </Behaviors>
-            </Enemy>
-            <!-- Magma Pincer (Elite) -->
-            <Enemy name="PF_Spite_Pincer_Lava">
                 <LootTable>
                     <Drop type="item" id="867" chance="0.5" minLevel="5" maxLevel="65" />
                     <Drop type="item" id="1596" chance="0.2" minLevel="6" maxLevel="65" />
@@ -1064,14 +2340,33 @@
                     <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65" />
                     <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
                 </LootTable>
+            </Enemy>
+            <!-- Swamp Pincer (Elite) -->
+            <Enemy name="PF_Spite_Pincer_Swamp">
+                <GenericScript>
+                    <AttackBehavior value="Aggro" />
+                    <AwareBehaviorDuration value="0.5" />
+                    <AwareBehavior value="LookAround" />
+                    <UnawareBehavior value="Patrol" />
+                    <HealthRegenAmount value="0" />
+                    <HealthRegenFrequency value="0" />
+                </GenericScript>
+                <GlobalProperties>
+                    <DetectionLimitedByPatrolLine value="true" />
+                    <FrontDetectionRangeX value="6" />
+                    <FrontDetectionRangeUpY value="3" />
+                    <FrontDetectionRangeDownY value="0.25" />
+                    <BackDetectionRangeX value="6" />
+                    <BackDetectionRangeUpY value="3" />
+                    <BackDetectionRangeDownY value="0" />
+                    <ViewOffsetY value="0" />
+                    <ProjectilePrefabName value="" />
+                </GlobalProperties>
                 <Behaviors>
                     <Patrol speed="2.4" smoothMove="false" endPathWaitTime="0" />
                     <Aggro speed="4.0" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0" />
                     <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
                 </Behaviors>
-            </Enemy>
-            <!-- Swamp Pincer (Elite) -->
-            <Enemy name="PF_Spite_Pincer_Swamp">
                 <LootTable>
                     <Drop type="item" id="867" chance="0.5" minLevel="5" maxLevel="65" />
                     <Drop type="item" id="1596" chance="0.2" minLevel="6" maxLevel="65" />
@@ -1080,31 +2375,62 @@
                     <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65" />
                     <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
                 </LootTable>
+            </Enemy>
+            <!-- Pincer -->
+            <Enemy name="PF_Spite_Pincer_Rock">
+                <GenericScript>
+                    <AttackBehavior value="Aggro" />
+                    <AwareBehaviorDuration value="0.5" />
+                    <AwareBehavior value="LookAround" />
+                    <UnawareBehavior value="Patrol" />
+                    <HealthRegenAmount value="0" />
+                    <HealthRegenFrequency value="0" />
+                </GenericScript>
+                <GlobalProperties>
+                    <DetectionLimitedByPatrolLine value="true" />
+                    <FrontDetectionRangeX value="6" />
+                    <FrontDetectionRangeUpY value="2" />
+                    <FrontDetectionRangeDownY value="0.25" />
+                    <BackDetectionRangeX value="6" />
+                    <BackDetectionRangeUpY value="2" />
+                    <BackDetectionRangeDownY value="0" />
+                    <ViewOffsetY value="0" />
+                    <ProjectilePrefabName value="" />
+                </GlobalProperties>
                 <Behaviors>
                     <Patrol speed="2.4" smoothMove="false" endPathWaitTime="0" />
                     <Aggro speed="4.0" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0" />
                     <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
                 </Behaviors>
-            </Enemy>
-            <!-- Pincer -->
-            <Enemy name="PF_Spite_Pincer_Rock">
                 <LootTable>
                     <Drop type="item" id="867" chance="0.2" minLevel="5" maxLevel="65" />
                     <Drop type="item" id="1596" chance="0.1" minLevel="6" maxLevel="65" />
                     <Drop type="item" id="1597" chance="0.02" minLevel="7" maxLevel="65" />
                 </LootTable>
-                <Behaviors>
-                    <Patrol speed="2.4" smoothMove="false" endPathWaitTime="0" />
-                    <Aggro speed="4.0" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0" />
-                    <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
-                </Behaviors>
             </Enemy>
         </EnemyCategory>
         <EnemyCategory name="Ograk">
             <!-- Shadow Ograk (Mini-Boss) -->
             <Enemy name="PF_Spite_Stomper_Boss">
-                <LootTable>
-                </LootTable>
+                <GenericScript>
+                    <AttackBehavior value="Aggro" />
+                    <AwareBehaviorDuration value="6" />
+                    <AwareBehavior value="Stomper" />
+                    <UnawareBehavior value="Patrol" />
+                    <HealthRegenAmount value="0" />
+                    <HealthRegenFrequency value="0" />
+                </GenericScript>
+                <GlobalProperties>
+                    <DetectionLimitedByPatrolLine value="false" />
+                    <FrontDetectionRangeX value="8" />
+                    <FrontDetectionRangeUpY value="3" />
+                    <FrontDetectionRangeDownY value="0.25" />
+                    <BackDetectionRangeX value="3" />
+                    <BackDetectionRangeUpY value="3" />
+                    <BackDetectionRangeDownY value="0" />
+                    <ViewOffsetY value="0" />
+                    <ProjectilePrefabName value="" />
+                </GlobalProperties>
                 <Behaviors>
                     <Patrol speed="1.5" smoothMove="false" endPathWaitTime="4" />
                     <Aggro speed="3.2" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0" />
@@ -1113,11 +2439,30 @@
                         <Resource type="EABIL" name="PF_EABIL_Spite_Stomper_Miniboss" />
                     </Stomper>
                 </Behaviors>
+                <LootTable>
+                </LootTable>
             </Enemy>
             <!-- Magma Ograk (Elite) -->
             <Enemy name="PF_Spite_Stomper_Lava">
-                <LootTable>
-                </LootTable>
+                <GenericScript>
+                    <AttackBehavior value="Aggro" />
+                    <AwareBehaviorDuration value="6" />
+                    <AwareBehavior value="Stomper" />
+                    <UnawareBehavior value="Patrol" />
+                    <HealthRegenAmount value="0" />
+                    <HealthRegenFrequency value="0" />
+                </GenericScript>
+                <GlobalProperties>
+                    <DetectionLimitedByPatrolLine value="false" />
+                    <FrontDetectionRangeX value="8" />
+                    <FrontDetectionRangeUpY value="3" />
+                    <FrontDetectionRangeDownY value="0.25" />
+                    <BackDetectionRangeX value="3" />
+                    <BackDetectionRangeUpY value="3" />
+                    <BackDetectionRangeDownY value="0" />
+                    <ViewOffsetY value="0" />
+                    <ProjectilePrefabName value="" />
+                </GlobalProperties>
                 <Behaviors>
                     <Patrol speed="1.5" smoothMove="false" endPathWaitTime="4" />
                     <Aggro speed="3.2" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0" />
@@ -1126,11 +2471,30 @@
                         <Resource type="EABIL" name="PF_EABIL_Spite_Stomper_Fire" />
                     </Stomper>
                 </Behaviors>
+                <LootTable>
+                </LootTable>
             </Enemy>
             <!-- Moss Ograk (Elite) -->
             <Enemy name="PF_Spite_Stomper_Swamp">
-                <LootTable>
-                </LootTable>
+                <GenericScript>
+                    <AttackBehavior value="Aggro" />
+                    <AwareBehaviorDuration value="6" />
+                    <AwareBehavior value="Stomper" />
+                    <UnawareBehavior value="Patrol" />
+                    <HealthRegenAmount value="0" />
+                    <HealthRegenFrequency value="0" />
+                </GenericScript>
+                <GlobalProperties>
+                    <DetectionLimitedByPatrolLine value="false" />
+                    <FrontDetectionRangeX value="8" />
+                    <FrontDetectionRangeUpY value="3" />
+                    <FrontDetectionRangeDownY value="0.25" />
+                    <BackDetectionRangeX value="3" />
+                    <BackDetectionRangeUpY value="3" />
+                    <BackDetectionRangeDownY value="0" />
+                    <ViewOffsetY value="0" />
+                    <ProjectilePrefabName value="" />
+                </GlobalProperties>
                 <Behaviors>
                     <Patrol speed="1.5" smoothMove="false" endPathWaitTime="4" />
                     <Aggro speed="3.2" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0" />
@@ -1139,11 +2503,30 @@
                         <Resource type="EABIL" name="PF_EABIL_Spite_Stomper_Poison" />
                     </Stomper>
                 </Behaviors>
+                <LootTable>
+                </LootTable>
             </Enemy>
             <!-- Ograk -->
             <Enemy name="PF_Spite_Stomper_Rock">
-                <LootTable>
-                </LootTable>
+                <GenericScript>
+                    <AttackBehavior value="Aggro" />
+                    <AwareBehaviorDuration value="6" />
+                    <AwareBehavior value="Stomper" />
+                    <UnawareBehavior value="Patrol" />
+                    <HealthRegenAmount value="0" />
+                    <HealthRegenFrequency value="0" />
+                </GenericScript>
+                <GlobalProperties>
+                    <DetectionLimitedByPatrolLine value="false" />
+                    <FrontDetectionRangeX value="8" />
+                    <FrontDetectionRangeUpY value="3" />
+                    <FrontDetectionRangeDownY value="0.25" />
+                    <BackDetectionRangeX value="3" />
+                    <BackDetectionRangeUpY value="3" />
+                    <BackDetectionRangeDownY value="0" />
+                    <ViewOffsetY value="0" />
+                    <ProjectilePrefabName value="" />
+                </GlobalProperties>
                 <Behaviors>
                     <Patrol speed="1.5" smoothMove="false" endPathWaitTime="4" />
                     <Aggro speed="3.2" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0" />
@@ -1152,13 +2535,32 @@
                         <Resource type="EABIL" name="PF_EABIL_Spite_Stomper" />
                     </Stomper>
                 </Behaviors>
+                <LootTable>
+                </LootTable>
             </Enemy>
         </EnemyCategory>
         <EnemyCategory name="Vespid">
             <!-- Shadow Vespid (Boss) -->
             <Enemy name="Spite_Wasp_Boss01">
-                <LootTable>
-                </LootTable>
+                <GenericScript>
+                    <AttackBehavior value="Stinger" />
+                    <AwareBehaviorDuration value="4" />
+                    <AwareBehavior value="LookAround" />
+                    <UnawareBehavior value="ComeBack" />
+                    <HealthRegenAmount value="0" />
+                    <HealthRegenFrequency value="0" />
+                </GenericScript>
+                <GlobalProperties>
+                    <DetectionLimitedByPatrolLine value="false" />
+                    <FrontDetectionRangeX value="8" />
+                    <FrontDetectionRangeUpY value="8" />
+                    <FrontDetectionRangeDownY value="8" />
+                    <BackDetectionRangeX value="8" />
+                    <BackDetectionRangeUpY value="8" />
+                    <BackDetectionRangeDownY value="8" />
+                    <ViewOffsetY value="0" />
+                    <ProjectilePrefabName value="COL_PRJ_WaspProjectile01" />
+                </GlobalProperties>
                 <Behaviors>
                     <Patrol speed="0" smoothMove="false" endPathWaitTime="0" />
                     <Stinger speedForward="12" speedBackward="4" inDurationForward="0.43" attackDuration="2.67" damageAttackTimeOffset="1" inDurationBackward="1.29" damageDistance="2">
@@ -1167,6 +2569,8 @@
                     <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
                     <ComeBack speed="2.4" />
                 </Behaviors>
+                <LootTable>
+                </LootTable>
             </Enemy>
         </EnemyCategory>
         <EnemyCategory name="SpngBob">
