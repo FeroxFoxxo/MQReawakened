@@ -33,7 +33,7 @@ public static class PlayerExtensions
         player.JoinRoom(worldHandler.GetRoomFromLevelId(id, player), out reason);
 
     public static string GetPlayersPlaneString(this Player player)
-        => player.TempData.Position.Z > 0 ? "Plane1" : "Plane0";
+        => Math.Abs(player.TempData.Position.Z) > 10 ? "Plane1" : "Plane0";
 
     public static int GetLevelId(this Player player) =>
         player.Character?.LevelId ?? -1;

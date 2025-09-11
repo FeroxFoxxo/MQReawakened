@@ -189,8 +189,8 @@ public class ServerRConfig : IRConfig
             { GameVersion.v2011, string.Empty }
         };
 
-        FrontPlane = "Plane1";
-        BackPlane = "Plane0";
+        FrontPlane = "Plane0";
+        BackPlane = "Plane1";
 
         Planes = new Dictionary<string, int>()
         {

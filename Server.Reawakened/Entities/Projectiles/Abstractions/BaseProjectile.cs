@@ -11,7 +11,7 @@ public abstract class BaseProjectile(string id, float lifetime,
     public string ProjectileId => id;
     public Room Room => room;
 
-    public readonly string PrjPlane = position.Z > 10 ? config.FrontPlane : config.BackPlane;
+    public readonly string PrjPlane = Math.Abs(position.Z) > 10 ? config.BackPlane : config.FrontPlane;
 
     public Vector3Model Position => position;
     public Vector3 SpawnPosition = new() { x = position.X, y = position.Y, z = position.Z };
