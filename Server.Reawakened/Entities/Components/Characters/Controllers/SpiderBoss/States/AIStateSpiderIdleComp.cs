@@ -106,7 +106,6 @@ public class AIStateSpiderIdleComp : BaseAIState<AIStateSpiderIdle, AI_State>
 
         AddNextState<AIStateSpiderSwichSideComp>();
         AddNextState<AIStateSpiderMoveComp>();
-        AddNextState<AIStateSpiderDropComp>();
         GoToNextState();
     }
 }

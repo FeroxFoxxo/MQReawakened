@@ -15,5 +15,12 @@ public class AIStateSpiderSwichSideComp : BaseAIState<AIStateSpiderSwichSide, AI
 
     public override ExtLevelEditor.ComponentSettings GetSettings() => [StateMachine.GetForceDirectionX().ToString()];
 
-    public override void StateIn() => StateMachine.SetForceDirectionX((!StartRight) ? 1 : (-1));
+    public override void StateIn() {
+        if (StateMachine is not SpiderBossControllerComp bossComp)
+            return;
+
+        bossComp.IsRightSide = !bossComp.IsRightSide;
+
+        StateMachine.SetForceDirectionX(bossComp.IsRightSide ? 1 : (-1));
+    }
 }

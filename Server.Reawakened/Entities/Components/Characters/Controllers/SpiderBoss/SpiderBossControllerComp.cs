@@ -22,6 +22,8 @@ public class SpiderBossControllerComp : BaseAIStateMachine<SpiderBossController>
     public float TeaserEndLifeRatio { get; private set; }
     public float TeaserEndTimeLimit { get; private set; }
 
+    public bool IsRightSide = false;
+
     public override void InitializeComponent()
     {
         base.InitializeComponent();
@@ -32,6 +34,10 @@ public class SpiderBossControllerComp : BaseAIStateMachine<SpiderBossController>
         Phase02Trans = baseComp.HealthRatioPhase02Trans;
         TeaserEndLifeRatio = baseComp.TeaserEndLifeRatio;
         TeaserEndTimeLimit = baseComp.TeaserEndTimeLimit;
+
+        var switchComp = Room.GetEntityFromId<AIStateSpiderSwichSideComp>(Id);
+
+        IsRightSide = switchComp.StartRight;
 
         Room.AddUpdatingKilledEnemy(Id);
     }

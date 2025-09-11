@@ -4,6 +4,7 @@ using Server.Reawakened.Entities.DataComponentAccessors.SpiderBoss.States;
 using UnityEngine;
 
 namespace Server.Reawakened.Entities.Components.Characters.Controllers.SpiderBoss.States;
+
 public class AIStateSpiderMoveComp : BaseAIState<AIStateSpiderMoveMQR, AI_State_Move>
 {
     public override string StateName => "AIStateSpiderMove";
@@ -12,12 +13,12 @@ public class AIStateSpiderMoveComp : BaseAIState<AIStateSpiderMoveMQR, AI_State_
     public float CeilingY => ComponentData.CeilingY;
     public float PatrolFromY => ComponentData.PatrolFromY;
 
-    private readonly vector3 _dampingVelocity = new (0f, 0f, 0f);
+    private readonly vector3 _dampingVelocity = new(0f, 0f, 0f);
 
     // TODO!!
-    public Vector3 TargetPosition = new (0f, 0f, 0f);
+    public Vector3 TargetPosition = new(0f, 0f, 0f);
 
-    public override AI_State_Move GetInitialAIState() => new (0);
+    public override AI_State_Move GetInitialAIState() => new(0);
 
     public override ExtLevelEditor.ComponentSettings GetSettings() => [
         Position.X.ToString(), Position.Y.ToString(), Position.Z.ToString(),
@@ -37,4 +38,9 @@ public class AIStateSpiderMoveComp : BaseAIState<AIStateSpiderMoveMQR, AI_State_
     }
 
     public override void OnAIStateIn() => (StateMachine as SpiderBossControllerComp).OnGround = false;
+
+    public override void StateOut() {
+        AddNextState<AIStateSpiderDropComp>();
+        GoToNextState();
+    }
 }
