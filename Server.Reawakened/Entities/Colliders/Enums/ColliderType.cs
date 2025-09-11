@@ -7,6 +7,7 @@ public enum ColliderType
     Breakable,
     TriggerTarget,
     Enemy,
+    EnemyDetection,
     Player,
     AiAttack,
     Mesh,

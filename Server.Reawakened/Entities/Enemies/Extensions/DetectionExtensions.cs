@@ -6,7 +6,7 @@ namespace Server.Reawakened.Entities.Enemies.Extensions;
 
 public static class DetectionExtensions
 {
-    public static bool TryGetDetectionCollider(this BehaviorEnemy enemy, out EnemyCollider collider)
+    public static bool TryGetDetectionCollider(this BehaviorEnemy enemy, out EnemyDetectionCollider collider)
     {
         collider = null;
 
@@ -29,7 +29,7 @@ public static class DetectionExtensions
             hit.BoundingBox.Height + global.Global_FrontDetectionRangeDownY + global.Global_FrontDetectionRangeDownY
         );
 
-        collider = new EnemyCollider(enemy, rect, true);
+        collider = new EnemyDetectionCollider(enemy, rect);
 
         return true;
     }

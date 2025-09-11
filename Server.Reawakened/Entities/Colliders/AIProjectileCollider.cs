@@ -27,7 +27,7 @@ public class AIProjectileCollider(string id, string ownerId, Room room,
     public override Vector3Model Position => position;
     public override RectModel BoundingBox => size;
     public override string Plane => plane;
-    public override ColliderType Type => ColliderType.Attack;
+    public override ColliderType Type => ColliderType.AiAttack;
 
     public override string[] RunCollisionDetection(bool isAttack)
     {
