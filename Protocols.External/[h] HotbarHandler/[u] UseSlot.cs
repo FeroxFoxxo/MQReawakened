@@ -182,7 +182,7 @@ public class UseSlot : ExternalProtocol
         // Add weapon stats later
         var prj = new MeleeEntity(prjId, new Vector3Model(position.x, position.y, position.z), Player, direction, 0.51f, usedItem,
             Player.Character.CalculateDamage(usedItem, ItemCatalog),
-            usedItem.Elemental, ServerRConfig, ItemRConfig);
+            usedItem.Elemental, ItemRConfig);
 
         Player.Room.AddProjectile(prj);
     }
