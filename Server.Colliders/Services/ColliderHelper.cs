@@ -30,15 +30,20 @@ public static class ColliderHelper
         return [.. colliders];
     }
 
-    private static ColliderDto ColliderToDto(BaseCollider c) => new(
-        c.Id,
-        c.Type.ToString(),
-        c.Plane,
-        c.Active,
-        c.IsInvisible,
-        c.ColliderBox.x,
-        c.ColliderBox.y,
-        c.ColliderBox.width,
-        c.ColliderBox.height
-    );
+    private static ColliderDto ColliderToDto(BaseCollider c)
+    {
+        var type = c.Type.ToString();
+        
+        return new(
+            $"{c.Id}_{type}",
+            type,
+            c.Plane,
+            c.Active,
+            c.IsInvisible,
+            c.ColliderBox.x,
+            c.ColliderBox.y,
+            c.ColliderBox.width,
+            c.ColliderBox.height
+        );
+    }
 }
