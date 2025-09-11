@@ -24,6 +24,7 @@ public class Bomber(BehaviorEnemy enemy) : IBomber
         {
             var bomberProperties = bomber.GetProperties() as BomberProperties;
             enemy.Room.ExplodeBomb(null, enemy.Position.ToUnityVector3(), bomberProperties.bombRadius, enemy.GetDamage(), Elemental.Standard, enemy.ServerRConfig, enemy.TimerThread);
+            enemy.Damage(null, 99999);
         }
         else
             LogFacade.error("Running unimplemented AI method 'bomb' (from Bomber.cs)");

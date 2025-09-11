@@ -6,6 +6,7 @@ using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Core.Enums;
+using Server.Reawakened.Entities.Colliders;
 using Server.Reawakened.Entities.Projectiles;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
@@ -187,7 +188,13 @@ public class State : ExternalProtocol
                 LogEvent(syncEvent, entityId, Player.Room);
     }
 
-    private static void UpdatePlayerCollider(Player player) => player.TempData.PlayerCollider?.RunCollisionDetection(false);
+    private static void UpdatePlayerCollider(Player player)
+    {
+        if (player.TempData.PlayerCollider == null)
+            player.TempData.PlayerCollider = new PlayerCollider(player);
+
+        player.TempData.PlayerCollider.RunCollisionDetection(false);
+    }
 
     private void RequestRespawn(string entityId, float triggerTime)
     {
