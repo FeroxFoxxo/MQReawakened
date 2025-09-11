@@ -339,4 +339,6 @@ public abstract class BaseEnemy : IDestructible
         GameFlow.StatisticData.GetValue(
             ItemEffectType.AbilityPower, WorldStatisticsGroup.Enemy, Level
         );
+    
+    public virtual void OnCollideWithPlayer(Player player) {}
 }

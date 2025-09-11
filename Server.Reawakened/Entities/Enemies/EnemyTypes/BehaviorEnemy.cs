@@ -68,7 +68,7 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
         Behaviors = EnemyModel.BehaviorData.ToDictionary(s => s.Key, s => s.Value.GetBaseBehaviour(this));
 
         base.Initialize();
-        
+
         Room.SendSyncEvent(
             AISyncEventHelper.AIInit(
                 Position.X, Position.Y, Position.Z,
@@ -117,13 +117,13 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
 
             var temp = player.TempData;
             var character = player.Character;
-            var statusEffects = character?.StatusEffects;
+            var statusEffects = character.StatusEffects;
 
             var collides = temp.PlayerCollider != null && enemyCollider.CheckCollision(temp.PlayerCollider);
             var withinPatrol = !Global.Global_DetectionLimitedByPatrolLine || temp != null && temp.Position.X > AiData.Intern_MinPointX && temp.Position.X < AiData.Intern_MaxPointX;
             var samePlane = ParentPlane == player.GetPlayersPlaneString();
-            var invisible = statusEffects?.HasEffect(ItemEffectType.Invisibility) ?? false;
-            var alive = (character?.CurrentLife ?? 0) > 0;
+            var invisible = statusEffects.HasEffect(ItemEffectType.Invisibility);
+            var alive = character.CurrentLife > 0;
 
             if (collides && withinPatrol && samePlane && !invisible && alive)
             {
@@ -137,7 +137,7 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
 
     public void FireProjectile(bool isGrenade)
     {
-        var position = new Vector3Model (
+        var position = new Vector3Model(
             Position.X + AiData.Intern_Dir * Global.Global_ShootOffsetX,
             Position.Y + Global.Global_ShootOffsetY,
             Position.Z
@@ -153,7 +153,7 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
 
         AiData.Intern_FireProjectile = false;
     }
-    
+
     public void ChangeBehavior(StateType behaviourType, float targetX, float targetY, int direction)
     {
         if (direction == 0)
@@ -224,7 +224,7 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
         }
 
         Logger.LogTrace("Enemy {PrefabName} aggroed on player {PlayerName}", PrefabName, player.CharacterName);
-        
+
         AiData.Sync_TargetPosX = player.TempData.Position.X;
         AiData.Sync_TargetPosY = player.TempData.Position.Y;
 
@@ -234,4 +234,25 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
             Generic.Patrol_ForceDirectionX
         );
     }
+
+    public override void OnCollideWithPlayer(Player player)
+    {
+        switch (EnemyModel.EnemyCategory)
+        {
+            case EnemyCategory.Boombug:
+                AggroBehaviourTransition(StateType.Bomber);;
+                break;
+            case EnemyCategory.Stomper:
+                AggroBehaviourTransition(StateType.Stomper);
+                break;
+        }
+    }
+
+    public void AggroBehaviourTransition(StateType nextBehaviour) => 
+        ChangeBehavior(
+            nextBehaviour,
+            Global.UnawareBehavior == StateType.ComeBack ? Position.X : AiData.Sync_TargetPosX,
+            Global.UnawareBehavior == StateType.ComeBack ? Position.Y : AiData.Sync_TargetPosY,
+            AiData.Intern_Dir
+        );
 }
