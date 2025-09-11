@@ -7,7 +7,7 @@ public class GlobalPropertyModel(bool detectionLimitedByPatrolLine, float backDe
     float frontDetectionRangeUpY, float frontDetectionRangeDownY, string script, string shootingProjectilePrefabName,
     bool disableCollision, bool detectionSourceOnPatrolLine, float attackBeyondPatrolLine)
 {
-    private static readonly AI_Stats_Global genericGlobalStats = new();
+    private static readonly Default_AI_Stats_Global genericGlobalStats = new();
 
     public void ApplyGlobalPropertiesFromModel(AIStatsGlobalComp globalStats)
     {

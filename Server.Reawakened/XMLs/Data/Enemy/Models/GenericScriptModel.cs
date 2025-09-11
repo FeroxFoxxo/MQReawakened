@@ -3,7 +3,7 @@
 namespace Server.Reawakened.XMLs.Data.Enemy.Models;
 public class GenericScriptModel(string attackBehavior, string awareBehavior, string unawareBehavior, float awareBehaviorDuration, int healthRegenAmount, int healthRegenFreq)
 {
-    private static readonly AI_Stats_Global genericGlobalStats = new();
+    private static readonly Default_AI_Stats_Global genericGlobalStats = new();
 
     public void ApplyGenericPropertiesFromModel(AIStatsGlobalComp globalStats)
     {
