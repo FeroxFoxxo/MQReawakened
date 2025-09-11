@@ -43,28 +43,37 @@ public class AIStateSpiderlingAttackComp : BaseAIState<AIStateSpiderlingAttackMQ
         if (targetPlayer == null)
             return;
 
-        var directionToPlayer = GetDirectionToPlayer(targetPlayer);
-        var baseAngle = Mathf.Atan2(directionToPlayer.y, directionToPlayer.x) * Mathf.Rad2Deg;
+        var targetPos = targetPlayer.TempData.Position;
 
-        var startingAngle = baseAngle + FirstProjectileAngleOffset;
+        var toTarget = targetPos.ToUnityVector3() - Position.ToUnityVector3();
+        var dir = toTarget;
+
+        if (dir.sqrMagnitude <= 0f)
+        {
+            var forceX = 1f;
+            try { forceX = StateMachine.GetForceDirectionX(); } catch { }
+            dir = new Vector3(forceX, 0f, 0f);
+        }
+
+        var baseAngle = Mathf.Atan2(dir.y, dir.x);
+
+        if (NumberOfProjectiles <= 0)
+        {
+            Logger.LogTrace("No projectiles to fire for {StateName} on {PrefabName}", StateName, PrefabName);
+            return;
+        }
+
+        var startOffsetDeg = FirstProjectileAngleOffset;
+        var betweenDeg = AngleBetweenProjectiles;
 
         for (var i = 0; i < NumberOfProjectiles; i++)
         {
-            var currentAngle = startingAngle + i * AngleBetweenProjectiles;
-            var angleInRadians = currentAngle * Mathf.Deg2Rad;
+            var angleDeg = startOffsetDeg + i * betweenDeg;
+            var angle = baseAngle + angleDeg * Mathf.Deg2Rad;
 
-            var projectileDirection = new Vector2(
-                Mathf.Cos(angleInRadians),
-                Mathf.Sin(angleInRadians)
-            );
+            var velocity = new Vector2(Mathf.Cos(angle) * ProjectileSpeed, Mathf.Sin(angle) * ProjectileSpeed);
 
-            var projectileSpeed = projectileDirection * ProjectileSpeed;
-
-            EnemyController.FireProjectile(
-                Position,
-                projectileSpeed,
-                false
-            );
+            EnemyController.FireProjectile(Position, velocity, false);
         }
     }
 }
