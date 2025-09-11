@@ -14,7 +14,7 @@ public class TriggerableTargetCollider(BaseComponent baseTriggerCoop) : BaseColl
     public override string Id => baseTriggerCoop.Id;
     public override RectModel BoundingBox => baseTriggerCoop.Rectangle;
     public override string Plane => baseTriggerCoop.ParentPlane;
-    public override ColliderType Type => ColliderType.TerrainCube;
+    public override ColliderType Type => ColliderType.TriggerTarget;
 
     public override void SendCollisionEvent(BaseCollider received)
     {
