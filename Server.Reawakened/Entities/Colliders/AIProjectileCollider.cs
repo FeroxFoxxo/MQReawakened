@@ -29,28 +29,24 @@ public class AIProjectileCollider(string id, string ownerId, Room room,
     public override string Plane => plane;
     public override ColliderType Type => ColliderType.AiAttack;
 
+    public override bool CanCollideWithType(BaseCollider collider) =>
+        collider.Type switch
+        {
+            ColliderType.TerrainCube => true,
+            ColliderType.Player => true,
+            ColliderType.Mesh => true,
+            _ => false
+        };
+
     public override string[] RunCollisionDetection(bool isAttack)
     {
-        var colliders = Room.GetColliders();
-        List<string> collidedWith = [];
-
         if (LifeTime <= Room.Time)
         {
             Room.Logger.LogTrace("Removing projectile collider {ColliderId} due to lifetime expiry.", Id);
             Room.RemoveCollider(Id);
-            return ["0"];
+            return [];
         }
 
-        foreach (var collider in colliders)
-            if (CheckCollision(collider) && collider.Type != ColliderType.Attack &&
-                collider.Type != ColliderType.AiAttack && collider.Type != ColliderType.Enemy &&
-                collider.Type != ColliderType.Breakable && collider.Type != ColliderType.Hazard
-                && collider.Active)
-            {
-                collidedWith.Add(collider.Id);
-                collider.SendCollisionEvent(this);
-            }
-
-        return [.. collidedWith];
+        return RunBaseCollisionDetection();
     }
 }

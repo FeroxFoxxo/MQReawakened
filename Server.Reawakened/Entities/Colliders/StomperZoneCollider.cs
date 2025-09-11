@@ -7,6 +7,7 @@ using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Models.Planes;
 
 namespace Server.Reawakened.Entities.Colliders;
+
 public class StomperZoneCollider(StomperControllerComp stomperController) : BaseCollider
 {
     public bool Hazard => stomperController.Hazard;
@@ -18,25 +19,13 @@ public class StomperZoneCollider(StomperControllerComp stomperController) : Base
     public override RectModel BoundingBox => stomperController.Rectangle;
     public override string Plane => stomperController.ParentPlane;
     public override ColliderType Type => ColliderType.Stomper;
-
-    public override string[] RunCollisionDetection(bool isAttack)
-    {
-        var colliders = Room.GetColliders();
-
-        var collidedWith = new HashSet<string>();
-
-        foreach (var collider in colliders)
+    public override bool CanCollideWithType(BaseCollider collider) =>
+        collider.Type switch
         {
-            var collided = CheckCollision(collider);
-            var isCollidableType = collider.Type is ColliderType.Player;
+            ColliderType.Player => true,
+            _ => false
+        };
 
-            if (collided && isCollidableType)
-            {
-                collidedWith.Add(collider.Id);
-                collider.SendCollisionEvent(this);
-            }
-        }
+    public override string[] RunCollisionDetection(bool isAttack) => RunBaseCollisionDetection();
 
-        return [.. collidedWith];
-    }
 }

@@ -5,6 +5,7 @@ using Server.Reawakened.Rooms.Models.Planes;
 using UnityEngine;
 
 namespace Server.Reawakened.Entities.Colliders.Abstractions;
+
 public abstract class BaseCollider
 {
     public abstract Room Room { get; }
@@ -38,8 +39,28 @@ public abstract class BaseCollider
 
     public virtual string[] RunCollisionDetection(bool isAttack) => [];
 
-    public virtual void SendCollisionEvent(BaseCollider received) {}
-    
+    public virtual void SendCollisionEvent(BaseCollider received) { }
+
     public bool CheckCollision(BaseCollider collided) =>
         collided.ColliderBox.Overlaps(ColliderBox) && Plane == collided.Plane;
+
+    public virtual bool CanCollideWithType(BaseCollider collider) => false;
+    public virtual bool CanOverrideInvisibleDetection() => false;
+    
+    public string[] RunBaseCollisionDetection()
+    {
+        var colliders = Room.GetColliders();
+        var collidedWith = new HashSet<string>();
+
+        foreach (var collider in colliders)
+        {
+            if (CheckCollision(collider) && CanCollideWithType(collider) && collider.Active && (!collider.IsInvisible || CanOverrideInvisibleDetection()))
+            {
+                collidedWith.Add(collider.Id);
+                collider.SendCollisionEvent(this);
+            }
+        }
+
+        return [.. collidedWith];
+    }
 }

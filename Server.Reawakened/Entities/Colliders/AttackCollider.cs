@@ -1,4 +1,5 @@
 ﻿using A2m.Server;
+using Microsoft.Extensions.Logging;
 using Server.Reawakened.Entities.Colliders.Abstractions;
 using Server.Reawakened.Entities.Colliders.Enums;
 using Server.Reawakened.Players;
@@ -26,42 +27,27 @@ public class AttackCollider(string id, Vector3Model position,
     public readonly float OffsetTime = player.Room.Time + offset;
     public readonly float LifeTime = player.Room.Time + lifeTime;
 
+    public override bool CanOverrideInvisibleDetection() => CanSeeInvisible;
+
+    public override bool CanCollideWithType(BaseCollider collider) =>
+        collider.Type switch
+        {
+            ColliderType.Enemy => true,
+            ColliderType.TriggerTarget => true,
+            ColliderType.TriggerReceiver => true,
+            ColliderType.Breakable => true,
+            _ => false
+        };
+
     public override string[] RunCollisionDetection(bool isAttack)
     {
-        var colliders = Room.GetColliders();
-
-        var collidedWith = new HashSet<string>();
-
-        var time = Room.Time;
-
-        if (LifeTime <= time)
+        if (LifeTime <= Room.Time)
         {
+            Room.Logger.LogTrace("Removing attack collider {ColliderId} due to lifetime expiry.", Id);
             Room.RemoveCollider(Id);
             return [];
         }
 
-        if (time < OffsetTime)
-            return [];
-
-        if (isAttack)
-            foreach (var collider in colliders)
-            {
-                var isCollidable = collider.Type is not ColliderType.Attack and not
-                    ColliderType.Player and not ColliderType.Hazard and not ColliderType.AiAttack
-                    && collider.Active && (!collider.IsInvisible || CanSeeInvisible);
-
-                if (!isCollidable)
-                    continue;
-
-                var collided = CheckCollision(collider);
-
-                if (!collided)
-                    continue;
-
-                collidedWith.Add(collider.Id);
-                collider.SendCollisionEvent(this);
-            }
-
-        return [.. collidedWith];
+        return Room.Time < OffsetTime ? [] : !isAttack ? [] : RunBaseCollisionDetection();
     }
 }
