@@ -73,7 +73,7 @@ public class AIStatePatrolComp : BaseAIState<AIStatePatrol, AI_State_Patrol>
         State.Init(Position.ToVector3());
     }
 
-    public Player GetClosestPlayer() => Room.GetClosetPlayer(Position.ToUnityVector3(), DetectionRange);
+    public Player GetClosestPlayer() => Room.GetClosestPlayer(Position.ToUnityVector3(), DetectionRange);
 
     public override void Execute()
     {

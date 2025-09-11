@@ -3,6 +3,7 @@ using Server.Base.Core.Abstractions;
 using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Abstractions;
+using Server.Reawakened.Rooms.Extensions;
 using UnityEngine;
 
 namespace Server.Reawakened.Entities.Components.Characters.Controllers.SpiderBoss.States;
@@ -105,7 +106,8 @@ public class AIStateSpiderVenomComp : BaseAIState<AIStateSpiderVenom, AI_State>
         if (component?.Room == null)
             return;
 
-        var player = component.Room.GetPlayers().FirstOrDefault(p => p != null && p.Character.CurrentLife > 0);
+        var player = component.Room.GetClosestPlayer(component.Position.ToUnityVector3(), 100f);
+
         if (player == null)
             return;
 

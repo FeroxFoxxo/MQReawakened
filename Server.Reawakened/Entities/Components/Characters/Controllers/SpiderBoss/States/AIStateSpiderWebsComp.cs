@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Abstractions;
+using Server.Reawakened.Rooms.Extensions;
 using UnityEngine;
 
 namespace Server.Reawakened.Entities.Components.Characters.Controllers.SpiderBoss.States;
@@ -44,7 +45,7 @@ public class AIStateSpiderWebsComp : BaseAIState<AIStateSpiderWebs, AI_State>
 
     private void LaunchWebProjectile()
     {
-        var player = Room.GetPlayers().FirstOrDefault(p => p != null && p.Character.CurrentLife > 0);
+        var player = Room.GetClosestPlayer(Position.ToUnityVector3(), 100f);
 
         if (player == null)
             return;

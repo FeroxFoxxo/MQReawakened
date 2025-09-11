@@ -20,7 +20,7 @@ public static class RoomExtensions
             player.SendSyncEventToPlayer(syncEvent);
     }
 
-    public static Player GetClosetPlayer(this Room room, Vector3 currentPosition, float radius)
+    public static Player GetClosestPlayer(this Room room, Vector3 currentPosition, float radius)
     {
         Player closestPlayer = null;
         var closestDistance = float.MaxValue;

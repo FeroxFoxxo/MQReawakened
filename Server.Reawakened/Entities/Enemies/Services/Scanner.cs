@@ -12,7 +12,7 @@ public class Scanner(BehaviorEnemy enemy) : IScan
 
     private vector3 FindClosestPosition(float radius = float.MaxValue)
     {
-        var firstPlayer = enemy.Room.GetClosetPlayer(enemy.Position.ToUnityVector3(), radius);
+        var firstPlayer = enemy.Room.GetClosestPlayer(enemy.Position.ToUnityVector3(), radius);
 
         if (firstPlayer == null)
             return new vector3(0, 0, 0);
