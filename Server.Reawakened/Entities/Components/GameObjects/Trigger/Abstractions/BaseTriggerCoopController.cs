@@ -1,4 +1,5 @@
 ﻿using A2m.Server;
+using Microsoft.Extensions.Logging;
 using Server.Base.Logging;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Entities.Colliders;
@@ -313,6 +314,8 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
 
     public void TriggerInteraction(ActivationType type, Player player)
     {
+        Room.Logger.LogTrace("TriggerInteraction called with type {Type} by player {Player}.", type, player?.CharacterName ?? "null");
+
         if (!Activations.Contains(type))
             return;
 
