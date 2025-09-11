@@ -30,16 +30,16 @@ public class EnemyModel
                     BehaviorData = [];
                 }
 
-                if (GlobalProperties != null)
+                if (GlobalProperties == null)
                 {
-                    logger.LogWarning("Enemy '{Name}' has global properties attached, but is using AiType 'Behavior'. These will be ignored.", enemyType);
+                    logger.LogError("Enemy '{Name}' does not have global properties attached!", enemyType);
                 }
 
-                if (GenericScript != null)
+                if (GenericScript == null)
                 {
-                    logger.LogWarning("Enemy '{Name}' has generic script properties attached, but is using AiType 'Behavior'. These will be ignored.", enemyType);
+                    logger.LogError("Enemy '{Name}' does not have generic script properties attached!", enemyType);
                 }
-
+                
                 break;
         }
     }
