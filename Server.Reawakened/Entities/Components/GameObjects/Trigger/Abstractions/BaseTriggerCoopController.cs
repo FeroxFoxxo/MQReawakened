@@ -11,7 +11,6 @@ using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.XMLs.Bundles.Base;
 using System.Text;
-using UnityEngine;
 using static TriggerCoopController;
 
 namespace Server.Reawakened.Entities.Components.GameObjects.Trigger.Abstractions;
@@ -295,7 +294,6 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
         player.Character.Pets.TryGetValue(player.GetEquippedPetId(ServerRConfig), out pet) && !pet.InCoopState() &&
                 (InteractType == InteractionType.PetChain || InteractType == InteractionType.PetSwitch);
 
-
     public void SendInteractionUpdate()
     {
         if (TriggerReceiverActivated() && StayTriggeredOnReceiverActivated) return;
@@ -310,7 +308,7 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
 
     public virtual void Triggered(Player player, bool isSuccess, bool isActive)
     {
-
+        // Intended to be overridden by child classes
     }
 
     public void TriggerInteraction(ActivationType type, Player player)
@@ -513,38 +511,32 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
 
     public void QuestAdded(QuestDescription quest, Player player)
     {
-                var shouldRun = QuestInProgressRequired == quest.Name;
+        var sb = new StringBuilder();
+        sb.AppendLine($"Callback: QuestAdded")
+            .AppendLine($"TriggerId: {Id}")
+            .AppendLine($"Quest: {quest?.Name} ({quest?.Id})")
+            .AppendLine($"Player: {player?.CharacterName}");
 
-                var sb = new StringBuilder();
-                        sb.AppendLine($"Callback: QuestAdded")
-                            .AppendLine($"TriggerId: {Id}")
-                            .AppendLine($"Quest: {quest?.Name} ({quest?.Id})")
-                            .AppendLine($"Player: {player?.CharacterName}")
-                    .AppendLine($"MatchesInProgressRequired: {shouldRun}");
+        FileLogger?.WriteGenericLog<TriggerCoopController>(
+                "quest-callbacks",
+                $"[QuestAdded]",
+                sb.ToString(),
+                LoggerType.Trace
+        );
 
-                FileLogger?.WriteGenericLog<TriggerCoopController>(
-                        "quest-callbacks",
-                        $"[QuestAdded]",
-                        sb.ToString(),
-                        LoggerType.Trace
-                );
-
-                if (shouldRun)
-                        RunTrigger(player);
+        if (CurrentPhysicalInteractors.Contains(player.GameObjectId))
+        {
+            RunTrigger(player);
+        }
     }
 
     public void QuestCompleted(QuestDescription quest, Player player)
     {
-        var matchesCompleted = QuestCompletedRequired == quest.Name;
-        var matchesInProgress = QuestInProgressRequired == quest.Name;
-
         var sb = new StringBuilder();
-                sb.AppendLine($"Callback: QuestCompleted")
-                    .AppendLine($"TriggerId: {Id}")
-                    .AppendLine($"Quest: {quest?.Name} ({quest?.Id})")
-                    .AppendLine($"Player: {player?.CharacterName}")
-            .AppendLine($"MatchesCompletedRequired: {matchesCompleted}")
-            .AppendLine($"MatchesInProgressRequired: {matchesInProgress}");
+        sb.AppendLine($"Callback: QuestCompleted")
+            .AppendLine($"TriggerId: {Id}")
+            .AppendLine($"Quest: {quest?.Name} ({quest?.Id})")
+            .AppendLine($"Player: {player?.CharacterName}");
 
         FileLogger?.WriteGenericLog<TriggerCoopController>(
                 "quest-callbacks",
@@ -553,7 +545,9 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
                 LoggerType.Trace
         );
 
-        if (matchesCompleted || matchesInProgress)
-                RunTrigger(player);
+        if (CurrentPhysicalInteractors.Contains(player.GameObjectId))
+        {
+            RunTrigger(player);
+        }
     }
 }
