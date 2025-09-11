@@ -3,6 +3,7 @@ using Server.Reawakened.Rooms;
 using Server.Reawakened.Entities.Enemies.EnemyTypes;
 using Server.Reawakened.Entities.Enemies.Extensions;
 using Server.Reawakened.Entities.Colliders.Enums;
+using Server.Reawakened.Entities.Colliders.Abstractions;
 
 namespace Server.Colliders.Services;
 
@@ -10,16 +11,7 @@ public static class ColliderHelper
 {
     public static ColliderDto[] BuildCollidersForRoom(Room room)
     {
-        var colliders = room.GetColliders().Select(c => new ColliderDto(
-            c.Id,
-            c.Type.ToString(),
-            c.Plane,
-            c.Active,
-            c.IsInvisible,
-            c.ColliderBox.x,
-            c.ColliderBox.y,
-            c.ColliderBox.width,
-            c.ColliderBox.height)).ToList();
+        var colliders = room.GetColliders().Select(ColliderToDto).ToList();
 
         try
         {
@@ -30,16 +22,7 @@ public static class ColliderHelper
                     if (!behavior.TryGetDetectionCollider(out var detect))
                         continue;
 
-                    colliders.Add(new ColliderDto(
-                        behavior.Id + "_detection",
-                        ColliderType.Enemy.ToString(),
-                        behavior.ParentPlane,
-                        true,
-                        detect.IsInvisible,
-                        detect.ColliderBox.x,
-                        detect.ColliderBox.y,
-                        detect.ColliderBox.width,
-                        detect.ColliderBox.height));
+                    colliders.Add(ColliderToDto(detect));
                 }
             }
         }
@@ -47,4 +30,16 @@ public static class ColliderHelper
 
         return [.. colliders];
     }
+
+    private static ColliderDto ColliderToDto(BaseCollider c) => new(
+        c.Id,
+        c.Type.ToString(),
+        c.Plane,
+        c.Active,
+        c.IsInvisible,
+        c.ColliderBox.x,
+        c.ColliderBox.y,
+        c.ColliderBox.width,
+        c.ColliderBox.height
+    );
 }

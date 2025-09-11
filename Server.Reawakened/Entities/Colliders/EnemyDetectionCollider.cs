@@ -9,7 +9,7 @@ public class EnemyDetectionCollider(BaseEnemy enemy, RectModel box) : BaseCollid
 {
     public override Vector3Model Position => enemy.Position;
     public override Room Room => enemy.Room;
-    public override string Id => enemy.Id;
+    public override string Id => $"{enemy.Id}_detection";
     public override RectModel BoundingBox => box;
     public override string Plane => enemy.ParentPlane;
     public override ColliderType Type => ColliderType.EnemyDetection;
