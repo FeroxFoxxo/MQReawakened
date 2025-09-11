@@ -121,7 +121,7 @@ public class State : ExternalProtocol
                 case SyncEvent.EventType.PhysicBasic:
                     var physicsBasicEvent = new PhysicBasic_SyncEvent(syncEvent);
 
-                    newPlayer.TempData.Position = new Vector3Model(
+                    newPlayer.TempData.Position.SetPosition(
                         physicsBasicEvent.PositionX,
                         physicsBasicEvent.PositionY,
                         physicsBasicEvent.PositionZ
