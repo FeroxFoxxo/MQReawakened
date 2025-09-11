@@ -1,4 +1,5 @@
 ﻿using A2m.Server;
+using Microsoft.Extensions.Logging;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Entities.Colliders;
@@ -48,5 +49,8 @@ public class ChargeAttackProjectile : BaseProjectile
         );
 
         Room.RemoveProjectile(ProjectileId);
+
+        Room.Logger.LogTrace("Charge Attack Projectile {ProjectileId} hit entity {HitGoID} and was removed from the room.",
+            ProjectileId, hitGoID);
     }
 }

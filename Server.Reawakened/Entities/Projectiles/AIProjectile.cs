@@ -43,7 +43,7 @@ public class AIProjectile : BaseProjectile
         Room.SendSyncEvent(hit);
         Room.RemoveProjectile(ProjectileId);
 
-        Room.Logger.LogTrace("Projectile {ProjectileId} hit entity {HitGoID} and was removed from the room.",
+        Room.Logger.LogTrace("AI Projectile {ProjectileId} hit entity {HitGoID} and was removed from the room.",
             ProjectileId, hitGoID);
     }
 }

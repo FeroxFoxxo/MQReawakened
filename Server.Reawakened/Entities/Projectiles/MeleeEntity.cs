@@ -1,4 +1,5 @@
 ﻿using A2m.Server;
+using Microsoft.Extensions.Logging;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Entities.Colliders;
 using Server.Reawakened.Entities.Projectiles.Abstractions;
@@ -50,5 +51,8 @@ public class MeleeEntity : BaseProjectile
 
         Room.SendSyncEvent(hit);
         Room.RemoveProjectile(ProjectileId);
+
+        Room.Logger.LogTrace("Melee Projectile {ProjectileId} hit entity {HitGoID} and was removed from the room.",
+            ProjectileId, hitGoID);
     }
 }
