@@ -57,11 +57,6 @@ public class ServerRConfig : IRConfig
     public float PlayerWidth { get; }
     public float PlayerHeight { get; }
 
-    public string FrontPlane { get; }
-    public string BackPlane { get; }
-
-    public Dictionary<string, int> Planes { get; }
-
     public int CashKitAmount { get; }
 
     public string DailyBoxName { get; }
@@ -187,15 +182,6 @@ public class ServerRConfig : IRConfig
             { GameVersion.vPets2012, string.Empty },
             { GameVersion.vEarly2012, string.Empty },
             { GameVersion.v2011, string.Empty }
-        };
-
-        FrontPlane = "Plane0";
-        BackPlane = "Plane1";
-
-        Planes = new Dictionary<string, int>()
-        {
-            { FrontPlane, 0 },
-            { BackPlane, 20 }
         };
 
         LastClientUpdate = 0;

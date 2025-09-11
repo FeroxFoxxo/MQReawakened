@@ -1,6 +1,7 @@
 ﻿using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Entities.Colliders.Abstractions;
 using Server.Reawakened.Rooms;
+using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Planes;
 using UnityEngine;
 
@@ -11,7 +12,7 @@ public abstract class BaseProjectile(string id, float lifetime,
     public string ProjectileId => id;
     public Room Room => room;
 
-    public readonly string PrjPlane = Math.Abs(position.Z) > 10 ? config.BackPlane : config.FrontPlane;
+    public string PrjPlane => position.Z.GetPlaneFromZ();
 
     public Vector3Model Position => position;
     public Vector3 SpawnPosition = new() { x = position.X, y = position.Y, z = position.Z };
