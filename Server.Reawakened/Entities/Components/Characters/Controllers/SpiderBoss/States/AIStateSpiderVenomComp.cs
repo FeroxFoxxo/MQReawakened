@@ -120,7 +120,7 @@ public class AIStateSpiderVenomComp : BaseAIState<AIStateSpiderVenom, AI_State>
 
         var velocity = new Vector2(direction.x * speed, direction.y * speed);
 
-        component.EnemyController.LaunchProjectile(velocity, isLob: false);
+        component.EnemyController.FireProjectile(component.Position, velocity, false);
     }
 
     public void Cooldown()

@@ -66,7 +66,7 @@ public class AIStateSpiderWebsComp : BaseAIState<AIStateSpiderWebs, AI_State>
         if (discriminant < 0)
         {
             var fallbackVx = Math.Sign(distanceX) * ProjectileSpeedMaxX;
-            EnemyController.LaunchProjectile(new Vector2(fallbackVx, ProjectileSpeedY), isLob: true);
+            EnemyController.FireProjectile(Position, new Vector2(fallbackVx, ProjectileSpeedY), true);
             return;
         }
 
@@ -74,7 +74,7 @@ public class AIStateSpiderWebsComp : BaseAIState<AIStateSpiderWebs, AI_State>
         if (t <= 0)
         {
             var fallbackVx = Math.Sign(distanceX) * ProjectileSpeedMaxX;
-            EnemyController.LaunchProjectile(new Vector2(fallbackVx, ProjectileSpeedY), isLob: true);
+            EnemyController.FireProjectile(Position, new Vector2(fallbackVx, ProjectileSpeedY), true);
             return;
         }
 
@@ -87,7 +87,7 @@ public class AIStateSpiderWebsComp : BaseAIState<AIStateSpiderWebs, AI_State>
 
         var finalVelocity = new Vector2(velocityX, ProjectileSpeedY);
 
-        EnemyController.LaunchProjectile(finalVelocity, isLob: true);
+        EnemyController.FireProjectile(Position, finalVelocity, true);
     }
 
     public void WebOut()

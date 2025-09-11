@@ -33,20 +33,6 @@ public class AIStateEnemy(EnemyData data) : BaseEnemy(data)
             )
         );
     }
-    public void LaunchProjectile(Vector2 velocity, bool isLob)
-    {
-        var spawnPosition = new Vector3Model(Position.X, Position.Y, Position.Z);
-
-        Room.AddRangedProjectile(
-            Id,
-            spawnPosition,
-            velocity,
-            3,
-            GetDamage(),
-            EnemyController.EnemyEffectType,
-            isLob
-        );
-    }
 
     public override void SendAiData(Player player) =>
         Room.SendSyncEvent(
