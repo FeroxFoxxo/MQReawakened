@@ -13,12 +13,12 @@ public class GenericProjectile : BaseProjectile
     private readonly string _gameObjectId;
     private readonly float _gravityFactor;
 
-    public GenericProjectile(string id, Player player, float lifeTime, Vector3 position, ItemRConfig config, ServerRConfig serverConfig,
+    public GenericProjectile(string id, Player player, float lifeTime, Vector3 position, ItemRConfig config,
         int direction, ItemDescription item, int damage, Elemental damageType, bool isGrenade)
             : base(id, lifeTime, player.Room,
                 new Vector3Model(position.x + config.ProjectileXOffset * (direction > 0 ? 1 : - 1 - config.ProjectileWidth), position.y + config.ProjectileYOffset - config.ProjectileHeight, position.z),
                 new Vector2(config.ProjectileSpeedX * (direction > 0 ? 1 : -1), isGrenade ? config.GrenadeSpeedY : config.ProjectileSpeedY),
-                null, false, serverConfig)
+                null, false)
     {
         _gameObjectId = player.GameObjectId;
         _gravityFactor = isGrenade ? config.GrenadeGravityFactor : config.ProjectileGravityFactor;

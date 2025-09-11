@@ -21,7 +21,7 @@ public class ChargeAttackProjectile : BaseProjectile
     private readonly int _zoneId;
 
     public ChargeAttackProjectile(string id, Player player, Vector3Model startPosition, Vector3 endPosition, Vector2 speed, float lifeTime, int itemId, int zoneId, int damage, Elemental type, ServerRConfig config, TimerThread timerThread)
-        : base(id, lifeTime, player.Room, startPosition, speed, endPosition, false, config)
+        : base(id, lifeTime, player.Room, startPosition, speed, endPosition, false)
     {
         _config = config;
         _timerThread = timerThread;

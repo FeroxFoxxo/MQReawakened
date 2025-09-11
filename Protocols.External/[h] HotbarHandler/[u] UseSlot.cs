@@ -140,7 +140,6 @@ public class UseSlot : ExternalProtocol
             Player = Player,
             Catalog = ItemCatalog,
             Config = ItemRConfig,
-            SConfig = ServerRConfig
         };
 
         if (isGrenade)
@@ -161,7 +160,6 @@ public class UseSlot : ExternalProtocol
         public bool IsGrenade;
         public ItemRConfig Config;
         public ItemCatalog Catalog;
-        public ServerRConfig SConfig;
     }
 
     private static void LaunchProjectile(ITimerData data)
@@ -170,7 +168,7 @@ public class UseSlot : ExternalProtocol
             return;
 
         var genericProjectile = new GenericProjectile(projectile.ProjectileId, projectile.Player, projectile.Config.GrenadeLifeTime,
-            projectile.Position, projectile.Config, projectile.SConfig, projectile.Direction, projectile.UsedItem,
+            projectile.Position, projectile.Config, projectile.Direction, projectile.UsedItem,
             projectile.Player.Character.CalculateDamage(projectile.UsedItem, projectile.Catalog),
             projectile.UsedItem.Elemental, projectile.IsGrenade);
 
