@@ -398,12 +398,16 @@ public class Room : Timer
         {
             _colliders[collider.Id].Add(collider);
         }
+
+        Logger.LogTrace("Added collider with id {ColliderId} to room {RoomId}", collider.Id, _roomId);
     }
 
     public void RemoveCollider(string colliderId)
     {
         lock (_roomLock)
             _colliders.Remove(colliderId);
+        
+        Logger.LogTrace("Removed collider with id {ColliderId} from room {RoomId}", colliderId, _roomId);
     }
 
     public void ToggleCollider(string colliderId, bool active)
@@ -412,6 +416,8 @@ public class Room : Timer
             lock (_roomLock)
                 foreach (var col in collider)
                     col.Active = active;
+        
+        Logger.LogTrace("Toggled collider with id {ColliderId} to {Active} in room {RoomId}", colliderId, active, _roomId);
     }
 
     public List<BaseCollider> GetCollidersById(string id)

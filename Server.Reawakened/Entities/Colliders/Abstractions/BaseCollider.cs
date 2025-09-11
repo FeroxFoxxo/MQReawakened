@@ -16,7 +16,6 @@ public abstract class BaseCollider
 
     public bool IsInvisible { get; private set; }
     public bool Active { get; set; }
-    public Vector3 SpawnPosition { get; private set; }
 
     public Rect ColliderBox => new(
             Position.X + BoundingBox.X,
@@ -27,7 +26,6 @@ public abstract class BaseCollider
 
     protected BaseCollider(bool addToRoom = true)
     {
-        SpawnPosition = Position.ToUnityVector3();
         Active = true;
 
         var invisible = Room.GetEntityFromId<InvisibilityControllerComp>(Id);
@@ -40,9 +38,7 @@ public abstract class BaseCollider
 
     public virtual string[] RunCollisionDetection(bool isAttack) => [];
 
-    public virtual void SendCollisionEvent(BaseCollider received)
-    {
-    }
+    public virtual void SendCollisionEvent(BaseCollider received) {}
     
     public bool CheckCollision(BaseCollider collided) =>
         collided.ColliderBox.Overlaps(ColliderBox) && Plane == collided.Plane;
