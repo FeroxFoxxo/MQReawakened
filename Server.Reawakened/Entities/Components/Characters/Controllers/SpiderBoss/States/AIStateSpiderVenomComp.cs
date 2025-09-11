@@ -125,9 +125,9 @@ public class AIStateSpiderVenomComp : BaseAIState<AIStateSpiderVenom, AI_State>
 
     public void Cooldown()
     {
-        Logger.LogTrace("Exit Venom -> Drop");
+        Logger.LogTrace("Exit Venom -> Idle");
 
-        AddNextState<AIStateSpiderDropComp>();
+        AddNextState<AIStateSpiderIdleComp>();
         GoToNextState();
     }
 }

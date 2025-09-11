@@ -28,11 +28,8 @@ public class AIStateSpiderIdleComp : BaseAIState<AIStateSpiderIdle, AI_State>
     {
         Logger.LogTrace("Done called for {StateName} on {PrefabName}", StateName, PrefabName);
 
-        var controller = StateMachine as SpiderBossControllerComp;
-
-        if (controller == null)
+        if (StateMachine is not SpiderBossControllerComp controller)
         {
-            RunVenomState();
             return;
         }
 
@@ -43,12 +40,7 @@ public class AIStateSpiderIdleComp : BaseAIState<AIStateSpiderIdle, AI_State>
                 RunVenomState();
                 break;
             case 1:
-                if (System.Random.Shared.Next(0, 4) == 0)
-                {
-                    Logger.LogTrace("Idle pick: VineThrow (phase=1)");
-                    RunVineThrowState();
-                }
-                else if (System.Random.Shared.Next(0, 2) == 0)
+                if (System.Random.Shared.Next(0, 2) == 0)
                 {
                     Logger.LogTrace("Idle pick: Webs (phase=1)");
                     RunWebsState();
@@ -73,11 +65,6 @@ public class AIStateSpiderIdleComp : BaseAIState<AIStateSpiderIdle, AI_State>
                     Logger.LogTrace("Idle pick: Webs (phase=2)");
                     RunWebsState();
                 }
-                else if (roll == 3)
-                {
-                    Logger.LogTrace("Idle pick: VineThrow (phase=2)");
-                    RunVineThrowState();
-                }
                 else
                 {
                     Logger.LogTrace("Idle pick: Venom (phase=2)");
@@ -95,12 +82,6 @@ public class AIStateSpiderIdleComp : BaseAIState<AIStateSpiderIdle, AI_State>
     }
 
     public void RunWebsState()
-    {
-        AddNextState<AIStateSpiderWebsComp>();
-        GoToNextState();
-    }
-
-    public void RunVineThrowState()
     {
         AddNextState<AIStateSpiderVineThrowComp>();
         GoToNextState();
