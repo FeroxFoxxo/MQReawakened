@@ -57,13 +57,16 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
     public void Damage(int damage, Elemental damageType, Player origin)
     {
         if (Room.IsObjectKilled(Id) || !CanBreak || Damageable is null)
+        {
+            Logger.LogWarning("Attempted to damage an unbreakable or already destroyed object: '{PrefabName}' ({Id}), Can Break: {CanBreak}, Damageable: {Damageable}", PrefabName, Id, CanBreak, Damageable != null);
             return;
+        }
 
         Logger.LogInformation("Damaged object: '{PrefabName}' ({Id})", PrefabName, Id);
 
         RunDamage(damage, damageType);
 
-        origin.Room.SendSyncEvent(new AiHealth_SyncEvent(Id.ToString(), Room.Time, Damageable.CurrentHealth, damage, 0, 0, origin.CharacterName, false, true));
+        Room.SendSyncEvent(new AiHealth_SyncEvent(Id.ToString(), Room.Time, Damageable.CurrentHealth, damage, 0, 0, origin == null ? string.Empty : origin.CharacterName, false, true));
 
         if (Damageable.CurrentHealth <= 0)
         {
@@ -71,9 +74,12 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
                 foreach (var trigger in Room.GetEntitiesFromId<TriggerReceiverComp>(_spawner.OnDeathTargetID))
                     trigger.TriggerStateChange(TriggerType.Activate, true, Id);
 
-            origin.CheckObjective(ObjectiveEnum.Score, Id, PrefabName, 1, ItemCatalog);
-            origin.GrantLoot(Id, LootCatalog, ItemCatalog, InternalAchievement, Logger);
-            origin.SendUpdatedInventory();
+            if (origin != null)
+            {
+                origin.CheckObjective(ObjectiveEnum.Score, Id, PrefabName, 1, ItemCatalog);
+                origin.GrantLoot(Id, LootCatalog, ItemCatalog, InternalAchievement, Logger);
+                origin.SendUpdatedInventory();
+            }
 
             if (_spawner is null || !_spawner.HasLinkedArena)
             {
@@ -86,7 +92,6 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
                 _spawner.RemoveFromArena();
                 Room.ToggleCollider(Id, false);
             }
-
         }
     }
 

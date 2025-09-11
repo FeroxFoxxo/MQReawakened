@@ -15,7 +15,7 @@ public class PlayerCollider(Player player) : BaseCollider
     public override Vector3Model Position => Player.TempData.Position;
     public override Room Room => player.Room;
     public override string Id => player.TempData.GameObjectId;
-    public override RectModel BoundingBox => new (-0.5f, 0, 1, 1);
+    public override RectModel BoundingBox => new (-0.5f, 0, 1, 1.5f);
     public override string Plane => player.GetPlayersPlaneString();
     public override ColliderType Type => ColliderType.Player;
 

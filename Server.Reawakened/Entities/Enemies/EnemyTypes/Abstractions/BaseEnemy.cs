@@ -206,7 +206,7 @@ public abstract class BaseEnemy : IDestructible
 
     public virtual void Damage(Player player, int damage)
     {
-        if (Room.IsObjectKilled(Id) || player == null)
+        if (Room.IsObjectKilled(Id))
             return;
 
         var resistance = GameFlow.StatisticData.GetValue(ItemEffectType.Defence, WorldStatisticsGroup.Enemy, Level);
@@ -312,10 +312,13 @@ public abstract class BaseEnemy : IDestructible
         
         Room.SendSyncEvent(AISyncEventHelper.AIDie(Id, Room.Time, string.Empty, xpAward > 0 ? xpAward : 1, true, player == null ? "0" : player.GameObjectId, false));
 
-        player.CheckAchievement(AchConditionType.DefeatEnemy, [PrefabName], InternalAchievement, Logger);
-        player.CheckAchievement(AchConditionType.DefeatEnemy, [Enum.GetName(EnemyModel.EnemyCategory)], InternalAchievement, Logger);
-        player.CheckAchievement(AchConditionType.DefeatEnemy, [EnemyController.PrefabName], InternalAchievement, Logger);
-        player.CheckAchievement(AchConditionType.DefeatEnemyInLevel, [player.Room.LevelInfo.Name], InternalAchievement, Logger);
+        if (player != null)
+        {
+            player.CheckAchievement(AchConditionType.DefeatEnemy, [PrefabName], InternalAchievement, Logger);
+            player.CheckAchievement(AchConditionType.DefeatEnemy, [Enum.GetName(EnemyModel.EnemyCategory)], InternalAchievement, Logger);
+            player.CheckAchievement(AchConditionType.DefeatEnemy, [EnemyController.PrefabName], InternalAchievement, Logger);
+            player.CheckAchievement(AchConditionType.DefeatEnemyInLevel, [player.Room.LevelInfo.Name], InternalAchievement, Logger);
+        }
     }
 
     public abstract void SendAiData(Player player);
@@ -333,7 +336,7 @@ public abstract class BaseEnemy : IDestructible
     }
 
     public void FireProjectile(Vector3Model position, Vector2 speed, bool isGrenade) =>
-        Room.AddRangedProjectile(Id, position, speed, 3, GetDamage(), EnemyController.EnemyEffectType, isGrenade);
+        Room.AddRangedProjectile(Id, new Vector3Model(position.X - Hitbox.BoundingBox.X, position.Y, position.Z), speed, 3, GetDamage(), EnemyController.EnemyEffectType, isGrenade);
 
     public int GetDamage() =>
         GameFlow.StatisticData.GetValue(
