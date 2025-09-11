@@ -38,7 +38,7 @@ public class AIProjectileCollider(string id, string ownerId, Room room,
             _ => false
         };
 
-    public override string[] RunCollisionDetection(bool isAttack)
+    public override string[] RunCollisionDetection()
     {
         if (LifeTime <= Room.Time)
         {

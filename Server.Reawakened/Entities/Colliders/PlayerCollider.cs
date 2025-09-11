@@ -62,5 +62,5 @@ public class PlayerCollider(Player player) : BaseCollider
             _ => true
         };
 
-    public override string[] RunCollisionDetection(bool isAttack) => RunBaseCollisionDetection();
+    public override string[] RunCollisionDetection() => RunBaseCollisionDetection();
 }

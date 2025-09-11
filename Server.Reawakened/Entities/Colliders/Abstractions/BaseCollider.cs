@@ -37,7 +37,7 @@ public abstract class BaseCollider
             Room.AddColliderToList(this);
     }
 
-    public virtual string[] RunCollisionDetection(bool isAttack) => [];
+    public virtual string[] RunCollisionDetection() => [];
 
     public virtual void SendCollisionEvent(BaseCollider received) { }
 
@@ -45,7 +45,7 @@ public abstract class BaseCollider
         collided.ColliderBox.Overlaps(ColliderBox) && Plane == collided.Plane;
 
     public virtual bool CanCollideWithType(BaseCollider collider) => false;
-    public virtual bool CanOverrideInvisibleDetection() => false;
+    public virtual bool CanOverrideInvisibleDetection() => true;
     
     public string[] RunBaseCollisionDetection()
     {

@@ -26,6 +26,5 @@ public class StomperZoneCollider(StomperControllerComp stomperController) : Base
             _ => false
         };
 
-    public override string[] RunCollisionDetection(bool isAttack) => RunBaseCollisionDetection();
-
+    public override string[] RunCollisionDetection() => RunBaseCollisionDetection();
 }

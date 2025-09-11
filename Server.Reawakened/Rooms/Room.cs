@@ -221,7 +221,7 @@ public class Room : Timer
             }
             else
             {
-                player.TempData.PlayerCollider?.RunCollisionDetection(false);
+                player.TempData.PlayerCollider?.RunCollisionDetection();
             }
         }
 

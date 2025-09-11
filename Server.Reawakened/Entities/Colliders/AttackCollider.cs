@@ -39,7 +39,7 @@ public class AttackCollider(string id, Vector3Model position,
             _ => false
         };
 
-    public override string[] RunCollisionDetection(bool isAttack)
+    public override string[] RunCollisionDetection()
     {
         if (LifeTime <= Room.Time)
         {
@@ -48,6 +48,6 @@ public class AttackCollider(string id, Vector3Model position,
             return [];
         }
 
-        return Room.Time < OffsetTime ? [] : !isAttack ? [] : RunBaseCollisionDetection();
+        return Room.Time < OffsetTime ? [] : RunBaseCollisionDetection();
     }
 }
