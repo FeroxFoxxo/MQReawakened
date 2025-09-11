@@ -564,7 +564,7 @@ public class Room : Timer
     {
         var projectileId = CreateProjectileId();
 
-        var size = new RectModel(0.5f, 0.5f, 0.5f, 0.5f);
+        var size = new RectModel(-0.25f, -0.25f, 0.5f, 0.5f);
         var prjPosition = new Vector3Model(position.X, position.Y, position.Z);
 
         var aiProjectile = new AIProjectile(

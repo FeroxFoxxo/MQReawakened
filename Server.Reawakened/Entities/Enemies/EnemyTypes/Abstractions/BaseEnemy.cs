@@ -336,7 +336,7 @@ public abstract class BaseEnemy : IDestructible
     }
 
     public void FireProjectile(Vector3Model position, Vector2 speed, bool isGrenade) =>
-        Room.AddRangedProjectile(Id, new Vector3Model(position.X + Hitbox.BoundingBox.X, position.Y, position.Z), speed, 3, GetDamage(), EnemyController.EnemyEffectType, isGrenade);
+        Room.AddRangedProjectile(Id, position, speed, 3, GetDamage(), EnemyController.EnemyEffectType, isGrenade);
 
     public int GetDamage() =>
         GameFlow.StatisticData.GetValue(
