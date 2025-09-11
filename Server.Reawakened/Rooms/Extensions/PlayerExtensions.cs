@@ -17,16 +17,16 @@ public static class PlayerExtensions
 {
     private static void JoinRoom(this Player player, Room room, out JoinReason reason)
     {
-        player.Room?.RemoveClient(player);
-
-        if (player.TempData.PlayerCollider != null && player.Room != null)
+        if (player.Room != null)
+        {
+            player.Room.RemoveClient(player);
             player.Room.RemoveCollider(player.TempData.PlayerCollider.Id);
+        }
 
         player.Room = room;
 
-        player.TempData.PlayerCollider = new PlayerCollider(player);
-
         player.Room.AddClient(player, out reason);
+        player.TempData.PlayerCollider = new PlayerCollider(player);
     }
 
     public static void QuickJoinRoom(this Player player, int id, WorldHandler worldHandler, out JoinReason reason) =>

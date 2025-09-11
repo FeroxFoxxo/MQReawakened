@@ -188,13 +188,7 @@ public class State : ExternalProtocol
                 LogEvent(syncEvent, entityId, Player.Room);
     }
 
-    private static void UpdatePlayerCollider(Player player)
-    {
-        if (player.TempData.PlayerCollider == null)
-            player.TempData.PlayerCollider = new PlayerCollider(player);
-
-        player.TempData.PlayerCollider.RunCollisionDetection(false);
-    }
+    private static void UpdatePlayerCollider(Player player) => player.TempData.PlayerCollider.RunCollisionDetection(false);
 
     private void RequestRespawn(string entityId, float triggerTime)
     {
