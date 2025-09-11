@@ -34,43 +34,54 @@ public class AIStateSpiderlingAttackComp : BaseAIState<AIStateSpiderlingAttackMQ
         _patrolComp = Room.GetEntityFromId<AIStatePatrolComp>(Id);
     }
 
+
     public void Shoot()
     {
         Logger.LogTrace("Shoot called for {StateName} on {PrefabName}", StateName, PrefabName);
 
         var targetPlayer = _patrolComp.GetClosestPlayer();
-
+        
         if (targetPlayer == null)
             return;
 
-        var directionToPlayer = GetDirectionToPlayer(targetPlayer);
-        var baseAngle = Mathf.Atan2(directionToPlayer.y, directionToPlayer.x) * Mathf.Rad2Deg;
+        var targetPos = targetPlayer.TempData.Position;
+        var startPos = Position;
 
-        var startingAngle = baseAngle + FirstProjectileAngleOffset;
+        var distanceX = targetPos.X - startPos.X;
+        var distanceY = targetPos.Y - startPos.Y;
 
-        if (NumberOfProjectiles <= 0)
+        const float g = 15f;
+        var v = ProjectileSpeed;
+        var v2 = v * v;
+        var v4 = v2 * v2;
+        
+        float baseAngleDeg;
+
+        var discriminant = v4 - g * (g * distanceX * distanceX + 2 * distanceY * v2);
+
+        if (discriminant < 0)
         {
-            Logger.LogTrace("No projectiles to fire for {StateName} on {PrefabName}", StateName, PrefabName);
-            return;
+            baseAngleDeg = Mathf.Atan2(distanceY, distanceX) * Mathf.Rad2Deg;
         }
+        else
+        {
+            var tanTheta = (v2 - Mathf.Sqrt(discriminant)) / (g * distanceX);
+            baseAngleDeg = Mathf.Atan(tanTheta) * Mathf.Rad2Deg;
+        }
+
+        var startAngle = baseAngleDeg + FirstProjectileAngleOffset;
 
         for (var i = 0; i < NumberOfProjectiles; i++)
         {
-            var currentAngle = startingAngle + i * AngleBetweenProjectiles;
-            var angleInRadians = currentAngle * Mathf.Deg2Rad;
+            var currentAngleDeg = startAngle + i * AngleBetweenProjectiles;
+            var currentAngleRad = currentAngleDeg * Mathf.Deg2Rad;
 
-            var projectileDirection = new Vector2(
-                Mathf.Cos(angleInRadians),
-                Mathf.Sin(angleInRadians)
+            var projectileVelocity = new Vector2(
+                Mathf.Cos(currentAngleRad) * v,
+                Mathf.Sin(currentAngleRad) * v
             );
-
-            var projectileSpeed = projectileDirection * ProjectileSpeed;
-
-            EnemyController.FireProjectile(
-                Position,
-                projectileSpeed,
-                false
-            );
+            
+            EnemyController.FireProjectile(Position, projectileVelocity, true);
         }
     }
 }
