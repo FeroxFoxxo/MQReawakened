@@ -107,11 +107,20 @@ public class AIStateSpiderVenomComp : BaseAIState<AIStateSpiderVenom, AI_State>
         if (component?.Room == null)
             return;
 
-        var first = projectile.IsFirstProjectile;
+        var player = component.Room.GetPlayers().FirstOrDefault(p => p != null && p.Character.CurrentLife > 0);
+        if (player == null)
+            return;
 
-        var speed = new Vector2(first ? component.FirstProjectileSpeedX : component.SecondProjectileSpeedX, component.SecondProjectileSpeedY);
+        var targetPos = player.TempData.Position;
+        var direction = (targetPos.ToUnityVector3() - component.Position.ToUnityVector3()).normalized;
 
-        component.Room.AddRangedProjectile(component.Id, component.Position, speed, component.CooldownTime, 1, ItemEffectType.BluntDamage, false);
+        var speed = projectile.IsFirstProjectile
+            ? component.FirstProjectileSpeedX
+            : component.SecondProjectileSpeedX;
+
+        var velocity = new Vector2(direction.x * speed, direction.y * speed);
+
+        component.EnemyController.LaunchProjectile(velocity, isLob: false);
     }
 
     public void Cooldown()

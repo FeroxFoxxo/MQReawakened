@@ -29,7 +29,7 @@ public static class LoadRoomData
         }
     }
 
-    public static Dictionary<string, PlaneModel> LoadPlanes(this LevelInfo levelInfo, Room room, ServerRConfig config)
+    public static Dictionary<string, PlaneModel> LoadPlanes(this LevelInfo levelInfo, ServerRConfig config)
     {
         var levelInfoPath = Path.Join(config.LevelSaveDirectory, $"{levelInfo.Name}.xml");
         var levelDataPath = Path.Join(config.LevelDataSaveDirectory, $"{levelInfo.Name}.json");
@@ -66,7 +66,7 @@ public static class LoadRoomData
                         switch (data.Name)
                         {
                             case "LoadUnit":
-                                plane.LoadGameObjectXml(gameObjectAttributes, room);
+                                plane.LoadGameObjectXml(gameObjectAttributes);
                                 break;
                             case "Collider":
                                 plane.LoadColliderXml(gameObjectAttributes);

@@ -126,7 +126,7 @@ public class Room : Timer
 
         Logger.LogTrace("Creating room with room id: {RoomId}", roomId);
 
-        Planes = LevelInfo.LoadPlanes(this, _config);
+        Planes = LevelInfo.LoadPlanes(_config);
         Logger.LogTrace("Loaded planes");
 
         _entities = this.LoadEntities(services);
@@ -569,7 +569,7 @@ public class Room : Timer
 
         var aiProjectile = new AIProjectile(
             this, ownerId, projectileId.ToString(), prjPosition, size,
-            speed, lifeTime, _timerThread, damage, effect, isGrenade, _config, ItemCatalog, _itemConfig
+            speed, lifeTime, _timerThread, damage, effect, isGrenade, _config, ItemCatalog
         );
 
         this.SendSyncEvent(

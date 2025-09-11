@@ -5,6 +5,8 @@ using Server.Reawakened.Entities.Enemies.Extensions;
 using Server.Reawakened.Entities.Enemies.Models;
 using Server.Reawakened.Players;
 using Server.Reawakened.Rooms.Extensions;
+using Server.Reawakened.Rooms.Models.Planes;
+using UnityEngine;
 
 namespace Server.Reawakened.Entities.Enemies.EnemyTypes;
 
@@ -29,6 +31,20 @@ public class AIStateEnemy(EnemyData data) : BaseEnemy(data)
                 Position.X, Position.Y, Position.Z,
                 Position.X, Position.Y
             )
+        );
+    }
+    public void LaunchProjectile(Vector2 velocity, bool isLob)
+    {
+        var spawnPosition = new Vector3Model(Position.X, Position.Y, Position.Z);
+
+        Room.AddRangedProjectile(
+            Id,
+            spawnPosition,
+            velocity,
+            3,
+            GetDamage(),
+            EnemyController.EnemyEffectType,
+            isLob
         );
     }
 

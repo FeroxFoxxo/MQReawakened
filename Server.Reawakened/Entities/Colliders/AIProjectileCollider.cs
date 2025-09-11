@@ -11,7 +11,7 @@ namespace Server.Reawakened.Entities.Colliders;
 
 public class AIProjectileCollider(string id, string ownerId, Room room,
     Vector3Model position, RectModel size, string plane, float lifeTime, TimerThread timerThread, int damage, ItemEffectType effect,
-    ItemCatalog itemCatalog, ItemRConfig itemConfig, ServerRConfig serverRConfig) : BaseCollider
+    ItemCatalog itemCatalog, ServerRConfig serverRConfig) : BaseCollider
 {
     public float LifeTime => lifeTime + room.Time;
     public string OwnderId => ownerId;
@@ -19,7 +19,6 @@ public class AIProjectileCollider(string id, string ownerId, Room room,
     public int Damage => damage;
     public ItemEffectType Effect => effect;
     public ItemCatalog ItemCatalog => itemCatalog;
-    public ItemRConfig ItemConfig => itemConfig;
     public ServerRConfig ServerRConfig => serverRConfig;
 
     public override Room Room => room;

@@ -46,9 +46,48 @@ public class AIStateSpiderWebsComp : BaseAIState<AIStateSpiderWebs, AI_State>
 
     private void LaunchWebProjectile()
     {
-    var randX = (float)(System.Random.Shared.NextDouble() * 2 - 1) * ProjectileSpeedMaxX;
-        var speed = new Vector2(randX, ProjectileSpeedY);
-        Room.AddRangedProjectile(Id, Position, speed, 3, 1, ItemEffectType.BluntDamage, false);
+        var player = Room.GetPlayers().FirstOrDefault(p => p != null && p.Character.CurrentLife > 0);
+
+        if (player == null)
+            return;
+
+        var targetPos = player.TempData.Position;
+
+        var distanceX = targetPos.X - Position.X;
+        var distanceY = targetPos.Y - Position.Y;
+
+        const float projectileGravity = 15f; 
+
+        var a = 0.5f * projectileGravity;
+        var b = -ProjectileSpeedY;
+        var c = distanceY;
+        var discriminant = b * b - 4 * a * c;
+
+        if (discriminant < 0)
+        {
+            var fallbackVx = Math.Sign(distanceX) * ProjectileSpeedMaxX;
+            EnemyController.LaunchProjectile(new Vector2(fallbackVx, ProjectileSpeedY), isLob: true);
+            return;
+        }
+
+        var t = (-b + Math.Sqrt(discriminant)) / (2 * a);
+        if (t <= 0)
+        {
+            var fallbackVx = Math.Sign(distanceX) * ProjectileSpeedMaxX;
+            EnemyController.LaunchProjectile(new Vector2(fallbackVx, ProjectileSpeedY), isLob: true);
+            return;
+        }
+
+        var velocityX = distanceX / (float)t;
+
+        if (Math.Abs(velocityX) > ProjectileSpeedMaxX)
+        {
+            velocityX = Math.Sign(velocityX) * ProjectileSpeedMaxX;
+        }
+
+        var finalVelocity = new Vector2(velocityX, ProjectileSpeedY);
+
+        EnemyController.LaunchProjectile(finalVelocity, isLob: true);
     }
 
     public void WebOut()

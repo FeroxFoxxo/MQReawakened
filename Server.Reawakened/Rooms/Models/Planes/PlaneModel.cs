@@ -32,7 +32,7 @@ public class PlaneModel(string planeName)
             obj.ObjectInfo.Rectangle = rect;
     }
 
-    public void LoadGameObjectXml(XmlNode gameObjectNode, Room room)
+    public void LoadGameObjectXml(XmlNode gameObjectNode)
     {
         var attributes = gameObjectNode.Attributes!;
 
@@ -65,7 +65,6 @@ public class PlaneModel(string planeName)
             ),
             ParentPlane = PlaneName,
             Rectangle = new RectModel(-1000.0f, -1000.0f, 0f, 0f)
-
         };
 
         foreach (XmlNode componentNode in gameObjectNode.ChildNodes)

@@ -1,5 +1,4 @@
-﻿using Server.Reawakened.Core.Configs;
-using Server.Reawakened.Entities.Colliders.Abstractions;
+﻿using Server.Reawakened.Entities.Colliders.Abstractions;
 using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Planes;
@@ -7,7 +6,7 @@ using UnityEngine;
 
 namespace Server.Reawakened.Entities.Projectiles.Abstractions;
 public abstract class BaseProjectile(string id, float lifetime,
-    Room room, Vector3Model position, Vector2 speed, Vector3? endPosition, bool gravity, ServerRConfig config)
+    Room room, Vector3Model position, Vector2 speed, Vector3? endPosition, bool gravity)
 {
     public string ProjectileId => id;
     public Room Room => room;
@@ -46,17 +45,17 @@ public abstract class BaseProjectile(string id, float lifetime,
             Hit("-1");
     }
 
-    public virtual void Move() => SetPositionBasedOnTime(SpawnPosition);
+    public virtual void Move() => SetPositionBasedOnTime();
 
-    private void SetPositionBasedOnTime(Vector3 spawnPos)
+    private void SetPositionBasedOnTime()
     {
         var timeDelta = Room.Time - StartTime;
 
         var pos = new Vector3()
         {
-            x = GetCoordFromTime(spawnPos.x, Speed.x, timeDelta),
-            y = GetCoordFromTime(spawnPos.y, Speed.y, timeDelta),
-            z = spawnPos.z
+            x = GetCoordFromTime(SpawnPosition.x, Speed.x, timeDelta),
+            y = GetCoordFromTime(SpawnPosition.y, Speed.y, timeDelta),
+            z = SpawnPosition.z
         };
 
         if (gravity)
