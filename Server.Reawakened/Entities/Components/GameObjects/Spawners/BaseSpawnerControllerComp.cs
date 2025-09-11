@@ -259,7 +259,7 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
             AISyncEventHelper.AIInit(
                 Id, Room,
                 Position.X, Position.Y, Position.Z, Position.X, Position.Y,
-                genericComp.Patrol_InitialProgressRatio, CurrentHealth, MaxHealth,
+                genericComp?.Patrol_InitialProgressRatio ?? 0f, CurrentHealth, MaxHealth,
                 _healthMod, _scaleMod, _resMod, Stars, Level, globalComp?.GetGlobalProperties(), states, behaviorsMap
             )
         );
@@ -268,7 +268,7 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
             AISyncEventHelper.AIDo(
                 Id, Room,
                 0, 0, 1.0f,
-                Position.X + SpawningOffsetX, Position.Y + SpawningOffsetY, genericComp.Patrol_ForceDirectionX,
+                Position.X + SpawningOffsetX, Position.Y + SpawningOffsetY, genericComp?.Patrol_ForceDirectionX ?? 0,
                 false, AISyncEventHelper.IndexOf(StateType.Unknown, enemyToSpawn.BehaviorData ?? []), string.Empty
             )
         );
@@ -364,7 +364,7 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
             }
         }
 
-        room.GetEntityFromId<AIStatsGenericComp>(spawnedEntityId).SetPatrolRange(spawner.PatrolDistance);
+        room.GetEntityFromId<AIStatsGenericComp>(spawnedEntityId)?.SetPatrolRange(spawner.PatrolDistance);
 
         var newEnemy = room.GetEnemyFromId(spawnedEntityId).Enemy;
 
