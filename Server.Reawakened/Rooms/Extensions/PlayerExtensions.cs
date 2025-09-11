@@ -1,5 +1,6 @@
 ﻿using Server.Base.Accounts.Extensions;
 using Server.Reawakened.Database.Characters;
+using Server.Reawakened.Entities.Colliders;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
@@ -17,7 +18,14 @@ public static class PlayerExtensions
     private static void JoinRoom(this Player player, Room room, out JoinReason reason)
     {
         player.Room?.RemoveClient(player);
+
+        if (player.TempData.PlayerCollider != null && player.Room != null)
+            player.Room.RemoveCollider(player.TempData.PlayerCollider.Id);
+
         player.Room = room;
+
+        player.TempData.PlayerCollider = new PlayerCollider(player);
+
         player.Room.AddClient(player, out reason);
     }
 

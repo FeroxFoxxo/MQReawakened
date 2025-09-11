@@ -252,8 +252,6 @@ public class Room : Timer
 
                 _players.Add(gameObjectId.ToString(), currentPlayer);
 
-                currentPlayer.TempData.PlayerCollider = new PlayerCollider(currentPlayer);
-
                 this.GroupMemberRoomChanged(currentPlayer);
 
                 currentPlayer.NetState.SendXml("joinOK", $"<pid id='{gameObjectId}' /><uLs />");
@@ -294,8 +292,6 @@ public class Room : Timer
             _gameObjectIds.Remove(player.GameObjectId);
             RemoveCollider(player.GameObjectId);
         }
-
-        player.TempData.PlayerCollider = null;
 
         if (LevelInfo.LevelId <= 0)
             return;

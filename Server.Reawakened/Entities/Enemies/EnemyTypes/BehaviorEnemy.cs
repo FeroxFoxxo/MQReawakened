@@ -41,8 +41,8 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
         Global = Room.GetEntityFromId<AIStatsGlobalComp>(Id);
         Generic = Room.GetEntityFromId<AIStatsGenericComp>(Id);
 
-        data.EnemyModel.GlobalProperties.ApplyGlobalPropertiesFromModel(Global);
-        data.EnemyModel.GenericScript?.ApplyGenericPropertiesFromModel(Global);
+        EnemyModel.GlobalProperties?.ApplyGlobalPropertiesFromModel(Global);
+        EnemyModel.GenericScript?.ApplyGenericPropertiesFromModel(Global);
 
         Generic.SetDefaultPatrolRange();
 
@@ -55,7 +55,7 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
             Sync_PosY = Position.Y,
             Sync_PosZ = Position.Z,
             SyncInit_Dir = 0,
-            SyncInit_ProgressRatio = Generic?.Patrol_InitialProgressRatio ?? 0f
+            SyncInit_ProgressRatio = Generic.Patrol_InitialProgressRatio
         };
 
         AiData.SetStats(Global.GetGlobalProperties());
@@ -81,7 +81,7 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
             )
         );
 
-        ChangeBehavior(StateType.Patrol, Position.X, Position.Y, Generic?.Patrol_ForceDirectionX ?? 0);
+        ChangeBehavior(StateType.Patrol, Position.X, Position.Y, Generic.Patrol_ForceDirectionX);
     }
 
     public override void InternalUpdate()
