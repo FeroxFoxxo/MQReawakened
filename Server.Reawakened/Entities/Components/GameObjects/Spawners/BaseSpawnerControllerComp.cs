@@ -19,6 +19,7 @@ using Server.Reawakened.XMLs.Bundles.Internal;
 using Server.Reawakened.XMLs.Data.Enemy.Abstractions;
 using Server.Reawakened.XMLs.Data.Enemy.Enums;
 using Server.Reawakened.XMLs.Data.Enemy.Models;
+using Server.Reawakened.XMLs.Data.Enemy.States;
 using UnityEngine;
 
 namespace Server.Reawakened.Entities.Components.GameObjects.Spawners;
@@ -255,6 +256,11 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
 
         Logger.LogInformation("Spawner '{Id}' spawning enemy #{Num} prefab '{Prefab}' template '{Template}'", Id, _spawnedEntityCount, selectedPrefab, templateId);
 
+        // Make sure to modify patrol data before init to account for patrol range
+        genericComp.PatrolX = PatrolDistance.x;
+        genericComp.PatrolY = PatrolDistance.y;
+
+        // Init event must be called before AIDo or else the enemy freezes
         Room.SendSyncEvent(
             AISyncEventHelper.AIInit(
                 Id, Room,
