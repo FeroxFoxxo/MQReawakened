@@ -41,7 +41,8 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
         Global = Room.GetEntityFromId<AIStatsGlobalComp>(Id);
         Generic = Room.GetEntityFromId<AIStatsGenericComp>(Id);
 
-        //Generic.SetDefaultPatrolRange();
+        if (!IsFromSpawner)
+            Generic.SetDefaultPatrolRange();
 
         EnemyModel.GlobalProperties?.ApplyGlobalPropertiesFromModel(Global);
         EnemyModel.GenericScript?.ApplyGenericPropertiesFromModel(Global);
