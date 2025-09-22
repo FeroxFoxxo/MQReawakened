@@ -12,5 +12,5 @@ public class TCCollider(string id, Vector3Model position, RectModel box, string 
     public override Vector3Model Position => position;
     public override RectModel BoundingBox => box;
     public override string Plane => plane;
-    public override ColliderType Type => ColliderType.TerrainCube;
+    public override ColliderType Type => ColliderType.Default;
 }

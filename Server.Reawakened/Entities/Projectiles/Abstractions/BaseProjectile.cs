@@ -29,7 +29,7 @@ public abstract class BaseProjectile(string id, float lifetime,
 
         if (endPosition.HasValue)
             if (Position.Y <= endPosition.Value.y)
-                Hit("-1");
+                Hit("0");
 
         Move();
 
