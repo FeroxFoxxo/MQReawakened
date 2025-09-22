@@ -39,6 +39,8 @@ public class TriggerReceiverComp : Component<TriggerReceiver>, ICoopTriggered
 
         if (CollisionType == TriggerReceiver.ReceiverCollisionType.Never)
             _collider.Active = false;
+
+        Room.AddColliderToList(_collider);
     }
 
     public override void DelayedComponentInitialization()

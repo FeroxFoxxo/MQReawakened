@@ -50,8 +50,11 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
 
         if (ObjStatus == null)
             return;
-
-        _ = new BreakableCollider(this, ObjStatus.EnemyTarget);
+		
+		// Disabled
+        //_ = new BreakableCollider(this, ObjStatus.EnemyTarget);
+		
+        _ = new BreakableCollider(this, false);
     }
 
     public void Damage(int damage, Elemental damageType, Player origin)
