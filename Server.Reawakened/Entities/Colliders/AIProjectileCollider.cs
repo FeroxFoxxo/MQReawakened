@@ -35,6 +35,7 @@ public class AIProjectileCollider(string id, string ownerId, Room room,
             ColliderType.TerrainCube => true,
             ColliderType.Player => true,
             ColliderType.Mesh => true,
+            ColliderType.Default => true,
             _ => false
         };
 
