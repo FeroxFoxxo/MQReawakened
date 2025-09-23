@@ -42,7 +42,7 @@ public abstract class BaseProjectile(string id, float lifetime,
                 Hit(collision);
 
         if (LifeTime <= time)
-            Hit("-1");
+            Hit("0");
     }
 
     public virtual void Move() => SetPositionBasedOnTime();

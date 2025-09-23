@@ -19,7 +19,7 @@ public static class LoadRoomData
 
     public static void LoadTerrainColliders(this Room room)
     {
-        var colliderIndex = -1;
+        var colliderIndex = 0;
         foreach (var collider in room.ColliderCatalog.GetTerrainColliders(room.LevelInfo.LevelId))
         {
             var position = new Vector3Model(collider.Position.x, collider.Position.y, collider.Position.z);
