@@ -50,6 +50,13 @@ public class BuildAssetList(ILogger<BuildAssetList> logger, EventSink sink, Asse
                 GenerateDefaultAssetList(true);
             }
         );
+		
+		console.AddCommand(
+            "forceGenerate",
+            "Force regenerate scripts from asset bundles",
+            NetworkType.Server | NetworkType.Client,
+            _ => GenerateDefaultAssetList(true)
+        );
     }
 
     public void LoadAssets()
