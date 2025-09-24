@@ -193,8 +193,15 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
         if (TriggerOnGrapplingHook) Activations.Add(ActivationType.NormalDamage);
         if (!string.IsNullOrEmpty(TriggeredByItemInInventory)) Activations.Add(ActivationType.ItemInInventory);
 
+        /*
+        // This old version has lightning damage and ice damage also, let's fix this
+        // when we get the level editor working.
         if (TriggerOnNormalDamage || TriggerOnAirDamage || TriggerOnEarthDamage
             || TriggerOnFireDamage || TriggerOnIceDamage || TriggerOnLightningDamage)
+            _ = new TriggerableTargetCollider(this);*/
+
+        if (TriggerOnNormalDamage || TriggerOnAirDamage || TriggerOnEarthDamage
+            || TriggerOnFireDamage)
             _ = new TriggerableTargetCollider(this);
     }
 
