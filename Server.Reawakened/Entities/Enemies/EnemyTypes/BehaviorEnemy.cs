@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Entities.Components.AI.Stats;
+using Server.Reawakened.Entities.Enemies.Behaviors;
 using Server.Reawakened.Entities.Enemies.Behaviors.Abstractions;
 using Server.Reawakened.Entities.Enemies.EnemyTypes.Abstractions;
 using Server.Reawakened.Entities.Enemies.Extensions;
@@ -203,6 +204,12 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
 
     public override void SendAiData(Player player)
     {
+        if (AiData is null)
+        {
+            Logger.LogError("AiData for enemy {Id} was null! Skipping this enemy...", Id);
+            return;
+        }
+
         player.SendSyncEventToPlayer(
             AISyncEventHelper.AIInit(
                 AiData.Sync_PosX, AiData.Sync_PosY, AiData.Sync_PosZ,
@@ -228,7 +235,7 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
             return;
         }
 
-        Logger.LogTrace("Enemy {PrefabName} aggroed on player {PlayerName}", PrefabName, player.CharacterName);
+            Logger.LogTrace("Enemy {PrefabName} aggroed on player {PlayerName}", PrefabName, player.CharacterName);
 
         AiData.Sync_TargetPosX = player.TempData.Position.X;
         AiData.Sync_TargetPosY = player.TempData.Position.Y;

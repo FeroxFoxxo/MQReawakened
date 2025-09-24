@@ -197,7 +197,10 @@ public abstract class BaseEnemy : IDestructible
         var bottomX = offset.x * EnemyController.Scale.X;
         var bottomY = offset.y * EnemyController.Scale.Y;
 
-        var rect = new RectModel(bottomX - width, bottomY, width, height);
+        // Checks if the enemy is a ceiling enemy and adjusts hitbox accordingly
+        var rect = Status.Scale.Y < 0
+            ? new RectModel(bottomX - width, bottomY - height, width, height)
+            : new RectModel(bottomX - width, bottomY, width, height);
 
         Logger.LogTrace("Created enemy hitbox at {Position} of size {Size}", Position, rect);
 
