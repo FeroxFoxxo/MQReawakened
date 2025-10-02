@@ -25,7 +25,7 @@ public class AddQuest : SlashCommand
         }
     ];
 
-    public override AccessLevel AccessLevel => AccessLevel.Player;
+    public override AccessLevel AccessLevel => AccessLevel.Moderator;
 
     public QuestCatalog QuestCatalog { get; set; }
     public InternalQuestItem InternalQuestItem { get; set; }

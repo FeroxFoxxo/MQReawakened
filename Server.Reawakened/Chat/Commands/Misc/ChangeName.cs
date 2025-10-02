@@ -34,7 +34,7 @@ public partial class ChangeName : SlashCommand
         }
     ];
 
-    public override AccessLevel AccessLevel => AccessLevel.Player;
+    public override AccessLevel AccessLevel => AccessLevel.Moderator;
 
     [GeneratedRegex("[^A-Za-z0-9]+")]
     private static partial Regex MyRegex();

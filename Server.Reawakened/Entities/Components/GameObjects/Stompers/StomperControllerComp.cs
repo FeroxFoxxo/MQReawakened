@@ -14,6 +14,7 @@ public class StomperControllerComp : BaseMovingObjectControllerComp<StomperContr
     public float UpMoveTime => ComponentData.UpMoveTime;
     public float VerticalDistance => ComponentData.VerticalDistance;
     public bool Hazard => ComponentData.Hazard;
+    public bool PushUp => ComponentData.PushUp;
 
     private StomperZoneCollider _collider;
     public TimerThread TimerThread { get; set; }
@@ -40,10 +41,14 @@ public class StomperControllerComp : BaseMovingObjectControllerComp<StomperContr
 
         base.Update();
 
-        var movement = (Stomper_Movement)Movement;
+        var movement = (Stomper_Movement) Movement;
+
+        if (movement == null || Room == null)
+            return;
+
         movement.UpdateState(Room.Time);
 
-        if (movement.CurrentStep == Stomper_Movement.StomperState.WaitDown)
+        if (!PushUp && movement.CurrentStep == Stomper_Movement.StomperState.GoingDown)
             _collider.RunCollisionDetection();
     }
 }

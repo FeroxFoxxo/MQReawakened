@@ -1,6 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
 using Server.Base.Logging;
 using Server.Reawakened.Entities.Colliders;
+using Server.Reawakened.Entities.Components.GameObjects.Items;
 using Server.Reawakened.Entities.Components.GameObjects.Trigger.Enums;
 using Server.Reawakened.Entities.Components.GameObjects.Trigger.Interfaces;
 using Server.Reawakened.Players;
@@ -28,13 +28,14 @@ public class TriggerReceiverComp : Component<TriggerReceiver>, ICoopTriggered
     public bool ActiveByDefault => ComponentData.ActiveByDefault;
     public TriggerReceiver.ReceiverCollisionType CollisionType => ComponentData.CollisionType;
 
-    public ILogger<TriggerReceiverComp> Logger { get; set; }
     public FileLogger FileLogger { get; set; }
 
     private TriggerReceiverCollider _collider;
 
     public override void InitializeComponent()
     {
+        if (Room == null || IsChest()) return;
+
         _collider = new TriggerReceiverCollider(this);
 
         if (CollisionType == TriggerReceiver.ReceiverCollisionType.Never)
@@ -160,4 +161,6 @@ public class TriggerReceiverComp : Component<TriggerReceiver>, ICoopTriggered
 
     public void SendTriggerState(bool activated, string triggeredBy) =>
         Room.SendSyncEvent(new TriggerReceiver_SyncEvent(Id.ToString(), Room.Time, triggeredBy, activated, 0));
+
+    private bool IsChest() => Room.GetEntityFromId<ChestControllerComp>(Id) != null;
 }

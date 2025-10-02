@@ -29,7 +29,7 @@ public abstract class BaseProjectile(string id, float lifetime,
 
         if (endPosition.HasValue)
             if (Position.Y <= endPosition.Value.y)
-                Hit("-1");
+                Hit("0");
 
         Move();
 
@@ -39,10 +39,12 @@ public abstract class BaseProjectile(string id, float lifetime,
 
         if (collisions.Length > 0)
             foreach (var collision in collisions)
+            {
                 Hit(collision);
+            }
 
         if (LifeTime <= time)
-            Hit("-1");
+            Hit("0");
     }
 
     public virtual void Move() => SetPositionBasedOnTime();

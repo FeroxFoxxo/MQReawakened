@@ -9,4 +9,6 @@ public class Entity(GameObjectModel gameObject, Room room, FileLogger logger)
     public readonly FileLogger Logger = logger;
 
     public Room Room = room;
+
+    public Entity Clone() => new(GameObject, Room, Logger);
 }

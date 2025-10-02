@@ -1,4 +1,5 @@
 ﻿using A2m.Server;
+using Server.Base.Accounts.Enums;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Database.Characters;
 using Server.Reawakened.Database.Users;
@@ -41,7 +42,7 @@ public class AutoJoin : SystemProtocol
             { CharacterInfoHandler.ExternalProperties.AccountAge, player.Account.Created },
             { CharacterInfoHandler.ExternalProperties.Silent, player.UserInfo.ChatLevel == 0 },
             { CharacterInfoHandler.ExternalProperties.Uuid, player.Account.Id },
-            { CharacterInfoHandler.ExternalProperties.AccessRights, ServerRConfig.AccessRights },
+            { CharacterInfoHandler.ExternalProperties.AccessRights, player.Account.AccessLevel >= AccessLevel.Moderator ? (int)UserAccessRight.NoDictionaryChat : ServerRConfig.AccessRights },
             { CharacterInfoHandler.ExternalProperties.ClearCache, ServerRConfig.ClearCache ? 1 : 0 },
             {
                 CharacterInfoHandler.ExternalProperties.Now, DateTimeOffset.Now.ToUnixTimeSeconds()

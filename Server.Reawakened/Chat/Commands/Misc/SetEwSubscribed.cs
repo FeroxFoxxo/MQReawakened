@@ -21,7 +21,7 @@ public class SetEwSubscribed : SlashCommand
         }
     ];
 
-    public override AccessLevel AccessLevel => AccessLevel.Moderator;
+    public override AccessLevel AccessLevel => AccessLevel.Owner;
 
     public override void Execute(Player player, string[] args)
     {

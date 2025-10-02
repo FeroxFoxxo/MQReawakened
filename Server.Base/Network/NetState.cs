@@ -48,7 +48,7 @@ public class NetState : IDisposable
     public bool Running { get; private set; }
 
     private const string PolicyFileRequest = "<policy-file-request/>";
-
+	
     private const string AllPolicy =
         @"<?xml version=""1.0""?>
                         <!DOCTYPE cross-domain-policy SYSTEM ""/xml/dtds/cross-domain-policy.dtd"">

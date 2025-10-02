@@ -12,7 +12,7 @@ public class GetPlayerId : SlashCommand
 
     public override List<ParameterModel> Parameters => [];
 
-    public override AccessLevel AccessLevel => AccessLevel.Player;
+    public override AccessLevel AccessLevel => AccessLevel.Moderator;
 
     public override void Execute(Player player, string[] args) =>
         Log($"{player.CharacterName} has id of {player.GameObjectId}", player);
