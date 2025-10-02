@@ -2,11 +2,11 @@
   "profiles": {
     "Run MQR": {
       "commandName": "Project",
-      "dotnetRunMessages": true,
-      "launchBrowser": false,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+      },
+      "dotnetRunMessages": true,
+      "launchBrowser": false,
     }
   }
 }

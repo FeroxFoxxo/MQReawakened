@@ -4,6 +4,7 @@
         <TargetFramework>net8</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <DebugType>embedded</DebugType>
+        <Platforms>AnyCPU;ARM64</Platforms>
     </PropertyGroup>
 
     <ItemGroup>
