@@ -13,6 +13,7 @@ using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Rooms.Models.Timers;
 using Server.Reawakened.XMLs.Bundles.Base;
 using UnityEngine;
+using static Server.Reawakened.Players.Extensions.PlayerStatusEffectExtensions;
 
 namespace Server.Reawakened.Entities.Components.GameObjects.Hazards.Abstractions;
 
@@ -39,6 +40,7 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
     public int Damage;
 
     private IEnemyController _enemyController;
+    private float _activationStartTime = 0;
 
     public TimerThread TimerThread { get; set; }
     public ItemRConfig ItemRConfig { get; set; }
@@ -55,10 +57,7 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
 
         //Activate timed hazards.
         if (ActiveDuration > 0 && DeactivationDuration > 0)
-        {
             TimedHazard = true;
-            TimerThread.RunInstantly(ActivateHazard, this);
-        }
 
         if (!Enum.TryParse(HurtEffect, true, out EffectType))
         {
@@ -98,23 +97,24 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
         }
     }
 
-    //Timed Hazards
-    public static void ActivateHazard(ITimerData data)
+    public override void Update()
     {
-        if (data is not BaseHazardControllerComp<T> hazard)
-            return;
+        base.Update();
 
-        hazard.IsActive = true;
-        hazard.TimerThread.RunDelayed(DeactivateHazard, hazard, TimeSpan.FromSeconds(hazard.ActiveDuration));
-    }
-
-    public static void DeactivateHazard(ITimerData data)
-    {
-        if (data is not BaseHazardControllerComp<T> hazard)
-            return;
-
-        hazard.IsActive = false;
-        hazard.TimerThread.RunDelayed(ActivateHazard, hazard, TimeSpan.FromSeconds(hazard.DeactivationDuration));
+        if (TimedHazard)
+        {
+            var time = Room.Time;
+            if (IsActive && time - _activationStartTime > ActiveDuration)
+            {
+                _activationStartTime += ActiveDuration;
+                IsActive = false;
+            }
+            else if (!IsActive && time - _activationStartTime > DeactivationDuration)
+            {
+                _activationStartTime += DeactivationDuration;
+                IsActive = true;
+            }
+        }
     }
 
     //Standard Hazards
