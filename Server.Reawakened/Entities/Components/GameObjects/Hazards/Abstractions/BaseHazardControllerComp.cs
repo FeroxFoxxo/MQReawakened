@@ -99,6 +99,9 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
 
     public override void Update()
     {
+        if (Room == null)
+            return;
+
         base.Update();
 
         if (TimedHazard)
