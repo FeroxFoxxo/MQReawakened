@@ -6,7 +6,8 @@ namespace Server.Reawakened.Entities.Enemies.Behaviors;
 
 public class AIBehaviorLookAround(BehaviorEnemy enemy, LookAroundProperties fallback) : AIBaseBehavior(enemy.AiData, enemy.Room)
 {
-    public override bool ShouldDetectPlayers => true;
+    public override bool ShouldDetectPlayers => false;
+    public override bool ShouldAggroOnHit => true;
 
     public override AiProperties GetProperties() =>
         new LookAroundProperties(

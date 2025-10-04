@@ -7,6 +7,7 @@ namespace Server.Reawakened.Entities.Enemies.Behaviors;
 public class AIBehaviorAggro(BehaviorEnemy enemy, AggroProperties fallback) : AIBaseBehavior(enemy.AiData, enemy.Room)
 {
     public override bool ShouldDetectPlayers => false;
+    public override bool ShouldAggroOnHit => false;
 
     public override AiProperties GetProperties() =>
         new AggroProperties(

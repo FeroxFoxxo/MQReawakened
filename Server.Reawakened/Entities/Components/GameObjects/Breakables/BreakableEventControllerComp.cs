@@ -57,7 +57,7 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
         _ = new BreakableCollider(this, false);
     }
 
-    public void Damage(int damage, Elemental damageType, Player origin)
+    public void Damage(int damage, ItemEffectType itemEffectType, Player origin)
     {
         if (Room.IsObjectKilled(Id) || !CanBreak || Damageable is null)
         {
@@ -67,7 +67,7 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
 
         Logger.LogInformation("Damaged object: '{PrefabName}' ({Id})", PrefabName, Id);
 
-        RunDamage(damage, damageType);
+        damage = RunDamage(damage, itemEffectType);
 
         Room.SendSyncEvent(new AiHealth_SyncEvent(Id.ToString(), Room.Time, Damageable.CurrentHealth, damage, 0, 0, origin == null ? string.Empty : origin.CharacterName, false, true));
 
@@ -98,31 +98,20 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
         }
     }
 
-    public void Damage(int damage, string enemyId)
-    {
-        if (Room.IsObjectKilled(Id) || !CanBreak || Damageable is null)
-            return;
-
-        Logger.LogInformation("Damaged object (from enemy): '{PrefabName}' ({Id})", PrefabName, Id);
-
-        RunDamage(damage, Elemental.Standard);
-
-        Room.SendSyncEvent(new AiHealth_SyncEvent(Id.ToString(), Room.Time, Damageable.CurrentHealth, damage, 0, 0, enemyId, false, true));
-
-        if (Damageable.CurrentHealth <= 0)
-        {
-            Room.KillEntity(Id);
-            Destroy(Room, Id);
-        }
-    }
-
-    public void RunDamage(int damage, Elemental damageType)
+    public int RunDamage(int damage, ItemEffectType itemEffectType)
     {
         if (Damageable is null)
-            return;
+            return 0;
+
+        var dmgAmount = Damageable.GetDamageAmount(damage, itemEffectType);
 
         if (Damageable is IBreakable breakable)
         {
+            // This is here so that if the damage is totally resisted, the obj won't break.
+            // See Boom Barrels (PF_OUT_BARRELTNT)
+            if (dmgAmount <= 1)
+                return 0;
+
             breakable.NumberOfHits++;
 
             if (breakable.NumberOfHitsToBreak > 0)
@@ -143,7 +132,7 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
                         Damageable.CurrentHealth = 1;
                 }
 
-                return;
+                return dmgAmount;
             }
         }
 
@@ -151,6 +140,8 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
 
         if (Damageable.CurrentHealth < 0)
             Damageable.CurrentHealth = 0;
+
+        return dmgAmount;
     }
 
     public void Respawn()
@@ -158,7 +149,7 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
         Logger.LogInformation("Revived object: '{PrefabName}' ({Id})", PrefabName, Id);
         Room.SendSyncEvent(new AiHealth_SyncEvent(Id.ToString(), Room.Time, Damageable.MaxHealth, 0, 0, 0, string.Empty, false, false));
         Damageable.CurrentHealth = Damageable.MaxHealth;
-
+        _status.NumberOfHits = 0;
     }
 
     public override void NotifyCollision(NotifyCollision_SyncEvent notifyCollisionEvent, Player player) { }

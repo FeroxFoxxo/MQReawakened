@@ -57,8 +57,8 @@ public abstract class BaseInterObjStatusComp<T> : Component<T>, IDamageable wher
                 break;
         }
 
-        if (damage < 0)
-            damage = 0;
+        if (damage < 1)
+            damage = 1;
 
         return damage;
     }

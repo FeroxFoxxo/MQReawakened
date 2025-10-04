@@ -6,6 +6,7 @@ namespace Server.Reawakened.Entities.Enemies.Behaviors;
 public class AIBehaviorGoTo(BehaviorEnemy enemy) : AIBaseBehavior(enemy.AiData, enemy.Room)
 {
     public override bool ShouldDetectPlayers => true;
+    public override bool ShouldAggroOnHit => true;
 
     // TO DO: CALCULATE WHAT THESE VALUES SHOULD BE
     public vector3 GoToPosition = new(0, 0, 0);

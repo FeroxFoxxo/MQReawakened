@@ -472,6 +472,9 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
         {
             var triggers = Room.GetEntitiesFromId<ICoopTriggered>(trigger.Key);
 
+            foreach (var spawner in Room.GetEntitiesFromId<BaseSpawnerControllerComp>(trigger.Key))
+                spawner?.Spawn();
+
             if (triggers.Length > 0)
                 foreach (var triggeredEntity in triggers)
                     triggeredEntity.TriggerStateChange(trigger.Value, IsActive, player.GameObjectId);
@@ -554,6 +557,11 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
                 sb.ToString(),
                 LoggerType.Trace
         );
+
+        /*if (QuestCompletedRequired.Equals(quest.Id) && CurrentPhysicalInteractors.Contains(player.GameObjectId))
+        {
+            RunTrigger(player);
+        }*/
 
         if (CurrentPhysicalInteractors.Contains(player.GameObjectId))
         {

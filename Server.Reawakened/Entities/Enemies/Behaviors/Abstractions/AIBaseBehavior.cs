@@ -7,6 +7,7 @@ namespace Server.Reawakened.Entities.Enemies.Behaviors.Abstractions;
 public abstract class AIBaseBehavior
 {
     public abstract bool ShouldDetectPlayers { get; }
+    public abstract bool ShouldAggroOnHit { get; }
 
     protected readonly AI_Behavior _behaviour;
     protected readonly AIProcessData _aiData;

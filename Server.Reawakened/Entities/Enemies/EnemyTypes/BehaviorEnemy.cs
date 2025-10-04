@@ -193,13 +193,15 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
     public override void Damage(Player player, int damage)
     {
         base.Damage(player, damage);
-        EnemyAggroPlayer(player);
+        if (CurrentBehavior.ShouldAggroOnHit)
+            EnemyAggroPlayer(player);
     }
 
     public override void PetDamage(Player player)
     {
         base.PetDamage(player);
-        EnemyAggroPlayer(player);
+        if (CurrentBehavior.ShouldAggroOnHit)
+            EnemyAggroPlayer(player);
     }
 
     public override void SendAiData(Player player)

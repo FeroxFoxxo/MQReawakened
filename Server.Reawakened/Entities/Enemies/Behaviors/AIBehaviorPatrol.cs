@@ -9,6 +9,7 @@ namespace Server.Reawakened.Entities.Enemies.Behaviors;
 public class AIBehaviorPatrol(BehaviorEnemy enemy, PatrolProperties fallback) : AIBaseBehavior(enemy.AiData, enemy.Room)
 {
     public override bool ShouldDetectPlayers => true;
+    public override bool ShouldAggroOnHit => true;
 
     public override AiProperties GetProperties() =>
         new PatrolProperties(

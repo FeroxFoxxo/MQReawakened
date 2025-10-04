@@ -6,6 +6,7 @@ namespace Server.Reawakened.Entities.Enemies.Behaviors;
 public class AIBehaviorIdle(BehaviorEnemy enemy) : AIBaseBehavior(enemy.AiData, enemy.Room)
 {
     public override bool ShouldDetectPlayers => true;
+    public override bool ShouldAggroOnHit => true;
 
     public override AiProperties GetProperties() => new EmptyAiProperties();
 
