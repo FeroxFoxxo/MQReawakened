@@ -177,10 +177,14 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
 
     public void Spawn()
     {
-        _nextSpawnRequestTime = _nextSpawnRequestTime == NotScheduled ? Room.Time + InitialSpawnDelay : Room.Time + MinSpawnInterval;
+        // If called to spawn while spawning, ignore the call
+        if (!_spawnRequested)
+        {
+            _nextSpawnRequestTime = _nextSpawnRequestTime == NotScheduled ? Room.Time + InitialSpawnDelay : Room.Time + MinSpawnInterval;
 
-        if (CanSpawnMoreThisCycle() && LinkedEnemies.Count < MaxSimultanousSpawned)
-            _spawnRequested = true;
+            if (CanSpawnMoreThisCycle() && LinkedEnemies.Count < MaxSimultanousSpawned)
+                _spawnRequested = true;
+        }
     }
 
     private void ActivateArenaSpawn(Action setArena)

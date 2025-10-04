@@ -537,7 +537,7 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
                 LoggerType.Trace
         );
 
-        if (CurrentPhysicalInteractors.Contains(player.GameObjectId))
+        if (QuestInProgressRequired.Equals(quest.Id) && CurrentPhysicalInteractors.Contains(player.GameObjectId))
         {
             RunTrigger(player);
         }
@@ -558,12 +558,7 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
                 LoggerType.Trace
         );
 
-        /*if (QuestCompletedRequired.Equals(quest.Id) && CurrentPhysicalInteractors.Contains(player.GameObjectId))
-        {
-            RunTrigger(player);
-        }*/
-
-        if (CurrentPhysicalInteractors.Contains(player.GameObjectId))
+        if (QuestCompletedRequired.Equals(quest.Id) && CurrentPhysicalInteractors.Contains(player.GameObjectId))
         {
             RunTrigger(player);
         }

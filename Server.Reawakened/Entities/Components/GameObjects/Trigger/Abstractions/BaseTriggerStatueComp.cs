@@ -78,16 +78,12 @@ public abstract class BaseTriggerStatueComp<T> : BaseTriggerCoopController<T> wh
 
     public override void Triggered(Player player, bool isSuccess, bool isActive)
     {
+        // If completed, refuse any other input
+        // Stops multiplayer bugs and quest interaction bug
+        if (Status == ArenaStatus.Complete)
+            return;
 
-        if (IsActive)
-        {
-            StartArena();
-
-            var players = Room.GetPlayers();
-            foreach (var gamer in players)
-                gamer.TempData.CurrentArena = this;
-        }
-        else
+        if (!isActive)
         {
             var players = Room.GetPlayers();
 
@@ -124,6 +120,8 @@ public abstract class BaseTriggerStatueComp<T> : BaseTriggerCoopController<T> wh
         Trigger(players.FirstOrDefault(), true, false);
         foreach (var player in players)
             player.TempData.CurrentArena = null;
+
+        CurrentPhysicalInteractors.Clear();
 
         Status = ArenaStatus.Complete;
     }
