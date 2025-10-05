@@ -340,7 +340,10 @@ public class ItemCatalog : ItemHandler, ILocalizationXml
         return outItem;
     }
 
-    public List<ItemDescription> GetItemsFromLevel(int minLevel, int maxLevel, ItemCategory category)
+    public int GetTextIdFromName(string text) => 
+        _itemNameDict.TryGetValue(text, out var value) ? value : 0;
+		
+	public List<ItemDescription> GetItemsFromLevel(int minLevel, int maxLevel, ItemCategory category)
     {
         var itemList = new List<ItemDescription>();
         foreach (var item in Items)
