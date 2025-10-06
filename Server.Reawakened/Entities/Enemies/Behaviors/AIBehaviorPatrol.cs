@@ -32,7 +32,7 @@ public class AIBehaviorPatrol(BehaviorEnemy enemy, PatrolProperties fallback) : 
 
         var ratio = behavior.GetField("Patrol_InitialProgressRatio");
 
-        return [ratio];
+        return ratio is float f && float.IsNaN(f) ? ([]) : (object[])([ratio]);
     }
 
     public override StateType GetStateType() => StateType.Patrol;
