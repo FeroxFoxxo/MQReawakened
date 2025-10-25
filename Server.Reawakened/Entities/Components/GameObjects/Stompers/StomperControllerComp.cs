@@ -14,7 +14,6 @@ public class StomperControllerComp : BaseMovingObjectControllerComp<StomperContr
     public float UpMoveTime => ComponentData.UpMoveTime;
     public float VerticalDistance => ComponentData.VerticalDistance;
     public bool Hazard => ComponentData.Hazard;
-    //public bool PushUp => ComponentData.PushUp;
 
     private StomperZoneCollider _collider;
     public TimerThread TimerThread { get; set; }
