@@ -42,12 +42,12 @@ If you’re ready to swing into Ook and host your own server emulator, this guid
 **Important**: This server can use **two different client versions**:
 
 1. **2014 Client (Required for server compilation)**: Contains the DLLs needed to compile the server
-2. **2013 Client (Optional for game hosting)**: Can be used for actual game hosting if preferred
+2. **2013 Client (Optional for playing the game)**: Version of the game you want to play on, defaults to what's used to compile the server (2014)
 
 ### Client Downloads
 
 - **2014 Client (Required)**: Any client archive that contains the required 2014 version DLLs (see [here](https://archive.org/download/InstallMonkeyQuest/Monkey%20Quest.zip))
-- **Override Client (Optional)**: Any alternative client archive for hosting (see [here](https://drive.google.com/drive/folders/1AuNMaNqbszUzWBgT3d_xolSuH_IINJf))
+- **Override Client (Optional)**: Any alternative client archive for the version actually played on (see [here](https://drive.google.com/drive/folders/1AuNMaNqbszUzWBgT3d_xolSuH_IINJf))
 - **Caches**: Any/all caches you have from the original game, i.e. to view the community archives - look for `UniqueBundles.7z` [here](https://drive.google.com/drive/folders/17ic6S2brJNI9HlFqnue38zFJAv5nqxIU)
 
 ### File Placement
