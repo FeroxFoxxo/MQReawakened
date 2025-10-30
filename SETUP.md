@@ -25,14 +25,6 @@ If you’re ready to swing into Ook and host your own server emulator, this guid
 - Start the Docker Compose file
 - Adjust JSON configs under `./Game/Data/Configs` after first start
 
-## Folder layout used by Docker
-
-- `./Build/Archives/Client` → mounted to `/archives/Client` inside the container
-  - **2014 client archive** (required): Contains DLLs needed for server compilation
-  - **Override client archive** (optional): Alternative game client (i.e. 2013)
-- `./Build/Archives/Caches` → mounted to `/archives/Caches` inside the container
-- `./Game/Data` → mounted to `/data` (persisted server data and configs)
-
 ## Prerequisites
 
 - Docker Desktop (or compatible Docker Engine) with [Docker Compose](https://docs.docker.com/compose/install/linux/)
