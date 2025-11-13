@@ -1,11 +1,5 @@
-@using Microsoft.AspNetCore.Http
 @{
-	var path = ViewContext?.HttpContext?.Request?.Path.Value?.ToLowerInvariant() ?? string.Empty;
-
-	// Check if user is logged in via cookies
-	var userId = Context.Request.Cookies["UserId"];
-	var username = Context.Request.Cookies["Username"];
-	var isLoggedIn = !string.IsNullOrEmpty(userId) && !string.IsNullOrEmpty(username);
+    var path = ViewContext?.HttpContext?.Request?.Path.Value?.ToLowerInvariant() ?? string.Empty;
 }
 
 <div class="collapse navbar-collapse" id="primaryNav">
@@ -59,12 +53,12 @@
 
 			</div>
 			<li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle nav-dropdown-toggle @(path=="/commands" || path=="/colliders" ? "active" : null)" href="#" id="adminDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="nav-label">Admin</span></a>
-            <div class="dropdown-menu dropdown-menu-right nav-dropdown" aria-labelledby="adminDropdown">
-                <a class="dropdown-item @(path=="/commands" ? "active" : null)" href="/commands">Commands</a>
-                <a class="dropdown-item @(path=="/colliders" ? "active" : null)" href="/colliders">Colliders</a>
-            </div>
-        </li>
+				<a class="nav-link dropdown-toggle nav-dropdown-toggle @(path=="/commands" || path=="/colliders" ? "active" : null)" href="#" id="adminDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="nav-label">Admin</span></a>
+				<div class="dropdown-menu dropdown-menu-right nav-dropdown" aria-labelledby="adminDropdown">
+					<a class="dropdown-item @(path=="/commands" ? "active" : null)" href="/commands">Commands</a>
+					<a class="dropdown-item @(path=="/colliders" ? "active" : null)" href="/colliders">Colliders</a>
+				</div>
+			</li>
 		</li>
 	</ul>
 </div>

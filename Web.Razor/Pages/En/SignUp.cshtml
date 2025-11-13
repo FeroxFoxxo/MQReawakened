@@ -25,16 +25,16 @@
                 <form asp-action="SignUp" method="post" class="form-modern" novalidate>
                     <div class="form-row-duo">
                         <div class="field">
-                            <label asp-for="Username">Username</label>
+                            <label asp-for="Username"></label>
                             <div class="input-shell">
-                                <input asp-for="Username" placeholder="Enter Username" />
+                                <input asp-for="Username" placeholder="Monkey_King" />
                             </div>
                             <span asp-validation-for="Username" class="text-danger"></span>
                         </div>
                         <div class="field">
                             <label asp-for="Email"></label>
                             <div class="input-shell">
-                                <input asp-for="Email" placeholder="Enter Email Address" />
+                                <input asp-for="Email" placeholder="info@mailaddress.com" />
                             </div>
                             <span asp-validation-for="Email" class="text-danger"></span>
                         </div>
