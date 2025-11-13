@@ -22,21 +22,23 @@
 
 		<li class="nav-item dropdown">
 			<a class="nav-link dropdown-toggle nav-dropdown-toggle
-                      @((path.StartsWith("/en/signup") || path.StartsWith("/en/login")) ? "active" : null)"
+                  @((path.StartsWith("/en/signup") || path.StartsWith("/en/login")) ? "active" : null)"
 			   href="#" id="accountDropdown" role="button" data-toggle="dropdown"
 			   aria-haspopup="true" aria-expanded="false">
 				<span class="nav-label">Account</span>
 			</a>
 			<div class="dropdown-menu dropdown-menu-right nav-dropdown" aria-labelledby="accountDropdown">
 
-				@* Not logged in: Show Sign Up and Login Buttons ONLY*@
+				@* Not logged in: Show Sign Up, Login, Forgot Username & Forgot Password *@
 				@if (!isLoggedIn)
 				{
 					<a class="dropdown-item @(path == "/en/signup" ? "active" : null)" href="/en/signup">Sign Up</a>
 					<a class="dropdown-item @(path == "/en/login" ? "active" : null)" href="/en/login">Login</a>
+					<a class="dropdown-item @(path == "/en/signup/forgot-username" ? "active" : null)" href="/en/signup/forgot-username">Forgot Username</a>
+					<a class="dropdown-item @(path == "/en/signup/forgot-password" ? "active" : null)" href="/en/signup/forgot-password">Forgot Password</a>
 				}
 
-				@* Logged in: Show Welcome text and logout button *@
+				@* Logged in: Show Welcome text and Logout button only *@
 				@if (isLoggedIn)
 				{
 					<div class="px-3 py-2 text-center">
@@ -45,10 +47,6 @@
 							<button type="submit" class="btn btn-sm btn-outline-danger">Logout</button>
 						</form>
 					</div>
-
-					@* Forgot Username & Password only visible if logged in *@
-					<a class="dropdown-item @(path == "/en/signup/forgot-username" ? "active" : null)" href="/en/signup/forgot-username">Forgot Username</a>
-					<a class="dropdown-item @(path == "/en/signup/forgot-password" ? "active" : null)" href="/en/signup/forgot-password">Forgot Password</a>
 				}
 
 			</div>
