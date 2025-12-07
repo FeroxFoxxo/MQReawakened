@@ -51,6 +51,10 @@ public class DescriptionHandler(ILogger<DescriptionHandler> logger, WorldGraph w
                     foreach (var quest in condition.RequiredQuests)
                     {
                         var questData = questCatalog.GetQuestData(quest);
+
+                        if (questData == null)
+                            continue;
+
                         var questNameId = miscTextDictionary.LocalizationDict.FirstOrDefault(x => x.Value == questData.Title).Key;
 
                         if (!requiredQuestNames.Contains(questNameId))
@@ -63,6 +67,10 @@ public class DescriptionHandler(ILogger<DescriptionHandler> logger, WorldGraph w
                     foreach (var item in condition.RequiredItems)
                     {
                         var itemDescription = questCatalog.ItemCatalog.GetItemFromId(item);
+
+                        if (itemDescription == null)
+                            continue;
+
                         var itemName = questCatalog.ItemCatalog.GetTextIdFromName(itemDescription.ItemName);
 
                         if (!requiredItemNames.Contains(itemName))
