@@ -35,7 +35,6 @@ public class LoginModel(AccountHandler accountHandler, ILogger<LoginModel> logge
             return Page();
 
         Username = Username.Sanitize();
-        Password = Password.Sanitize();
 
         if (string.IsNullOrEmpty(Username) || string.IsNullOrEmpty(Password))
         {
