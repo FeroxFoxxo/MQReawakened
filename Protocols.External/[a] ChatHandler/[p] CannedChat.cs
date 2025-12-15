@@ -56,9 +56,6 @@ public class CannedChat : ExternalProtocol
         {
             case CannedChatChannel.Speak:
                 Player.Room.Chat(channelType, Player.Character.CharacterName, sb.ToString());
-
-                // Sends a chat message to Discord
-                DiscordHandler.SendMessage(Player.Character.CharacterName, sb.ToString());
                 break;
 
             case CannedChatChannel.Group:
@@ -68,19 +65,11 @@ public class CannedChat : ExternalProtocol
                         select client
                     )
                     client.Chat(channelType, Player.Character.CharacterName, sb.ToString());
-
-                // Sends a chat message to Discord
-                DiscordHandler.SendMessage("Group -> " + Player.Character.CharacterName, sb.ToString());
                 break;
 
             case CannedChatChannel.Trade:
                 if (Player.Room.LevelInfo.Type == LevelType.City)
-                {
                     Player.Room.Chat(channelType, Player.Character.CharacterName, sb.ToString());
-
-                    // Sends a chat message to Discord
-                    DiscordHandler.SendMessage("Trade -> " + Player.Character.CharacterName, sb.ToString());
-                }
                 break;
 
             case CannedChatChannel.Tell:
@@ -90,13 +79,7 @@ public class CannedChat : ExternalProtocol
                     var recipient = Player.PlayerContainer.GetPlayerByName(recipientName);
 
                     if (recipient != null && !recipient.Character.Blocked.Contains(Player.CharacterId))
-                    {
                         Player.Chat(channelType, Player.Character.CharacterName, sb.ToString(), recipientName);
-
-                        // Sends a chat message to Discord
-                        DiscordHandler.SendMessage("PM -> From: " + Player.Character.CharacterName +
-                            " To: " + recipientName, sb.ToString());
-                    }
                 }
                 break;
 
