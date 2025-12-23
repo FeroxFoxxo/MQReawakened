@@ -1,4 +1,5 @@
 ﻿using A2m.Server;
+using Server.Base.Timers.Services;
 using Server.Reawakened.Entities.Components.GameObjects.Trigger.Enums;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
@@ -94,6 +95,7 @@ public abstract class BaseTriggerStatueComp<T> : BaseTriggerCoopController<T> wh
 
                 foreach (var gamer in players)
                 {
+                    gamer.TemporaryInvincibility(TimerThread, ServerRConfig, 2);
                     gamer.CheckObjective(ObjectiveEnum.Score, Id, PrefabName, 1, QuestCatalog);
                     gamer.Character.Write.SpawnPointId = Id;
                 }

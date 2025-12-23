@@ -75,6 +75,21 @@ public class TriggerArenaComp : BaseTriggerStatueComp<TriggerArena>
         _minClearTime = Room.Time + 5;
     }
 
+    public void RemoveTime(float time) => _timer -= time;
+
+    public override void Triggered(Player player, bool isSuccess, bool isActive)
+    {
+        base.Triggered(player, isSuccess, isActive);
+        if (isActive)
+        {
+            StartArena();
+
+            var players = Room.GetPlayers();
+            foreach (var gamer in players)
+                gamer.TempData.CurrentArena = this;
+        }
+    }
+
     public override void ArenaSuccess()
     {
         base.ArenaSuccess();

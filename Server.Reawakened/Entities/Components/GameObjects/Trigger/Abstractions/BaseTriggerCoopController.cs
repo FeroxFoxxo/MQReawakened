@@ -1,6 +1,7 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
 using Server.Base.Logging;
+using Server.Base.Timers.Services;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Entities.Colliders;
 using Server.Reawakened.Entities.Components.GameObjects.Spawners;
@@ -89,6 +90,7 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
     public QuestCatalog QuestCatalog { get; set; }
     public ServerRConfig ServerRConfig { get; set; }
     public ItemCatalog ItemCatalog { get; set; }
+    public TimerThread TimerThread { get; set; }
 
     public List<string> CurrentPhysicalInteractors;
     public int CurrentInteractions;
