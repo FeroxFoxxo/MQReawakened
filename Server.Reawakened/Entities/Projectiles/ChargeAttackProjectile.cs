@@ -38,6 +38,9 @@ public class ChargeAttackProjectile : BaseProjectile
 
     public override void Hit(string hitGoID)
     {
+        if (hitGoID.Equals("0"))
+            hitGoID = "-1";
+
         _player.TempData.IsSuperStomping = false;
         _player.TemporaryInvincibility(_timerThread, _config, 1);
 
