@@ -33,8 +33,6 @@ public class LauncherRConfig : IRConfig
     public string OSXGameFolder { get; }
     public string OSXLauncherFolder { get; }
 
-    public string News { get; set; }
-
     public LauncherRConfig()
     {
         AnalyticsId = 0;

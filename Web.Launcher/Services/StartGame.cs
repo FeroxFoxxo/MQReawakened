@@ -1,5 +1,5 @@
-﻿using LitJson;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using Server.Base.Core.Abstractions;
 using Server.Base.Core.Configs;
 using Server.Base.Core.Events;
@@ -14,21 +14,19 @@ using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Core.Enums;
 using Server.Reawakened.Network.Services;
 using Server.Reawakened.Players.Events;
-using Server.Reawakened.Players.Helpers;
-using Server.Reawakened.XMLs.Bundles.Internal;
 using System.Diagnostics;
 using System.Dynamic;
 using System.Globalization;
-using System.Xml;
 using System.Xml.Linq;
 using Web.Launcher.Models;
 using Web.Launcher.Models.Current;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Web.Launcher.Services;
 
 public class StartGame(EventSink sink, ILogger<StartGame> logger, ServerConsole _console,
     World world, PlayerEventSink playerEventSink, RandomKeyGenerator generator, BuildAssetList assetList,
-    LauncherRConfig lRConfig, LauncherRwConfig lWConfig, InternalRwConfig iWConfig, ServerRConfig sConfig, InternalNews internalNews) : IService
+    LauncherRConfig lRConfig, LauncherRwConfig lWConfig, InternalRwConfig iWConfig, ServerRConfig sConfig) : IService
 {
     private string _directory;
     private bool _dirSet = false, _appStart = false;
@@ -58,7 +56,6 @@ public class StartGame(EventSink sink, ILogger<StartGame> logger, ServerConsole 
     private void AppStarted()
     {
         _appStart = true;
-        UpdateNews();
         RunGame();
     }
 
@@ -98,7 +95,7 @@ public class StartGame(EventSink sink, ILogger<StartGame> logger, ServerConsole 
                 continue;
 
             CurrentVersion =
-                JsonMapper.ToObject<PackageInformation>(File.ReadAllText(Path.Join(_directory, "current.txt")));
+                JsonSerializer.Deserialize<PackageInformation>(File.ReadAllText(Path.Join(_directory, "current.txt")));
 
             break;
         }
@@ -193,12 +190,12 @@ public class StartGame(EventSink sink, ILogger<StartGame> logger, ServerConsole 
         if (lWConfig.GameSettingsFile == null)
             return;
 
-        dynamic settings = JsonMapper.ToObject<ExpandoObject>(File.ReadAllText(lWConfig.GameSettingsFile))!;
+        dynamic settings = JsonConvert.DeserializeObject<ExpandoObject>(File.ReadAllText(lWConfig.GameSettingsFile))!;
         settings.launcher.baseUrl = iWConfig.GetHostAddress();
         settings.launcher.fullscreen = lRConfig.Fullscreen ? "true" : "false";
         settings.launcher.onGameClosePopup = lRConfig.OnGameClosePopup ? "true" : "false";
         settings.patcher.baseUrl = iWConfig.GetHostAddress();
-        File.WriteAllText(lWConfig.GameSettingsFile, JsonMapper.ToJson(settings));
+        File.WriteAllText(lWConfig.GameSettingsFile, JsonConvert.SerializeObject(settings));
     }
 
     public void LaunchGame()
@@ -208,7 +205,7 @@ public class StartGame(EventSink sink, ILogger<StartGame> logger, ServerConsole 
             logger.LogInformation("Skipping launcher in container.");
             return;
         }
-        _game = Process.Start(Path.Join(_directory, "launcher", lWConfig.LauncherExecutableName));
+        _game = Process.Start(Path.Join(_directory, "launcher", "launcher.exe"));
         logger.LogInformation("Running game on process: {GamePath}", _game?.ProcessName);
     }
 
@@ -275,35 +272,4 @@ public class StartGame(EventSink sink, ILogger<StartGame> logger, ServerConsole 
         { "analytics.apikey", lWConfig.AnalyticsApiKey },
         { "project.name", iWConfig.ServerName }
     };
-
-    public void UpdateNews()
-    {
-        var sb = new SeparatedStringBuilder('\n');
-
-        foreach (var notes in internalNews.News)
-        {
-            if (!string.IsNullOrEmpty(sb.ToString()))
-                break;
-
-            if (!notes.DefaultNews && !string.IsNullOrEmpty(notes.StartDate) &&
-                !string.IsNullOrEmpty(notes.EndDate) &&
-                DateTime.Now >= XmlConvert.ToDateTime(notes.StartDate, "MM/dd/yyyy") &&
-                DateTime.Now <= XmlConvert.ToDateTime(notes.EndDate, "MM/dd/yyyy"))
-            {
-                sb.Append(notes.NewsDate);
-
-                foreach (var line in notes.Notes)
-                    sb.Append(line);
-            }
-            else if (notes.DefaultNews)
-            {
-                sb.Append(notes.NewsDate);
-
-                foreach (var line in notes.Notes)
-                    sb.Append(line);
-            }
-        }
-
-        lRConfig.News = sb.ToString();
-    }
 }
