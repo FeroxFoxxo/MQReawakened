@@ -33,8 +33,12 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
 
     private float _lastUpdate;
 
+    public TimerThread TimerThread;
+
     public override void Initialize()
     {
+        TimerThread = Services.GetRequiredService<TimerThread>();
+
         Global = Room.GetEntityFromId<AIStatsGlobalComp>(Id);
         Generic = Room.GetEntityFromId<AIStatsGenericComp>(Id);
 
