@@ -34,7 +34,7 @@ public class AIStateEnemy(EnemyData data) : BaseEnemy(data)
         );
     }
 
-    public override void SendAiData(Player player) =>
+    public override void SendAiData(Player player, bool sendAIDo) =>
         Room.SendSyncEvent(
             GetBlankEnemyInit(
                 Position.X, Position.Y, Position.Z,
