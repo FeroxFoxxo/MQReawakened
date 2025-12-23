@@ -5,6 +5,7 @@ using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Core.Services;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
+using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.XMLs.Bundles.Base;
 
@@ -27,6 +28,12 @@ public class CannedChat : ExternalProtocol
         var secondaryPhraseId = int.Parse(message[7]); // named 'specifics' in the client protocol/xml
         var itemId = int.Parse(message[8]);
         var recipientName = message[9];
+
+        if (!Config.Chat)
+        {
+            Player.SendWarningMessage("chat");
+            return;
+        }
 
         if (Player.Account.IsMuted())
         {
@@ -58,7 +65,7 @@ public class CannedChat : ExternalProtocol
                 foreach (
                     var client in
                         from client in Player.TempData.Group.GetMembers()
-                select client
+                        select client
                     )
                     client.Chat(channelType, Player.Character.CharacterName, sb.ToString());
 

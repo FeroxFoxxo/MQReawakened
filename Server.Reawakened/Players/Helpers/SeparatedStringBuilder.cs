@@ -14,7 +14,8 @@ public class SeparatedStringBuilder(char separator)
         else
             _first = false;
 
-        _stringBuilder.Append(text.ToString());
+        if (text is not null)
+            _stringBuilder.Append(text.ToString());
     }
 
     public override string ToString() => _stringBuilder.ToString();

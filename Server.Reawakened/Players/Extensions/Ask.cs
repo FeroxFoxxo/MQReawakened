@@ -11,7 +11,7 @@ public static class Ask
     public static void GetCharacter(Microsoft.Extensions.Logging.ILogger logger, AccountHandler accountHandler,
         UserInfoHandler userInfoHandler, CharacterHandler characterHandler, out CharacterModel model, out UserInfoModel user)
     {
-        logger.LogInformation("Please enter the username of whom you wish to find:");
+        logger.LogError("Please enter the username of whom you wish to find:");
 
         var userName = ConsoleExt.ReadLineOrDefault(logger, null)?.Trim();
 
@@ -40,13 +40,13 @@ public static class Ask
             return;
         }
 
-        logger.LogInformation("Please select the ID for the character you want to run this command for:");
+        logger.LogError("Please select the ID for the character you want to run this command for:");
 
         foreach (var possibleCharacter in user.CharacterIds)
         {
             var character = characterHandler.GetCharacterFromId(possibleCharacter);
 
-            logger.LogInformation("    {CharacterId}: {CharacterName}",
+            logger.LogError("    {CharacterId}: {CharacterName}",
                 possibleCharacter, character.Write.CharacterName);
         }
 

@@ -25,14 +25,6 @@ If you’re ready to swing into Ook and host your own server emulator, this guid
 - Start the Docker Compose file
 - Adjust JSON configs under `./Game/Data/Configs` after first start
 
-## Folder layout used by Docker
-
-- `./Build/Archives/Client` → mounted to `/archives/Client` inside the container
-  - **2014 client archive** (required): Contains DLLs needed for server compilation
-  - **Override client archive** (optional): Alternative game client (i.e. 2013)
-- `./Build/Archives/Caches` → mounted to `/archives/Caches` inside the container
-- `./Game/Data` → mounted to `/data` (persisted server data and configs)
-
 ## Prerequisites
 
 - Docker Desktop (or compatible Docker Engine) with [Docker Compose](https://docs.docker.com/compose/install/linux/)
@@ -47,15 +39,17 @@ If you’re ready to swing into Ook and host your own server emulator, this guid
 
 ## Obtain required game files
 
+### Client Information 
+
 **Important**: This server can use **two different client versions**:
 
 1. **2014 Client (Required for server compilation)**: Contains the DLLs needed to compile the server
-2. **2013 Client (Optional for game hosting)**: Can be used for actual game hosting if preferred
+2. **2013 Client (Optional for playing the game)**: Version of the game you want to play on, defaults to what's used to compile the server (2014)
 
-### Client Downloads
+### External Downloads
 
 - **2014 Client (Required)**: Any client archive that contains the required 2014 version DLLs (see [here](https://archive.org/download/InstallMonkeyQuest/Monkey%20Quest.zip))
-- **Override Client (Optional)**: Any alternative client archive for hosting (see [here](https://drive.google.com/drive/folders/1AuNMaNqbszUzWBgT3d_xolSuH_IINJf))
+- **Override Client (Optional)**: Any alternative client archive for the version actually played on (see [here](https://drive.google.com/drive/folders/1AuNMaNqbszUzWBgT3d_xolSuH_IINJf))
 - **Caches**: Any/all caches you have from the original game, i.e. to view the community archives - look for `UniqueBundles.7z` [here](https://drive.google.com/drive/folders/17ic6S2brJNI9HlFqnue38zFJAv5nqxIU)
 
 ### File Placement
@@ -104,20 +98,12 @@ FORCE_REBUILD=0              # set 1 to force clean rebuild/re-extract
 SEVEN_Z_THREADS=1            # 7z CPU threads; 1 is conservative on memory
 ```
 
-### Client Version Behavior
-
-The system automatically detects and uses the best available client version:
-- **2014 client is always required** for server compilation (provides DLLs)
-- **Override client is automatically used for hosting** if present in the `ClientOverride` folder
-- **2014 client is used for hosting** if no override client is found
-- **No configuration needed** - the system chooses automatically based on folder structure
-
 Notes:
 
 - `SERVER_ADDRESS` should be the public name clients will reach (domain or IP). This is written into various config files and URLs the client consumes.
 - `FORCE_REBUILD=1` clears build output and cached data on next start.
 - `SEVEN_Z_THREADS=1` is recommended on low‑memory systems when extracting large caches.
-- **Client version selection is automatic**: The system will use override client for hosting if available, otherwise fall back to 2014 client.
+- `GAME_PORT` is not recommended to change as the client expects this port. Instead, ensure it is properly forwarded through your router.
 
 ## Start the server (Docker Compose)
 

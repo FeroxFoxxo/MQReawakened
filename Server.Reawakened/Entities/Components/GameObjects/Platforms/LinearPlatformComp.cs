@@ -36,6 +36,10 @@ public class LinearPlatformComp : BaseMovingObjectControllerComp<LinearPlatform>
     public override void Update()
     {
         var movement = (Platform_Linear_Movement)Movement;
+        
+        if (movement == null || Room == null)
+            return;
+
         movement.UpdateState(Room.Time);
 
         if (!ComponentData.TriggeredBySwitch)

@@ -30,6 +30,12 @@ public class VendorGift : ExternalProtocol
             return;
         }
 
+        if (!Config.Gifting)
+        {
+            Player.SendWarningMessage("gifting");
+            return;
+        }
+
         var isOnline = true;
         var friendName = message[6];
         var messageDesc = message[7];

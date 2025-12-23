@@ -41,7 +41,7 @@ public class RunPlayerCommand(ServerConsole console, EventSink sink,
             return;
         }
 
-        logger.LogInformation("Enter command and arguments:");
+        logger.LogError("Enter command and arguments:");
 
         if (EnvironmentExt.IsContainerOrNonInteractive())
         {

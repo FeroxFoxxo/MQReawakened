@@ -1,7 +1,9 @@
-﻿using Server.Reawakened.Chat.Services;
+﻿using Server.Base.Accounts.Enums;
+using Server.Reawakened.Chat.Services;
 using Server.Reawakened.Network.Protocols;
 
 namespace Protocols.External._m__GameCommandHandler;
+
 public class SlashCommand : ExternalProtocol
 {
     public override string ProtocolName => "mc";
@@ -12,6 +14,9 @@ public class SlashCommand : ExternalProtocol
     {
         var command = message[5];
         var args = command.Split(' ').Select(s => s.Trim()).ToArray();
+
+        if (Player.Account.AccessLevel < AccessLevel.Moderator)
+            return;
 
         SlashCommands.RunCommand(Player, command, args);
     }

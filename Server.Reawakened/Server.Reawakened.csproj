@@ -4,6 +4,7 @@
         <TargetFramework>net8</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <DebugType>embedded</DebugType>
+        <Platforms>AnyCPU;ARM64</Platforms>
     </PropertyGroup>
 
     <ItemGroup>
@@ -156,6 +157,9 @@
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
       <None Update="Assets\LocalAssets\InternalObjective.xml">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Assets\LocalAssets\InternalPortalInfos.xml">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
       <None Update="Assets\LocalAssets\InternalQuestItem.xml">

@@ -2,6 +2,7 @@
 using Server.Base.Database.Accounts;
 using Server.Reawakened.Chat.Models;
 using Server.Reawakened.Players;
+using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.XMLs.Data.Commands;
 
 namespace Server.Reawakened.Chat.Commands.Misc;
@@ -13,6 +14,13 @@ public class SetAccess : SlashCommand
 
     public override List<ParameterModel> Parameters =>
     [
+        new ParameterModel() 
+        {
+            Name = "id",
+            Description = "The player's character id.",
+            Optional = false,
+            Options = []
+        },
         new ParameterModel()
         {
             Name = "number",
@@ -45,6 +53,7 @@ public class SetAccess : SlashCommand
 
     public override AccessLevel AccessLevel => AccessLevel.Owner;
 
+    public PlayerContainer PlayerContainer { get; set; }
     public AccountHandler AccountHandler { get; set; }
 
     public override void Execute(Player player, string[] args)
@@ -52,16 +61,22 @@ public class SetAccess : SlashCommand
         if (args.Length != 3)
             return;
 
-        var target = AccountHandler.GetAccountFromId(int.Parse(args[1]));
+        var target = PlayerContainer.GetPlayerByAccountId(int.Parse(args[1]));
 
         if (target == null)
         {
-            Log("Please provide a valid character id.", player);
+            var targetImage = AccountHandler.GetAccountFromId(int.Parse(args[1]));
+
+            targetImage.Write.AccessLevel = (AccessLevel)int.Parse(args[2]);
+
+            AccountHandler.Update(targetImage.Write);
+
+            Log($"Set offline player {targetImage.Username}'s access level to {targetImage.AccessLevel}", player);
             return;
         }
 
-        target.Write.AccessLevel = (AccessLevel)int.Parse(args[2]);
+        target.Account.Write.AccessLevel = (AccessLevel)int.Parse(args[2]);
 
-        Log($"Set {target.Username}'s access level to {target.AccessLevel}", player);
+        Log($"Set {target.Account.Username}'s access level to {target.Account.AccessLevel}", player);
     }
 }

@@ -22,7 +22,7 @@ public class CompleteQuestObjectives : SlashCommand
         }
     ];
 
-    public override AccessLevel AccessLevel => AccessLevel.Player;
+    public override AccessLevel AccessLevel => AccessLevel.Moderator;
 
     public QuestCatalog QuestCatalog { get; set; }
 

@@ -108,11 +108,11 @@ public static class CheckBans
             output += " " + string.Format("{0}d", (int)input.TotalDays);
 
         if ((int)input.TotalHours > 0)
-            output += " " + string.Format("{0}hr" +
+            output += " " + string.Format("{0}hr" + 
                 (input.Hours == 1 ? string.Empty : "s"), input.Hours);
 
         if (input.Minutes > 0)
-            output += " " + string.Format("{0}min" +
+            output += " " + string.Format("{0}min" + 
                 (input.Minutes == 1 ? string.Empty : "s"), input.Minutes);
 
         return " for" + output;

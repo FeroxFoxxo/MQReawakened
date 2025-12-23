@@ -15,6 +15,7 @@
         <ServerGarbageCollection>true</ServerGarbageCollection>
         <DebugType>embedded</DebugType>
         <PreserveCompilationContext>true</PreserveCompilationContext>
+        <Platforms>AnyCPU;ARM64</Platforms>
     </PropertyGroup>
 
     <ItemGroup>

@@ -15,7 +15,7 @@ public class ClosestEntity : SlashCommand
 
     public override List<ParameterModel> Parameters => [];
 
-    public override AccessLevel AccessLevel => AccessLevel.Player;
+    public override AccessLevel AccessLevel => AccessLevel.Moderator;
 
     public ServerRConfig ServerRConfig { get; set; }
 

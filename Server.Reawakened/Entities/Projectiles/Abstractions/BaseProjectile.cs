@@ -39,7 +39,9 @@ public abstract class BaseProjectile(string id, float lifetime,
 
         if (collisions.Length > 0)
             foreach (var collision in collisions)
+            {
                 Hit(collision);
+            }
 
         if (LifeTime <= time)
             Hit("0");

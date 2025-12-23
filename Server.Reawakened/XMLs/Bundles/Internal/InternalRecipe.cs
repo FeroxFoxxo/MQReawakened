@@ -26,7 +26,7 @@ public class InternalRecipe : InternalXml
     }
 
     public RecipeModel GetRecipeById(int recipeId) =>
-        RecipeCatalog.TryGetValue(recipeId, out var recipeInfo) ? recipeInfo : RecipeCatalog[0];
+        RecipeCatalog.TryGetValue(recipeId, out var recipeInfo) ? recipeInfo : null;
 
     public override void ReadDescription(XmlDocument xmlDocument)
     {

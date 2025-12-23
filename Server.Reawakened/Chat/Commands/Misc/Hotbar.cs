@@ -27,7 +27,7 @@ public class Hotbar : SlashCommand
         }
     ];
 
-    public override AccessLevel AccessLevel => AccessLevel.Player;
+    public override AccessLevel AccessLevel => AccessLevel.Moderator;
 
     public ItemRConfig ItemRConfig { get; set; }
     public ItemCatalog ItemCatalog { get; set; }
@@ -64,13 +64,7 @@ public class Hotbar : SlashCommand
             ItemFilterCategory.Consumables or
             ItemFilterCategory.NestedSuperPack)
         {
-            var itemModel = new ItemModel()
-            {
-                ItemId = item.ItemId,
-                Count = 0,
-                BindingCount = 0,
-                DelayUseExpiry = DateTime.Now
-            };
+            var itemModel = new ItemModel(item.ItemId, 0, 0, DateTime.Now);
 
             player.Character.Inventory.Items.TryAdd(item.ItemId, itemModel);
 

@@ -2,13 +2,11 @@
 using Microsoft.Extensions.Logging;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Entities.Colliders;
-using Server.Reawakened.Entities.Colliders.Abstractions;
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.Rooms.Services;
 using System.Text.Json;
 using System.Xml;
-using UnityEngine;
 using WorldGraphDefines;
 
 namespace Server.Reawakened.Rooms.Extensions;
@@ -155,7 +153,7 @@ public static class LoadRoomData
     {
         var entityInfo = new Dictionary<string, IEnumerable<string>>();
 
-        if (room.UnknownEntities.TryGetValue(id, out var value))
+        if (room.UnknownEntities != null && room.UnknownEntities.TryGetValue(id, out var value))
             entityInfo.Add("entities", value);
 
         var components = room.Planes.Values

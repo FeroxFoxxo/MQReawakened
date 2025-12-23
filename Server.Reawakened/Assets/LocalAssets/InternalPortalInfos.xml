@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<PortalInfos>
+    <Portal id="706" isPremium="true" levelId="99" level="Crossroads Path" toLevelId="302" toLevel="The Underbelly">
+        <RequiredLevel level="21" tribe="Global" />
+    </Portal>
+    <Portal id="708" isPremium="false" levelId="99" level="Crossroads Path" toLevelId="301" toLevel="Hovering Markets">
+        <RequiredLevel level="31" tribe="Global" />
+    </Portal>
+</PortalInfos>
