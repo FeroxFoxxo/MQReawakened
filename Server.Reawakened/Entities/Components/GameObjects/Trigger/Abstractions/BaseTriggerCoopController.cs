@@ -238,7 +238,7 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
 
     public override void RunSyncedEvent(SyncEvent syncEvent, Player player)
     {
-        if (!IsEnabled || syncEvent.Type != SyncEvent.EventType.Trigger)
+        if (!IsEnabled || !IsEnable || syncEvent.Type != SyncEvent.EventType.Trigger)
             return;
 
         var tEvent = new Trigger_SyncEvent(syncEvent);
@@ -388,6 +388,9 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
             if (LastActivationTime + ActivationTimeAfterFirstInteraction > Room.Time && ActivationTimeAfterFirstInteraction > 0)
                 return;
 
+            if (CurrentPhysicalInteractors.Count >= NbInteractionsNeeded)
+                return;
+
             Trigger(player, true, false);
         }
 
@@ -502,6 +505,11 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
             Room.SentEntityTriggered(Id, player, success, IsActive);
             Triggered(player, success, IsActive);
         }
+        else
+            Room.SendSyncEvent(new Trigger_SyncEvent(Id, Room.Time, success, Id, active));
+
+        if (ActiveDuration > 0)
+            TimeToDeactivate = Room.Time + ActiveDuration;
     }
 
     public void LogTriggerErrors(string triggerId, TriggerType type)
