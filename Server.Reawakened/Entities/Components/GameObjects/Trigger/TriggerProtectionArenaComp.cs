@@ -25,6 +25,8 @@ public class TriggerProtectionArenaComp : BaseTriggerStatueComp<TriggerProtectio
         _spawners = [];
     }
 
+    public override object[] GetInitData(Player player) => Status == ArenaStatus.Complete ? [1] : [-1];
+
     public override void DelayedComponentInitialization()
     {
         foreach (var entity in Triggers.Where(x => x.Value == TriggerType.Activate).Select(x => x.Key))
