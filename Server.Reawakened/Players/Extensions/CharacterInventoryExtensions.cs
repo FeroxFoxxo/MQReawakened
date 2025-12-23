@@ -66,7 +66,7 @@ public static class CharacterInventoryExtensions
                     if (player.Character.StatusEffects.HasEffect(ItemEffectType.ColorTonic))
                         player.Character.StatusEffects.Remove(ItemEffectType.ColorTonic);
 
-                    player.Character.StatusEffects.Add(itemEffect, usedItem.PrefabName);
+                    player.Character.StatusEffects.Add(effect);
                     break;
                 case ItemEffectType.Invalid:
                 case ItemEffectType.Unknown:
