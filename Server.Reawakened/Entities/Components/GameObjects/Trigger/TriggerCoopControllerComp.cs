@@ -10,6 +10,9 @@ public class TriggerCoopControllerComp : BaseTriggerCoopController<TriggerCoopCo
 {
     public void SendTriggerEvent(Player player)
     {
+        if (ActiveDuration > 0 && TimeToDeactivate > Room.Time)
+            return;
+
         Room.SendSyncEvent(new Trigger_SyncEvent(Id.ToString(), Room.Time, true, player.GameObjectId.ToString(), true));
         TriggerInteraction(ActivationType.NormalDamage, player);
         IsActive = true;
