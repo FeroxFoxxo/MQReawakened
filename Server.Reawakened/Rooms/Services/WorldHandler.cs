@@ -220,10 +220,10 @@ public class WorldHandler(EventSink sink, ServerRConfig config, WorldGraph world
         ChangePlayerRoom(player, newLevelId, spawnId);
     }
 
-    public bool ChangePlayerRoom(Player player, int levelId, string spawnId = "") =>
+    public bool ChangePlayerRoom(Player player, int levelId, string spawnId = "0") =>
         _ = TryChangePlayerRoom(player, levelId, spawnId);
 
-    public bool TryChangePlayerRoom(Player player, int levelId, string spawnId = "")
+    public bool TryChangePlayerRoom(Player player, int levelId, string spawnId = "0")
     {
         var levelInfo = worldGraph.GetInfoLevel(levelId);
 
