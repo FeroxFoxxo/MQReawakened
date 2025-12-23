@@ -62,7 +62,7 @@ public static class PlayerDamageExtensions
 
     public static void ApplyCharacterDamage(this Player player, float damage, string originId, double invincibilityDuration, ServerRConfig serverRConfig, TimerThread timerThread)
     {
-        if (player.TempData.Invincible) return;
+        if (player == null || player.TempData.Invincible || player.Character.CurrentLife <= 0) return;
 
         if (damage <= 0)
             damage = 1;
