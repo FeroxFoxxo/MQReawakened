@@ -37,6 +37,9 @@ public class SpiderBossControllerComp : BaseAIStateMachine<SpiderBossController>
 
         var switchComp = Room.GetEntityFromId<AIStateSpiderSwichSideComp>(Id);
 
+        if (switchComp == null)
+            return;
+
         IsRightSide = switchComp.StartRight;
 
         Room.AddUpdatingKilledEnemy(Id);
