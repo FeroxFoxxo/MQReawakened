@@ -136,6 +136,8 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
     public Dictionary<string, TriggerType> Triggers;
     public List<ActivationType> Activations;
 
+    public float TimeToDeactivate { get; set; }
+
     public override void InitializeComponent()
     {
         IsEnabled = IsEnable;
@@ -207,6 +209,16 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
     }
 
     public override void DelayedComponentInitialization() => RunTrigger(null);
+
+    public override void Update()
+    {
+        if (ActiveDuration > 0 && IsActive && TimeToDeactivate <= Room.Time)
+        {
+            var player = Room.GetPlayers().FirstOrDefault();
+
+            Trigger(player, true, false);
+        }
+    }
 
     public void AddToTriggers(List<int> triggers, TriggerType triggerType)
     {
