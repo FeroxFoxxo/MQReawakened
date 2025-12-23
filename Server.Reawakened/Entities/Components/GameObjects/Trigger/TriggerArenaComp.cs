@@ -1,6 +1,7 @@
 ﻿using Server.Reawakened.Entities.Components.GameObjects.Spawners;
 using Server.Reawakened.Entities.Components.GameObjects.Trigger.Abstractions;
 using Server.Reawakened.Entities.Components.GameObjects.Trigger.Enums;
+using Server.Reawakened.Players;
 using Server.Reawakened.Rooms;
 using SmartFoxClientAPI.Data;
 
@@ -21,6 +22,8 @@ public class TriggerArenaComp : BaseTriggerStatueComp<TriggerArena>
         ArenaEntities = [];
         _spawners = [];
     }
+
+    public override object[] GetInitData(Player player) => Status == ArenaStatus.Complete ? [1] : [-1];
 
     public override void DelayedComponentInitialization()
     {

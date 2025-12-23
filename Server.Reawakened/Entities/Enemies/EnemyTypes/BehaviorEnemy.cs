@@ -33,16 +33,12 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
 
     private float _lastUpdate;
 
-    public TimerThread TimerThread;
-
     public override void Initialize()
     {
-        TimerThread = Services.GetRequiredService<TimerThread>();
-
         Global = Room.GetEntityFromId<AIStatsGlobalComp>(Id);
         Generic = Room.GetEntityFromId<AIStatsGenericComp>(Id);
 
-        if (!IsFromSpawner)
+        if (!IsFromSpawner && Generic is not null)
             Generic.SetDefaultPatrolRange();
 
         EnemyModel.GlobalProperties?.ApplyGlobalPropertiesFromModel(Global);
@@ -204,29 +200,35 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
             EnemyAggroPlayer(player);
     }
 
-    public override void SendAiData(Player player)
+    public override void SendAiData(Player player, bool sendAIDo)
     {
+        var ratio = 0.0f;
+
         if (AiData is null)
         {
             Logger.LogError("AiData for enemy {Id} was null! Skipping this enemy...", Id);
             return;
         }
 
+        if (CurrentBehavior is not null)
+            ratio = CurrentBehavior.GetBehaviorRatio(Room.Time);
+
         player.SendSyncEventToPlayer(
             AISyncEventHelper.AIInit(
                 AiData.Sync_PosX, AiData.Sync_PosY, AiData.Sync_PosZ,
                 AiData.Intern_SpawnPosX, AiData.Intern_SpawnPosY,
-                CurrentBehavior.GetBehaviorRatio(Room.Time), this
+                ratio, this
             )
         );
 
-        player.SendSyncEventToPlayer(
-            AISyncEventHelper.AIDo(
-                AiData.Sync_PosX, AiData.Sync_PosY, 1.0f,
-                AiData.Sync_TargetPosX, AiData.Sync_TargetPosY, AiData.Intern_Dir, Global != null && CurrentState == Global.AwareBehavior,
-                this
-            )
-        );
+        if (sendAIDo)
+            player.SendSyncEventToPlayer(
+                AISyncEventHelper.AIDo(
+                    AiData.Sync_PosX, AiData.Sync_PosY, 1.0f,
+                    AiData.Sync_TargetPosX, AiData.Sync_TargetPosY, AiData.Intern_Dir, Global != null && CurrentState == Global.AwareBehavior,
+                    this
+                )
+            );
     }
 
     public void EnemyAggroPlayer(Player player)

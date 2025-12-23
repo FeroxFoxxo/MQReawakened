@@ -57,7 +57,8 @@ public class GenericControllerComp : Component<GenericCollectible>
                 break;
             default:
                 Logger.LogWarning("Collectible not implemented for {PrefabName}", PrefabName);
-                break;
+                Collected = false;
+                return;
         }
 
         var effectEvent = new FX_SyncEvent(
