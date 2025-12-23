@@ -2,7 +2,6 @@
 using Server.Reawakened.Entities.Components.GameObjects.Spawners;
 using Server.Reawakened.Entities.Components.GameObjects.Trigger.Abstractions;
 using Server.Reawakened.Players;
-using Server.Reawakened.Players.Extensions;
 
 namespace Server.Reawakened.Entities.Components.GameObjects.Checkpoints;
 
@@ -38,6 +37,5 @@ public class CheckpointControllerComp : BaseTriggerCoopController<CheckpointCont
         }
 
         player.Room.LastCheckpoint = this;
-        player.ResetLostBananas();
     }
 }
