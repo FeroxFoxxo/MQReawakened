@@ -30,10 +30,10 @@ public class ChargeAttackProjectile : BaseProjectile
         _itemId = itemId;
         _zoneId = zoneId;
 
-        Collider = new AttackCollider(id, Position, new RectModel(-0.5f, -0.5f, 1, 1), PrjPlane, player, damage, type, 15f, 0, player.Character.StatusEffects.HasEffect(ItemEffectType.Detect));
+        Collider = new AttackCollider(id, Position, new RectModel(-0.4f, -0.5f, 0.8f, 1), PrjPlane, player, damage, type, 15f, 0, player.Character.StatusEffects.HasEffect(ItemEffectType.Detect));
 
         Room.SendSyncEvent(new ChargeAttackStart_SyncEvent(player.GameObjectId.ToString(), Room.Time,
-                        endPosition.x, endPosition.y, speed.x, speed.y, itemId, zoneId));
+                        endPosition.x, endPosition.y, speed.x, speed.y, _itemId, -1));
     }
 
     public override void Hit(string hitGoID)
@@ -47,7 +47,7 @@ public class ChargeAttackProjectile : BaseProjectile
         Room.SendSyncEvent(
             new ChargeAttackStop_SyncEvent(
                 _player.GameObjectId.ToString(), Room.Time,
-                _player.TempData.Position.X, _player.TempData.Position.Y, _itemId, _zoneId, hitGoID
+                _player.TempData.Position.X, _player.TempData.Position.Y, _itemId, -1, hitGoID
             )
         );
 
