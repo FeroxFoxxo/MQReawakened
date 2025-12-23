@@ -119,7 +119,8 @@ public abstract class BaseTriggerStatueComp<T> : BaseTriggerCoopController<T> wh
         foreach (var player in players)
             player.TempData.CurrentArena = null;
 
-        CurrentPhysicalInteractors.Clear();
+        foreach (var gamer in players)
+            RemovePhysicalInteractor(gamer, gamer.GameObjectId);
 
         Status = ArenaStatus.Complete;
     }

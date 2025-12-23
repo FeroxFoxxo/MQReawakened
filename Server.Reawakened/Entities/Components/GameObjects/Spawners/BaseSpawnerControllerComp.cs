@@ -295,8 +295,7 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
     {
         _nextSpawnRequestTime = NotScheduled;
         _spawnRequested = false;
-        _spawnedEntityCount = 0;
-        _updatedSpawnCycle = SpawnCycleCount;
+        _updatedSpawnCycle = _spawnedEntityCount + SpawnCycleCount;
         LinkedEnemies.Clear();
     }
 
@@ -432,7 +431,7 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
             }
             else
             {
-                if (SpawnCycleCount > 0)
+                if (_arenaComp != null && SpawnCycleCount > 0)
                     _updatedSpawnCycle += SpawnCycleCount;
 
                 _nextSpawnRequestTime = 0;

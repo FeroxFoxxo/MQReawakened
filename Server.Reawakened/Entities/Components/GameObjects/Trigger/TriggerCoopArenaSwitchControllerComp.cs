@@ -54,5 +54,7 @@ public class TriggerCoopArenaSwitchControllerComp : BaseTriggerCoopController<Tr
             triggerable.AddPhysicalInteractor(player, player.GameObjectId);
             triggerable.RunTrigger(player);
         }
+        else
+            triggerable.RemovePhysicalInteractor(player, player.GameObjectId);
     }
 }
