@@ -1,5 +1,11 @@
+@using Microsoft.AspNetCore.Http
 @{
     var path = ViewContext?.HttpContext?.Request?.Path.Value?.ToLowerInvariant() ?? string.Empty;
+
+	// Check if user is logged in via cookies
+	var userId = Context.Request.Cookies["UserId"];
+	var username = Context.Request.Cookies["Username"];
+	var isLoggedIn = !string.IsNullOrEmpty(userId) && !string.IsNullOrEmpty(username);
 }
 
 <div class="collapse navbar-collapse" id="primaryNav">
