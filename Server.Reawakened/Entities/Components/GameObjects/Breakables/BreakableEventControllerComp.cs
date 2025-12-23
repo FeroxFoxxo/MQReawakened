@@ -15,7 +15,6 @@ using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.XMLs.Bundles.Base;
 using Server.Reawakened.XMLs.Bundles.Internal;
-using UnityEngine;
 using Room = Server.Reawakened.Rooms.Room;
 
 namespace Server.Reawakened.Entities.Components.GameObjects.Breakables;
@@ -35,13 +34,15 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
     public bool CanBreak = true;
 
     private BaseSpawnerControllerComp _spawner;
+    private SpiderBreakableComp _spider;
 
     public override void InitializeComponent()
     {
         ObjStatus = Room.GetEntityFromId<BreakableObjStatusComp>(Id);
+        _spider = Room.GetEntityFromId<SpiderBreakableComp>(Id);
 
         Damageable = ObjStatus;
-        Damageable ??= Room.GetEntityFromId<SpiderBreakableComp>(Id);
+        Damageable ??= _spider;
 
         _spawner = Room.GetEntityFromId<BaseSpawnerControllerComp>(Id);
         
@@ -50,11 +51,13 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
 
         if (ObjStatus == null)
             return;
-		
-		// Disabled
-        //_ = new BreakableCollider(this, ObjStatus.EnemyTarget);
-		
-        _ = new BreakableCollider(this, false);
+
+        // EnemyTarget does not exist in 2012 level xmls
+        var enemyTarget = ItemCatalog.Config.GameVersion >= Core.Enums.GameVersion.vEarly2013 ?
+            ObjStatus.EnemyTarget : false;
+
+
+        _ = new BreakableCollider(this, enemyTarget);
     }
 
     public void Damage(int damage, Elemental damageType, Player origin)
@@ -67,15 +70,13 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
 
         Logger.LogInformation("Damaged object: '{PrefabName}' ({Id})", PrefabName, Id);
 
-        RunDamage(damage, damageType);
+        damage = RunDamage(damage, damageType);
 
         Room.SendSyncEvent(new AiHealth_SyncEvent(Id.ToString(), Room.Time, Damageable.CurrentHealth, damage, 0, 0, origin == null ? string.Empty : origin.CharacterName, false, true));
 
         if (Damageable.CurrentHealth <= 0)
         {
-            if (_spawner is not null && _spawner.OnDeathTargetID is not null and not "0")
-                foreach (var trigger in Room.GetEntitiesFromId<TriggerReceiverComp>(_spawner.OnDeathTargetID))
-                    trigger.TriggerStateChange(TriggerType.Activate, true, Id);
+            TriggerDeathTargets();
 
             if (origin != null)
             {
@@ -84,15 +85,22 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
                 origin.SendUpdatedInventory();
             }
 
-            if (_spawner is null || !_spawner.HasLinkedArena)
+            if (_spawner is null)
             {
                 Room.KillEntity(Id);
                 Destroy(Room, Id);
+            }
+            else if (!_spawner.HasLinkedArena)
+            {
+                Room.KillEntity(Id);
+                _spawner.Destroy();
+                _spawner.PingDeathTargets();
             }
             else
             {
                 _spawner.SetActive(false);
                 _spawner.RemoveFromArena();
+                _spawner.PingDeathTargets();
                 Room.ToggleCollider(Id, false);
             }
         }
@@ -105,7 +113,7 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
 
         Logger.LogInformation("Damaged object (from enemy): '{PrefabName}' ({Id})", PrefabName, Id);
 
-        RunDamage(damage, Elemental.Standard);
+        damage = RunDamage(damage, Elemental.Standard);
 
         Room.SendSyncEvent(new AiHealth_SyncEvent(Id.ToString(), Room.Time, Damageable.CurrentHealth, damage, 0, 0, enemyId, false, true));
 
@@ -116,18 +124,20 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
         }
     }
 
-    public void RunDamage(int damage, Elemental damageType)
+    public int RunDamage(int damage, Elemental damageType)
     {
         if (Damageable is null)
-            return;
+            return 0;
+
+        var dmgAmount = Damageable.GetDamageAmount(damage, damageType);
 
         if (Damageable is IBreakable breakable)
         {
-			// This is here so that if the damage is totally resisted, the obj won't break.
-			// See Boom Barrels (PF_OUT_BARRELTNT)
-			if (dmgAmount <= 1)
-				return 0;
-			
+            // This is here so that if the damage is totally resisted, the obj won't break.
+            // See Boom Barrels (PF_OUT_BARRELTNT)
+            if (dmgAmount <= 1)
+                return 0;
+
             breakable.NumberOfHits++;
 
             if (breakable.NumberOfHitsToBreak > 0)
@@ -148,14 +158,16 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
                         Damageable.CurrentHealth = 1;
                 }
 
-                return;
+                return dmgAmount;
             }
         }
 
-        Damageable.CurrentHealth -= Damageable.GetDamageAmount(damage, damageType);
+        Damageable.CurrentHealth -= dmgAmount;
 
         if (Damageable.CurrentHealth < 0)
             Damageable.CurrentHealth = 0;
+
+        return dmgAmount;
     }
 
     public void Respawn()
@@ -169,4 +181,17 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
     public override void NotifyCollision(NotifyCollision_SyncEvent notifyCollisionEvent, Player player) { }
 
     public void Destroy(Room room, string id) => room.RemoveEnemy(id);
+
+    public void TriggerDeathTargets()
+    {
+        // Do not add a line for spawner, it is already handled in BaseSpawnerControllerComp
+
+        if (ObjStatus != null && ObjStatus.OnKillMessageReceiver != string.Empty)
+            foreach (var trigger in Room.GetEntitiesFromId<TriggerReceiverComp>(ObjStatus.OnKillMessageReceiver))
+                trigger.TriggerStateChange(TriggerType.Activate, true, Id);
+
+        else if (_spider != null && _spider.OnKillMessageReceiver != string.Empty)
+            foreach (var trigger in Room.GetEntitiesFromId<TriggerReceiverComp>(_spider.OnKillMessageReceiver))
+                trigger.TriggerStateChange(TriggerType.Activate, true, Id);
+    }
 }
