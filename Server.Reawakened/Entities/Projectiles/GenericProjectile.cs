@@ -17,15 +17,14 @@ public class GenericProjectile : BaseProjectile
     public GenericProjectile(string id, Player player, float lifeTime, Vector3 position, ItemRConfig config,
         int direction, ItemDescription item, int damage, Elemental damageType, bool isGrenade)
             : base(id, lifeTime, player.Room,
-                new Vector3Model(position.x + config.ProjectileXOffset * (direction > 0 ? 1 : -1), position.y + config.ProjectileYOffset, position.z),
+                new Vector3Model(position.x + config.ProjectileXOffset * (direction > 0 ? 1 : - 1 - config.ProjectileWidth), position.y + config.ProjectileYOffset - config.ProjectileHeight, position.z),
                 new Vector2(config.ProjectileSpeedX * (direction > 0 ? 1 : -1), isGrenade ? config.GrenadeSpeedY : config.ProjectileSpeedY),
                 null, false)
     {
         _gameObjectId = player.GameObjectId;
         _gravityFactor = isGrenade ? config.GrenadeGravityFactor : config.ProjectileGravityFactor;
 
-        Collider = new AttackCollider(id, Position, new RectModel(0, 0, config.ProjectileWidth, config.ProjectileHeight), PrjPlane, 
-            player, damage, damageType, LifeTime, 0, player.Character.StatusEffects.HasEffect(ItemEffectType.Detect));
+        Collider = new AttackCollider(id, Position, new RectModel(0, 0, config.ProjectileWidth, config.ProjectileHeight), PrjPlane, player, damage, damageType, LifeTime, 0, player.Character.StatusEffects.HasEffect(ItemEffectType.Detect));
 
         var prj = new LaunchItem_SyncEvent(_gameObjectId, StartTime, Position.X, Position.Y, Position.Z, Speed.x, Speed.y, LifeTime, int.Parse(ProjectileId), item.PrefabName);
 
