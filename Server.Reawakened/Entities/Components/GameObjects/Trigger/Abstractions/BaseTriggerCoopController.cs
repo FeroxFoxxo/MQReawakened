@@ -18,7 +18,7 @@ using static TriggerCoopController;
 
 namespace Server.Reawakened.Entities.Components.GameObjects.Trigger.Abstractions;
 
-public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp, IQuestTriggered where T : TriggerCoopController
+public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp, ICoopTriggered, IQuestTriggered where T : TriggerCoopController
 {
     public bool DisabledAfterActivation => ComponentData.DisabledAfterActivation;
 
@@ -268,12 +268,10 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
     {
         if (CurrentPhysicalInteractors.Contains(interactionId)) return;
 
-        CurrentPhysicalInteractors.Add(interactionId);
+        var valid = true;
 
         if (Room.GetPlayerById(interactionId) != null)
         {
-            var validQuestProgress = true;
-
             if (PlayerHasPet(player, out var pet))
                 if (pet != null)
                     pet.CoopTriggerableId = Id;
@@ -284,7 +282,7 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
 
                 if (requiredQuest != null)
                     if (!player.Character.CompletedQuests.Contains(requiredQuest.Id))
-                        validQuestProgress = false;
+                        valid = false;
             }
 
             if (!string.IsNullOrEmpty(QuestInProgressRequired))
@@ -293,11 +291,21 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
 
                 if (requiredQuest != null)
                     if (player.Character.QuestLog.FirstOrDefault(q => q.Id == requiredQuest.Id) == null)
-                        validQuestProgress = false;
+                        valid = false;
             }
+            if (!string.IsNullOrEmpty(TriggeredByItemInInventory))
+            {
+                var requiredItem = ItemCatalog.GetItemFromPrefabName(TriggeredByItemInInventory);
 
-            if (validQuestProgress)
-                SendInteractionUpdate();
+                if (requiredItem == null || !player.Character.Inventory.Items.ContainsKey(requiredItem.ItemId))
+                    valid = false;
+            }
+        }
+
+        if (valid)
+        {
+            CurrentPhysicalInteractors.Add(interactionId);
+            SendInteractionUpdate();
         }
     }
 
@@ -396,6 +404,13 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
 
         LogTrigger();
     }
+
+    public void TriggerStateChange(TriggerType triggerType, bool triggered, string triggeredBy) => IsEnabled = triggerType switch
+    {
+        TriggerType.Enable => true,
+        TriggerType.Disable => false,
+        _ => IsEnabled
+    };
 
     public void LogTriggerEvent(Trigger_SyncEvent tEvent)
     {
@@ -560,7 +575,7 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
                 LoggerType.Trace
         );
 
-        if (QuestInProgressRequired.Equals(quest.Id) && CurrentPhysicalInteractors.Contains(player.GameObjectId))
+        if (QuestInProgressRequired.Equals(quest.Name) && CurrentPhysicalInteractors.Contains(player.GameObjectId))
         {
             RunTrigger(player);
         }
@@ -581,7 +596,7 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
                 LoggerType.Trace
         );
 
-        if (QuestCompletedRequired.Equals(quest.Id) && CurrentPhysicalInteractors.Contains(player.GameObjectId))
+        if (QuestCompletedRequired.Equals(quest.Name) && CurrentPhysicalInteractors.Contains(player.GameObjectId))
         {
             RunTrigger(player);
         }
