@@ -523,7 +523,7 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
         else
             Room.SendSyncEvent(new Trigger_SyncEvent(Id, Room.Time, success, Id, active));
 
-        if (ActiveDuration > 0)
+        if (ActiveDuration > 0 && IsActive)
             TimeToDeactivate = Room.Time + ActiveDuration;
     }
 
