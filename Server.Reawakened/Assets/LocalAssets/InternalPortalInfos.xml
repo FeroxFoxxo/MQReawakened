@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PortalInfos>
     <Portal id="253" isPremium="true" levelId="99" level="Crossroads Path" toLevelId="209" toLevel="The Volcano Lair">
-        <RequiredQuest id="938" />
+        <RequiredQuest id="838" />
     </Portal>
 </PortalInfos>
