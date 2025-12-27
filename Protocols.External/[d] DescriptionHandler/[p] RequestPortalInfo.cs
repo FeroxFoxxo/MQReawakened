@@ -1,7 +1,9 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using A2m.Server;
+using Microsoft.Extensions.Logging;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
 using Server.Reawakened.XMLs.Bundles.Base;
+using Server.Reawakened.XMLs.Bundles.Internal;
 
 namespace Protocols.External._d__DescriptionHandler;
 public class RequestPortalInfo : ExternalProtocol
@@ -10,6 +12,7 @@ public class RequestPortalInfo : ExternalProtocol
 
     public WorldGraph WorldGraph { get; set; }
     public MiscTextDictionary MiscText { get; set; }
+    public InternalPortalInfos PortalInfos { get; set; }
     public ILogger<RequestPortalInfo> Logger { get; set; }
 
     public override void Run(string[] message)
@@ -29,6 +32,19 @@ public class RequestPortalInfo : ExternalProtocol
             return;
         }
 
-        SendXt("dp", portalId, levelId, 0, collectedIdols, newLevelNameId.Key, 0);
+        var portalInfos = PortalInfos.GetPortalInfos(levelId, portalId);
+
+        var isLocked = 0;
+        var isPremium = 0;
+
+        if (portalInfos != null)
+        {
+            if (!portalInfos.CheckConditions(Player))
+                isLocked = 1;
+            if (portalInfos.ShowPremiumPortal)
+                isPremium = 1;
+        }
+
+        SendXt("dp", portalId, levelId, isLocked, collectedIdols, newLevelNameId.Key, isPremium);
     }
 }
