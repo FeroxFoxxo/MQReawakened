@@ -389,7 +389,7 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
             if (StayTriggeredOnReceiverActivated && triggerReceiverActivated)
                 return;
 
-            if (StayTriggeredOnUnpressed || player.Character.Pets.TryGetValue(player.GetEquippedPetId(ServerRConfig), out var pet)
+            if (StayTriggeredOnUnpressed || player.Character != null && player.Character.Pets.TryGetValue(player.GetEquippedPetId(ServerRConfig), out var pet)
                 && Id == pet.CoopTriggerableId && pet.InCoopState())
                 return;
 
