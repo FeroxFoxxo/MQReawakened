@@ -34,7 +34,7 @@ public class QuestCollectibleControllerComp : Component<QuestCollectibleControll
     {
         var count = 1;
 
-        if (_questItem != null)
+        if (_questItem != null && _questItem.SubCategoryId == ItemSubCategory.Collectible)
         {
             player.AddItem(_questItem, count, ItemCatalog);
             player.SendUpdatedInventory();
