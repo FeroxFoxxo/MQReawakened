@@ -30,7 +30,7 @@ public class ChargeAttackProjectile : BaseProjectile
         _itemId = itemId;
         _zoneId = zoneId;
 
-        Collider = new AttackCollider(id, Position, new RectModel(-0.4f, -0.5f, 0.8f, 1), PrjPlane, player, damage, type, 15f, 0, player.Character.StatusEffects.HasEffect(ItemEffectType.Detect));
+        Collider = new AttackCollider(id, Position, new RectModel(-0.4f, -0.5f, 0.8f, 0.8f), PrjPlane, player, damage, type, 15f, 0, player.Character.StatusEffects.HasEffect(ItemEffectType.Detect));
 
         Room.SendSyncEvent(new ChargeAttackStart_SyncEvent(player.GameObjectId.ToString(), Room.Time,
                         endPosition.x, endPosition.y, speed.x, speed.y, _itemId, zoneId));
