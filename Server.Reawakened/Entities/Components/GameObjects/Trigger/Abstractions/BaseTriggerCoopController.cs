@@ -4,9 +4,11 @@ using Server.Base.Logging;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Entities.Colliders;
+using Server.Reawakened.Entities.Components.GameObjects.Items;
 using Server.Reawakened.Entities.Components.GameObjects.Spawners;
 using Server.Reawakened.Entities.Components.GameObjects.Trigger.Enums;
 using Server.Reawakened.Entities.Components.GameObjects.Trigger.Interfaces;
+using Server.Reawakened.Entities.Components.GameObjects.WowMoment;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Models.Pets;
@@ -231,7 +233,14 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
     public override void SendDelayedData(Player player)
     {
         var trigger = new Trigger_SyncEvent(Id.ToString(), Room.Time, false,
-            "now", IsActive);
+         "now", IsActive);
+
+        var quest = Room.GetEntityFromId<QuestCollectibleControllerComp>(Id);
+        if (quest is not null)
+        {
+            trigger = new Trigger_SyncEvent(Id.ToString(), Room.Time, true,
+            player.GameObjectId.ToString(), true);
+        }
 
         player.SendSyncEventToPlayer(trigger);
     }
