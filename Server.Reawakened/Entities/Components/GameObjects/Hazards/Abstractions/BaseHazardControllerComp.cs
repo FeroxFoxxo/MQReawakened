@@ -65,10 +65,6 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
             {
                 EffectType = ItemEffectType.PoisonDamage;
             }
-            else if (PrefabName.Contains("Deathplane"))
-            {
-                EffectType = ItemEffectType.BluntDamage;
-            }
             else
             {
                 switch (HurtEffect)
@@ -157,7 +153,12 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
         if (HitOnlyVisible && player.Character.StatusEffects.HasEffect(ItemEffectType.Invisibility))
             return;
 
-        if (EffectType == ItemEffectType.SlowStatusEffect && player.TempData.IsSlowed || player.HasNullifyEffect(ItemCatalog))
+        if (DeathPlane && Room.Time < 20)
+            return;
+
+        // Reduces slow status effect spam.
+        if ((EffectType == ItemEffectType.SlowStatusEffect || !player.TempData.OnGround) &&
+            player.TempData.IsSlowed || EffectType == ItemEffectType.SlowStatusEffect && player.HasNullifyEffect(ItemCatalog))
             return;
 
         Damage = (int)Math.Ceiling(player.Character.MaxLife * HealthRatioDamage);
@@ -165,13 +166,14 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
         var enemy = Room.GetEnemy(Id);
 
         if (enemy != null)
+        {
+            EffectType = enemy.EnemyController.EnemyEffectType;
+
             Damage = WorldStatistics.GetValue(ItemEffectType.AbilityPower, WorldStatisticsGroup.Enemy, enemy.Level) -
                      player.Character.CalculateDefense(EffectType, ItemCatalog);
+        }
 
         Logger.LogTrace("Applying {statusEffect} to {characterName} from {prefabName}", EffectType, player.CharacterName, PrefabName);
-
-        if (PrefabName.Contains("Deathplane"))
-            Damage = 99999;
 
         switch (EffectType)
         {
@@ -264,7 +266,7 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
         // Reduces slow status effect log spam.  
         player.TempData.IsSlowed = true;
 
-        TimerThread.RunDelayed(DisableSlowEffect, new PlayerTimer() { Player = player }, TimeSpan.FromSeconds(0.75));
+        TimerThread.RunDelayed(DisableSlowEffect, new PlayerTimer() { Player = player }, TimeSpan.FromSeconds(0.50));
     }
 
     private static void DisableSlowEffect(ITimerData data)
