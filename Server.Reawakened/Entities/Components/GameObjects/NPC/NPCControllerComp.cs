@@ -1,5 +1,7 @@
 ﻿using A2m.Server;
 using FollowCamDefines;
+using ICSharpCode.SharpZipLib.Zip.Compression;
+using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 using Microsoft.Extensions.Logging;
 using Server.Base.Core.Extensions;
 using Server.Base.Logging;
@@ -17,6 +19,9 @@ using Server.Reawakened.XMLs.Bundles.Base;
 using Server.Reawakened.XMLs.Bundles.Internal;
 using Server.Reawakened.XMLs.Data.Achievements;
 using Server.Reawakened.XMLs.Data.Npcs;
+using System.IO.Compression;
+using System.Text;
+using UnityEngine;
 using static A2m.Server.QuestStatus;
 using static NPCController;
 
@@ -126,7 +131,27 @@ public class NPCControllerComp : Component<NPCController>
                 select g.Key).FirstOrDefault();
     }
 
-    public override object[] GetInitData(Player player) => NameId <= 0 ? [] : [NameId.ToString()];
+    public override object[] GetInitData(Player player)
+    {
+        if (Config.GameVersion <= GameVersion.vPets2012)
+        {
+            var input = Encoding.UTF8.GetBytes(string.IsNullOrEmpty(NpcName) ? string.Empty : NpcName);
+
+            using var ms = new MemoryStream();
+
+            var deflater = new Deflater(Deflater.DEFAULT_COMPRESSION, false);
+
+            using (var zlib = new DeflaterOutputStream(ms, deflater))
+            {
+                zlib.Write(input, 0, input.Length);
+                zlib.Finish();
+            }
+
+            return NameId <= 0 ? [] : [Convert.ToBase64String(ms.ToArray())];
+        }
+
+        return NameId <= 0 ? [] : [NameId.ToString()];
+    }
 
     public override void RunSyncedEvent(SyncEvent syncEvent, Player player)
     {

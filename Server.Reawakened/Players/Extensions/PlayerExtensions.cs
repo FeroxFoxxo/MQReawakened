@@ -1,4 +1,6 @@
 ﻿using A2m.Server;
+using ICSharpCode.SharpZipLib.Zip.Compression;
+using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 using Microsoft.Extensions.Logging;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Core.Enums;
@@ -11,6 +13,7 @@ using Server.Reawakened.Rooms.Services;
 using Server.Reawakened.XMLs.Bundles.Base;
 using Server.Reawakened.XMLs.Bundles.Internal;
 using Server.Reawakened.XMLs.Data.Achievements;
+using System.Text;
 using static A2m.Server.QuestStatus;
 
 namespace Server.Reawakened.Players.Extensions;
@@ -180,11 +183,13 @@ public static class PlayerExtensions
         var error = string.Empty;
         var levelName = string.Empty;
         var surroundingLevels = string.Empty;
+        var inGameName = string.Empty;
 
         try
         {
             var levelInfo = worldHandler.GetLevelInfo(player.GetLevelId());
             levelName = levelInfo.Name;
+            inGameName = levelInfo.InGameName;
 
             var sb = new SeparatedStringBuilder('!');
 
@@ -204,7 +209,23 @@ public static class PlayerExtensions
         if (worldHandler.Config.GameVersion >= GameVersion.vMinigames2012)
             player.SendXt("lw", error, levelName, surroundingLevels);
         else
-            player.SendXt("lw", error, levelName, string.Empty, surroundingLevels);
+        {
+            var input = Encoding.UTF8.GetBytes(inGameName.ToString());
+
+            using var ms = new MemoryStream();
+
+            var deflater = new Deflater(Deflater.DEFAULT_COMPRESSION, false);
+
+            using (var zlib = new DeflaterOutputStream(ms, deflater))
+            {
+                zlib.Write(input, 0, input.Length);
+                zlib.Finish();
+            }
+
+            var levelDisplayName = Convert.ToBase64String(ms.ToArray());
+
+            player.SendXt("lw", error, levelName, levelDisplayName, surroundingLevels);
+        }
     }
 
     public static void SetCharacterSelected(this Player player, CharacterModel character)
@@ -370,11 +391,11 @@ public static class PlayerExtensions
                 }
                 else if (objective.ObjectiveType is ObjectiveEnum.Deliver)
                 {
-                    var item = itemCatalog.GetItemFromId(objective.ItemId);
+                    /*var item = itemCatalog.GetItemFromId(objective.ItemId);
 
                     objective.CountLeft = player.Character.Inventory.Items.TryGetValue(objective.ItemId, out var itemModel) && item != null
                         ? objective.Total - itemModel.Count
-                        : 0;
+                        : 0;*/
                 }
 
                 if (objective.CountLeft <= 0)
