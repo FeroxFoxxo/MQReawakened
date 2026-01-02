@@ -25,10 +25,7 @@ public class HamsterControllerComp : DamagableAiStateMachine<HamsterControllerMQ
     {
         SetupStateVariables();
 
-        if (StartIdle)
-            AddNextState<AIStateIdleComp>();
-        else
-            AddNextState<AIStatePatrolComp>();
+        AddNextState<AIStatePatrolComp>();
 
         GoToNextState();
     }

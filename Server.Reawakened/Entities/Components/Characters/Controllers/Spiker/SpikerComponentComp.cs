@@ -23,10 +23,7 @@ public class SpikerComponentComp : DamagableAiStateMachine<SpikerControllerMQR>
     {
         SetupStateVariables();
 
-        if (StartIdle)
-            AddNextState<AIStateIdleComp>();
-        else
-            AddNextState<AIStatePatrolComp>();
+        AddNextState<AIStatePatrolComp>();
 
         GoToNextState();
     }
