@@ -118,7 +118,7 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
 
         foreach (var player in Room.GetPlayers())
         {
-            if (player == null)
+            if (player == null || player.Character == null)
                 continue;
 
             var temp = player.TempData;
