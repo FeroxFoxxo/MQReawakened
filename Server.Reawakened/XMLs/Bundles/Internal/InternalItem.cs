@@ -281,10 +281,10 @@ public class InternalItem : InternalXml
             {
                 Descriptions.Add(maxDesc, obj.Value);
 
-                Items.Add(obj.Key, new ItemDescription(obj.Key, TribeType.Unknown, ItemCategory.Quest,
-                    ItemSubCategory.Unknown, ItemActionType.Invalid, 0, CurrencyType.Unknown, 0, 0, 0,
-                    string.Empty, obj.Value, obj.Value, obj.Value, 0f, ItemBinding.Unknown, 0, 0, [],
-                    false, StoreType.Unknown, DateTime.Now, DateTime.Now, 0, 0, 0, ProductionStatus.Ingame,
+                Items.Add(obj.Key, new ItemDescription(obj.Key, TribeType.Crossroads, ItemCategory.Quest,
+                    ItemSubCategory.Collectible, ItemActionType.None, 0, CurrencyType.Banana, 0, 0, 0,
+                    string.Empty, obj.Value, obj.Value, obj.Value, 0f, ItemBinding.OnPick, 0, 0, [],
+                    false, StoreType.FrontStore, DateTime.Now, DateTime.Now, 0, 0, 0, ProductionStatus.Ingame,
                     0, DateTime.Now, false, 0));
             }
             else

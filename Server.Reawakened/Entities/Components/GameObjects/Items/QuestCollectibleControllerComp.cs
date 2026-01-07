@@ -17,6 +17,9 @@ public class QuestCollectibleControllerComp : Component<QuestCollectibleControll
 
     private ItemDescription _questItem;
 
+    public override void InitializeComponent() => 
+        _questItem = ItemCatalog.GetItemFromPrefabName(PrefabName);
+
     public override object[] GetInitData(Player player)
     {
         CollectedState = CollectibleState.NotActive;
@@ -41,6 +44,8 @@ public class QuestCollectibleControllerComp : Component<QuestCollectibleControll
         }
 
         player.CheckObjective(ObjectiveEnum.Collect, Id, PrefabName, count, QuestCatalog);
+        player.CheckObjective(ObjectiveEnum.Unknown_3, Id, PrefabName, count, QuestCatalog);
+
         player.CheckObjective(ObjectiveEnum.InteractWith, Id, PrefabName, count, QuestCatalog);
 
         player.CheckObjective(ObjectiveEnum.Deliver, Id, PrefabName, count, QuestCatalog);
