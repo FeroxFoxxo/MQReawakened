@@ -105,8 +105,21 @@ public class ChooseQuestReward : ExternalProtocol
 
         if (questLine.QuestType == QuestType.Main)
         {
-            var questGiver = Player.Room.GetEntityFromId<NPCControllerComp>(npcId.ToString());
-            questGiver.StartNewQuest(Player);
+
+            var questLineData = QuestCatalog.GetQuestLine(questLine);
+
+            // HiddenGoto quests are given from the previous npc in the original game
+            var newQuest = QuestCatalog.GetQuestData(quest.QuestRewards.FirstOrDefault(q => 
+            !Player.Character.CompletedQuests.Contains(q.Key) && QuestCatalog.GetQuestData(q.Key) != null && 
+            QuestCatalog.GetQuestData(q.Key).Objectives.Any(o => o.Value.Type == ObjectiveEnum.HiddenGoto)).Key);
+
+            if (newQuest != null)
+                Player.AddQuest(newQuest, QuestItems, ItemCatalog, FileLogger, $"Quest reward from {npcId}", Logger);
+            else
+            {
+                var questGiver = Player.Room.GetEntityFromId<NPCControllerComp>(npcId.ToString());
+                questGiver.StartNewQuest(Player);
+            }
         }
 
         Player.SendXt("nq", questId);

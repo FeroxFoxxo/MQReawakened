@@ -15,7 +15,7 @@
     <GameVersion version="vEarly2014">
 		<Dialog oldDialogName="CRS_Hoop01" newDialogName="CTS_Hoop01" />
 		<Dialog oldDialogName="CRS_Hoop01D" newDialogName="CTS_Hoop01D" />
-		<Dialog oldDialogName="T1CF_02_00" newDialogName="T0CR_10_00cvalidator" />
+		<Dialog oldDialogName="T1CF_02_00" newDialogName="T0CR_10_00validator" />
 		<Dialog oldDialogName="T2SD_02_00" newDialogName="T0CR_10_00bvalidator" />
 		<Dialog oldDialogName="T3OM_02_00" newDialogName="T0CR_10_00dvalidator" />
 		<Dialog oldDialogName="T4IR_00_00" newDialogName="T0CR_10_00validator" />
@@ -53,10 +53,13 @@
 		<Dialog oldDialogName="DAY_BON06_1" newDialogName="Daily_Score01 dup_145" />
 		<Dialog oldDialogName="T0CR_10_00" newDialogName="T0CR_10_00validator" />
 		<Dialog oldDialogName="T0CR_14_00" newDialogName="T0CR_14_00validator" />
-		<Dialog oldDialogName="T1CF_02_00" newDialogName="T0CR_10_00validator" />
-		<Dialog oldDialogName="T2SD_02_00" newDialogName="T0CR_12_00validator" />
-		<Dialog oldDialogName="T3OM_02_00" newDialogName="T0CR_14_00validator" />
+		<Dialog oldDialogName="T1CF_02_00" newDialogName="T1CF_02_01" />
+		<Dialog oldDialogName="T2SD_02_00" newDialogName="T2SD_02_01" />
+		<Dialog oldDialogName="T3OM_02_00" newDialogName="T3OM_02_01" />
 		<Dialog oldDialogName="T4IR_00_00" newDialogName="T4IR_00_01" />
+        <Dialog oldDialogName="T0CR_11_00" newDialogName="T0CR_11_01" />
+        <Dialog oldDialogName="T0CR_12_00" newDialogName="T0CR_12_00validator" />
+        <Dialog oldDialogName="T0CR_16_00" newDialogName="T0CR_16_00validator" />
     </GameVersion>
     <GameVersion version="vMinigames2012">
     </GameVersion>
