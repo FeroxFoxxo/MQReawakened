@@ -373,6 +373,15 @@ public class Room : Timer
             return _players.TryGetValue(id, out var value) ? value : null;
     }
 
+    public bool IsGameObjectOfPet(string id, ServerRConfig serverRConfig)
+    {
+        foreach (var player in _players)
+            if (player.Value.Character.Pets.TryGetValue(player.Value.GetEquippedPetId(serverRConfig), out var pet))
+                if (pet.CoopTriggerableId == id) return true;
+
+        return false;
+    }
+
     public Player[] GetPlayers()
     {
         lock (_roomLock)

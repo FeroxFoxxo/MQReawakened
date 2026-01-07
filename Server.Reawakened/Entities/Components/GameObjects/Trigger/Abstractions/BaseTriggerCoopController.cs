@@ -103,7 +103,7 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
 
         var validQuestProgress = true;
 
-        if (player == null && !ItemCatalog.GetItemFromId(int.Parse(ci)).IsPet() || ci == "0")
+        if (player == null && !Room.IsGameObjectOfPet(ci, ServerRConfig) || ci == "0")
         {
             CurrentPhysicalInteractors.Remove(ci);
             return null;
@@ -302,12 +302,14 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
                     if (player.Character.QuestLog.FirstOrDefault(q => q.Id == requiredQuest.Id) == null)
                         valid = false;
             }
+
             if (!string.IsNullOrEmpty(TriggeredByItemInInventory))
             {
                 var requiredItem = ItemCatalog.GetItemFromPrefabName(TriggeredByItemInInventory);
 
-                if (requiredItem == null || !player.Character.Inventory.Items.ContainsKey(requiredItem.ItemId))
-                    valid = false;
+                if (requiredItem != null)
+                    if (!player.Character.Inventory.Items.ContainsKey(requiredItem.ItemId))
+                        valid = false;
             }
         }
 

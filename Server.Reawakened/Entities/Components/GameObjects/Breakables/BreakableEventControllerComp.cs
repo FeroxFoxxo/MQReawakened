@@ -29,33 +29,26 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
 
     public IDamageable Damageable;
 
-    public BreakableObjStatusComp ObjStatus;
-
     public bool CanBreak = true;
 
     private BaseSpawnerControllerComp _spawner;
+    private BreakableObjStatusComp _status;
     private SpiderBreakableComp _spider;
 
     public override void InitializeComponent()
     {
-        ObjStatus = Room.GetEntityFromId<BreakableObjStatusComp>(Id);
+        _spawner = Room.GetEntityFromId<BaseSpawnerControllerComp>(Id);
+        _status = Room.GetEntityFromId<BreakableObjStatusComp>(Id);
         _spider = Room.GetEntityFromId<SpiderBreakableComp>(Id);
 
-        Damageable = ObjStatus;
+        Damageable = _status;
         Damageable ??= _spider;
 
-        _spawner = Room.GetEntityFromId<BaseSpawnerControllerComp>(Id);
-        
         if (_spawner is not null && _spawner.HasLinkedArena)
             CanBreak = false;
 
-        if (ObjStatus == null)
-            return;
-
         // EnemyTarget does not exist in 2012 level xmls
-        var enemyTarget = ItemCatalog.Config.GameVersion >= Core.Enums.GameVersion.vEarly2013 ?
-            ObjStatus.EnemyTarget : false;
-
+        var enemyTarget = ItemCatalog.Config.GameVersion >= Core.Enums.GameVersion.vEarly2013 && (_status?.EnemyTarget ?? false);
 
         _ = new BreakableCollider(this, enemyTarget);
     }
@@ -80,9 +73,25 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
 
             if (origin != null)
             {
-                origin.CheckObjective(ObjectiveEnum.Score, Id, PrefabName, 1, ItemCatalog);
+                var isGroup = origin.TempData.Group != null;
+
+                if (isGroup)
+                {
+                    foreach (var groupie in origin.TempData.Group.GetMembers().Where(groupie => groupie.Room == origin.Room))
+                    {
+                        groupie.CheckObjective(ObjectiveEnum.Score, Id, PrefabName, 1, ItemCatalog);
+                        groupie.CheckObjective(ObjectiveEnum.Scoremultiple, Id, PrefabName, 1, ItemCatalog);
+                        groupie.SendUpdatedInventory(false);
+                    }
+                }
+                else
+                {
+                    origin.CheckObjective(ObjectiveEnum.Score, Id, PrefabName, 1, ItemCatalog);
+                    origin.CheckObjective(ObjectiveEnum.Scoremultiple, Id, PrefabName, 1, ItemCatalog);
+                    origin.SendUpdatedInventory(false);
+                }
+
                 origin.GrantLoot(Id, LootCatalog, ItemCatalog, InternalAchievement, Logger);
-                origin.SendUpdatedInventory();
             }
 
             if (_spawner is null)
@@ -175,7 +184,7 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
         Logger.LogInformation("Revived object: '{PrefabName}' ({Id})", PrefabName, Id);
         Room.SendSyncEvent(new AiHealth_SyncEvent(Id.ToString(), Room.Time, Damageable.MaxHealth, 0, 0, 0, string.Empty, false, false));
         Damageable.CurrentHealth = Damageable.MaxHealth;
-        ObjStatus.NumberOfHits = 0;
+        _status.NumberOfHits = 0;
     }
 
     public override void NotifyCollision(NotifyCollision_SyncEvent notifyCollisionEvent, Player player) { }
@@ -186,8 +195,8 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
     {
         // Do not add a line for spawner, it is already handled in BaseSpawnerControllerComp
 
-        if (ObjStatus != null && ObjStatus.OnKillMessageReceiver != string.Empty)
-            foreach (var trigger in Room.GetEntitiesFromId<TriggerReceiverComp>(ObjStatus.OnKillMessageReceiver))
+        if (_status != null && _status.OnKillMessageReceiver != string.Empty)
+            foreach (var trigger in Room.GetEntitiesFromId<TriggerReceiverComp>(_status.OnKillMessageReceiver))
                 trigger.TriggerStateChange(TriggerType.Activate, true, Id);
 
         else if (_spider != null && _spider.OnKillMessageReceiver != string.Empty)
