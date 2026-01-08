@@ -92,7 +92,33 @@ public class ChooseQuestReward : ExternalProtocol
             var newQuest = QuestCatalog.GetQuestData(questRewardId);
 
             if (newQuest != null)
+            {
+                // Tribe Selection
+                if (Config.GameVersion < Server.Reawakened.Core.Enums.GameVersion.vEarly2014 && questId is 939 or 838)
+                {
+                    var tribe = TribeType.Invalid;
+
+                    switch (questRewardId)
+                    {
+                        case 849:
+                            tribe = TribeType.Shadow;
+                            break;
+                        case 850:
+                            tribe = TribeType.Outlaw;
+                            break;
+                        case 851:
+                            tribe = TribeType.Bone;
+                            break;
+                        case 928:
+                            tribe = TribeType.Wild;
+                            break;
+                    }
+
+                    Player.ChangeTribe(tribe);
+                }
+
                 Player.AddQuest(newQuest, QuestItems, ItemCatalog, FileLogger, $"Quest reward from {npcId}", Logger);
+            }
         }
 
         var quest = QuestCatalog.QuestCatalogs[questId];
@@ -105,21 +131,22 @@ public class ChooseQuestReward : ExternalProtocol
 
         if (questLine.QuestType == QuestType.Main)
         {
-
             var questLineData = QuestCatalog.GetQuestLine(questLine);
 
-            // HiddenGoto quests are given from the previous npc in the original game
-            var newQuest = QuestCatalog.GetQuestData(quest.QuestRewards.FirstOrDefault(q => 
-            !Player.Character.CompletedQuests.Contains(q.Key) && QuestCatalog.GetQuestData(q.Key) != null && 
-            QuestCatalog.GetQuestData(q.Key).Objectives.Any(o => o.Value.Type == ObjectiveEnum.HiddenGoto)).Key);
-
-            if (newQuest != null)
-                Player.AddQuest(newQuest, QuestItems, ItemCatalog, FileLogger, $"Quest reward from {npcId}", Logger);
-            else
+            if (Config.GameVersion < Server.Reawakened.Core.Enums.GameVersion.vEarly2014)
             {
-                var questGiver = Player.Room.GetEntityFromId<NPCControllerComp>(npcId.ToString());
-                questGiver.StartNewQuest(Player);
+                // HiddenGoto quests are given from the previous npc in the original game
+                var newQuest = QuestCatalog.GetQuestData(quest.QuestRewards.FirstOrDefault(q =>
+                !Player.Character.CompletedQuests.Contains(q.Key) && QuestCatalog.GetQuestData(q.Key) != null &&
+                QuestCatalog.GetQuestData(q.Key).Objectives.Any(o => o.Value.Type == ObjectiveEnum.HiddenGoto)).Key);
+
+                // Prevent HiddenGoto quest being added twice if quest completed is tribe selection
+                if (questId is not 838 or 939 && newQuest != null)
+                    Player.AddQuest(newQuest, QuestItems, ItemCatalog, FileLogger, $"Quest reward from {npcId}", Logger);
             }
+
+            var questGiver = Player.Room.GetEntityFromId<NPCControllerComp>(npcId.ToString());
+            questGiver.StartNewQuest(Player);
         }
 
         Player.SendXt("nq", questId);

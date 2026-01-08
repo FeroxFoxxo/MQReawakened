@@ -278,16 +278,7 @@ public static class PlayerExtensions
     public static void DiscoverTribe(this Player player, TribeType tribe)
     {
         if (player.Character.HasAddedDiscoveredTribe(tribe))
-        {
-            // Set tribe on 2011-2013
-            if (player.Character.Allegiance == TribeType.Invalid
-                && tribe is TribeType.Shadow
-                or TribeType.Outlaw or TribeType.Bone
-                or TribeType.Wild or TribeType.Grease)
-                player.Character.Write.Allegiance = tribe;
-
             player.SendXt("cB", (int)tribe);
-        }
     }
 
     public static void DiscoverAllTribes(this Player player)
@@ -373,6 +364,10 @@ public static class PlayerExtensions
                         if (objective.MultiScorePrefabs.Contains(prefabName))
                             if (objective.LevelId > 0 && objective.LevelId == player.Room.LevelInfo.LevelId)
                                 meetsRequirement = true;
+
+                // Prevent objectives from being completed by other gameobjects when both ItemId and GameObjectId are set
+                if (objective.ItemId > 0 && objective.GameObjectId > 0)
+                    meetsRequirement = objective.GameObjectId.ToString() == gameObjectId;
 
                 if (!meetsRequirement && objective.LevelId == player.Character.LevelId && type == ObjectiveEnum.MinigameMedal)
                     meetsRequirement = true;
@@ -489,5 +484,11 @@ public static class PlayerExtensions
 
         if (int.TryParse(code, out var result))
             player.SendXt("wm", result);
+    }
+
+    public static void ChangeTribe(this Player player, TribeType tribe)
+    {
+        player.Character.Write.Allegiance = tribe;
+        player.SendXt("cC", (int)tribe, player.Character.Id);
     }
 }
