@@ -458,8 +458,14 @@ public class NPCControllerComp : Component<NPCController>
                 return NPCStatus.Unknown;
             }
 
-        if (Config.GameVersion < GameVersion.vEarly2014 && questData.Name == "T4IR_00_01" 
+        if (Config.GameVersion == GameVersion.vLate2013 && questData.Name == "T4IR_00_01" 
             && !player.Character.CompletedQuests.Contains(939))
+        {
+            Logger.LogTrace("[{QuestName}] ({QuestId}) [SKIPPED QUEST] Not all tribe tutorial quests are completed.", questData.Name, questData.Id);
+            return NPCStatus.Unknown;
+        }
+        else if (Config.GameVersion < GameVersion.vLate2013 && questData.Name == "T4IR_00_01"
+            && !player.Character.CompletedQuests.Contains(838))
         {
             Logger.LogTrace("[{QuestName}] ({QuestId}) [SKIPPED QUEST] Not all tribe tutorial quests are completed.", questData.Name, questData.Id);
             return NPCStatus.Unknown;
