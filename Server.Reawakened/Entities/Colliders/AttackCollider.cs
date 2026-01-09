@@ -34,8 +34,9 @@ public class AttackCollider(string id, Vector3Model position,
         {
             ColliderType.Enemy => true,
             ColliderType.TriggerTarget => true,
-            ColliderType.TriggerReceiver => true,
             ColliderType.Breakable => true,
+            ColliderType.TerrainCube => true,
+            ColliderType.Default => true,
             _ => false
         };
 

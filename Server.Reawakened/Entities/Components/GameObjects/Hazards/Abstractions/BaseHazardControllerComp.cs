@@ -13,6 +13,7 @@ using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Rooms.Models.Timers;
 using Server.Reawakened.XMLs.Bundles.Base;
 using UnityEngine;
+using static Server.Reawakened.Players.Extensions.PlayerStatusEffectExtensions;
 
 namespace Server.Reawakened.Entities.Components.GameObjects.Hazards.Abstractions;
 
@@ -39,6 +40,7 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
     public int Damage;
 
     private IEnemyController _enemyController;
+    private float _activationStartTime = 0;
 
     public TimerThread TimerThread { get; set; }
     public ItemRConfig ItemRConfig { get; set; }
@@ -55,20 +57,13 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
 
         //Activate timed hazards.
         if (ActiveDuration > 0 && DeactivationDuration > 0)
-        {
             TimedHazard = true;
-            TimerThread.RunInstantly(ActivateHazard, this);
-        }
 
         if (!Enum.TryParse(HurtEffect, true, out EffectType))
         {
             if (PrefabName.Contains("ToxicCloud"))
             {
                 EffectType = ItemEffectType.PoisonDamage;
-            }
-            else if (PrefabName.Contains("Deathplane"))
-            {
-                EffectType = ItemEffectType.BluntDamage;
             }
             else
             {
@@ -98,23 +93,27 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
         }
     }
 
-    //Timed Hazards
-    public static void ActivateHazard(ITimerData data)
+    public override void Update()
     {
-        if (data is not BaseHazardControllerComp<T> hazard)
+        if (Room == null)
             return;
 
-        hazard.IsActive = true;
-        hazard.TimerThread.RunDelayed(DeactivateHazard, hazard, TimeSpan.FromSeconds(hazard.ActiveDuration));
-    }
+        base.Update();
 
-    public static void DeactivateHazard(ITimerData data)
-    {
-        if (data is not BaseHazardControllerComp<T> hazard)
-            return;
-
-        hazard.IsActive = false;
-        hazard.TimerThread.RunDelayed(ActivateHazard, hazard, TimeSpan.FromSeconds(hazard.DeactivationDuration));
+        if (TimedHazard)
+        {
+            var time = Room.Time;
+            if (IsActive && time - _activationStartTime > ActiveDuration)
+            {
+                _activationStartTime += ActiveDuration;
+                IsActive = false;
+            }
+            else if (!IsActive && time - _activationStartTime > DeactivationDuration)
+            {
+                _activationStartTime += DeactivationDuration;
+                IsActive = true;
+            }
+        }
     }
 
     //Standard Hazards
@@ -154,7 +153,12 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
         if (HitOnlyVisible && player.Character.StatusEffects.HasEffect(ItemEffectType.Invisibility))
             return;
 
-        if (EffectType == ItemEffectType.SlowStatusEffect && player.TempData.IsSlowed || player.HasNullifyEffect(ItemCatalog))
+        if (DeathPlane && Room.Time < 20)
+            return;
+
+        // Reduces slow status effect spam.
+        if ((EffectType == ItemEffectType.SlowStatusEffect || !player.TempData.OnGround) &&
+            player.TempData.IsSlowed || EffectType == ItemEffectType.SlowStatusEffect && player.HasNullifyEffect(ItemCatalog))
             return;
 
         Damage = (int)Math.Ceiling(player.Character.MaxLife * HealthRatioDamage);
@@ -162,13 +166,14 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
         var enemy = Room.GetEnemy(Id);
 
         if (enemy != null)
+        {
+            EffectType = enemy.EnemyController.EnemyEffectType;
+
             Damage = WorldStatistics.GetValue(ItemEffectType.AbilityPower, WorldStatisticsGroup.Enemy, enemy.Level) -
                      player.Character.CalculateDefense(EffectType, ItemCatalog);
+        }
 
         Logger.LogTrace("Applying {statusEffect} to {characterName} from {prefabName}", EffectType, player.CharacterName, PrefabName);
-
-        if (PrefabName.Contains("Deathplane"))
-            Damage = 99999;
 
         switch (EffectType)
         {
@@ -261,7 +266,7 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
         // Reduces slow status effect log spam.  
         player.TempData.IsSlowed = true;
 
-        TimerThread.RunDelayed(DisableSlowEffect, new PlayerTimer() { Player = player }, TimeSpan.FromSeconds(0.75));
+        TimerThread.RunDelayed(DisableSlowEffect, new PlayerTimer() { Player = player }, TimeSpan.FromSeconds(0.50));
     }
 
     private static void DisableSlowEffect(ITimerData data)

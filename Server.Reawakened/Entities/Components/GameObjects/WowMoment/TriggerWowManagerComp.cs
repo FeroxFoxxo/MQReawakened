@@ -7,7 +7,7 @@ using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.XMLs.Bundles.Base;
 
 namespace Server.Reawakened.Entities.Components.GameObjects.WowMoment;
-public class TriggerWowManagerComp : Component<TriggerWowManager>, IQuestTriggered
+public class TriggerWowManagerComp : Component<TriggerWowManager>, ICoopTriggered
 {
     public string CapeId => ComponentData.CapeId;
     public string SpiderId => ComponentData.SpiderId;
@@ -17,7 +17,9 @@ public class TriggerWowManagerComp : Component<TriggerWowManager>, IQuestTrigger
 
     public QuestCatalog QuestCatalog { get; set; }
 
-    private BreakableEventControllerComp _breakableController;
+    private BreakableEventControllerComp _spider;
+
+    private BreakableEventControllerComp _spiderLeg;
 
     public override void DelayedComponentInitialization()
     {
@@ -26,39 +28,26 @@ public class TriggerWowManagerComp : Component<TriggerWowManager>, IQuestTrigger
         if (trigger is null)
             return;
 
-        trigger.Triggers.TryAdd(DoorId, TriggerType.Activate);
+        trigger.Triggers.TryAdd(Id, TriggerType.Activate);
 
-        _breakableController = Room.GetEntityFromId<BreakableEventControllerComp>(SpiderId);
+        _spider = Room.GetEntityFromId<BreakableEventControllerComp>(SpiderId);
 
-        if (_breakableController is null)
+        _spiderLeg = Room.GetEntityFromId<BreakableEventControllerComp>(DoorId);
+
+        if (_spider is null && _spiderLeg is null)
             return;
 
-        TriggerStateChange(false);
+        TriggerStateChange(TriggerType.Activate, false, string.Empty);
     }
 
-    public void TriggerStateChange(bool triggered)
+    public void TriggerStateChange(TriggerType triggerType, bool triggered, string triggeredBy)
     {
-        if (_breakableController is null)
+        if (_spider is null && _spiderLeg is null)
             return;
 
-        _breakableController.CanBreak = triggered;
+        _spider.CanBreak = triggered;
+        _spiderLeg.CanBreak = triggered;
     }
 
     public override void RunSyncedEvent(SyncEvent syncEvent, Player player) { }
-
-    public void QuestAdded(QuestDescription quest, Player player)
-    {
-        var questId = Convert.ToInt32(PrevQuestID);
-
-        if (quest.Id == QuestIDNeeded && player.Character.CompletedQuests.Contains(questId))
-            TriggerStateChange(true);
-    }
-
-    public void QuestCompleted(QuestDescription quest, Player player)
-    {
-        var questId = Convert.ToInt32(PrevQuestID);
-
-        if (quest.Id == PrevQuestID && player.Character.QuestLog.Any(q => q.Id == questId))
-            TriggerStateChange(true);
-    }
 }

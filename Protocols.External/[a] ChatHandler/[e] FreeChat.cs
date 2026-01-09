@@ -17,6 +17,7 @@ public class FreeChat : ExternalProtocol
     public ILogger<FreeChat> Logger { get; set; }
     public ServerRConfig Config { get; set; }
     public DiscordHandler DiscordHandler { get; set; }
+    public DiscordRwConfig DiscordRwConfig { get; set; }
 
     public override void Run(string[] message)
     {
@@ -42,7 +43,7 @@ public class FreeChat : ExternalProtocol
                 Player.Room.Chat(channelType, Player.Character.CharacterName, chatMessage);
 
                 // Sends a chat message to Discord
-                DiscordHandler.SendMessage(Player.Character.CharacterName, chatMessage);
+                DiscordHandler.SendMessage(DiscordRwConfig.RoomChannelId, Player.Character.CharacterName, chatMessage);
                 break;
 
             case CannedChatChannel.Group:
@@ -54,17 +55,14 @@ public class FreeChat : ExternalProtocol
                     client.Chat(channelType, Player.Character.CharacterName, chatMessage);
 
                 // Sends a chat message to Discord
-                DiscordHandler.SendMessage("Group -> " + Player.Character.CharacterName, chatMessage);
+                DiscordHandler.SendMessage(DiscordRwConfig.GroupChannelId, Player.Character.CharacterName, chatMessage);
                 break;
 
             case CannedChatChannel.Trade:
-                if (Player.Room.LevelInfo.Type == LevelType.City)
-                {
-                    Player.Room.Chat(channelType, Player.Character.CharacterName, chatMessage);
+                Player.Room.Chat(channelType, Player.Character.CharacterName, chatMessage);
 
-                    // Sends a chat message to Discord
-                    DiscordHandler.SendMessage("Trade -> " + Player.Character.CharacterName, chatMessage);
-                }
+                // Sends a chat message to Discord
+                DiscordHandler.SendMessage(DiscordRwConfig.GlobalChannelId, Player.Character.CharacterName, chatMessage);
                 break;
 
             case CannedChatChannel.Tell:
@@ -78,7 +76,7 @@ public class FreeChat : ExternalProtocol
                         Player.Chat(channelType, Player.Character.CharacterName, chatMessage, recipientName);
 
                         // Sends a chat message to Discord
-                        DiscordHandler.SendMessage("PM -> From: " + Player.Character.CharacterName +
+                        DiscordHandler.SendMessage(DiscordRwConfig.PrivateMessagesChannelId, "PM -> From: " + Player.Character.CharacterName +
                             " To: " + recipientName, chatMessage);
                     }
                 }

@@ -6,7 +6,7 @@ using Server.Reawakened.Rooms.Models.Planes;
 
 namespace Server.Reawakened.Entities.Colliders;
 
-public class TriggerReceiverCollider(TriggerReceiverComp triggerReceiverComp) : BaseCollider
+public class TriggerReceiverCollider(TriggerReceiverComp triggerReceiverComp) : BaseCollider(false)
 {
     public override Vector3Model Position => triggerReceiverComp.Position;
     public override Room Room => triggerReceiverComp.Room;

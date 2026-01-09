@@ -1,5 +1,7 @@
 ﻿using A2m.Server;
 using FollowCamDefines;
+using ICSharpCode.SharpZipLib.Zip.Compression;
+using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 using Microsoft.Extensions.Logging;
 using Server.Base.Core.Extensions;
 using Server.Base.Logging;
@@ -11,12 +13,12 @@ using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Models.Character;
-using Server.Reawakened.Players.Models.Misc;
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.XMLs.Bundles.Base;
 using Server.Reawakened.XMLs.Bundles.Internal;
 using Server.Reawakened.XMLs.Data.Achievements;
 using Server.Reawakened.XMLs.Data.Npcs;
+using System.Text;
 using static A2m.Server.QuestStatus;
 using static NPCController;
 
@@ -126,7 +128,27 @@ public class NPCControllerComp : Component<NPCController>
                 select g.Key).FirstOrDefault();
     }
 
-    public override object[] GetInitData(Player player) => NameId <= 0 ? [] : [NameId.ToString()];
+    public override object[] GetInitData(Player player)
+    {
+        if (Config.GameVersion <= GameVersion.vPets2012)
+        {
+            var input = Encoding.UTF8.GetBytes(string.IsNullOrEmpty(NpcName) ? string.Empty : NpcName);
+
+            using var ms = new MemoryStream();
+
+            var deflater = new Deflater(Deflater.DEFAULT_COMPRESSION, false);
+
+            using (var zlib = new DeflaterOutputStream(ms, deflater))
+            {
+                zlib.Write(input, 0, input.Length);
+                zlib.Finish();
+            }
+
+            return NameId <= 0 ? [] : [Convert.ToBase64String(ms.ToArray())];
+        }
+
+        return NameId <= 0 ? [] : [NameId.ToString()];
+    }
 
     public override void RunSyncedEvent(SyncEvent syncEvent, Player player)
     {
@@ -433,8 +455,25 @@ public class NPCControllerComp : Component<NPCController>
                 return NPCStatus.Unknown;
             }
 
-        if (Config.GameVersion < GameVersion.vEarly2014 && questData.Name == "T4IR_00_01" 
+        // Prevent being given the wrong tribe tutorial quest
+        if (Config.GameVersion >= GameVersion.vEarly2014 && questData.Name.StartsWith("T0CR_10_00"))
+        {
+            var startingTribeQuest = player.Character.GetStartingTribeQuestForTribe();
+
+            if (startingTribeQuest != questData.Id)
+            {
+                Logger.LogTrace("[{QuestName}] ({QuestId}) [SKIPPED QUEST] Not all tribe tutorial quests are completed.", questData.Name, questData.Id);
+                return NPCStatus.Unknown;
+            }
+        }
+        else if (Config.GameVersion == GameVersion.vLate2013 && questData.Name == "T4IR_00_01" 
             && !player.Character.CompletedQuests.Contains(939))
+        {
+            Logger.LogTrace("[{QuestName}] ({QuestId}) [SKIPPED QUEST] Not all tribe tutorial quests are completed.", questData.Name, questData.Id);
+            return NPCStatus.Unknown;
+        }
+        else if (Config.GameVersion <= GameVersion.vEarly2013 && questData.Name == "T4IR_00_01"
+            && !player.Character.CompletedQuests.Contains(838))
         {
             Logger.LogTrace("[{QuestName}] ({QuestId}) [SKIPPED QUEST] Not all tribe tutorial quests are completed.", questData.Name, questData.Id);
             return NPCStatus.Unknown;
@@ -618,8 +657,7 @@ public class NPCControllerComp : Component<NPCController>
     {
         if (!player.Character.CurrentQuestDailies.ContainsKey(dailyObjectId) ||
             player.Character.CurrentQuestDailies.TryGetValue(dailyObjectId, out var dailyObject) &&
-            dailyObject.GameObjectId == dailyObjectId && dailyObject.LevelId == player.Room.LevelInfo.LevelId &&
-            DateTime.Now.Date > dailyObject.TimeOfHarvest.Date)
+            dailyObject.GameObjectId == dailyObjectId && DateTime.Now.Date > dailyObject.TimeOfHarvest.Date)
         {
             player.Character.CurrentQuestDailies.Remove(dailyObjectId);
             return true;

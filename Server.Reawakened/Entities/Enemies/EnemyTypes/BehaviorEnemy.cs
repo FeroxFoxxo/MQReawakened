@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Entities.Components.AI.Stats;
+using Server.Reawakened.Entities.Enemies.Behaviors;
 using Server.Reawakened.Entities.Enemies.Behaviors.Abstractions;
 using Server.Reawakened.Entities.Enemies.EnemyTypes.Abstractions;
 using Server.Reawakened.Entities.Enemies.Extensions;
@@ -41,10 +42,11 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
         Global = Room.GetEntityFromId<AIStatsGlobalComp>(Id);
         Generic = Room.GetEntityFromId<AIStatsGenericComp>(Id);
 
+        if (!IsFromSpawner && Generic is not null)
+            Generic.SetDefaultPatrolRange();
+
         EnemyModel.GlobalProperties?.ApplyGlobalPropertiesFromModel(Global);
         EnemyModel.GenericScript?.ApplyGenericPropertiesFromModel(Global);
-
-        Generic.SetDefaultPatrolRange();
 
         AiData = new AIProcessData
         {
@@ -116,7 +118,7 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
 
         foreach (var player in Room.GetPlayers())
         {
-            if (player == null)
+            if (player == null || player.Character == null)
                 continue;
 
             var temp = player.TempData;
@@ -191,32 +193,46 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
     public override void Damage(Player player, int damage)
     {
         base.Damage(player, damage);
-        EnemyAggroPlayer(player);
+        if (CurrentBehavior.ShouldAggroOnHit)
+            EnemyAggroPlayer(player);
     }
 
     public override void PetDamage(Player player)
     {
         base.PetDamage(player);
-        EnemyAggroPlayer(player);
+        if (CurrentBehavior.ShouldAggroOnHit)
+            EnemyAggroPlayer(player);
     }
 
-    public override void SendAiData(Player player)
+    public override void SendAiData(Player player, bool sendAIDo)
     {
+        var ratio = 0.0f;
+
+        if (AiData is null)
+        {
+            Logger.LogError("AiData for enemy {Id} was null! Skipping this enemy...", Id);
+            return;
+        }
+
+        if (CurrentBehavior is not null)
+            ratio = CurrentBehavior.GetBehaviorRatio(Room.Time);
+
         player.SendSyncEventToPlayer(
             AISyncEventHelper.AIInit(
                 AiData.Sync_PosX, AiData.Sync_PosY, AiData.Sync_PosZ,
                 AiData.Intern_SpawnPosX, AiData.Intern_SpawnPosY,
-                CurrentBehavior.GetBehaviorRatio(Room.Time), this
+                ratio, this
             )
         );
 
-        player.SendSyncEventToPlayer(
-            AISyncEventHelper.AIDo(
-                AiData.Sync_PosX, AiData.Sync_PosY, 1.0f,
-                AiData.Sync_TargetPosX, AiData.Sync_TargetPosY, AiData.Intern_Dir, Global != null && CurrentState == Global.AwareBehavior,
-                this
-            )
-        );
+        if (sendAIDo)
+            player.SendSyncEventToPlayer(
+                AISyncEventHelper.AIDo(
+                    AiData.Sync_PosX, AiData.Sync_PosY, 1.0f,
+                    AiData.Sync_TargetPosX, AiData.Sync_TargetPosY, AiData.Intern_Dir, Global != null && CurrentState == Global.AwareBehavior,
+                    this
+                )
+            );
     }
 
     public void EnemyAggroPlayer(Player player)
@@ -227,7 +243,7 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
             return;
         }
 
-        Logger.LogTrace("Enemy {PrefabName} aggroed on player {PlayerName}", PrefabName, player.CharacterName);
+            Logger.LogTrace("Enemy {PrefabName} aggroed on player {PlayerName}", PrefabName, player.CharacterName);
 
         AiData.Sync_TargetPosX = player.TempData.Position.X;
         AiData.Sync_TargetPosY = player.TempData.Position.Y;

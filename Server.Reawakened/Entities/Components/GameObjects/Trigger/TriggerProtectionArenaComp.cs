@@ -2,6 +2,7 @@
 using Server.Reawakened.Entities.Components.GameObjects.Spawners;
 using Server.Reawakened.Entities.Components.GameObjects.Trigger.Abstractions;
 using Server.Reawakened.Entities.Components.GameObjects.Trigger.Enums;
+using Server.Reawakened.Players;
 using Server.Reawakened.Rooms;
 using SmartFoxClientAPI.Data;
 
@@ -23,6 +24,8 @@ public class TriggerProtectionArenaComp : BaseTriggerStatueComp<TriggerProtectio
         _defeatedCount = 0;
         _spawners = [];
     }
+
+    public override object[] GetInitData(Player player) => Status == ArenaStatus.Complete ? [1] : [-1];
 
     public override void DelayedComponentInitialization()
     {
@@ -64,6 +67,19 @@ public class TriggerProtectionArenaComp : BaseTriggerStatueComp<TriggerProtectio
     }
 
     public void AddDefeat() => _defeatedCount += 1;
+
+    public override void Triggered(Player player, bool isSuccess, bool isActive)
+    {
+        base.Triggered(player, isSuccess, isActive);
+        if (isActive)
+        {
+            StartArena();
+
+            var players = Room.GetPlayers();
+            foreach (var gamer in players)
+                gamer.TempData.CurrentArena = this;
+        }
+    }
 
     public override void ArenaSuccess()
     {

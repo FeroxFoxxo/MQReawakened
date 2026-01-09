@@ -224,4 +224,8 @@ public class AccountHandler(AccountAttackLimiter attackLimiter, IpLimiter ipLimi
             return db.Accounts.Any(a => a.Email == email);
         }
     }
+    public bool ValidatePassword(AccountModel account, string password)
+    {
+        return PasswordHasher.CheckPassword(account, password);
+    }
 }

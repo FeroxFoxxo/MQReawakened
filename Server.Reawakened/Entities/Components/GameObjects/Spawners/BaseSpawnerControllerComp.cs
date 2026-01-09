@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using A2m.Server;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Server.Base.Core.Abstractions;
 using Server.Base.Timers.Extensions;
@@ -7,6 +8,7 @@ using Server.Reawakened.Entities.Components.AI.Stats;
 using Server.Reawakened.Entities.Components.GameObjects.Breakables;
 using Server.Reawakened.Entities.Components.GameObjects.Trigger;
 using Server.Reawakened.Entities.Components.GameObjects.Trigger.Enums;
+using Server.Reawakened.Entities.Components.GameObjects.Trigger.Interfaces;
 using Server.Reawakened.Entities.Enemies.Behaviors.Abstractions;
 using Server.Reawakened.Entities.Enemies.EnemyTypes.Abstractions;
 using Server.Reawakened.Entities.Enemies.Extensions;
@@ -168,17 +170,21 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
 
         if (triggerSpawn)
             Spawn();
-        
+
         if (triggerFinalize)
             SpawnEventCalled(FinalizeSpawnDelaySeconds);
     }
 
     public void Spawn()
     {
-        _nextSpawnRequestTime = _nextSpawnRequestTime == NotScheduled ? Room.Time + InitialSpawnDelay : Room.Time + MinSpawnInterval;
+        // If called to spawn while spawning, ignore the call
+        if (!_spawnRequested)
+        {
+            _nextSpawnRequestTime = _nextSpawnRequestTime == NotScheduled ? Room.Time + InitialSpawnDelay : Room.Time + MinSpawnInterval;
 
-        if (CanSpawnMoreThisCycle() && LinkedEnemies.Count < MaxSimultanousSpawned)
-            _spawnRequested = true;
+            if (CanSpawnMoreThisCycle() && LinkedEnemies.Count < MaxSimultanousSpawned)
+                _spawnRequested = true;
+        }
     }
 
     private void ActivateArenaSpawn(Action setArena)
@@ -199,7 +205,7 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
 
     public void SetArena(TriggerArenaComp arena) => _arenaComp = arena;
     public void SetArena(TriggerProtectionArenaComp arena) => _protectArenaComp = arena;
-    
+
     public void RemoveFromArena()
     {
         if (_arenaComp == null)
@@ -289,8 +295,7 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
     {
         _nextSpawnRequestTime = NotScheduled;
         _spawnRequested = false;
-        _spawnedEntityCount = 0;
-        _updatedSpawnCycle = SpawnCycleCount;
+        _updatedSpawnCycle = _spawnedEntityCount + SpawnCycleCount;
         LinkedEnemies.Clear();
     }
 
@@ -426,11 +431,11 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
             }
             else
             {
-                if (SpawnCycleCount > 0)
+                if (_arenaComp != null && SpawnCycleCount > 0)
                     _updatedSpawnCycle += SpawnCycleCount;
-                
+
                 _nextSpawnRequestTime = 0;
-                
+
                 if (_pendingDestroy)
                 {
                     Room.RemoveEnemy(Id);
@@ -454,7 +459,7 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
             _pendingDestroy = true;
             return;
         }
-        
+
         Room.RemoveEnemy(Id);
     }
 

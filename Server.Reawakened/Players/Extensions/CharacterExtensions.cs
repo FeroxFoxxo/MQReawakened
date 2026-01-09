@@ -61,4 +61,28 @@ public static class CharacterExtensions
         characterData.Write.LevelId = levelId;
         characterData.Write.SpawnPointId = spawnId;
     }
+
+    public static int GetStartingTribeQuestForTribe(this CharacterModel characterData)
+    {
+        var allegiance = characterData.Allegiance;
+        var quest = -1;
+
+        switch (allegiance)
+        {
+            case TribeType.Bone:
+                quest = 978;
+                break;
+            case TribeType.Wild:
+                quest = 831;
+                break;
+            case TribeType.Outlaw:
+                quest = 976;
+                break;
+            case TribeType.Shadow:
+                quest = 977;
+                break;
+        }
+
+        return quest;
+    }
 }

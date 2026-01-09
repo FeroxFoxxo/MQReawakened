@@ -1,26 +1,68 @@
+@using Microsoft.AspNetCore.Http
 @{
     var path = ViewContext?.HttpContext?.Request?.Path.Value?.ToLowerInvariant() ?? string.Empty;
+
+	// Check if user is logged in via cookies
+	var userId = Context.Request.Cookies["UserId"];
+	var username = Context.Request.Cookies["Username"];
+	var isLoggedIn = !string.IsNullOrEmpty(userId) && !string.IsNullOrEmpty(username);
 }
 
 <div class="collapse navbar-collapse" id="primaryNav">
-    <ul class="navbar-nav mx-auto align-items-lg-center main-nav justify-content-center">
-        <li class="nav-item"><a class="nav-link @(path=="/" || path=="" ? "active" : null)" href="/"><span class="nav-label">Home</span></a></li>
-        <li class="nav-item"><a class="nav-link @(path=="/patchnotes" ? "active" : null)" href="/patchnotes"><span class="nav-label">Patch Notes</span></a></li>
-        <li class="nav-item"><a class="nav-link @(path=="/download" ? "active" : null)" href="/download"><span class="nav-label">Download</span></a></li>
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle nav-dropdown-toggle @((path.StartsWith("/en/signup") || path=="/en/signup/forgot-username" || path=="/en/signup/forgot-password") ? "active" : null)" href="#" id="accountDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="nav-label">Account</span></a>
-            <div class="dropdown-menu dropdown-menu-right nav-dropdown" aria-labelledby="accountDropdown">
-                <a class="dropdown-item @(path=="/en/signup" ? "active" : null)" href="/en/signup">Sign Up</a>
-                <a class="dropdown-item @(path=="/en/signup/forgot-username" ? "active" : null)" href="/en/signup/forgot-username">Forgot Username</a>
-                <a class="dropdown-item @(path=="/en/signup/forgot-password" ? "active" : null)" href="/en/signup/forgot-password">Forgot Password</a>
-            </div>
-        </li>
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle nav-dropdown-toggle @(path=="/commands" || path=="/colliders" ? "active" : null)" href="#" id="adminDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="nav-label">Admin</span></a>
-            <div class="dropdown-menu dropdown-menu-right nav-dropdown" aria-labelledby="adminDropdown">
-                <a class="dropdown-item @(path=="/commands" ? "active" : null)" href="/commands">Commands</a>
-                <a class="dropdown-item @(path=="/colliders" ? "active" : null)" href="/colliders">Colliders</a>
-            </div>
-        </li>
-    </ul>
+	<ul class="navbar-nav mx-auto align-items-lg-center main-nav justify-content-center">
+		<li class="nav-item">
+			<a class="nav-link @(path == "/" || path == "" ? "active" : null)" href="/">
+				<span class="nav-label">Home</span>
+			</a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link @(path == "/patchnotes" ? "active" : null)" href="/patchnotes">
+				<span class="nav-label">Patch Notes</span>
+			</a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link @(path == "/download" ? "active" : null)" href="/download">
+				<span class="nav-label">Download</span>
+			</a>
+		</li>
+
+		<li class="nav-item dropdown">
+			<a class="nav-link dropdown-toggle nav-dropdown-toggle
+                  @((path.StartsWith("/en/signup") || path.StartsWith("/en/login")) ? "active" : null)"
+			   href="#" id="accountDropdown" role="button" data-toggle="dropdown"
+			   aria-haspopup="true" aria-expanded="false">
+				<span class="nav-label">Account</span>
+			</a>
+			<div class="dropdown-menu dropdown-menu-right nav-dropdown" aria-labelledby="accountDropdown">
+
+				@* Not logged in: Show Sign Up, Login, Forgot Username & Forgot Password *@
+				@if (!isLoggedIn)
+				{
+					<a class="dropdown-item @(path == "/en/signup" ? "active" : null)" href="/en/signup">Sign Up</a>
+					<a class="dropdown-item @(path == "/en/login" ? "active" : null)" href="/en/login">Login</a>
+					<a class="dropdown-item @(path == "/en/signup/forgot-username" ? "active" : null)" href="/en/signup/forgot-username">Forgot Username</a>
+					<a class="dropdown-item @(path == "/en/signup/forgot-password" ? "active" : null)" href="/en/signup/forgot-password">Forgot Password</a>
+				}
+
+				@* Logged in: Show Welcome text and Logout button only *@
+				@if (isLoggedIn)
+				{
+					<div class="px-3 py-2 text-center">
+						<span class="d-block mb-1" style="color: var(--adm-text-dim);">Welcome, @username!</span>
+						<form method="post" asp-page="/En/Logout">
+							<button type="submit" class="btn btn-sm btn-outline-danger">Logout</button>
+						</form>
+					</div>
+				}
+
+			</div>
+			<li class="nav-item dropdown">
+				<a class="nav-link dropdown-toggle nav-dropdown-toggle @(path=="/commands" || path=="/colliders" ? "active" : null)" href="#" id="adminDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="nav-label">Admin</span></a>
+				<div class="dropdown-menu dropdown-menu-right nav-dropdown" aria-labelledby="adminDropdown">
+					<a class="dropdown-item @(path=="/commands" ? "active" : null)" href="/commands">Commands</a>
+					<a class="dropdown-item @(path=="/colliders" ? "active" : null)" href="/colliders">Colliders</a>
+				</div>
+			</li>
+		</li>
+	</ul>
 </div>

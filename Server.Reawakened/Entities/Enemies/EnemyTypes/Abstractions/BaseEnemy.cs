@@ -197,7 +197,10 @@ public abstract class BaseEnemy : IDestructible
         var bottomX = offset.x * EnemyController.Scale.X;
         var bottomY = offset.y * EnemyController.Scale.Y;
 
-        var rect = new RectModel(bottomX - width, bottomY, width, height);
+        // Checks if the enemy is a ceiling enemy and adjusts hitbox accordingly
+        var rect = Status.Scale.Y < 0
+            ? new RectModel(bottomX - width/2, bottomY - height, width, height)
+            : new RectModel(bottomX - width/2, bottomY, width, height);
 
         Logger.LogTrace("Created enemy hitbox at {Position} of size {Size}", Position, rect);
 
@@ -321,7 +324,7 @@ public abstract class BaseEnemy : IDestructible
         }
     }
 
-    public abstract void SendAiData(Player player);
+    public abstract void SendAiData(Player player, bool sendAIDo);
 
     public void Destroy(Room room, string id) => room.RemoveEnemy(id);
 

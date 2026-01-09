@@ -1,4 +1,5 @@
 ﻿using A2m.Server;
+using Server.Base.Timers.Services;
 using Server.Reawakened.Entities.Components.GameObjects.Trigger.Enums;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
@@ -53,18 +54,16 @@ public abstract class BaseTriggerStatueComp<T> : BaseTriggerCoopController<T> wh
         Status = ArenaStatus.Incomplete;
     }
 
-    public override object[] GetInitData(Player player) => [-1];
-
     public override void SendDelayedData(Player player)
     {
-        var trigger = new Trigger_SyncEvent(Id.ToString(), Room.Time, false, "now", false);
+        /*var trigger = new Trigger_SyncEvent(Id.ToString(), Room.Time, false, "now", false);
 
         if (Status == ArenaStatus.Complete)
             trigger = new Trigger_SyncEvent(Id.ToString(), Room.Time, true, "now", false);
         else if (Status != ArenaStatus.Complete && HasStarted)
             trigger = new Trigger_SyncEvent(Id.ToString(), Room.Time, true, "now", true);
 
-        player.SendSyncEventToPlayer(trigger);
+        player.SendSyncEventToPlayer(trigger);*/
     }
 
     public override void Update()
@@ -78,16 +77,12 @@ public abstract class BaseTriggerStatueComp<T> : BaseTriggerCoopController<T> wh
 
     public override void Triggered(Player player, bool isSuccess, bool isActive)
     {
+        // If completed, refuse any other input
+        // Stops multiplayer bugs and quest interaction bug
+        if (Status == ArenaStatus.Complete)
+            return;
 
-        if (IsActive)
-        {
-            StartArena();
-
-            var players = Room.GetPlayers();
-            foreach (var gamer in players)
-                gamer.TempData.CurrentArena = this;
-        }
-        else
+        if (!isActive)
         {
             var players = Room.GetPlayers();
 
@@ -100,6 +95,7 @@ public abstract class BaseTriggerStatueComp<T> : BaseTriggerCoopController<T> wh
 
                 foreach (var gamer in players)
                 {
+                    gamer.TemporaryInvincibility(TimerThread, ServerRConfig, 2);
                     gamer.CheckObjective(ObjectiveEnum.Score, Id, PrefabName, 1, QuestCatalog);
                     gamer.Character.Write.SpawnPointId = Id;
                 }
@@ -124,6 +120,9 @@ public abstract class BaseTriggerStatueComp<T> : BaseTriggerCoopController<T> wh
         Trigger(players.FirstOrDefault(), true, false);
         foreach (var player in players)
             player.TempData.CurrentArena = null;
+
+        foreach (var gamer in players)
+            RemovePhysicalInteractor(gamer, gamer.GameObjectId);
 
         Status = ArenaStatus.Complete;
     }

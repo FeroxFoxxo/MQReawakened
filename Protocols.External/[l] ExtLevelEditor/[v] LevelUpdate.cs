@@ -45,7 +45,7 @@ public class RoomUpdate : ExternalProtocol
             entityComponent.SendDelayedData(Player);
 
         foreach (var enemy in Player.Room.GetEnemies())
-            enemy.SendAiData(Player);
+            enemy.SendAiData(Player, Player.Room.GetPlayers().Length > 1);
 
         Player.TempData.CurrentArena = null;
 
@@ -76,16 +76,6 @@ public class RoomUpdate : ExternalProtocol
         if (Player.Character.Pets.TryGetValue(Player.GetEquippedPetId(ServerRConfig), out var pet) &&
             pet != null && pet.IsEquipped && PetAbilities.PetAbilityData.TryGetValue(int.Parse(pet.PetId), out var petAbility))
             Player.EquipPet(petAbility, WorldStatistics, ServerRConfig, ItemCatalog);
-
-        TimerThread.RunDelayed(DisableInvincibility, new PlayerTimer { Player = Player }, TimeSpan.FromSeconds(3));
-    }
-
-    private void DisableInvincibility(ITimerData data)
-    {
-        if (data is not PlayerTimer room)
-            return;
-
-        room.Player.TempData.Invincible = false;
     }
 
     private string GetGameObjectStore(Room room)

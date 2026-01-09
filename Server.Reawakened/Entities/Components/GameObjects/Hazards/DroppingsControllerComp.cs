@@ -1,13 +1,8 @@
 ﻿using A2m.Server;
-using Server.Base.Core.Abstractions;
-using Server.Base.Timers.Extensions;
-using Server.Base.Timers.Services;
-using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Players;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Rooms.Models.Planes;
-using Server.Reawakened.XMLs.Bundles.Base;
 using UnityEngine;
 
 namespace Server.Reawakened.Entities.Components.GameObjects.Hazards;
@@ -15,30 +10,33 @@ public class DroppingsControllerComp : Component<DroppingsController>
 {
     public float DropRate => ComponentData.DropRate;
 
-    public TimerThread TimerThread { get; set; }
-    public ItemCatalog ItemCatalog { get; set; }
-    public ServerRConfig ServerRConfig { get; set; }
-
     private Vector3Model _startPosition;
+    private float _activationStartTime = 0;
 
-    public override void InitializeComponent()
-    {
+    public override void InitializeComponent() => 
         _startPosition = new Vector3Model(Position.X, Position.Y, Position.Z);
-        WaitDrop();
+
+    public override void Update()
+    {
+        if (Room == null || Room.IsObjectKilled(Id))
+            return;
+
+        base.Update();
+
+        if (DropRate > 0)
+        {
+            var time = Room.Time;
+            if (time - _activationStartTime > DropRate)
+            {
+                _activationStartTime += DropRate;
+                SendDrop();
+            }
+        }
     }
 
-    public void WaitDrop() =>
-        TimerThread.RunDelayed(SendDrop, this, TimeSpan.FromSeconds(DropRate));
-
-    public static void SendDrop(ITimerData data)
+    public void SendDrop()
     {
-        if (data is not DroppingsControllerComp dropping)
-            return;
-
-        if (dropping.Room.IsObjectKilled(dropping.Id))
-            return;
-
-        dropping.Position.SetPosition(dropping._startPosition);
+        Position.SetPosition(_startPosition);
 
         var speed = new Vector2
         {
@@ -49,9 +47,7 @@ public class DroppingsControllerComp : Component<DroppingsController>
         var damage = 0;
         var effect = ItemEffectType.Freezing;
 
-        dropping.Room.AddRangedProjectile(dropping.Id, dropping.Position, speed, 3, damage, effect, false);
-
-        dropping.WaitDrop();
+        Room.AddRangedProjectile(Id, Position, speed, 3, damage, effect, false);
     }
 
     public void FreezePlayer(Player player)

@@ -11,6 +11,7 @@ public class AIBehaviorActing(BehaviorEnemy enemy, ActingProperties fallback) : 
     public bool SnapOnGround => GetInternalProperties().lookAround_SnapOnGround;
 
     public override bool ShouldDetectPlayers => false;
+    public override bool ShouldAggroOnHit => false;
 
     public override AiProperties GetProperties() => GetInternalProperties();
     private ActingProperties GetInternalProperties() => new(

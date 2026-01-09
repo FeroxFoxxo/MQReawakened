@@ -97,7 +97,7 @@ public static class PlayerAchievementExtensions
                 player.SendXt("Ap",
                     -1,
                     currentAchievement.id,
-                    -1,
+                    currentAchievement.GetProgressRatio(),
                     currentAchievement.GetAmountLeft(),
                     currentAchievement.GetTotalProgress()
                 );
@@ -125,6 +125,13 @@ public static class PlayerAchievementExtensions
             count += c.value;
 
         return count;
+    }
+
+    public static float GetProgressRatio(this CharacterAchievement achievement)
+    {
+        var ratio = (float)achievement.GetTotalProgress() / achievement.goal * 100;
+
+        return ratio;
     }
 
     public static CharacterAchievement GetAchievement(this CharacterModel character, AchievementStaticData achievement) =>

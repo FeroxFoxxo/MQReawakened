@@ -1,10 +1,14 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
 using Server.Base.Logging;
+using Server.Base.Timers.Services;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Entities.Colliders;
+using Server.Reawakened.Entities.Components.GameObjects.Items;
+using Server.Reawakened.Entities.Components.GameObjects.Spawners;
 using Server.Reawakened.Entities.Components.GameObjects.Trigger.Enums;
 using Server.Reawakened.Entities.Components.GameObjects.Trigger.Interfaces;
+using Server.Reawakened.Entities.Components.GameObjects.WowMoment;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Models.Pets;
@@ -16,7 +20,7 @@ using static TriggerCoopController;
 
 namespace Server.Reawakened.Entities.Components.GameObjects.Trigger.Abstractions;
 
-public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp, IQuestTriggered where T : TriggerCoopController
+public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp, ICoopTriggered, IQuestTriggered where T : TriggerCoopController
 {
     public bool DisabledAfterActivation => ComponentData.DisabledAfterActivation;
 
@@ -88,6 +92,7 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
     public QuestCatalog QuestCatalog { get; set; }
     public ServerRConfig ServerRConfig { get; set; }
     public ItemCatalog ItemCatalog { get; set; }
+    public TimerThread TimerThread { get; set; }
 
     public List<string> CurrentPhysicalInteractors;
     public int CurrentInteractions;
@@ -98,7 +103,7 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
 
         var validQuestProgress = true;
 
-        if (player == null && !ItemCatalog.GetItemFromId(int.Parse(ci)).IsPet() || ci == "0")
+        if (player == null && !Room.IsGameObjectOfPet(ci, ServerRConfig) || ci == "0")
         {
             CurrentPhysicalInteractors.Remove(ci);
             return null;
@@ -134,6 +139,8 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
 
     public Dictionary<string, TriggerType> Triggers;
     public List<ActivationType> Activations;
+
+    public float TimeToDeactivate { get; set; }
 
     public override void InitializeComponent()
     {
@@ -193,12 +200,29 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
         if (TriggerOnGrapplingHook) Activations.Add(ActivationType.NormalDamage);
         if (!string.IsNullOrEmpty(TriggeredByItemInInventory)) Activations.Add(ActivationType.ItemInInventory);
 
+        /*
+        // This old version has lightning damage and ice damage also, let's fix this
+        // when we get the level editor working.
         if (TriggerOnNormalDamage || TriggerOnAirDamage || TriggerOnEarthDamage
             || TriggerOnFireDamage || TriggerOnIceDamage || TriggerOnLightningDamage)
+            _ = new TriggerableTargetCollider(this);*/
+
+        if (TriggerOnNormalDamage || TriggerOnAirDamage || TriggerOnEarthDamage
+            || TriggerOnFireDamage)
             _ = new TriggerableTargetCollider(this);
     }
 
     public override void DelayedComponentInitialization() => RunTrigger(null);
+
+    public override void Update()
+    {
+        if (ActiveDuration > 0 && IsActive && TimeToDeactivate <= Room.Time)
+        {
+            var player = Room.GetPlayers().FirstOrDefault();
+
+            Trigger(player, true, false);
+        }
+    }
 
     public void AddToTriggers(List<int> triggers, TriggerType triggerType)
     {
@@ -209,14 +233,21 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
     public override void SendDelayedData(Player player)
     {
         var trigger = new Trigger_SyncEvent(Id.ToString(), Room.Time, false,
-            "now", IsActive);
+         "now", IsActive);
+
+        var quest = Room.GetEntityFromId<QuestCollectibleControllerComp>(Id);
+        if (quest is not null)
+        {
+            trigger = new Trigger_SyncEvent(Id.ToString(), Room.Time, true,
+            player.GameObjectId.ToString(), true);
+        }
 
         player.SendSyncEventToPlayer(trigger);
     }
 
     public override void RunSyncedEvent(SyncEvent syncEvent, Player player)
     {
-        if (!IsEnabled || syncEvent.Type != SyncEvent.EventType.Trigger)
+        if (!IsEnabled || !IsEnable || syncEvent.Type != SyncEvent.EventType.Trigger)
             return;
 
         var tEvent = new Trigger_SyncEvent(syncEvent);
@@ -246,12 +277,10 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
     {
         if (CurrentPhysicalInteractors.Contains(interactionId)) return;
 
-        CurrentPhysicalInteractors.Add(interactionId);
+        var valid = true;
 
         if (Room.GetPlayerById(interactionId) != null)
         {
-            var validQuestProgress = true;
-
             if (PlayerHasPet(player, out var pet))
                 if (pet != null)
                     pet.CoopTriggerableId = Id;
@@ -262,7 +291,7 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
 
                 if (requiredQuest != null)
                     if (!player.Character.CompletedQuests.Contains(requiredQuest.Id))
-                        validQuestProgress = false;
+                        valid = false;
             }
 
             if (!string.IsNullOrEmpty(QuestInProgressRequired))
@@ -271,11 +300,23 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
 
                 if (requiredQuest != null)
                     if (player.Character.QuestLog.FirstOrDefault(q => q.Id == requiredQuest.Id) == null)
-                        validQuestProgress = false;
+                        valid = false;
             }
 
-            if (validQuestProgress)
-                SendInteractionUpdate();
+            if (!string.IsNullOrEmpty(TriggeredByItemInInventory))
+            {
+                var requiredItem = ItemCatalog.GetItemFromPrefabName(TriggeredByItemInInventory);
+
+                if (requiredItem != null)
+                    if (!player.Character.Inventory.Items.ContainsKey(requiredItem.ItemId))
+                        valid = false;
+            }
+        }
+
+        if (valid)
+        {
+            CurrentPhysicalInteractors.Add(interactionId);
+            SendInteractionUpdate();
         }
     }
 
@@ -359,11 +400,14 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
             if (StayTriggeredOnReceiverActivated && triggerReceiverActivated)
                 return;
 
-            if (StayTriggeredOnUnpressed || player.Character.Pets.TryGetValue(player.GetEquippedPetId(ServerRConfig), out var pet)
+            if (StayTriggeredOnUnpressed || player.Character != null && player.Character.Pets.TryGetValue(player.GetEquippedPetId(ServerRConfig), out var pet)
                 && Id == pet.CoopTriggerableId && pet.InCoopState())
                 return;
 
             if (LastActivationTime + ActivationTimeAfterFirstInteraction > Room.Time && ActivationTimeAfterFirstInteraction > 0)
+                return;
+
+            if (CurrentPhysicalInteractors.Count >= NbInteractionsNeeded)
                 return;
 
             Trigger(player, true, false);
@@ -371,6 +415,13 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
 
         LogTrigger();
     }
+
+    public void TriggerStateChange(TriggerType triggerType, bool triggered, string triggeredBy) => IsEnabled = triggerType switch
+    {
+        TriggerType.Enable => true,
+        TriggerType.Disable => false,
+        _ => IsEnabled
+    };
 
     public void LogTriggerEvent(Trigger_SyncEvent tEvent)
     {
@@ -465,6 +516,9 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
         {
             var triggers = Room.GetEntitiesFromId<ICoopTriggered>(trigger.Key);
 
+            foreach (var spawner in Room.GetEntitiesFromId<BaseSpawnerControllerComp>(trigger.Key))
+                spawner?.Spawn();
+
             if (triggers.Length > 0)
                 foreach (var triggeredEntity in triggers)
                     triggeredEntity.TriggerStateChange(trigger.Value, IsActive, player.GameObjectId);
@@ -477,6 +531,11 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
             Room.SentEntityTriggered(Id, player, success, IsActive);
             Triggered(player, success, IsActive);
         }
+        else
+            Room.SendSyncEvent(new Trigger_SyncEvent(Id, Room.Time, success, Id, active));
+
+        if (ActiveDuration > 0 && IsActive)
+            TimeToDeactivate = Room.Time + ActiveDuration;
     }
 
     public void LogTriggerErrors(string triggerId, TriggerType type)
@@ -527,7 +586,7 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
                 LoggerType.Trace
         );
 
-        if (CurrentPhysicalInteractors.Contains(player.GameObjectId))
+        if (QuestInProgressRequired.Equals(quest.Name) && CurrentPhysicalInteractors.Contains(player.GameObjectId))
         {
             RunTrigger(player);
         }
@@ -548,7 +607,7 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
                 LoggerType.Trace
         );
 
-        if (CurrentPhysicalInteractors.Contains(player.GameObjectId))
+        if (QuestCompletedRequired.Equals(quest.Name) && CurrentPhysicalInteractors.Contains(player.GameObjectId))
         {
             RunTrigger(player);
         }

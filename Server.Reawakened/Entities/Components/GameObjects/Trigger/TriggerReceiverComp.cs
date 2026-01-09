@@ -38,8 +38,10 @@ public class TriggerReceiverComp : Component<TriggerReceiver>, ICoopTriggered
 
         _collider = new TriggerReceiverCollider(this);
 
-        if (CollisionType == TriggerReceiver.ReceiverCollisionType.Never)
+        if (CollisionType == TriggerReceiver.ReceiverCollisionType.Never || PrefabName.Equals("PF_SHD_StatueHazard02"))
             _collider.Active = false;
+
+        Room.AddColliderToList(_collider);
     }
 
     public override void DelayedComponentInitialization()

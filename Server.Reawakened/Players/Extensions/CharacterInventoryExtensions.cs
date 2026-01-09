@@ -62,7 +62,12 @@ public static class CharacterInventoryExtensions
                 case ItemEffectType.ExperienceMultiplier:
                     player.Character.StatusEffects.Add(effect);
                     break;
+                case ItemEffectType.ColorTonic:
+                    if (player.Character.StatusEffects.HasEffect(ItemEffectType.ColorTonic))
+                        player.Character.StatusEffects.Remove(ItemEffectType.ColorTonic);
 
+                    player.Character.StatusEffects.Add(effect);
+                    break;
                 case ItemEffectType.Invalid:
                 case ItemEffectType.Unknown:
                 case ItemEffectType.Unknown_61:

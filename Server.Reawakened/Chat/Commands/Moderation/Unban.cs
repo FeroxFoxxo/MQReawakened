@@ -5,8 +5,6 @@ using Server.Reawakened.Chat.Models;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.XMLs.Data.Commands;
-using System.Security.Principal;
-using UnityEngine;
 
 namespace Server.Reawakened.Chat.Commands.Moderation;
 public class UnBan : SlashCommand

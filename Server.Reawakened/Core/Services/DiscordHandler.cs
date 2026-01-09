@@ -23,12 +23,12 @@ public class DiscordHandler(DiscordRwConfig rwConfig, PlayerContainer playerCont
         _socketClient.StartAsync();
     }
 
-    public void SendMessage(string author, string message)
+    public void SendMessage(ulong channelId, string author, string message)
     {
         if (_socketClient == null)
             return;
 
-        var socketChannel = (ISocketMessageChannel)_socketClient.GetChannel(rwConfig.ChannelId);
+        var socketChannel = (ISocketMessageChannel)_socketClient.GetChannel(channelId);
 
         socketChannel.SendMessageAsync(author + ": " + message);
     }
@@ -84,14 +84,14 @@ public class DiscordHandler(DiscordRwConfig rwConfig, PlayerContainer playerCont
                 var messageId = socketMessage.Id;
                 var message = socketChannel.GetMessageAsync(messageId);
 
-                if (rwConfig.ChannelId != socketChannel.Id)
+                if (rwConfig.GlobalChannelId != socketChannel.Id)
                     return;
 
-                Log(message.Result.Content, author);
+                Log(author, message.Result.Content);
             }
         });
 
-    private void Log(string message, string author)
+    private void Log(string author, string message)
     {
         lock (PlayerContainer.Lock)
         {

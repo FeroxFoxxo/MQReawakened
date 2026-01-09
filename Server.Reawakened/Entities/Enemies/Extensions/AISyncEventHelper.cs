@@ -46,8 +46,8 @@ public static class AISyncEventHelper
             id, room.Time,
             posX, posY, posZ, spawnX, spawnY, behaviorRatio,
             health, maxHealth, healthModifier, scaleModifier, resistanceModifier,
-            stars, level,
-            globalProperties.ToString(),
+            stars, level, globalProperties == null ? 
+            CreateDefaultGlobalProperties().ToString() : globalProperties.ToString(),
             bList.ToString()
         );
 
