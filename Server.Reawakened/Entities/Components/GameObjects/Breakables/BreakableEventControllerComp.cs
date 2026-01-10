@@ -53,6 +53,11 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
         _ = new BreakableCollider(this, enemyTarget);
     }
 
+    // In 2012 BreakableEventController has an OnInitEvent method
+    public override object[] GetInitData(Player player) => Damageable != null
+            ? [Damageable.CurrentHealth + "|" + Damageable.MaxHealth]
+            : _spawner != null ? [_spawner.CurrentHealth + "|" + _spawner.MaxHealth] : ["5|5"];
+
     public void Damage(int damage, Elemental damageType, Player origin)
     {
         if (Room.IsObjectKilled(Id) || !CanBreak || Damageable is null)
