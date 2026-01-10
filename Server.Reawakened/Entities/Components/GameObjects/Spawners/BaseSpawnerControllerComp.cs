@@ -12,6 +12,7 @@ using Server.Reawakened.Entities.Components.GameObjects.Trigger.Interfaces;
 using Server.Reawakened.Entities.Enemies.Behaviors.Abstractions;
 using Server.Reawakened.Entities.Enemies.EnemyTypes.Abstractions;
 using Server.Reawakened.Entities.Enemies.Extensions;
+using Server.Reawakened.Players;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Rooms.Models.Planes;
@@ -119,6 +120,8 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
         }
         .Where(p => !string.IsNullOrWhiteSpace(p.prefab) && !string.IsNullOrWhiteSpace(p.template))];
     }
+
+    public override object[] GetInitData(Player player) => [string.Empty];
 
     public override void DelayedComponentInitialization()
     {
