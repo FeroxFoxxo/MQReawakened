@@ -495,7 +495,7 @@ public class NPCControllerComp : Component<NPCController>
                     break;
                 }
         }
-        else
+        else if (Config.GameVersion == GameVersion.vLate2013)
         {
             canStartQuest = requiredQuests.Count == 0;
 
@@ -511,6 +511,17 @@ public class NPCControllerComp : Component<NPCController>
                     break;
                 }
         }
+        else if (Config.GameVersion <= GameVersion.vEarly2013)
+        {
+            canStartQuest = requiredQuests.Count == 0;
+
+            foreach (var requiredQuest in requiredQuests)
+                if (player.Character.CompletedQuests.Contains(requiredQuest.Id))
+                {
+                    canStartQuest = true;
+                    break;
+                }
+        }
 
         if (canStartQuest)
         {
@@ -519,13 +530,13 @@ public class NPCControllerComp : Component<NPCController>
         }
         else
         {
-            if (Config.GameVersion < GameVersion.vEarly2014)
-                previousQuests = [.. previousQuests, .. requiredQuests];
+            if (Config.GameVersion >= GameVersion.vLate2013)
+                requiredQuests = [.. requiredQuests, .. previousQuests];
 
             Logger.LogTrace(
                 "[{QuestName} ({QuestId})] [DOES NOT MEET REQUIRED QUESTS] Previous Quests: {PrevQuests}",
                 questData.Name, questData.Id,
-                string.Join(", ", previousQuests.Select(x => $"{x.Name} ({x.Id})"))
+                string.Join(", ", requiredQuests.Select(x => $"{x.Name} ({x.Id})"))
             );
         }
 
