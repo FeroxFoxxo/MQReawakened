@@ -237,6 +237,8 @@
     <GameVersion version="vLate2012">
     </GameVersion>
     <GameVersion version="vMinigames2012">
+    </GameVersion>
+    <GameVersion version="vPets2012">
         <Portal id="143" isPremium="false" levelId="99" level="Crossroads Path" toLevelId="308" toLevel="Smuggler's Highway">
             <RequiredLevel level="10" />
         </Portal>
@@ -303,7 +305,7 @@
         <Portal id="87" isPremium="false" levelId="302" level="The Underbelly" toLevelId="467" toLevel="Whispering Spirits">
             <RequiredQuest id="830" />
         </Portal>
-        
+
         <Portal id="31497" isPremium="true" levelId="437" level="Forgotten Temple" toLevelId="436" toLevel="Guardian's Keep">
             <RequiredLevel level="5" />
         </Portal>
@@ -313,8 +315,6 @@
         <Portal id="8327" isPremium="true" levelId="438" level="Knight's Gate &amp; Vespid Lair" toLevelId="441" toLevel="Shard Cavern">
             <RequiredLevel level="5" />
         </Portal>
-    </GameVersion>
-    <GameVersion version="vPets2012">
     </GameVersion>
     <GameVersion version="vEarly2012">
     </GameVersion>

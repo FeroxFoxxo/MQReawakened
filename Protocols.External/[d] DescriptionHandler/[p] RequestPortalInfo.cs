@@ -52,9 +52,7 @@ public class RequestPortalInfo : ExternalProtocol
             {
                 portalConditions.Append(condition.RequiredItems.Count); // Item Id count
 
-                if (condition.RequiredItems.Count == 0)
-                    portalConditions.Append(0);
-                else
+                if (condition.RequiredItems.Count > 0)
                     foreach (var item in condition.RequiredItems)
                     {
                         var itemDescription = QuestCatalog.ItemCatalog.GetItemFromId(item);
@@ -65,9 +63,7 @@ public class RequestPortalInfo : ExternalProtocol
 
                 portalConditions.Append(condition.RequiredItems.Count); // Item Name Id count
 
-                if (condition.RequiredItems.Count == 0)
-                    portalConditions.Append(0);
-                else
+                if (condition.RequiredItems.Count > 0)
                     foreach (var item in condition.RequiredItems)
                     {
                         var itemDescription = QuestCatalog.ItemCatalog.GetItemFromId(item);
@@ -84,9 +80,7 @@ public class RequestPortalInfo : ExternalProtocol
 
                 portalConditions.Append(condition.RequiredQuests.Count); // Quest Id count
 
-                if (condition.RequiredQuests.Count == 0)
-                    portalConditions.Append(0);
-                else
+                if (condition.RequiredQuests.Count > 0)
                     foreach (var quest in condition.RequiredQuests)
                     {
                         var questData = QuestCatalog.GetQuestData(quest);
@@ -97,9 +91,7 @@ public class RequestPortalInfo : ExternalProtocol
 
                 portalConditions.Append(condition.RequiredQuests.Count); // Quest Name Id count
 
-                if (condition.RequiredQuests.Count == 0)
-                    portalConditions.Append(0);
-                else
+                if (condition.RequiredQuests.Count > 0)
                     foreach (var quest in condition.RequiredQuests)
                     {
                         var questData = QuestCatalog.GetQuestData(quest);
