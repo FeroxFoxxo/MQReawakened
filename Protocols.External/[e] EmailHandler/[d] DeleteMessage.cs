@@ -51,7 +51,7 @@ public class DeleteMessage : ExternalProtocol
 
         player.Character.EmailMessages.Remove(0);
 
-        player.SendXt("ed", gData.MessageId);
+        player.SendXt("ed", gData.MessageId, "1");
     }
 
     private class GiftData
