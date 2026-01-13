@@ -39,13 +39,13 @@ public class WorldGraph : WorldGraphXML, IBundledXml
         if (ServerRConfig.GameVersion <= GameVersion.vPets2012)
         {
             var node = xml.SelectNodes("/levels/level[@level_type='MiniGameTrail']");
+            var highwayHubnode = xml.SelectNodes("/levels/level[@level_type='HighwayHub']");
 
             foreach (XmlNode level in node)
-            {
-                var parent = level.ParentNode;
+                level.ParentNode.RemoveChild(level);
 
-                parent.RemoveChild(level);
-            }
+            foreach (XmlNode level in highwayHubnode)
+                level.ParentNode.RemoveChild(level);
         }
     }
 
