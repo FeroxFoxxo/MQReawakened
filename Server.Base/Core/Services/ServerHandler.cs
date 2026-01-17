@@ -67,7 +67,7 @@ public class ServerHandler(EventSink sink, ILogger<ServerHandler> logger, IHostA
         HandleClosed();
 
         if (restart)
-            Process.Start(EnvironmentExt.IsContainerOrNonInteractive() ? "/app/out/Init" : GetExePath.Path());
+            Process.Start(GetExePath.Path());
 
         Process.GetCurrentProcess().Kill();
     }
