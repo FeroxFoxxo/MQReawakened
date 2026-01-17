@@ -66,6 +66,8 @@
         <Dialog oldDialogName="T0CR_11_00" newDialogName="T0CR_11_01" />
         <Dialog oldDialogName="T0CR_12_00" newDialogName="T0CR_12_00validator" />
         <Dialog oldDialogName="T0CR_16_00" newDialogName="T0CR_16_00validator" />
+        <Dialog oldDialogName="T2SD_06_00" newDialogName="OUT_2_00" />
+        <Dialog oldDialogName="T2SD_10_00" newDialogName="OUT_1_02_A" />
     </GameVersion>
     <GameVersion version="v2011">
     </GameVersion>
