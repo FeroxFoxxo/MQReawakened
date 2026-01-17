@@ -1,4 +1,5 @@
-﻿using Server.Reawakened.Entities.Enemies.Behaviors.Abstractions;
+﻿using Server.Reawakened.Core.Enums;
+using Server.Reawakened.Entities.Enemies.Behaviors.Abstractions;
 using Server.Reawakened.Entities.Enemies.EnemyTypes;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Rooms;
@@ -46,8 +47,7 @@ public static class AISyncEventHelper
             id, room.Time,
             posX, posY, posZ, spawnX, spawnY, behaviorRatio,
             health, maxHealth, healthModifier, scaleModifier, resistanceModifier,
-            stars, level, globalProperties == null ? 
-            CreateDefaultGlobalProperties().ToString() : globalProperties.ToString(),
+            stars, level, globalProperties?.ToString() ?? CreateDefaultGlobalProperties().ToString(),
             bList.ToString()
         );
 
@@ -94,9 +94,11 @@ public static class AISyncEventHelper
         return 0;
     }
 
-    public static AILaunchItem_SyncEvent AILaunchItem(string id, float time, Vector3 position, Vector2 speed, float lifeTime, int prjId, bool isGrenade)
+    public static SyncEvent AILaunchItem(string id, float time, Vector3 position, Vector2 speed, float lifeTime, int prjId, string prefabName, bool isGrenade, GameVersion gameVersion)
     {
-        var launch = new AILaunchItem_SyncEvent(new SyncEvent(id, SyncEvent.EventType.AILaunchItem, time));
+        SyncEvent launch = gameVersion >= GameVersion.vLate2012
+            ? new AILaunchItem_SyncEvent(new SyncEvent(id, SyncEvent.EventType.AILaunchItem, time))
+            : new LaunchItem_SyncEvent(new SyncEvent(id, SyncEvent.EventType.LaunchItem, time));
 
         launch.EventDataList.Clear();
         launch.EventDataList.Add(position.x);
@@ -106,6 +108,13 @@ public static class AISyncEventHelper
         launch.EventDataList.Add(speed.y);
         launch.EventDataList.Add(lifeTime);
         launch.EventDataList.Add(prjId);
+
+        if (gameVersion <= GameVersion.vMinigames2012)
+        {
+            launch.EventDataList.Add(prefabName);
+            launch.EventDataList.Add(1); // projectileStrength
+        }
+
         launch.EventDataList.Add(isGrenade ? 1 : 0);
 
         return launch;

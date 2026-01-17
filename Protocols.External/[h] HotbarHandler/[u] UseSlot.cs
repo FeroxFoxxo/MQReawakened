@@ -53,7 +53,7 @@ public class UseSlot : ExternalProtocol
         switch (usedItem.ItemActionType)
         {
             case ItemActionType.Drop:
-                Player.HandleDrop(ItemRConfig, TimerThread, Logger, usedItem, position, direction);
+                Player.HandleDrop(ItemRConfig, TimerThread, Logger, usedItem, position, direction, ServerRConfig);
                 Player.UseItemFromHotBar(usedItem.ItemId, ItemCatalog, ItemRConfig);
                 break;
             case ItemActionType.Grenade:
@@ -140,6 +140,7 @@ public class UseSlot : ExternalProtocol
             Player = Player,
             Catalog = ItemCatalog,
             Config = ItemRConfig,
+            ServerRConfig = ServerRConfig
         };
 
         if (isGrenade)
@@ -160,6 +161,7 @@ public class UseSlot : ExternalProtocol
         public bool IsGrenade;
         public ItemRConfig Config;
         public ItemCatalog Catalog;
+        public ServerRConfig ServerRConfig;
     }
 
     private static void LaunchProjectile(ITimerData data)
@@ -170,7 +172,7 @@ public class UseSlot : ExternalProtocol
         var genericProjectile = new GenericProjectile(projectile.ProjectileId, projectile.Player, projectile.Config.GrenadeLifeTime,
             projectile.Position, projectile.Config, projectile.Direction, projectile.UsedItem,
             projectile.Player.Character.CalculateDamage(projectile.UsedItem, projectile.Catalog),
-            projectile.UsedItem.Elemental, projectile.IsGrenade);
+            projectile.UsedItem.Elemental, projectile.IsGrenade, projectile.ServerRConfig);
 
         projectile.Player.Room.AddProjectile(genericProjectile);
     }
@@ -182,7 +184,7 @@ public class UseSlot : ExternalProtocol
         // Add weapon stats later
         var prj = new MeleeEntity(prjId, new Vector3Model(position.x, position.y, position.z), Player, direction, 0.51f, usedItem,
             Player.Character.CalculateDamage(usedItem, ItemCatalog),
-            usedItem.Elemental, ItemRConfig);
+            usedItem.Elemental, ItemRConfig, ServerRConfig);
 
         Player.Room.AddProjectile(prj);
     }
