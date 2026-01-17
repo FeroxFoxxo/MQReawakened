@@ -21,8 +21,7 @@ public static class CharacterInventoryExtensions
     {
         foreach (var effect in usedItem.ItemEffects)
         {
-            player.Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId.ToString(), player.Room.Time, (int)effect.Type, effect.Value, effect.Duration, true, usedItem.PrefabName, false));
-
+			var sendFx = true;
             switch (effect.Type)
             {
                 case ItemEffectType.PetRegainEnergy:
@@ -55,6 +54,9 @@ public static class CharacterInventoryExtensions
                 case ItemEffectType.ResistEarth:
                 case ItemEffectType.ResistIce:
                 case ItemEffectType.ResistLightning:
+					player.Character.StatusEffects.Add(effect);
+                    sendFx = false;
+                    break;
                 case ItemEffectType.WaterBreathing:
                 case ItemEffectType.Detect:
                 case ItemEffectType.Invisibility:
@@ -64,9 +66,16 @@ public static class CharacterInventoryExtensions
                     break;
                 case ItemEffectType.ColorTonic:
                     if (player.Character.StatusEffects.HasEffect(ItemEffectType.ColorTonic))
+                    {
+                        sendFx = false;
+
                         player.Character.StatusEffects.Remove(ItemEffectType.ColorTonic);
 
+                        player.SendItemEffectToPlayer(effect, string.Empty, sendFx, usedItem.Currency == CurrencyType.NickCash);
+                    }
+
                     player.Character.StatusEffects.Add(effect);
+                    sendFx = true;
                     break;
                 case ItemEffectType.Invalid:
                 case ItemEffectType.Unknown:
@@ -78,7 +87,10 @@ public static class CharacterInventoryExtensions
                     return;
             }
 
-            logger.LogInformation("Applied ItemEffectType of ({effectType}) from item {usedItemName} for _player {playerName}", effect.Type, usedItem.PrefabName, player.CharacterName);
+            player.SendItemEffectToPlayer(effect, usedItem.PrefabName, sendFx, usedItem.Currency == CurrencyType.NickCash);
+
+            logger.LogInformation("Applied ItemEffectType of ({effectType}) from item {usedItemName} for _player {playerName}",
+                effect.Type, usedItem.PrefabName, player.CharacterName);
         }
     }
 

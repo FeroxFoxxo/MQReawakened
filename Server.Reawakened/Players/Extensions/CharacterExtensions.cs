@@ -8,6 +8,12 @@ public static class CharacterExtensions
 {
     public static int GetHealthForLevel(int level) => GameFlow.StatisticData.GetValue(ItemEffectType.IncreaseHitPoints, WorldStatisticsGroup.Player, level);
 
+    public static void AddHealthOnLevelUp(this CharacterModel character, int amount)
+    {
+        character.Write.MaxLife += amount;
+        character.Write.CurrentLife = character.Write.MaxLife;
+    }
+
     public static int GetReputationForLevel(int level)
     {
         var currentLevel = Convert.ToInt32(Math.Pow(level, 2));

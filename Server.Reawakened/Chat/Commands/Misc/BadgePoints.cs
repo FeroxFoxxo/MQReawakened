@@ -1,5 +1,6 @@
 ﻿using Server.Base.Accounts.Enums;
 using Server.Reawakened.Chat.Models;
+using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.XMLs.Data.Commands;
@@ -15,6 +16,8 @@ public class BadgePoints : SlashCommand
 
     public override AccessLevel AccessLevel => AccessLevel.Player;
 
+    public ServerRConfig ServerRConfig { get; set; }
+
     public override void Execute(Player player, string[] args) =>
-        player.AddPoints();
+        player.AddPoints(ServerRConfig);
 }

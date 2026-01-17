@@ -1,6 +1,7 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
 using Server.Reawakened.Core.Configs;
+using Server.Reawakened.Core.Enums;
 using Server.Reawakened.Entities.Colliders;
 using Server.Reawakened.Entities.Projectiles.Abstractions;
 using Server.Reawakened.Players;
@@ -15,7 +16,8 @@ public class MeleeEntity : BaseProjectile
 {
     private readonly string _gameObjectId;
 
-    public MeleeEntity(string id, Vector3Model position, Player player, int direction, float lifeTime, ItemDescription item, int damage, Elemental type, ItemRConfig config)
+    public MeleeEntity(string id, Vector3Model position, Player player, int direction, float lifeTime, ItemDescription item, int damage, Elemental type, ItemRConfig config,
+        ServerRConfig serverRConfig)
         : base(id, lifeTime, player.Room, position, new Vector2(0, 0), null, false)
     {
         _gameObjectId = player.GameObjectId;
@@ -32,11 +34,15 @@ public class MeleeEntity : BaseProjectile
             PrjPlane, player, damage, type, LifeTime, onGround ? 0.1f : 0.5f, player.Character.StatusEffects.HasEffect(ItemEffectType.Detect)
         );
 
-        var hitEvent = new Melee_SyncEvent(
-            _gameObjectId, Room.Time,
-            Position.X, Position.Y, Position.Z, direction, Speed.y, LifeTime,
-            int.Parse(ProjectileId), item.PrefabName
-        );
+        var hitEvent = new Melee_SyncEvent(new SyncEvent(player.GameObjectId.ToString(), SyncEvent.EventType.Melee, Room.Time));
+        hitEvent.EventDataList.Add(lifeTime);
+        hitEvent.EventDataList.Add(Position.X);
+        hitEvent.EventDataList.Add(Position.Y);
+        hitEvent.EventDataList.Add(Position.Z);
+        hitEvent.EventDataList.Add(item.PrefabName);
+
+        if (serverRConfig.GameVersion <= GameVersion.vMinigames2012)
+            hitEvent.EventDataList.Add(1); // Attack Strength
 
         Room.SendSyncEvent(hitEvent);
     }

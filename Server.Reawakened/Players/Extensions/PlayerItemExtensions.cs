@@ -4,6 +4,7 @@ using Server.Base.Core.Abstractions;
 using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Core.Configs;
+using Server.Reawakened.Core.Enums;
 using Server.Reawakened.Entities.Components.GameObjects.Breakables;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players.Helpers;
@@ -18,7 +19,7 @@ namespace Server.Reawakened.Players.Extensions;
 public static class PlayerItemExtensions
 {
     public static void HandleDrop(this Player player, ItemRConfig config, TimerThread timerThread,
-        Microsoft.Extensions.Logging.ILogger logger, ItemDescription usedItem, Vector3 position, int direction)
+        Microsoft.Extensions.Logging.ILogger logger, ItemDescription usedItem, Vector3 position, int direction, ServerRConfig serverRConfig)
     {
         var isLeft = direction > 0;
         var dropDirection = isLeft ? 1 : -1;
@@ -33,7 +34,8 @@ public static class PlayerItemExtensions
             Player = player,
             Logger = logger,
             ItemRConfig = config,
-            TimerThread = timerThread
+            TimerThread = timerThread,
+            ServerRConfig = serverRConfig
         };
 
         timerThread.RunDelayed(DropItem, dropItemData, TimeSpan.FromMilliseconds(1000));
@@ -47,6 +49,7 @@ public static class PlayerItemExtensions
         public Microsoft.Extensions.Logging.ILogger Logger { get; set; }
         public ItemRConfig ItemRConfig { get; set; }
         public TimerThread TimerThread { get; set; }
+        public ServerRConfig ServerRConfig { get; set; }
     }
 
     private static void DropItem(ITimerData data)
@@ -56,9 +59,21 @@ public static class PlayerItemExtensions
 
         var player = drop.Player;
 
-        var dropItem = new LaunchItem_SyncEvent(player.GameObjectId.ToString(), player.Room.Time,
-            player.TempData.Position.X + drop.DropDirection, player.TempData.Position.Y, player.TempData.Position.Z,
-            0, 0, 3, 0, drop.UsedItem.PrefabName);
+        var dropItem = new LaunchItem_SyncEvent(new SyncEvent(player.GameObjectId.ToString(), SyncEvent.EventType.LaunchItem, player.Room.Time));
+        dropItem.EventDataList.Add(player.TempData.Position.X + drop.DropDirection);
+        dropItem.EventDataList.Add(player.TempData.Position.Y);
+        dropItem.EventDataList.Add(player.TempData.Position.Z);
+        dropItem.EventDataList.Add(0);
+        dropItem.EventDataList.Add(0);
+        dropItem.EventDataList.Add(3);
+        dropItem.EventDataList.Add(0);
+        dropItem.EventDataList.Add(drop.UsedItem.PrefabName);
+
+        if (drop.ServerRConfig.GameVersion <= GameVersion.vMinigames2012)
+        {
+            dropItem.EventDataList.Add(1); // Projectile Strength
+            dropItem.EventDataList.Add(1); // Is Grenade
+        }
 
         player.Room.SendSyncEvent(dropItem);
 

@@ -569,7 +569,7 @@ public class Room : Timer
     }
 
     public void AddRangedProjectile(string ownerId, Vector3Model position, Vector2 speed,
-        float lifeTime, int damage, ItemEffectType effect, bool isGrenade)
+        float lifeTime, int damage, ItemEffectType effect, bool isGrenade, string prefabName = "")
     {
         var projectileId = CreateProjectileId();
 
@@ -583,7 +583,7 @@ public class Room : Timer
 
         this.SendSyncEvent(
             AISyncEventHelper.AILaunchItem(
-                ownerId, Time, position.ToUnityVector3(), speed, lifeTime, projectileId, isGrenade
+                ownerId, Time, position.ToUnityVector3(), speed, lifeTime, projectileId, prefabName, isGrenade, _config.GameVersion
             )
         );
 

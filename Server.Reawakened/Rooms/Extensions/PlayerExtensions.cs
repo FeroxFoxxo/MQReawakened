@@ -1,4 +1,5 @@
 ﻿using Server.Base.Accounts.Extensions;
+using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Database.Characters;
 using Server.Reawakened.Entities.Colliders;
 using Server.Reawakened.Network.Extensions;
@@ -86,16 +87,28 @@ public static class PlayerExtensions
         receive.SendXt("ci", send.UserId, info, send.GameObjectId, levelInfo.Name);
     }
 
-    public static void SendLevelUp(this Player player)
+    public static void SendLevelUp(this Player player, ServerRConfig rConfig)
     {
         var levelUpData = new LevelUpDataModel
         {
             Level = player.Character.GlobalLevel,
-            IncPowerJewel = player.Character.BadgePoints,
+            IncLife = 100,
+            IncDefense = 2,
+            IncResistance = 20,
+            IncAbilityPower = 20,
+            CurrentLevelCompletion = player.Character.ReputationForCurrentLevel,
+            IncPowerJewel = 1,
+            ItemId = 0,
+            Nc = 125,
+            GameVersion = rConfig.GameVersion
         };
 
         foreach (var currentPlayer in player.Room.GetPlayers())
             currentPlayer.SendXt("ce", levelUpData, player.UserId);
+
+        player.Character.AddHealthOnLevelUp(100);
+
+        player.Character.Write.BadgePoints += 1;
 
         //Temporary way to earn NC upon level up.
         //(Needed for gameplay improvements as NC is currently unobtainable)

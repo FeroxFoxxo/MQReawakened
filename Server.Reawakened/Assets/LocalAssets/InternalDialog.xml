@@ -345,6 +345,9 @@
         <NPC objectId="1098" name="Chim Foo Guard" descriptionId="0">
             <Dialog dialogId="890" conversationId="2463" minimumReputation="1" />
         </NPC>
+        <NPC objectId="1100" name="Chim Foo Guard" descriptionId="0">
+            <Dialog dialogId="890" conversationId="2463" minimumReputation="1" />
+        </NPC>
         <NPC objectId="615" name="Grand Master Whisper" descriptionId="0">
             <Dialog dialogId="453" conversationId="1381" minimumReputation="1" />
             <Dialog dialogId="454" conversationId="1382" minimumReputation="5" />

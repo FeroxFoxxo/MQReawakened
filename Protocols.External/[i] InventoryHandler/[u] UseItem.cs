@@ -80,7 +80,7 @@ public class UseItem : ExternalProtocol
 
     private void HandleBomb(ItemDescription usedItem, Vector3 position, int direction)
     {
-        Player.HandleDrop(ItemRConfig, TimerThread, Logger, usedItem, position, direction);
+        Player.HandleDrop(ItemRConfig, TimerThread, Logger, usedItem, position, direction, ServerRConfig);
 
         var removeFromHotbar = true;
 

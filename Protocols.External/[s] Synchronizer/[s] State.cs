@@ -75,16 +75,19 @@ public class State : ExternalProtocol
                     var superStompDamage = (int)Math.Ceiling(WorldStatistics.GetValue(ItemEffectType.AbilityPower, WorldStatisticsGroup.Player, Player.Character.GlobalLevel) +
                         WorldStatistics.GlobalStats[Globals.StompDamageBonus]) * 2;
 
-                    // Needed because early 2012's ChargeAttack_SyncEvent is different
-                    // without it this causes a vs error
-                    // not fixable in reawakened it would require using the 2012 codebase
-                    if (ServerRConfig.GameVersion <= GameVersion.vPets2012)
-                        return;
+                    var itemId = -1;
+                    var zoneId = -1;
+
+                    if (ServerRConfig.GameVersion > GameVersion.vPets2012)
+                    {
+                        itemId = attack.ItemId;
+                        zoneId = attack.ZoneId;
+                    }
 
                     Logger.LogTrace("Super attack is charging: '{Charging}' at ({X}, {Y}) in time: {Delay} " +
                         "at speed ({X}, {Y}) with max pos ({X}, {Y}) for item id: '{Id}' and zone: {Zone}",
                         attack.IsCharging, attack.PosX, attack.PosY, attack.StartDelay,
-                        attack.SpeedX, attack.SpeedY, attack.MaxPosX, attack.MaxPosY, attack.ItemId, attack.ZoneId);
+                        attack.SpeedX, attack.SpeedY, attack.MaxPosX, attack.MaxPosY, itemId, zoneId);
 
                     Player.RemovePlayerProjectile();
 
@@ -95,7 +98,7 @@ public class State : ExternalProtocol
                         new Vector3Model(attack.PosX, attack.PosY, Player.TempData.Position.Z),
                         new Vector3(attack.MaxPosX, attack.MaxPosY, Player.TempData.Position.Z),
                         new Vector2(attack.SpeedX, attack.SpeedY),
-                        15, attack.ItemId, attack.ZoneId, superStompDamage,
+                        15, itemId, zoneId, superStompDamage,
                         Elemental.Standard, ServerRConfig, TimerThread
                     );
 

@@ -32,8 +32,21 @@ public class ChargeAttackProjectile : BaseProjectile
 
         Collider = new AttackCollider(id, Position, new RectModel(-0.4f, -0.5f, 0.8f, 0.8f), PrjPlane, player, damage, type, 15f, 0, player.Character.StatusEffects.HasEffect(ItemEffectType.Detect));
 
-        Room.SendSyncEvent(new ChargeAttackStart_SyncEvent(player.GameObjectId.ToString(), Room.Time,
-                        endPosition.x, endPosition.y, speed.x, speed.y, _itemId, zoneId));
+        var syncEvent = new ChargeAttackStart_SyncEvent(new SyncEvent(
+            _player.GameObjectId.ToString(), SyncEvent.EventType.ChargeAttackStart, Room.Time));
+        
+        syncEvent.EventDataList.Add(endPosition.x);
+        syncEvent.EventDataList.Add(endPosition.y);
+        syncEvent.EventDataList.Add(speed.x);
+        syncEvent.EventDataList.Add(speed.y);
+
+        if (_config.GameVersion > Core.Enums.GameVersion.vPets2012)
+        {
+            syncEvent.EventDataList.Add(_itemId);
+            syncEvent.EventDataList.Add(zoneId);
+        }
+
+        Room.SendSyncEvent(syncEvent);
     }
 
     public override void Hit(string hitGoID)
@@ -44,12 +57,20 @@ public class ChargeAttackProjectile : BaseProjectile
         _player.TempData.IsSuperStomping = false;
         _player.TemporaryInvincibility(_timerThread, _config, 1);
 
-        Room.SendSyncEvent(
-            new ChargeAttackStop_SyncEvent(
-                _player.GameObjectId.ToString(), Room.Time,
-                _player.TempData.Position.X, _player.TempData.Position.Y, _itemId, _zoneId, hitGoID
-            )
-        );
+        var syncEvent = new ChargeAttackStop_SyncEvent(new SyncEvent(
+            _player.GameObjectId.ToString(), SyncEvent.EventType.ChargeAttackStop, Room.Time));
+        syncEvent.EventDataList.Add(_player.TempData.Position.X);
+        syncEvent.EventDataList.Add(_player.TempData.Position.Y);
+
+        if (_config.GameVersion > Core.Enums.GameVersion.vPets2012)
+        {
+            syncEvent.EventDataList.Add(_itemId);
+            syncEvent.EventDataList.Add(_zoneId);
+        }
+
+        syncEvent.EventDataList.Add(hitGoID);
+
+        Room.SendSyncEvent(syncEvent);
 
         Room.RemoveProjectile(ProjectileId);
 

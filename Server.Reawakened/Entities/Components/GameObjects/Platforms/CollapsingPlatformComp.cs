@@ -21,6 +21,9 @@ public class CollapsingPlatformComp : Component<CollapsingPlatform>
 
     public override void Update()
     {
+        if (Room == null)
+            return;
+
         if (IsBroken && _timer <= Room.Time)
         {
             IsBroken = false;
