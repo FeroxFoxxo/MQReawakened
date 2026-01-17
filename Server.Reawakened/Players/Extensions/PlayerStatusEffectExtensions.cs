@@ -11,6 +11,14 @@ namespace Server.Reawakened.Players.Extensions;
 
 public static class PlayerStatusEffectExtensions
 {
+    public static void SendItemEffectToPlayer(this Player player, ItemEffect itemEffect, string prefabFrom, bool sendFx, bool premium = false)
+    {
+        if (player == null || itemEffect == null) return;
+
+        player.Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, player.Room.Time, (int)itemEffect.Type,
+            itemEffect.Value, itemEffect.Duration, sendFx, prefabFrom, premium));
+    }
+
     public static void ApplySlowEffect(this Player player, string hazardId, int damage) =>
         player.Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, player.Room.Time,
         (int)ItemEffectType.SlowStatusEffect, damage, 1, true, hazardId, false));
