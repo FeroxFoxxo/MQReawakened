@@ -466,20 +466,7 @@ public class NPCControllerComp : Component<NPCController>
                 return NPCStatus.Unknown;
             }
         }
-        else if (Config.GameVersion == GameVersion.vLate2013 && questData.Name == "T4IR_00_01" 
-            && !player.Character.CompletedQuests.Contains(939))
-        {
-            Logger.LogTrace("[{QuestName}] ({QuestId}) [SKIPPED QUEST] Not all tribe tutorial quests are completed.", questData.Name, questData.Id);
-            return NPCStatus.Unknown;
-        }
-        else if (Config.GameVersion <= GameVersion.vEarly2013 && questData.Name == "T4IR_00_01"
-            && !player.Character.CompletedQuests.Contains(838))
-        {
-            Logger.LogTrace("[{QuestName}] ({QuestId}) [SKIPPED QUEST] Not all tribe tutorial quests are completed.", questData.Name, questData.Id);
-            return NPCStatus.Unknown;
-        }
 
-        var requiredQuests = QuestCatalog.GetAllQuestLineRequiredQuest(questLine);
         var previousQuests = QuestCatalog.GetListOfPreviousQuests(questData);
 
         var canStartQuest = false;
@@ -495,32 +482,12 @@ public class NPCControllerComp : Component<NPCController>
                     break;
                 }
         }
-        else if (Config.GameVersion == GameVersion.vLate2013)
+        else
         {
-            canStartQuest = requiredQuests.Count == 0;
+            previousQuests = [.. questData.PreviousQuests.Select(x => QuestCatalog.GetQuestData(x.Key)).Where(q =>
+                q != null && (q.QuestLineId == 0 || QuestCatalog.GetQuestLineData(q.QuestLineId)?.ShowInJournal == true))];
 
-            foreach (var requiredQuest in requiredQuests)
-                if (player.Character.CompletedQuests.Contains(requiredQuest.Id))
-                {
-                    foreach (var previousQuest in previousQuests)
-                        if (player.Character.CompletedQuests.Contains(previousQuest.Id))
-                        {
-                            canStartQuest = true;
-                            break;
-                        }
-                    break;
-                }
-        }
-        else if (Config.GameVersion <= GameVersion.vEarly2013)
-        {
-            canStartQuest = requiredQuests.Count == 0;
-
-            foreach (var requiredQuest in requiredQuests)
-                if (player.Character.CompletedQuests.Contains(requiredQuest.Id))
-                {
-                    canStartQuest = true;
-                    break;
-                }
+            canStartQuest = previousQuests.Count == 0 || previousQuests.All(q => player.Character.CompletedQuests.Contains(q.Id));
         }
 
         if (canStartQuest)
@@ -530,13 +497,10 @@ public class NPCControllerComp : Component<NPCController>
         }
         else
         {
-            if (Config.GameVersion >= GameVersion.vLate2013)
-                requiredQuests = [.. requiredQuests, .. previousQuests];
-
             Logger.LogTrace(
                 "[{QuestName} ({QuestId})] [DOES NOT MEET REQUIRED QUESTS] Previous Quests: {PrevQuests}",
                 questData.Name, questData.Id,
-                string.Join(", ", requiredQuests.Select(x => $"{x.Name} ({x.Id})"))
+                string.Join(", ", previousQuests.Select(x => $"{x.Name} ({x.Id})"))
             );
         }
 
