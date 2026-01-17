@@ -44,6 +44,14 @@
     <GameVersion version="vLate2013">
     </GameVersion>
     <GameVersion version="vEarly2013">
+    </GameVersion>
+    <GameVersion version="vLate2012">
+    </GameVersion>
+    <GameVersion version="vMinigames2012">
+    </GameVersion>
+    <GameVersion version="vPets2012">
+    </GameVersion>
+    <GameVersion version="vEarly2012">
         <Item name="Add_COM_Explorator01_LF01">
             <EditAttribute key="ingamedescription" value="1716051670"/>
             <EditAttribute key="tribe" value="Crossroads"/>
@@ -342,20 +350,6 @@
             <EditAttribute key="global_level" value="3"/>
             <EditAttribute key="item_level" value="10"/>
         </Item>
-        <Item name="COL_RECIP_OUT_FortuneHunter01_S02">
-            <EditAttribute key="ingamedescription" value="1976346559"/>
-            <EditAttribute key="tribe" value="Outlaw"/>
-            <EditAttribute key="rarity" value="Rare"/>
-            <EditAttribute key="member_only" value="false"/>
-            <EditAttribute key="currency" value="Banana"/>
-            <EditAttribute key="global_level" value="3"/>
-            <EditAttribute key="item_level" value="3"/>
-            <EditAttribute key="recipe_parent_item_id" value="859"/>
-        </Item>
-        <Item name="ABIL_Gun01">
-            <EditAttribute key="global_level" value="10"/>
-            <EditAttribute key="item_level" value="7"/>
-        </Item>
         <Item name="Add_BON_Cruella01_LS03">
             <EditAttribute key="name" value="Skeleton Skirt"/>
             <EditAttribute key="ingamedescription" value="1846793431"/>
@@ -382,6 +376,22 @@
             <EditAttribute key="currency" value="Banana"/>
             <EditAttribute key="global_level" value="8"/>
             <EditAttribute key="item_level" value="8"/>
+        </Item>
+        <Item name="Add_COM_KidBoy01_S02">
+            <EditAttribute key="descriptionId" value="1000578"/>
+        </Item>
+        <Item name="Add_COM_Armor01_S01">
+            <EditAttribute key="global_level" value="1"/>
+        </Item>
+        <Item name="Add_COM_Armor01_TS01">
+            <EditAttribute key="global_level" value="1"/>
+        </Item>
+        <Item name="Add_COM_Armor01_LS01">
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="price" value="50"/>
+        </Item>
+        <Item name="WPN_1H_SwordKnight01">
+            <EditAttribute key="id" value="3351"/>
         </Item>
         <Item name="ABIL_SlingShot01">
             <EditAttribute key="cooldown_time" value="1"/>
@@ -421,47 +431,12 @@
             <EditAttribute key="price" value="0"/>
             <EditAttribute key="sell_price" value="0"/>
         </Item>
-        <Item name="COL_RECIP_COM_Viking01_S03">
-            <EditAttribute key="id" value="179090063"/>
-        </Item>
-        <Item name="COL_BUFF_GlyphProtection02">
-            <EditAttribute key="id" value="1005968124"/>
-        </Item>
-        <Item name="COL_ING_C_PureWater01">
-            <EditAttribute key="id" value="77298297"/>
-        </Item>
-        <Item name="COL_RECIP_BUFF_GlyphProtection02">
-            <EditAttribute key="id" value="665120673"/>
-        </Item>
-    </GameVersion>
-    <GameVersion version="vLate2012">
-        <Item name="ABIL_HealingStaff01">
-            <EditAttribute key="cooldown_time" value="60"/>
-        </Item>
         <Item name="WPN_PRJ_XmasSlingshot01">
             <EditAttribute key="descriptionId" value="1000578"/>
         </Item>
-        <Item name="Add_COM_KidBoy01_S02">
-            <EditAttribute key="descriptionId" value="1000578"/>
-        </Item>
-    </GameVersion>
-    <GameVersion version="vMinigames2012">
-    </GameVersion>
-    <GameVersion version="vPets2012">
-    </GameVersion>
-    <GameVersion version="vEarly2012">
-        <Item name="Add_COM_Armor01_S01">
-            <EditAttribute key="global_level" value="1"/>
-        </Item>
-        <Item name="Add_COM_Armor01_TS01">
-            <EditAttribute key="global_level" value="1"/>
-        </Item>
-        <Item name="Add_COM_Armor01_LS01">
-            <EditAttribute key="global_level" value="1"/>
-            <EditAttribute key="price" value="50"/>
-        </Item>
-        <Item name="WPN_1H_SwordKnight01">
-            <EditAttribute key="id" value="3351"/>
+        <Item name="ABIL_Gun01">
+            <EditAttribute key="global_level" value="10"/>
+            <EditAttribute key="item_level" value="7"/>
         </Item>
         <Item name="COL_POT_Healing01">
             <EditItemEffects>
@@ -577,6 +552,28 @@
             <EditItemEffects>
                 <ItemEffect duration="6" type="Regeneration" value="11000"/>
             </EditItemEffects>
+        </Item>
+        <Item name="COL_RECIP_COM_Viking01_S03">
+            <EditAttribute key="id" value="179090063"/>
+        </Item>
+        <Item name="COL_BUFF_GlyphProtection02">
+            <EditAttribute key="id" value="1005968124"/>
+        </Item>
+        <Item name="COL_ING_C_PureWater01">
+            <EditAttribute key="id" value="77298297"/>
+        </Item>
+        <Item name="COL_RECIP_BUFF_GlyphProtection02">
+            <EditAttribute key="id" value="665120673"/>
+        </Item>
+        <Item name="COL_RECIP_OUT_FortuneHunter01_S02">
+            <EditAttribute key="ingamedescription" value="1976346559"/>
+            <EditAttribute key="tribe" value="Outlaw"/>
+            <EditAttribute key="rarity" value="Rare"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="3"/>
+            <EditAttribute key="item_level" value="3"/>
+            <EditAttribute key="recipe_parent_item_id" value="859"/>
         </Item>
     </GameVersion>
     <GameVersion version="v2011">
