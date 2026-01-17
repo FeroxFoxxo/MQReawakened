@@ -54,7 +54,7 @@ public static class CharacterInventoryExtensions
                 case ItemEffectType.ResistEarth:
                 case ItemEffectType.ResistIce:
                 case ItemEffectType.ResistLightning:
-					player.Character.StatusEffects.Add(effect, usedItem.PrefabName);
+					player.Character.StatusEffects.Add(effect);
                     sendFx = false;
                     break;
                 case ItemEffectType.WaterBreathing:
@@ -74,7 +74,7 @@ public static class CharacterInventoryExtensions
                         player.SendItemEffectToPlayer(effect, string.Empty, sendFx, usedItem.Currency == CurrencyType.NickCash);
                     }
 
-                    player.Character.StatusEffects.Add(effect, usedItem.PrefabName);
+                    player.Character.StatusEffects.Add(effect);
                     sendFx = true;
                     break;
                 case ItemEffectType.Invalid:
