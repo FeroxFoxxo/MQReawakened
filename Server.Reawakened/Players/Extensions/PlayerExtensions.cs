@@ -88,7 +88,7 @@ public static class PlayerExtensions
             var newLevel = player.Character.GlobalLevel + 1;
 
             player.Character.SetLevelXp(newLevel, config);
-            player.SendLevelUp();
+            player.SendLevelUp(config);
         }
 
         player.Character.Write.Reputation = reputation;
@@ -169,10 +169,10 @@ public static class PlayerExtensions
         player.SendCashUpdate();
     }
 
-    public static void AddPoints(this Player player)
+    public static void AddPoints(this Player player, ServerRConfig rConfig)
     {
         player.Character.Write.BadgePoints += 100;
-        player.SendLevelUp();
+        player.SendLevelUp(rConfig);
     }
 
     public static void SendCashUpdate(this Player player) =>
@@ -262,7 +262,7 @@ public static class PlayerExtensions
     ServerRConfig config, Microsoft.Extensions.Logging.ILogger logger)
     {
         player.Character.SetLevelXp(level, config);
-        player.SendLevelUp();
+        player.SendLevelUp(config);
 
         if (player.Character.Pets.TryGetValue(player.GetEquippedPetId(config), out var pet))
             pet.GainEnergy(player, player.GetMaxPetEnergy(worldStatistics, config));

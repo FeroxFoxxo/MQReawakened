@@ -1,4 +1,5 @@
-﻿using Server.Reawakened.Players.Helpers;
+﻿using Server.Reawakened.Core.Enums;
+using Server.Reawakened.Players.Helpers;
 
 namespace Server.Reawakened.Players.Models.Protocol;
 
@@ -13,6 +14,7 @@ public class LevelUpDataModel
     public int CurrentLevelCompletion { get; set; }
     public int ItemId { get; set; }
     public int Nc { get; set; }
+    public GameVersion GameVersion { get; set; }
 
     public override string ToString()
     {
@@ -25,8 +27,12 @@ public class LevelUpDataModel
         sb.Append(IncPowerJewel);
         sb.Append(IncAbilityPower);
         sb.Append(CurrentLevelCompletion);
-        sb.Append(ItemId);
-        sb.Append(Nc);
+
+        if (GameVersion >= GameVersion.vMinigames2012)
+        {
+            sb.Append(ItemId);
+            sb.Append(Nc);
+        }
 
         return sb.ToString();
     }
