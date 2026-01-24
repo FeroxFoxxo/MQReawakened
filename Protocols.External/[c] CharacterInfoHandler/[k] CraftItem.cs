@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using A2m.Server;
+using Microsoft.Extensions.Logging;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Core.Enums;
 using Server.Reawakened.Network.Protocols;
@@ -19,6 +20,7 @@ public class CraftItem : ExternalProtocol
     public ILogger<CraftItem> Logger { get; set; }
     public InternalAchievement InternalAchievement { get; set; }
     public ItemRConfig ItemRConfig { get; set; }
+    public QuestCatalog QuestCatalog { get; set; }
 
     public override void Run(string[] message)
     {
@@ -55,6 +57,7 @@ public class CraftItem : ExternalProtocol
             Player.AddItem(itemDesc, amount, ItemCatalog);
 
             Player.CheckAchievement(AchConditionType.CraftItem, [itemDesc.PrefabName], InternalAchievement, Logger);
+            Player.CheckObjective(ObjectiveEnum.CraftItem, string.Empty, itemDesc.PrefabName, amount, QuestCatalog);
         }
 
         Player.SendUpdatedInventory();
