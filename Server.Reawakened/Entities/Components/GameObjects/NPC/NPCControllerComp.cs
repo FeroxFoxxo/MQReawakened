@@ -467,12 +467,14 @@ public class NPCControllerComp : Component<NPCController>
             }
         }
 
-        var previousQuests = QuestCatalog.GetListOfPreviousQuests(questData);
+        var previousQuests = new List<QuestDescription>();
 
         var canStartQuest = false;
 
         if (Config.GameVersion >= GameVersion.vEarly2014)
         {
+            previousQuests = QuestCatalog.GetListOfPreviousQuests(questData);
+
             canStartQuest = previousQuests.Count == 0;
 
             foreach (var previousQuest in previousQuests)

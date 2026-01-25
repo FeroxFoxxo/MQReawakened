@@ -144,8 +144,9 @@ public static class NpcExtensions
         {
             var item = itemCatalog.GetItemFromPrefabName(questCollectible.PrefabName);
 
-            foreach (var objective in player.Character.QuestLog.SelectMany(x => x.Objectives.Values).Where
-                (x => x.GameObjectId.ToString() == questCollectible.Id || item != null && x.ItemId == item.ItemId))
+            foreach (var objective in player.Character.QuestLog.SelectMany(x => x.Objectives).Where
+                (x => itemCatalog.QuestCatalog.GetQuestData(player.Character.ActiveQuestId).Objectives.ContainsKey(x.Key)
+                && x.Value.GameObjectId.ToString() == questCollectible.Id || item != null && x.Value.ItemId == item.ItemId))
                 questCollectible.UpdateActiveObjectives(player, CollectibleState.Active);
         }
     }

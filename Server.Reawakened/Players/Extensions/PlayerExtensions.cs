@@ -366,7 +366,7 @@ public static class PlayerExtensions
                                 meetsRequirement = true;
 
                 // Prevent objectives from being completed by other gameobjects when both ItemId and GameObjectId are set
-                if (objective.ItemId > 0 && objective.GameObjectId > 0)
+                if (objective.ItemId > 0 && objective.GameObjectId > 0 && objective.ObjectiveType == ObjectiveEnum.AlterandReceiveitem)
                     meetsRequirement = objective.GameObjectId.ToString() == gameObjectId;
 
                 if (!meetsRequirement && objective.LevelId == player.Character.LevelId && type == ObjectiveEnum.MinigameMedal)

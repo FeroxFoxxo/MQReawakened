@@ -22,6 +22,7 @@ using Server.Reawakened.XMLs.Data.Enemy.Abstractions;
 using Server.Reawakened.XMLs.Data.Enemy.Enums;
 using Server.Reawakened.XMLs.Data.Enemy.Models;
 using UnityEngine;
+using static A2m.Server.ConnectionManager;
 
 namespace Server.Reawakened.Entities.Components.GameObjects.Spawners;
 
@@ -255,43 +256,11 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
             return;
         }
 
-        var states = new Dictionary<StateType, BaseState>();
-        var behaviorsMap = new Dictionary<StateType, AIBaseBehavior>();
-
-        var genericComp = Room.GetEntityFromId<AIStatsGenericComp>(templateId);
-        var globalComp = Room.GetEntityFromId<AIStatsGlobalComp>(templateId);
-
         Logger.LogInformation("Spawner '{Id}' spawning enemy #{Num} prefab '{Prefab}' template '{Template}'", Id, _spawnedEntityCount, selectedPrefab, templateId);
-
-        // Make sure to modify patrol data before init to account for patrol range
-        if (genericComp != null)
-        {
-            genericComp.PatrolX = PatrolDistance.x;
-            genericComp.PatrolY = PatrolDistance.y;
-        }
-
-        // Init event must be called before AIDo or else the enemy freezes
-        Room.SendSyncEvent(
-            AISyncEventHelper.AIInit(
-                Id, Room,
-                Position.X, Position.Y, Position.Z, Position.X, Position.Y,
-                genericComp?.Patrol_InitialProgressRatio ?? 0f, CurrentHealth, MaxHealth,
-                _healthMod, _scaleMod, _resMod, Stars, Level, globalComp?.GetGlobalProperties(), states, behaviorsMap
-            )
-        );
-
-        Room.SendSyncEvent(
-            AISyncEventHelper.AIDo(
-                Id, Room,
-                0, 0, 1.0f,
-                Position.X + SpawningOffsetX, Position.Y + SpawningOffsetY, genericComp?.Patrol_ForceDirectionX ?? 0,
-                false, AISyncEventHelper.IndexOf(StateType.Unknown, enemyToSpawn.BehaviorData ?? []), string.Empty
-            )
-        );
 
         Room.SendSyncEvent(new Spawn_SyncEvent(Id, Room.Time, _spawnedEntityCount));
 
-        TimerThread.RunDelayed(DelayedSpawnData, new DelayedEnemySpawn() { Spawner = this, TemplateId = templateId, PrefabName = selectedPrefab, SpawnIndex = _spawnedEntityCount }, TimeSpan.FromSeconds(delay));
+        TimerThread.RunDelayed(DelayedSpawnData, new DelayedEnemySpawn() { Spawner = this, TemplateId = templateId, PrefabName = selectedPrefab, SpawnIndex = _spawnedEntityCount, EnemyToSpawn = enemyToSpawn }, TimeSpan.FromSeconds(delay));
     }
 
     private void ResetSpawnCycle()
@@ -308,6 +277,7 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
         public string TemplateId;
         public string PrefabName;
         public int SpawnIndex;
+        public EnemyModel EnemyToSpawn;
 
         public bool IsValid() => Spawner != null && Spawner.IsValid();
     }
@@ -325,6 +295,39 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
 
         var room = spawner.Room;
         var spawnedEntityId = $"{spawner.Id}_{spawn.SpawnIndex}";
+
+
+        var states = new Dictionary<StateType, BaseState>();
+        var behaviorsMap = new Dictionary<StateType, AIBaseBehavior>();
+
+        var genericComp = room.GetEntityFromId<AIStatsGenericComp>(templateId);
+        var globalComp = room.GetEntityFromId<AIStatsGlobalComp>(templateId);
+
+        // Make sure to modify patrol data before init to account for patrol range
+        if (genericComp != null)
+        {
+            genericComp.PatrolX = spawner.PatrolDistance.x;
+            genericComp.PatrolY = spawner.PatrolDistance.y;
+        }
+
+        // Init event must be called before AIDo or else the enemy freezes
+        room.SendSyncEvent(
+            AISyncEventHelper.AIInit(
+                spawner.Id, room,
+                spawner.Position.X, spawner.Position.Y, spawner.Position.Z, spawner.Position.X, spawner.Position.Y,
+                genericComp?.Patrol_InitialProgressRatio ?? 0f, spawner.CurrentHealth, spawner.MaxHealth,
+                spawner._healthMod, spawner._scaleMod, spawner._resMod, spawner.Stars, spawner.Level, globalComp?.GetGlobalProperties(), states, behaviorsMap
+            )
+        );
+
+        room.SendSyncEvent(
+            AISyncEventHelper.AIDo(
+                spawner.Id, room,
+                0, 0, 1.0f,
+                spawner.Position.X + spawner.SpawningOffsetX, spawner.Position.Y + spawner.SpawningOffsetY, genericComp?.Patrol_ForceDirectionX ?? 0,
+                false, AISyncEventHelper.IndexOf(StateType.Unknown, spawn.EnemyToSpawn.BehaviorData ?? []), string.Empty
+            )
+        );
 
         var templateGo = room.Planes.Values
             .SelectMany(p => p.GameObjects)
