@@ -114,26 +114,18 @@ public static class CharacterInventoryExtensions
 
     public static void AddItem(this Player player, ItemDescription item, int count, ItemCatalog itemCatalog)
     {
-        if (!itemCatalog.CanAddItem(item))
+        if (!itemCatalog.CanAddItem(item) || item == null)
             return;
 
         var characterData = player.Character;
 
         if (!characterData.Inventory.Items.ContainsKey(item.ItemId))
-            characterData.Inventory.Items.Add(item.ItemId, new ItemModel
-            {
-                ItemId = item.ItemId,
-                Count = 0,
-                BindingCount = item.BindingCount,
-                DelayUseExpiry = item.DelayUseExpiry
-            });
+            characterData.Inventory.Items.Add(item.ItemId, new ItemModel(item.ItemId, count, item.BindingCount, item.DelayUseExpiry));
 
-        if (!characterData.TryGetItem(item.ItemId, out var gottenItem))
-            return;
+        else if (characterData.TryGetItem(item.ItemId, out var gottenItem))
+            gottenItem.Count += count;
 
-        gottenItem.Count += count;
-
-        player.CheckObjective(ObjectiveEnum.Inventorycheck, gottenItem.ItemId.ToString(), item.PrefabName, gottenItem.Count, itemCatalog);
+        player.CheckObjective(ObjectiveEnum.Inventorycheck, item.ItemId.ToString(), item.PrefabName, count, itemCatalog);
     }
 
     public static void AddKit(this CharacterModel characterData, List<ItemDescription> items, int count)
@@ -144,13 +136,7 @@ public static class CharacterInventoryExtensions
                 if (characterData.Inventory.Items.TryGetValue(item.ItemId, out var gottenKit))
                     gottenKit.Count += count;
                 else
-                    characterData.Inventory.Items.Add(item.ItemId, new ItemModel
-                    {
-                        ItemId = item.ItemId,
-                        Count = count,
-                        BindingCount = item.BindingCount,
-                        DelayUseExpiry = item.DelayUseExpiry
-                    });
+                    characterData.Inventory.Items.Add(item.ItemId, new ItemModel(item.ItemId, count, item.BindingCount, item.DelayUseExpiry));
         }
     }
 
@@ -159,12 +145,8 @@ public static class CharacterInventoryExtensions
         var sb = new SeparatedStringBuilder('|');
 
         foreach (var item in inventory.Items)
-        {
-            if (item.Value != null)
+            if (item.Value is not null)
                 sb.Append(item.Value.ToString());
-            else
-                sb.Append(string.Empty);
-        }
 
         return sb.ToString();
     }
@@ -174,11 +156,11 @@ public static class CharacterInventoryExtensions
         player.SendXt(
             "ip",
             player.Character.Inventory.GetItemListString(),
-            fromEquippedUpdate
+            fromEquippedUpdate ? 1 : 0
         );
 
         foreach (var item in player.Character.Inventory.Items)
-            if (item.Value.Count <= 0)
+            if (item.Value != null && item.Value.Count <= 0)
                 player.Character.Inventory.Items.Remove(item.Key);
     }
 
@@ -188,7 +170,7 @@ public static class CharacterInventoryExtensions
 
         player.RemoveItem(itemDescription, 1, itemCatalog, config);
         player.SendXt("hu", player.Character.Hotbar);
-        player.SendUpdatedInventory();
+        player.SendUpdatedInventory(true);
     }
 
     public static void SetHotbarSlot(this Player player, int slotId, ItemModel itemModel, ItemRConfig config)

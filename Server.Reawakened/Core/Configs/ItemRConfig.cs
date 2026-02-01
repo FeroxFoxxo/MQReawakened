@@ -136,13 +136,6 @@ public class ItemRConfig : IRConfig
         PetPosYOffset = 0.75f;
         PetPosOnButtonYOffset = 0.25f;
 
-        EmptySlot = new ItemModel()
-        {
-            //Id of 0 crashes game, so we use 340 until a better solution is found.
-            ItemId = 340,
-            Count = 0,
-            BindingCount = 0,
-            DelayUseExpiry = DateTime.Now
-        };
+        EmptySlot = new ItemModel(-1, 0, 0, DateTime.Now);
     }
 }

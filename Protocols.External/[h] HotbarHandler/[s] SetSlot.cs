@@ -30,11 +30,16 @@ public class SetSlot : ExternalProtocol
             return;
         }
 
-        Player.SetHotbarSlot(hotbarSlotId, item, ItemRConfig);
-
-        if (ItemCatalog.GetItemFromId(itemId).IsPet() &&
-            PetAbilities.PetAbilityData.TryGetValue(itemId, out var petAbility))
+        if (ItemCatalog.GetItemFromId(itemId).IsPet() && Player.GetEquippedPetId(ServerRConfig) != itemId.ToString() &&
+            PetAbilities.PetAbilityData.TryGetValue(itemId, out var petAbility) && petAbility != null)
+        {
+            Player.UnequipPet(petAbility, WorldStatistics, ServerRConfig, ItemCatalog);
+            Player.SetHotbarSlot(ServerRConfig.PetHotbarIndex, item, ItemRConfig);
             Player.EquipPet(petAbility, WorldStatistics, ServerRConfig, ItemCatalog);
+        }
+
+        else
+            Player.SetHotbarSlot(hotbarSlotId, item, ItemRConfig);
 
         SendXt("hs", Player.Character.Hotbar);
     }
