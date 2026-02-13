@@ -277,10 +277,12 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
     {
         if (CurrentPhysicalInteractors.Contains(interactionId)) return;
 
-        var valid = true;
+        CurrentPhysicalInteractors.Add(interactionId);
 
         if (Room.GetPlayerById(interactionId) != null)
         {
+            var valid = true;
+
             if (PlayerHasPet(player, out var pet))
                 if (pet != null)
                     pet.CoopTriggerableId = Id;
@@ -311,12 +313,9 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
                     if (!player.Character.Inventory.Items.ContainsKey(requiredItem.ItemId))
                         valid = false;
             }
-        }
 
-        if (valid)
-        {
-            CurrentPhysicalInteractors.Add(interactionId);
-            SendInteractionUpdate();
+            if (valid)
+                SendInteractionUpdate();
         }
     }
 
@@ -586,7 +585,7 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
                 LoggerType.Trace
         );
 
-        if (QuestInProgressRequired.Equals(quest.Name) && CurrentPhysicalInteractors.Contains(player.GameObjectId))
+        if (CurrentPhysicalInteractors.Contains(player.GameObjectId))
         {
             RunTrigger(player);
         }
@@ -607,7 +606,7 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
                 LoggerType.Trace
         );
 
-        if (QuestCompletedRequired.Equals(quest.Name) && CurrentPhysicalInteractors.Contains(player.GameObjectId))
+        if (CurrentPhysicalInteractors.Contains(player.GameObjectId))
         {
             RunTrigger(player);
         }
