@@ -167,6 +167,6 @@ public class UseItem : ExternalProtocol
         else if (itemModel.Count <= 0)
             character.Inventory.Items.Remove(item.ItemId);
 
-        Player.SendUpdatedInventory();
+        Player.SendUpdatedInventory(true);
     }
 }

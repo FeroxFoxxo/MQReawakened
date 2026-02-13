@@ -47,6 +47,12 @@ public class FreeChat : ExternalProtocol
                 break;
 
             case CannedChatChannel.Group:
+                if (Player.TempData.Group == null)
+                {
+                    Player.Chat(CannedChatChannel.Tell, Player.Character.CharacterName, "You are not in a group.");
+                    return;
+                }
+
                 foreach (
                     var client in
                         from client in Player.TempData.Group.GetMembers()
