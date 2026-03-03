@@ -9,6 +9,8 @@ using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models.Arenas;
 using Server.Reawakened.XMLs.Bundles.Base;
 using Server.Reawakened.XMLs.Bundles.Internal;
+using Web.Apps.Leaderboards.Data;
+using Web.Apps.Leaderboards.Database.Scores;
 
 namespace Protocols.External._M__MinigameHandler;
 
@@ -19,11 +21,13 @@ public class FinishedMinigame : ExternalProtocol
     public WorldStatistics WorldStatistics { get; set; }
     public InternalLoot LootCatalog { get; set; }
     public ILogger<FinishedMinigame> Logger { get; set; }
+    public TopScoresHandler TopScoresHandler { get; set; }
+    public InternalLeaderboards Leaderboards { get; set; }
 
     public override void Run(string[] message)
     {
         var arenaObjectId = message[5];
-        var finishedRaceTime = float.Parse(message[6]) * 1000;
+        var finishedRaceTime = float.Parse(message[6]);
 
         Logger.LogInformation("Minigame with ID ({minigameId}) has completed.", arenaObjectId);
 
@@ -33,19 +37,10 @@ public class FinishedMinigame : ExternalProtocol
             player.SendXt("Mt", arenaObjectId, Player.CharacterId, finishedRaceTime);
 
         if (Player.Character.BestMinigameTimes.TryGetValue(Player.Room.LevelInfo.Name, out var time))
-        {
             if (finishedRaceTime < time)
-            {
                 Player.Character.BestMinigameTimes[Player.Room.LevelInfo.Name] = finishedRaceTime;
-                Player.SendXt("Ms", Player.Room.LevelInfo.InGameName);
-            }
-        }
-
         else
-        {
             Player.Character.BestMinigameTimes.Add(Player.Room.LevelInfo.Name, finishedRaceTime);
-            Player.SendXt("Ms", Player.Room.LevelInfo.InGameName);
-        }
 
         var trigger = Player.Room.GetEntityFromId<ITriggerComp>(arenaObjectId);
 
@@ -64,6 +59,57 @@ public class FinishedMinigame : ExternalProtocol
 
             trigger.RunTrigger(Player);
             trigger.ResetTrigger();
+        }
+
+        var game = Leaderboards.Games.FirstOrDefault(x => x.name == Player.Room.LevelInfo.Name);
+        
+        if (game == null)
+            return;
+
+        var scoreTime = DateTime.Now.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'sszzz");
+
+        var score = new TopScore
+        {
+            Score = (int)finishedRaceTime,
+            Rank = 0,
+            Time = scoreTime,
+            CharacterId = Player.Character.Id
+        };
+
+        var topScores = TopScoresHandler.GetScoresFromId(game.id);
+
+        if (topScores == null)
+        {
+            var scores = new List<TopScore> { score };
+
+            TopScoresHandler.Create(game.id, scores);
+
+            topScores = TopScoresHandler.GetScoresFromId(game.id);
+        }
+        else
+        {
+            if (topScores.Scores.Any(x => x.CharacterId == Player.Character.Id))
+            {
+                var existingScore = topScores.Scores.FirstOrDefault(x => x.CharacterId == Player.Character.Id);
+
+                if (existingScore.Score >= score.Score)
+                    return;
+
+                topScores.Scores.Remove(existingScore);
+                topScores.Scores.Add(score);
+
+                TopScoresHandler.Update(topScores.Write);
+
+                Player.SendXt("Ms", Player.Room.LevelInfo.Name);
+            }
+            else
+            {
+                topScores.Scores.Add(score);
+
+                TopScoresHandler.Update(topScores.Write);
+
+                Player.SendXt("Ms", Player.Room.LevelInfo.Name);
+            }
         }
     }
 
