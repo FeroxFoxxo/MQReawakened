@@ -1,4 +1,5 @@
-﻿using Server.Reawakened.Network.Extensions;
+﻿using Newtonsoft.Json.Linq;
+using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.XMLs.Bundles.Base;
@@ -19,7 +20,7 @@ public class BestResultForGroup : ExternalProtocol
             if (gamer.Character.BestMinigameTimes.TryGetValue(level, out var time))
             {
                 sb.Append(gamer.GameObjectId);
-                sb.Append(time);
+                sb.Append(time * 1000);
             }
 
         Player.SendXt("MG", sb.ToString());

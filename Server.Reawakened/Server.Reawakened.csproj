@@ -150,6 +150,9 @@
       <None Update="Assets\LocalAssets\InternalItem.xml">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
+      <None Update="Assets\LocalAssets\InternalLeaderboards.xml">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
       <None Update="Assets\LocalAssets\InternalLoot.xml">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>

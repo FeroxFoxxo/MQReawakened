@@ -14,7 +14,17 @@ public class CompletedDistance : ExternalProtocol
 
     public override void Run(string[] message)
     {
-        var distance = int.Parse(message[5]);
+        var completedDistance = int.Parse(message[5]);
+
+        if (Player.Character.BestMinigameTimes.TryGetValue(Player.Room.LevelInfo.Name, out var distance))
+        {
+            if (distance < completedDistance)
+                Player.Character.BestMinigameTimes[Player.Room.LevelInfo.Name] = completedDistance;
+        }
+        else
+        {
+            Player.Character.Write.BestMinigameTimes.TryAdd(Player.Room.LevelInfo.Name, completedDistance);
+        }
 
         var game = Leaderboards.Games.FirstOrDefault(x => x.name == Player.Room.LevelInfo.Name);
         
@@ -25,7 +35,7 @@ public class CompletedDistance : ExternalProtocol
 
         var score = new TopScore
         {
-            Score = distance,
+            Score = completedDistance,
             Rank = 0,
             Time = scoreTime,
             CharacterId = Player.Character.Id
@@ -47,7 +57,7 @@ public class CompletedDistance : ExternalProtocol
             {
                 var existingScore = topScores.Scores.FirstOrDefault(x => x.CharacterId == Player.Character.Id);
 
-                if (existingScore.Score >= score.Score)
+                if (score.Score < existingScore.Score)
                     return;
 
                 topScores.Scores.Remove(existingScore);

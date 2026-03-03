@@ -1,5 +1,6 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
+using Server.Reawakened.Entities.Components.GameObjects.Trigger;
 using Server.Reawakened.Entities.Components.GameObjects.Trigger.Interfaces;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
@@ -29,6 +30,8 @@ public class FinishedMinigame : ExternalProtocol
         var arenaObjectId = message[5];
         var finishedRaceTime = float.Parse(message[6]);
 
+        var correctedTime = finishedRaceTime * 100;
+
         Logger.LogInformation("Minigame with ID ({minigameId}) has completed.", arenaObjectId);
 
         var players = Player.Room.GetPlayers();
@@ -37,10 +40,14 @@ public class FinishedMinigame : ExternalProtocol
             player.SendXt("Mt", arenaObjectId, Player.CharacterId, finishedRaceTime);
 
         if (Player.Character.BestMinigameTimes.TryGetValue(Player.Room.LevelInfo.Name, out var time))
+        {
             if (finishedRaceTime < time)
                 Player.Character.BestMinigameTimes[Player.Room.LevelInfo.Name] = finishedRaceTime;
+        }
         else
-            Player.Character.BestMinigameTimes.Add(Player.Room.LevelInfo.Name, finishedRaceTime);
+        {
+            Player.Character.BestMinigameTimes.TryAdd(Player.Room.LevelInfo.Name, finishedRaceTime);
+        }
 
         var trigger = Player.Room.GetEntityFromId<ITriggerComp>(arenaObjectId);
 
@@ -70,7 +77,7 @@ public class FinishedMinigame : ExternalProtocol
 
         var score = new TopScore
         {
-            Score = (int)finishedRaceTime,
+            Score = (int)correctedTime,
             Rank = 0,
             Time = scoreTime,
             CharacterId = Player.Character.Id
@@ -92,7 +99,7 @@ public class FinishedMinigame : ExternalProtocol
             {
                 var existingScore = topScores.Scores.FirstOrDefault(x => x.CharacterId == Player.Character.Id);
 
-                if (existingScore.Score >= score.Score)
+                if (existingScore.Score < score.Score)
                     return;
 
                 topScores.Scores.Remove(existingScore);
