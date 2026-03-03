@@ -4,7 +4,7 @@ using Web.Apps.Leaderboards.Services;
 
 namespace Web.Apps.Leaderboards.API;
 
-[Route("Apps/leaderboards/api/Games")]
+[Route("Apps/leaderboards/api/games")]
 public class GamesController(LeaderboardHandler handler) : Controller
 {
     [HttpGet]
