@@ -42,9 +42,11 @@ public class HoopGroup : ExternalProtocol
             foreach (var hoop in hitHoops)
                 Player.CheckObjective(ObjectiveEnum.Invalid, hoop.Id, hoop.PrefabName, 1, QuestCatalog);
 
+            Player.CheckAchievement(AchConditionType.HoopGroup, [], InternalAchievement, Logger);
             Player.CheckAchievement(AchConditionType.HoopGroupInLevel, [Player.Room.LevelInfo.Name], InternalAchievement, Logger);
         }
 
+        Player.CheckAchievement(AchConditionType.Hoop, [], InternalAchievement, Logger, numberOfHoops);
         Player.CheckAchievement(AchConditionType.HoopInLevel, [Player.Room.LevelInfo.Name], InternalAchievement, Logger, numberOfHoops);
     }
 }
