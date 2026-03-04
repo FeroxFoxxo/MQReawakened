@@ -29,13 +29,16 @@ public class CharacterScoresController(InternalLeaderboards leaderboards, Charac
 
         foreach (var score in character.BestMinigameTimes)
         {
-            var gameId = GetGameId(score.Key);
+            var gameId = leaderboards.Games.FirstOrDefault(x => x.name == score.Key).id;
 
-            characterScores.Add(gameId.ToString(), new LeaderBoardCharacterScoresJson.Score
-            {
-                score = 1,
-                time = score.Value.ToString()
-            });
+            var topScore = topScoresHandler.GetScoresFromId(gameId).Scores.FirstOrDefault(x => x.CharacterId == character.Id);
+
+            if (topScore != null && !characterScores.ContainsKey(gameId.ToString()))
+                characterScores[gameId.ToString()] = new LeaderBoardCharacterScoresJson.Score
+                {
+                    score = topScore.Score,
+                    time = topScore.Time
+                };
         }
 
         var characterScoresJson = new LeaderBoardCharacterScoresJson
@@ -46,14 +49,4 @@ public class CharacterScoresController(InternalLeaderboards leaderboards, Charac
         
         return Ok(JsonMapper.ToJson(characterScoresJson));
     }
-
-    private int GetGameId(string levelName) => levelName switch
-    {
-        "LV_CRS_MiniRace01" => 1,
-        "LV_CRS_MiniRace02" => 2,
-        "LV_CRS_MiniTorch01" => 3,
-        "LV_CRS_MiniTorch02" => 4,
-        "PetArenaBattleLevel" => 5,
-        _ => 0,
-    };
 }
