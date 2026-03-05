@@ -23,7 +23,7 @@ public class CompletedDistance : ExternalProtocol
         }
         else
         {
-            Player.Character.Write.BestMinigameTimes.TryAdd(Player.Room.LevelInfo.Name, completedDistance);
+            Player.Character.BestMinigameTimes.TryAdd(Player.Room.LevelInfo.Name, completedDistance);
         }
 
         var game = Leaderboards.Games.FirstOrDefault(x => x.name == Player.Room.LevelInfo.Name);
@@ -51,30 +51,28 @@ public class CompletedDistance : ExternalProtocol
 
             topScores = TopScoresHandler.GetScoresFromId(game.id);
         }
+
+        if (topScores.Scores.Any(x => x.CharacterId == Player.Character.Id))
+        {
+            var existingScore = topScores.Scores.FirstOrDefault(x => x.CharacterId == Player.Character.Id);
+
+            if (score.Score < existingScore.Score)
+                return;
+
+            topScores.Scores.Remove(existingScore);
+            topScores.Scores.Add(score);
+
+            TopScoresHandler.Update(topScores.Write);
+
+            Player.SendXt("Ms", Player.Room.LevelInfo.Name);
+        }
         else
         {
-            if (topScores.Scores.Any(x => x.CharacterId == Player.Character.Id))
-            {
-                var existingScore = topScores.Scores.FirstOrDefault(x => x.CharacterId == Player.Character.Id);
+            topScores.Scores.Add(score);
 
-                if (score.Score < existingScore.Score)
-                    return;
+            TopScoresHandler.Update(topScores.Write);
 
-                topScores.Scores.Remove(existingScore);
-                topScores.Scores.Add(score);
-
-                TopScoresHandler.Update(topScores.Write);
-
-                Player.SendXt("Ms", Player.Room.LevelInfo.Name);
-            }
-            else
-            {
-                topScores.Scores.Add(score);
-
-                TopScoresHandler.Update(topScores.Write);
-
-                Player.SendXt("Ms", Player.Room.LevelInfo.Name);
-            }
+            Player.SendXt("Ms", Player.Room.LevelInfo.Name);
         }
     }
 }
