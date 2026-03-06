@@ -3,11 +3,11 @@
     <!-- Monkey Blast -->
     <Game id="5" name="LV_CRS_Minigame_MonkeyBlast" sortDirection="DESC" scoreType="DISTANCE" maxScores="200" ranked="false" />
     <!-- Monkey Run -->
-    <Game id="3" name="LV_CRS_MiniRace01" sortDirection="DESC" scoreType="TIME" maxScores="200" ranked="false" />
-    <Game id="4" name="LV_CRS_MiniRace02" sortDirection="DESC" scoreType="TIME" maxScores="200" ranked="false" />
+    <Game id="3" name="LV_CRS_MiniRace01" sortDirection="ASC" scoreType="TIME" maxScores="200" ranked="false" />
+    <Game id="4" name="LV_CRS_MiniRace02" sortDirection="ASC" scoreType="TIME" maxScores="200" ranked="false" />
     <!-- Torch Frenzy -->
-    <Game id="1" name="LV_CRS_MiniTorch01" sortDirection="DESC" scoreType="TIME" maxScores="200" ranked="false" />
-    <Game id="2" name="LV_CRS_MiniTorch02" sortDirection="DESC" scoreType="TIME" maxScores="200" ranked="false" />
+    <Game id="1" name="LV_CRS_MiniTorch01" sortDirection="ASC" scoreType="TIME" maxScores="200" ranked="false" />
+    <Game id="2" name="LV_CRS_MiniTorch02" sortDirection="ASC" scoreType="TIME" maxScores="200" ranked="false" />
     <!-- Pet Masters -->
     <Game id="6" name="PetBattleArenaLevel" sortDirection="DESC" scoreType="RANKED" maxScores="200" ranked="false" />
 </Leaderboards>

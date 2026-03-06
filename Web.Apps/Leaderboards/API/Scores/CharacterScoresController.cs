@@ -25,28 +25,31 @@ public class CharacterScoresController(InternalLeaderboards leaderboards, Charac
         if (character.UserUuid != _uuid)
             return Forbid();
 
-        var characterScores = new Dictionary<string, LeaderBoardCharacterScoresJson.Score>();
+        var characterScores = new JsonData
+        {
+            ["status"] = true
+        };
+
+        var scores = new JsonData();
 
         foreach (var score in character.BestMinigameTimes)
         {
             var gameId = leaderboards.Games.FirstOrDefault(x => x.name == score.Key).id;
 
-            var topScore = topScoresHandler.GetScoresFromId(gameId).Scores.FirstOrDefault(x => x.CharacterId == character.Id);
+            var topScore = topScoresHandler
+                .GetScoresFromId(gameId).Scores
+                .FirstOrDefault(x => x.CharacterId == character.Id);
 
-            if (topScore != null && !characterScores.ContainsKey(gameId.ToString()))
-                characterScores[gameId.ToString()] = new LeaderBoardCharacterScoresJson.Score
+            if (topScore != null)
+                scores[gameId.ToString()] = new JsonData
                 {
-                    score = topScore.Score,
-                    time = topScore.Time
+                    ["score"] = topScore.Score,
+                    ["time"] = topScore.Time
                 };
         }
 
-        var characterScoresJson = new LeaderBoardCharacterScoresJson
-        {
-            status = true,
-            scores = characterScores
-        };
+        characterScores["scores"] = scores;
         
-        return Ok(JsonMapper.ToJson(characterScoresJson));
+        return Ok(JsonMapper.ToJson(characterScores));
     }
 }
