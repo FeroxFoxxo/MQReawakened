@@ -12,6 +12,6 @@ public class BestResultForLevel : ExternalProtocol
         var levelName = message[5];
 
         if (Player.Character.BestMinigameTimes.TryGetValue(levelName, out var value))
-            Player.SendXt("MB", value * 1000);
+            Player.SendXt("MB", value);
     }
 }

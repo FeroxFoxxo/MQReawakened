@@ -49,8 +49,11 @@ public class CompletedDistance : ExternalProtocol
 
             TopScoresHandler.Create(game.id, scores);
 
-            topScores = TopScoresHandler.GetScoresFromId(game.id);
+            Player.SendXt("Ms", Player.Room.LevelInfo.Name);
+            return;
         }
+
+        var newHighScore = false;
 
         if (topScores.Scores.Any(x => x.CharacterId == Player.Character.Id))
         {
@@ -62,14 +65,17 @@ public class CompletedDistance : ExternalProtocol
             topScores.Scores.Remove(existingScore);
             topScores.Scores.Add(score);
 
-            TopScoresHandler.Update(topScores.Write);
-
-            Player.SendXt("Ms", Player.Room.LevelInfo.Name);
+            newHighScore = true;
         }
         else
         {
             topScores.Scores.Add(score);
 
+            newHighScore = true;
+        }
+
+        if (newHighScore)
+        {
             TopScoresHandler.Update(topScores.Write);
 
             Player.SendXt("Ms", Player.Room.LevelInfo.Name);

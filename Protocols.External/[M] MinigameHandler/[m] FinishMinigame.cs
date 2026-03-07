@@ -1,6 +1,5 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
-using Server.Reawakened.Entities.Components.GameObjects.Trigger;
 using Server.Reawakened.Entities.Components.GameObjects.Trigger.Interfaces;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
@@ -30,7 +29,8 @@ public class FinishedMinigame : ExternalProtocol
         var arenaObjectId = message[5];
         var finishedRaceTime = float.Parse(message[6]);
 
-        var correctedTime = finishedRaceTime * 100;
+        var bestTime = finishedRaceTime * 1000;
+        var leaderboardTime = finishedRaceTime * 100;
 
         Logger.LogInformation("Minigame with ID ({minigameId}) has completed.", arenaObjectId);
 
@@ -41,12 +41,12 @@ public class FinishedMinigame : ExternalProtocol
 
         if (Player.Character.BestMinigameTimes.TryGetValue(Player.Room.LevelInfo.Name, out var time))
         {
-            if (finishedRaceTime < time)
-                Player.Character.BestMinigameTimes[Player.Room.LevelInfo.Name] = finishedRaceTime;
+            if (bestTime < time)
+                Player.Character.BestMinigameTimes[Player.Room.LevelInfo.Name] = bestTime;
         }
         else
         {
-            Player.Character.BestMinigameTimes.TryAdd(Player.Room.LevelInfo.Name, finishedRaceTime);
+            Player.Character.BestMinigameTimes.TryAdd(Player.Room.LevelInfo.Name, bestTime);
         }
 
         var trigger = Player.Room.GetEntityFromId<ITriggerComp>(arenaObjectId);
@@ -77,7 +77,7 @@ public class FinishedMinigame : ExternalProtocol
 
         var score = new TopScore
         {
-            Score = (int)correctedTime,
+            Score = (int)leaderboardTime,
             Rank = 0,
             Time = scoreTime,
             CharacterId = Player.Character.Id
@@ -91,8 +91,11 @@ public class FinishedMinigame : ExternalProtocol
 
             TopScoresHandler.Create(game.id, scores);
 
-            topScores = TopScoresHandler.GetScoresFromId(game.id);
+            Player.SendXt("Ms", Player.Room.LevelInfo.Name);
+            return;
         }
+
+        var newHighScore = false;
 
         if (topScores.Scores.Any(x => x.CharacterId == Player.Character.Id))
         {
@@ -104,14 +107,17 @@ public class FinishedMinigame : ExternalProtocol
             topScores.Scores.Remove(existingScore);
             topScores.Scores.Add(score);
 
-            TopScoresHandler.Update(topScores.Write);
-
-            Player.SendXt("Ms", Player.Room.LevelInfo.Name);
+            newHighScore = true;
         }
         else
         {
             topScores.Scores.Add(score);
 
+            newHighScore = true;
+        }
+
+        if (newHighScore)
+        {
             TopScoresHandler.Update(topScores.Write);
 
             Player.SendXt("Ms", Player.Room.LevelInfo.Name);
