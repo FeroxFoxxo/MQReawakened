@@ -1,5 +1,6 @@
 ﻿using Server.Base.Accounts.Enums;
 using Server.Reawakened.Chat.Models;
+using Server.Reawakened.Database.Users;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players;
 using Server.Reawakened.XMLs.Data.Commands;
@@ -23,6 +24,8 @@ public class SetEwSubscribed : SlashCommand
 
     public override AccessLevel AccessLevel => AccessLevel.Owner;
 
+    public UserInfoHandler UserInfoHandler { get; set; }
+
     public override void Execute(Player player, string[] args)
     {
         if (args.Length != 2 || !int.TryParse(args[1], out var status))
@@ -32,6 +35,8 @@ public class SetEwSubscribed : SlashCommand
         }
 
         player.UserInfo.Write.Member = status == 1;
+
+        UserInfoHandler.Update(player.UserInfo.Write);
 
         player.SendXt("cb", status);
 
