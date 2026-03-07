@@ -1,7 +1,10 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using A2m.Server;
+using Microsoft.Extensions.Logging;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players.Extensions;
+using Server.Reawakened.Rooms;
+using Server.Reawakened.XMLs.Bundles.Base;
 using Server.Reawakened.XMLs.Bundles.Internal;
 using UnityEngine;
 
@@ -12,6 +15,7 @@ public class FinishMonkeyBlast : ExternalProtocol
 
     public ServerRConfig ServerRConfig { get; set; }
     public InternalAchievement InternalAchievement { get; set; }
+    public ItemCatalog ItemCatalog { get; set; }
     public ILogger<FinishMonkeyBlast> Logger { get; set; }
 
     public override void Run(string[] message)
@@ -25,6 +29,8 @@ public class FinishMonkeyBlast : ExternalProtocol
         Player.AddBananas(GetBananaReward(stars), InternalAchievement, Logger);
 
         Player.SendCashUpdate();
+
+        Player.CheckObjective(ObjectiveEnum.MinigameMedal, Player.Room.LevelInfo.LevelId.ToString(), "LV_CRS_MiniRace01", 1, ItemCatalog);
     }
 
     private float GetBananaReward(short stars)
