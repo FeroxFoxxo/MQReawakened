@@ -52,6 +52,7 @@ public class CharacterDataModel(CharacterDbEntry entry, GameVersion version) : C
     public int BadgePoints => Write.BadgePoints;
     public int AbilityPower => Write.AbilityPower;
     public Dictionary<string, ReportModel> Reports => Write.Reports;
+    public int Tokens => Write.Tokens;
 
     public void SetPlayerData(Player player)
     {

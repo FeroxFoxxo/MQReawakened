@@ -84,6 +84,7 @@ public class CharacterDbEntry : PersistantData
     public int BadgePoints { get; set; }
     public int AbilityPower { get; set; }
     public Dictionary<string, ReportModel> Reports { get; set; }
+    public int Tokens { get; set; }
 
     // Character Model
     public Dictionary<int, List<int>> CollectedIdols { get; set; }
@@ -158,6 +159,7 @@ public class CharacterDbEntry : PersistantData
         Blocked = [];
         Muted = [];
         Reports = [];
+        Tokens = 5;
 
         // Character Model
         CollectedIdols = [];
