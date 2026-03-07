@@ -29,28 +29,26 @@ public class FinishMonkeyBlast : ExternalProtocol
 
     private float GetBananaReward(short stars)
     {
-        var num = Mathf.Clamp(Player.Character.GlobalLevel, 1, 35);
-        var array = new float[4] { 0.5f, 1f, 1.5f, 2f };
-        var num2 = 0.25f * (num * array[stars]);
-        return num2;
+        var level = Mathf.Clamp(Player.Character.GlobalLevel, 1, 35);
+        var multiplier = new float[4] { 0.5f, 1f, 1.5f, 2f };
+        var bananas = 0.25f * (level * multiplier[stars]);
+        return bananas;
     }
 
     private int GetXpReward(short stars)
     {
-        var num = Mathf.Clamp(GetXpNeededToLevel(), 1, 34000);
-        var array = new float[4] { 0.01f, 0.013f, 0.02f, 0.04f };
-        var num2 = 0.25f * (num * array[stars]);
-        return (int)num2;
+        var reputationNeeded = Mathf.Clamp(GetXpNeededToLevel(), 1, 34000);
+        var multiplier = new float[4] { 0.01f, 0.013f, 0.02f, 0.04f };
+        var reputation = 0.25f * (reputationNeeded * multiplier[stars]);
+        return (int)reputation;
     }
 
     private int GetXpNeededToLevel()
     {
         var character = Player.Character;
         if (character.GlobalLevel >= 65)
-        {
             return 1;
-        }
-        var num = character.ReputationForNextLevel - character.ReputationForCurrentLevel;
-        return (num < 1) ? 1 : num;
+        var reputationNeeded = character.ReputationForNextLevel - character.ReputationForCurrentLevel;
+        return (reputationNeeded < 1) ? 1 : reputationNeeded;
     }
 }
