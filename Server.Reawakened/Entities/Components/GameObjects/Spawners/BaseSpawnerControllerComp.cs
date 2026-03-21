@@ -1,5 +1,4 @@
-﻿using A2m.Server;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Server.Base.Core.Abstractions;
 using Server.Base.Timers.Extensions;
@@ -8,7 +7,6 @@ using Server.Reawakened.Entities.Components.AI.Stats;
 using Server.Reawakened.Entities.Components.GameObjects.Breakables;
 using Server.Reawakened.Entities.Components.GameObjects.Trigger;
 using Server.Reawakened.Entities.Components.GameObjects.Trigger.Enums;
-using Server.Reawakened.Entities.Components.GameObjects.Trigger.Interfaces;
 using Server.Reawakened.Entities.Enemies.Behaviors.Abstractions;
 using Server.Reawakened.Entities.Enemies.EnemyTypes.Abstractions;
 using Server.Reawakened.Entities.Enemies.Extensions;
@@ -259,6 +257,9 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
         Logger.LogInformation("Spawner '{Id}' spawning enemy #{Num} prefab '{Prefab}' template '{Template}'", Id, _spawnedEntityCount, selectedPrefab, templateId);
 
         Room.SendSyncEvent(new Spawn_SyncEvent(Id, Room.Time, _spawnedEntityCount));
+
+		var spawnedEntityId = $"{Id}_{_spawnedEntityCount}";
+        _arenaComp?.ArenaEntities.Add(spawnedEntityId);
 
         TimerThread.RunDelayed(DelayedSpawnData, new DelayedEnemySpawn() { Spawner = this, TemplateId = templateId, PrefabName = selectedPrefab, SpawnIndex = _spawnedEntityCount, EnemyToSpawn = enemyToSpawn }, TimeSpan.FromSeconds(delay));
     }
