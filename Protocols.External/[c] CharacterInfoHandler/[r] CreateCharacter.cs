@@ -81,6 +81,8 @@ public class CreateCharacter : ExternalProtocol
             characterEntry.LevelId = ServerConfig.GameVersion >= GameVersion.vEarly2014 ? WorldGraph.DefaultLevel : WorldGraph.NewbZone;
             characterEntry.SpawnPointId = string.Empty;
 
+            characterEntry.BadgePoints++;
+
             CharacterHandler.Add(characterEntry);
 
             var characterData = CharacterHandler.GetCharacterFromName(characterEntry.CharacterName);
