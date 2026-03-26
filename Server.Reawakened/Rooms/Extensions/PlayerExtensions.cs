@@ -106,6 +106,8 @@ public static class PlayerExtensions
         foreach (var currentPlayer in player.Room.GetPlayers())
             currentPlayer.SendXt("ce", levelUpData, player.UserId);
 
+        player.Character.Write.BadgePoints++;
+
         player.Character.AddHealthOnLevelUp(100);
 
         player.Character.Write.BadgePoints += 1;
@@ -116,6 +118,16 @@ public static class PlayerExtensions
 
         player.SendSyncEventToPlayer(new Health_SyncEvent(player.GameObjectId.ToString(), player.Room.Time,
             player.Character.MaxLife, player.Character.MaxLife, player.GameObjectId.ToString()));
+			
+        if (player.Character.Allegiance != TribeType.Invalid)
+        {
+            if (player.Character.Write.TribesProgression.TryGetValue(player.Character.Allegiance, out var tribe))
+                tribe.BadgePoints++;
+
+            var autoAssign = player.Character.TribesProgression.Count % 5 == 0;
+
+            player.SendXt("cA", player.Character.GenerateTribeData([.. player.Character.TribesProgression.Values]), (int)player.Character.Allegiance, autoAssign ? 1 : 0);
+        }
     }
 
     public static void SendStartPlay(this Player player, CharacterModel character,
