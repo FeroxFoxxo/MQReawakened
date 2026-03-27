@@ -1,10 +1,12 @@
-﻿using Server.Base.Accounts.Extensions;
+﻿using A2m.Server;
+using Server.Base.Accounts.Extensions;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Database.Characters;
 using Server.Reawakened.Entities.Colliders;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
+using Server.Reawakened.Players.Models.Character;
 using Server.Reawakened.Players.Models.Protocol;
 using Server.Reawakened.Rooms.Enums;
 using Server.Reawakened.Rooms.Models.Planes;
@@ -98,7 +100,7 @@ public static class PlayerExtensions
             IncAbilityPower = 20,
             CurrentLevelCompletion = player.Character.ReputationForCurrentLevel,
             IncPowerJewel = 1,
-            ItemId = 0,
+            ItemId = -1,
             Nc = 125,
             GameVersion = rConfig.GameVersion
         };
@@ -109,8 +111,6 @@ public static class PlayerExtensions
         player.Character.Write.BadgePoints++;
 
         player.Character.AddHealthOnLevelUp(100);
-
-        player.Character.Write.BadgePoints += 1;
 
         //Temporary way to earn NC upon level up.
         //(Needed for gameplay improvements as NC is currently unobtainable)
@@ -175,4 +175,81 @@ public static class PlayerExtensions
         }
     }
 
+    public static void UpdateTribeProgression(this Player player)
+    {
+        var tribes = new List<TribeDataModel>([.. player.Character.TribesProgression.Values]);
+
+        if (player.Character.TribesProgression.Count <= 0)
+            tribes =
+            [
+                new()
+                {
+                    BadgePoints = 0,
+                    TribeType = TribeType.Bone,
+                    Unlocked = false
+                },
+                new()
+                {
+                    BadgePoints = 0,
+                    TribeType = TribeType.Outlaw,
+                    Unlocked = false
+                },
+                new()
+                {
+                    BadgePoints = 0,
+                    TribeType = TribeType.Shadow,
+                    Unlocked = false
+                },
+                new()
+                {
+                    BadgePoints = 0,
+                    TribeType = TribeType.Wild,
+                    Unlocked = false
+                }
+            ];
+
+        var newTribes = new List<TribeDataModel>();
+
+        foreach (var tribeProgress in tribes)
+        {
+            switch (tribeProgress.TribeType)
+            {
+                case TribeType.Bone:
+                    if (player.Character.CompletedQuests.Contains(860) && !tribeProgress.Unlocked)
+                    {
+                        tribeProgress.Unlocked = true;
+                        newTribes.Add(tribeProgress);
+                    }
+                    break;
+                case TribeType.Outlaw:
+                    if (player.Character.CompletedQuests.Contains(857) && !tribeProgress.Unlocked)
+                    {
+                        tribeProgress.Unlocked = true;
+                        newTribes.Add(tribeProgress);
+                    }
+                    break;
+                case TribeType.Shadow:
+                    if (player.Character.CompletedQuests.Contains(854) && !tribeProgress.Unlocked)
+                    {
+                        tribeProgress.Unlocked = true;
+                        newTribes.Add(tribeProgress);
+                    }
+                    break;
+                case TribeType.Wild:
+                    if (player.Character.CompletedQuests.Contains(901) && !tribeProgress.Unlocked)
+                    {
+                        tribeProgress.Unlocked = true;
+                        newTribes.Add(tribeProgress);
+                    }
+                    break;
+            }
+        }
+
+        if (newTribes.Count == 0)
+            return;
+
+        player.Character.Write.TribesProgression = tribes.ToDictionary(x => x.TribeType, x => x);
+
+        player.CharacterHandler.Update(player.Character.Write);
+    }
 }
