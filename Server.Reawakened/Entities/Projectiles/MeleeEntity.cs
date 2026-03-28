@@ -25,7 +25,9 @@ public class MeleeEntity : BaseProjectile
         var onGround = player.TempData.OnGround;
         var isRight = direction > 0;
 
-        var meleeLeft = onGround ? isRight ? 0 : -config.MeleeWidth : -config.MeleeAerialOffset;
+        var horizontalOffset = isRight ? 0 : -config.MeleeWidth;
+
+        var meleeLeft = onGround ? horizontalOffset : -config.MeleeAerialOffset;
         var meleeTop = onGround ? 0 : -config.MeleeAerialOffset;
         var meleeWidth = onGround ? config.MeleeWidth : config.MeleeAerialRange;
         var meleeHeight = onGround ? config.MeleeHeight : config.MeleeAerialRange;

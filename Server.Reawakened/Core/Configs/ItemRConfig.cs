@@ -108,7 +108,7 @@ public class ItemRConfig : IRConfig
         ProjectileHeight = 0.5f;
         ProjectileWidth = 0.5f;
 
-        MeleeWidth = 3.5f;
+        MeleeWidth = 3.6f;
         MeleeHeight = 1f;
 
         MeleeAerialRange = 5f;

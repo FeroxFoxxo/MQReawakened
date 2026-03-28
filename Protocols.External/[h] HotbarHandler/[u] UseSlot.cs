@@ -40,9 +40,9 @@ public class UseSlot : ExternalProtocol
 
         var position = new Vector3()
         {
-            x = posX,
-            y = posY,
-            z = posZ
+            x = Player.TempData.Position.X,
+            y = Player.TempData.Position.Y,
+            z = Player.TempData.Position.Z
         };
 
         var slotItem = Player.Character.Hotbar.HotbarButtons[hotbarSlotId];
@@ -67,6 +67,9 @@ public class UseSlot : ExternalProtocol
                 break;
             case ItemActionType.Melee:
                 HandleMeleeWeapon(usedItem, position, direction);
+                break;
+            case ItemActionType.DamageZone:
+                HandleDamageZone(usedItem, position, direction);
                 break;
             case ItemActionType.Relic:
                 HandleRelic(usedItem);
@@ -150,6 +153,19 @@ public class UseSlot : ExternalProtocol
         }
         else
             LaunchProjectile(projectileData);
+    }
+
+    private void HandleDamageZone(ItemDescription usedItem, Vector3 position, int direction)
+    {
+
+        var id = Player.Room.CreateProjectileId().ToString();
+
+        // Add weapon stats later
+        var prj = new DamageZoneEntity(id, new Vector3Model(position.x, position.y, position.z), Player, direction, usedItem,
+            Player.Character.CalculateDamage(usedItem, ItemCatalog),
+            usedItem.Elemental);
+
+        Player.Room.AddProjectile(prj);
     }
 
     public class ProjectileData() : PlayerRoomTimer
