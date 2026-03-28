@@ -122,7 +122,8 @@ public static class PlayerExtensions
         if (player.Character.Allegiance != TribeType.Invalid)
         {
             if (player.Character.Write.TribesProgression.TryGetValue(player.Character.Allegiance, out var tribe))
-                tribe.BadgePoints++;
+                if (tribe.BadgePoints < 40)
+                    tribe.BadgePoints++;
 
             var autoAssign = player.Character.TribesProgression.Count % 5 == 0;
 
@@ -208,7 +209,7 @@ public static class PlayerExtensions
                 }
             ];
 
-        var newTribes = new List<TribeDataModel>();
+        var hasChanges = false;
 
         foreach (var tribeProgress in tribes)
         {
@@ -218,34 +219,40 @@ public static class PlayerExtensions
                     if (player.Character.CompletedQuests.Contains(860) && !tribeProgress.Unlocked)
                     {
                         tribeProgress.Unlocked = true;
-                        newTribes.Add(tribeProgress);
+                        hasChanges = true;
                     }
                     break;
                 case TribeType.Outlaw:
                     if (player.Character.CompletedQuests.Contains(857) && !tribeProgress.Unlocked)
                     {
                         tribeProgress.Unlocked = true;
-                        newTribes.Add(tribeProgress);
+                        hasChanges = true;
                     }
                     break;
                 case TribeType.Shadow:
                     if (player.Character.CompletedQuests.Contains(854) && !tribeProgress.Unlocked)
                     {
                         tribeProgress.Unlocked = true;
-                        newTribes.Add(tribeProgress);
+                        hasChanges = true;
                     }
                     break;
                 case TribeType.Wild:
                     if (player.Character.CompletedQuests.Contains(901) && !tribeProgress.Unlocked)
                     {
                         tribeProgress.Unlocked = true;
-                        newTribes.Add(tribeProgress);
+                        hasChanges = true;
                     }
                     break;
             }
+
+            if (tribeProgress.BadgePoints > 40)
+            {
+                tribeProgress.BadgePoints = 40;
+                hasChanges = true;
+            }
         }
 
-        if (newTribes.Count == 0)
+        if (!hasChanges)
             return;
 
         player.Character.Write.TribesProgression = tribes.ToDictionary(x => x.TribeType, x => x);
