@@ -63,6 +63,7 @@ public abstract class BaseEnemy : IDestructible
     public readonly IEnemyController EnemyController;
     public readonly EnemyModel EnemyModel;
     public InterObjStatusComp Status;
+    public WorldStatistics WorldStatistics;
 
     public Vector3Model Position => EnemyController.Position;
 
@@ -84,6 +85,7 @@ public abstract class BaseEnemy : IDestructible
         QuestCatalog = Services.GetRequiredService<QuestCatalog>();
         ItemCatalog = Services.GetRequiredService<ItemCatalog>();
         ServerRConfig = Services.GetRequiredService<ServerRConfig>();
+        WorldStatistics = Services.GetRequiredService<WorldStatistics>();
 
         Logger.LogDebug("Creating enemy {PrefabName} with ID {Id}", PrefabName, Id);
 
@@ -223,6 +225,23 @@ public abstract class BaseEnemy : IDestructible
         Room.SendSyncEvent(new AiHealth_SyncEvent(Id.ToString(), Room.Time, Health, damage, resistance, resistedDamage, player == null ? string.Empty : player.CharacterName, false, true));
 
         NotifyDamaged(player);
+    }
+
+    public int EnemyDamagePlayer(Player player)
+    {
+        var element = ItemEffectType.BluntDamage;
+
+        if (EnemyController.PrefabName.Contains("_Boss"))
+            element = ItemEffectType.LightningDamage;
+        else if (EnemyController.PrefabName.Contains("Swamp"))
+            element = ItemEffectType.EarthDamage;
+        else if (EnemyController.PrefabName.Contains("Invis"))
+            element = ItemEffectType.AirDamage;
+        else if (EnemyController.PrefabName.Contains("Lava"))
+            element = ItemEffectType.FireDamage;
+
+        return WorldStatistics.GetValue(ItemEffectType.AbilityPower, WorldStatisticsGroup.Enemy, Level) -
+                 player.Character.CalculateDefense(element, ItemCatalog);
     }
 
     public virtual void PetDamage(Player player)

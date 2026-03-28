@@ -114,7 +114,7 @@ public static class CharacterInventoryExtensions
 
     public static void AddItem(this Player player, ItemDescription item, int count, ItemCatalog itemCatalog)
     {
-        if (!itemCatalog.CanAddItem(item) || item == null)
+        if (!itemCatalog.CanAddItem(item) || item == null || player == null || itemCatalog == null)
             return;
 
         var characterData = player.Character;

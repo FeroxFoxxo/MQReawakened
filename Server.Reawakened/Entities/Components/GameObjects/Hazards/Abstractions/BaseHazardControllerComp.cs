@@ -6,6 +6,7 @@ using Server.Base.Timers.Services;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Entities.Colliders;
 using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Abstractions;
+using Server.Reawakened.Entities.Enemies.EnemyTypes.Abstractions;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms.Extensions;
@@ -169,8 +170,7 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
         {
             EffectType = enemy.EnemyController.EnemyEffectType;
 
-            Damage = WorldStatistics.GetValue(ItemEffectType.AbilityPower, WorldStatisticsGroup.Enemy, enemy.Level) -
-                     player.Character.CalculateDefense(EffectType, ItemCatalog);
+            Damage = EnemyDamagePlayer(player, enemy);
         }
 
         Logger.LogTrace("Applying {statusEffect} to {characterName} from {prefabName}", EffectType, player.CharacterName, PrefabName);
@@ -201,6 +201,10 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
                 break;
         }
     }
+
+    public int EnemyDamagePlayer(Player player, BaseEnemy enemy) => 
+        WorldStatistics.GetValue(ItemEffectType.AbilityPower, WorldStatisticsGroup.Enemy, enemy.Level) -
+                     player.Character.CalculateDefense(EffectType, ItemCatalog);
 
     // WATER BREATHING
 

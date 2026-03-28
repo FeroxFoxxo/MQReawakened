@@ -438,7 +438,7 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
             }
             else
             {
-                if (_arenaComp != null && SpawnCycleCount > 0)
+                if (_arenaComp != null && SpawnCycleCount > 1)
                     _updatedSpawnCycle += SpawnCycleCount;
 
                 _nextSpawnRequestTime = 0;
