@@ -31,6 +31,12 @@ public class InviteToTrade : ExternalProtocol
         if (invitedPlayer == null)
             return;
 
+        if (invitedPlayer.TempData.TradeModel != null)
+        {
+            Player?.SendXt("tr", invitedPlayer.CharacterName, (int)DeclineType.PlayerBusy);
+            return;
+        }
+
         Player.TempData.TradeModel = new TradeModel(invitedPlayer);
         invitedPlayer.TempData.TradeModel = new TradeModel(Player);
 

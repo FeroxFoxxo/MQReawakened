@@ -16,14 +16,14 @@ public abstract class BaseProjectile(string id, float lifetime,
     public Vector3Model Position => position;
     public Vector3 SpawnPosition = new() { x = position.X, y = position.Y, z = position.Z };
 
-    public Vector3 Speed = new(speed.x, speed.y, 1);
+    public Vector3 Speed = new(speed.x, speed.y, 0);
 
     public float StartTime = room.Time;
     public float LifeTime = room.Time + lifetime;
 
     public BaseCollider Collider { get; set; }
 
-    public void Update()
+    public virtual void Update()
     {
         if (room == null) return;
 
@@ -33,8 +33,16 @@ public abstract class BaseProjectile(string id, float lifetime,
 
         Move();
 
+        RunCollisionCheck();
+
         var time = room.Time;
 
+        if (LifeTime <= time)
+            Hit("0");
+    }
+
+    public void RunCollisionCheck()
+    {
         var collisions = Collider.RunCollisionDetection();
 
         if (collisions.Length > 0)
@@ -42,9 +50,6 @@ public abstract class BaseProjectile(string id, float lifetime,
             {
                 Hit(collision);
             }
-
-        if (LifeTime <= time)
-            Hit("0");
     }
 
     public virtual void Move() => SetPositionBasedOnTime();

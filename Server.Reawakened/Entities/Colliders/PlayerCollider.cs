@@ -29,8 +29,10 @@ public class PlayerCollider(Player player) : BaseCollider
         if (received is AIProjectileCollider aiProjectileCollider &&
             received.Type == ColliderType.AiAttack)
         {
-            var damage = aiProjectileCollider.Damage - player.Character.CalculateDefense
-                (aiProjectileCollider.Effect, aiProjectileCollider.ItemCatalog);
+            var enemy = Room?.GetEnemy(aiProjectileCollider.OwnderId);
+
+            var damage = 1;
+            enemy?.EnemyDamagePlayer(Player);
 
             player.ApplyCharacterDamage(damage, aiProjectileCollider.Id, 1, aiProjectileCollider.ServerRConfig, aiProjectileCollider.TimerThread);
             player.TemporaryInvincibility(aiProjectileCollider.TimerThread, aiProjectileCollider.ServerRConfig, 1);
