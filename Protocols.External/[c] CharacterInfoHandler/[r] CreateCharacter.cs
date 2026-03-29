@@ -83,6 +83,8 @@ public class CreateCharacter : ExternalProtocol
 
             characterEntry.BadgePoints++;
 
+            characterEntry.Tokens = 5;
+
             CharacterHandler.Add(characterEntry);
 
             var characterData = CharacterHandler.GetCharacterFromName(characterEntry.CharacterName);
