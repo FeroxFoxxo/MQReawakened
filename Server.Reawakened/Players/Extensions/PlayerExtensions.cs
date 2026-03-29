@@ -8,6 +8,7 @@ using Server.Reawakened.Database.Characters;
 using Server.Reawakened.Database.Users;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players.Helpers;
+using Server.Reawakened.Players.Models.Character;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Services;
 using Server.Reawakened.XMLs.Bundles.Base;
@@ -278,7 +279,22 @@ public static class PlayerExtensions
     public static void DiscoverTribe(this Player player, TribeType tribe)
     {
         if (player.Character.HasAddedDiscoveredTribe(tribe))
+		{
+			//Unlock badges
+			if (player.Character.TribesProgression.ContainsKey(tribe))
+				player.Character.Write.TribesProgression[tribe].Unlocked = true;
+			else
+				player.Character.Write.TribesProgression[tribe] = new TribeDataModel
+				{
+					BadgePoints = 0,
+					TribeType = tribe,
+					Unlocked = true
+				};
+
+			player.SendXt("cA", player.Character.GenerateTribeData([.. player.Character.TribesProgression.Values]), (int)tribe, 0);
+			
             player.SendXt("cB", (int)tribe);
+		}
     }
 
     public static void DiscoverAllTribes(this Player player)

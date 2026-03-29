@@ -19,7 +19,7 @@ public class EnemyCollider(BaseEnemy enemy, RectModel box) : BaseCollider
     {
         if (received is AttackCollider attack)
         {
-            if (Room.IsObjectKilled(enemy.Id))
+            if (enemy == null || Room.IsObjectKilled(enemy.Id))
                 return;
 
             var damage = Room.GetEntityFromId<IDamageable>(enemy.Id)

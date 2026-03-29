@@ -1,6 +1,9 @@
 ﻿using A2m.Server;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Database.Characters;
+using Server.Reawakened.Players.Helpers;
+using Server.Reawakened.Players.Models.Character;
+using Server.Reawakened.XMLs.Bundles.Base;
 
 namespace Server.Reawakened.Players.Extensions;
 
@@ -90,5 +93,15 @@ public static class CharacterExtensions
         }
 
         return quest;
+	}
+		
+    public static string GenerateTribeData(this CharacterModel _, List<TribeDataModel> dataList)
+    {
+        var sb = new SeparatedStringBuilder('<');
+
+        foreach (var tribeData in dataList)
+            sb.Append(tribeData.ToString());
+
+        return sb.ToString();
     }
 }

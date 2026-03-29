@@ -405,7 +405,10 @@ public class Room : Timer
 
         lock (_roomLock)
         {
-            _colliders[collider.Id].Add(collider);
+            if (_colliders.TryGetValue(collider.Id, out var value))
+                value.Add(collider);
+            else
+                _colliders.Add(collider.Id, [collider]);
         }
 
         Logger.LogTrace("Added collider with id {ColliderId} to room {RoomId}", collider.Id, _roomId);
