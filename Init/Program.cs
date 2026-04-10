@@ -28,7 +28,7 @@ public class Program
 
             builder.Configuration
                 .AddEnvironmentVariables()
-                .AddJsonFile("/settings/appsettings.json", optional: true, reloadOnChange: true);
+                .AddJsonFile("/data/appsettings.json", optional: true, reloadOnChange: true);
 
             logger.LogDebug("Getting modules");
             var modules = GetModules(logger);
