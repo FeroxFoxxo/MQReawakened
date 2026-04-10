@@ -234,5 +234,7 @@ These JSONs are auto‑created with sensible defaults if missing. You can safely
   - You're likely using an Intel IGPU. There is no fix for this.
 - Game stops loading after playing for a while
   - Clear the cache files in LocalLow
+- File extraction and/or asset bundle transversal taking a long time
+  - Generally this should take ~30m, but if you are mounting folders between file systems (i.e. using WSL and pointing to a folder on your Windows filesystem) this can take 10x-30x longer. Please make sure, if you're using WSL, the folder is pointed to your Linux distro (i.e. Ubuntu).
 
 ## Happy hosting — and see you in Ook.
