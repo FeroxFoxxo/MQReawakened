@@ -1,6 +1,5 @@
 ﻿using LitJson;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Server.Base.Core.Extensions;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Core.Enums;
@@ -8,12 +7,11 @@ using Server.Reawakened.Database.Characters;
 using Server.Reawakened.XMLs.Bundles.Internal;
 using Web.Apps.Leaderboards.Data;
 using Web.Apps.Leaderboards.Database.Scores;
-using Web.Apps.Leaderboards.Services;
 
 namespace Web.Apps.Leaderboards.API.Scores;
 [Route("Apps/leaderboards/api/top/scores/{gameId}")]
-public class TopScoresController(CharacterHandler characterHandler, TopScoresHandler topScoresHandler, ILogger<TopScoresController> logger, InternalLeaderboards leaderboards,
-    ServerRConfig rConfig, LeaderboardHandler handler) : Controller
+public class TopScoresController(CharacterHandler characterHandler, TopScoresHandler topScoresHandler,
+    InternalLeaderboards leaderboards, ServerRConfig rConfig) : Controller
 {
     [HttpGet]
     public IActionResult GetScores([FromRoute] string gameId)
@@ -58,9 +56,19 @@ public class TopScoresController(CharacterHandler characterHandler, TopScoresHan
             var topScoresList = topScores.Scores.DeepCopy();
             var sortedScores = SortScores(game, topScoresList);
 
+            var hasChanges = false;
+
+            var rank = 1;
             foreach (var score in sortedScores)
             {
                 var character = characterHandler.GetCharacterFromId(score.CharacterId);
+
+                if (character == null)
+                {
+                    topScores.Scores.Remove(score);
+                    hasChanges = true;
+                    continue;
+                }
 
                 var charJson = new JsonData
                 {
@@ -72,11 +80,7 @@ public class TopScoresController(CharacterHandler characterHandler, TopScoresHan
                 };
 
                 topScoresObject["characters"].Add(charJson);
-            }
 
-            var rank = 1;
-            foreach (var score in sortedScores)
-            {
                 var scoreJson = new JsonData
                 {
                     ["score"] = score.Score,
@@ -89,6 +93,9 @@ public class TopScoresController(CharacterHandler characterHandler, TopScoresHan
 
                 rank++;
             }
+
+            if (hasChanges)
+                topScoresHandler.Update(topScores.Write);
         }
 
         return Ok(JsonMapper.ToJson(topScoresObject));
