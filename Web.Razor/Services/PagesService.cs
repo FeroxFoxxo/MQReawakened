@@ -54,7 +54,7 @@ public class PagesService(InternalRwConfig iConfig, ServerRConfig sConfig,
                 return;
             }
 
-            var gameRoot = "data/Settings";
+            var gameRoot = "/data/Settings";
             var configFile = Path.Join(gameRoot, "game", "LocalBuildConfig.xml");
             var launcherExe = Path.Join(gameRoot, "launcher", "launcher.exe");
 
