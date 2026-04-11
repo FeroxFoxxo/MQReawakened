@@ -211,6 +211,9 @@ public class StartGame(EventSink sink, ILogger<StartGame> logger, ServerConsole 
 
     private void WriteConfig()
     {
+        if (lWConfig.GameSettingsFile != null && _directory == null)
+            _directory = Path.GetDirectoryName(lWConfig.GameSettingsFile);
+
         var directory = Path.Join(_directory, "game");
         var config = Path.Join(directory, "LocalBuildConfig.xml");
 

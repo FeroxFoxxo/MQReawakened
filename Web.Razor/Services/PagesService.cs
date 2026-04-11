@@ -11,11 +11,12 @@ using Server.Base.Core.Events;
 using Server.Reawakened.Core.Configs;
 using Web.Razor.Configs;
 using Web.Razor.EmailTemplates;
+using Web.Launcher.Models;
 
 namespace Web.Razor.Services;
 
 public class PagesService(InternalRwConfig iConfig, ServerRConfig sConfig,
-    WebsiteRwConfig config, ILogger<PagesService> logger, EventSink sink) : IService
+    WebsiteRwConfig config, ILogger<PagesService> logger, EventSink sink, LauncherRwConfig lWConfig) : IService
 {
     public string ZipPath { get; set; }
 
@@ -42,9 +43,6 @@ public class PagesService(InternalRwConfig iConfig, ServerRConfig sConfig,
 
     private void BuildDownloadIfNeeded()
     {
-        if (!EnvironmentExt.IsContainer())
-            return;
-
         try
         {
             if (File.Exists(ZipPath))
@@ -53,7 +51,7 @@ public class PagesService(InternalRwConfig iConfig, ServerRConfig sConfig,
                 return;
             }
 
-            var gameRoot = "/data/Settings";
+            var gameRoot = Path.GetDirectoryName(lWConfig.GameSettingsFile);
             var configFile = Path.Join(gameRoot, "game", "LocalBuildConfig.xml");
             var launcherExe = Path.Join(gameRoot, "launcher", "launcher.exe");
 
