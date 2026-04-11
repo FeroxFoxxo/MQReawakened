@@ -180,7 +180,10 @@ public static class PlayerExtensions
     {
         var tribes = new List<TribeDataModel>([.. player.Character.TribesProgression.Values]);
 
-        if (player.Character.TribesProgression.Count <= 0)
+        var hasChanges = false;
+
+        if (player.Character.TribesProgression.Count <= 0 || player.Character.TribesProgression.ContainsKey(TribeType.Crossroads))
+        {
             tribes =
             [
                 new()
@@ -208,11 +211,17 @@ public static class PlayerExtensions
                     Unlocked = false
                 }
             ];
-
-        var hasChanges = false;
+            hasChanges = true;
+        }
 
         foreach (var tribeProgress in tribes)
         {
+            if (tribeProgress.BadgePoints > 40)
+            {
+                tribeProgress.BadgePoints = 40;
+                hasChanges = true;
+            }
+
             switch (tribeProgress.TribeType)
             {
                 case TribeType.Bone:
@@ -221,34 +230,28 @@ public static class PlayerExtensions
                         tribeProgress.Unlocked = true;
                         hasChanges = true;
                     }
-                    break;
+                    continue;
                 case TribeType.Outlaw:
                     if (player.Character.CompletedQuests.Contains(857) && !tribeProgress.Unlocked)
                     {
                         tribeProgress.Unlocked = true;
                         hasChanges = true;
                     }
-                    break;
+                    continue;
                 case TribeType.Shadow:
                     if (player.Character.CompletedQuests.Contains(854) && !tribeProgress.Unlocked)
                     {
                         tribeProgress.Unlocked = true;
                         hasChanges = true;
                     }
-                    break;
+                    continue;
                 case TribeType.Wild:
                     if (player.Character.CompletedQuests.Contains(901) && !tribeProgress.Unlocked)
                     {
                         tribeProgress.Unlocked = true;
                         hasChanges = true;
                     }
-                    break;
-            }
-
-            if (tribeProgress.BadgePoints > 40)
-            {
-                tribeProgress.BadgePoints = 40;
-                hasChanges = true;
+                    continue;
             }
         }
 
