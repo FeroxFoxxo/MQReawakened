@@ -43,6 +43,9 @@ public class PagesService(InternalRwConfig iConfig, ServerRConfig sConfig,
 
     private void BuildDownloadIfNeeded()
     {
+        if (!EnvironmentExt.IsContainer())
+            return;
+
         try
         {
             if (File.Exists(ZipPath))
@@ -51,7 +54,7 @@ public class PagesService(InternalRwConfig iConfig, ServerRConfig sConfig,
                 return;
             }
 
-            var gameRoot = Path.GetDirectoryName(lWConfig.GameSettingsFile);
+            var gameRoot = "data/Settings";
             var configFile = Path.Join(gameRoot, "game", "LocalBuildConfig.xml");
             var launcherExe = Path.Join(gameRoot, "launcher", "launcher.exe");
 

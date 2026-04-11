@@ -211,31 +211,26 @@ public class StartGame(EventSink sink, ILogger<StartGame> logger, ServerConsole 
 
     private void WriteConfig()
     {
-        if (lWConfig.GameSettingsFile != null && _directory == null)
-            _directory = Path.GetDirectoryName(lWConfig.GameSettingsFile);
-
         var directory = Path.Join(_directory, "game");
         var config = Path.Join(directory, "LocalBuildConfig.xml");
 
         logger.LogDebug("Looking For Header In {Directory} Ending In {Header}.", directory,
             lRConfig.HeaderFolderFilter);
 
-        var parentUri = new Uri(directory);
-        var headerFolders = Directory.GetDirectories(directory, string.Empty, SearchOption.AllDirectories)
-            .Select(d => Path.GetDirectoryName(d)?.ToLower())
-            .Where(d => new Uri(new DirectoryInfo(d!).Parent?.FullName!) == parentUri).ToArray();
+        var directoryInfo = new DirectoryInfo(directory);
+        var headerFolder = directoryInfo.GetDirectories()
+            .FirstOrDefault(d => d.Name.EndsWith(lRConfig.HeaderFolderFilter, StringComparison.OrdinalIgnoreCase));
 
-        var headerFolder = headerFolders.FirstOrDefault(a => a?.EndsWith(lRConfig.HeaderFolderFilter) == true);
-        headerFolder = Path.GetFileName(headerFolder?.Remove(headerFolder.Length - lRConfig.HeaderFolderFilter.Length));
+        var header = headerFolder?.Name[..(headerFolder.Name.Length - lRConfig.HeaderFolderFilter.Length)].ToLower();
 
-        logger.LogDebug("Found header: {Header}", headerFolder);
+        logger.LogDebug("Found header: {Header}", header);
 
         logger.LogInformation("Writing Build Config To {Place}", config);
 
         var newDoc = new XDocument();
         var root = new XElement("MQBuildConfig");
 
-        foreach (var item in GetConfigValues(headerFolder, iWConfig.GetHostAddress()))
+        foreach (var item in GetConfigValues(header, iWConfig.GetHostAddress()))
         {
             if (string.IsNullOrEmpty(item.Key) || string.IsNullOrEmpty(item.Value))
                 continue;
