@@ -224,10 +224,6 @@ public class CharacterDataModel(CharacterDbEntry entry, GameVersion version) : C
                 defenseType = ItemEffectType.ResistIce;
                 progression = TribesProgression[TribeType.Wild].BadgePoints;
                 break;
-            case ItemEffectType.LightningDamage:
-                defenseType = ItemEffectType.ResistLightning;
-                progression = TribesProgression[TribeType.Grease].BadgePoints;
-                break;
             case ItemEffectType.PoisonDamage:
                 defenseType = ItemEffectType.ResistEarth;
                 progression = TribesProgression[TribeType.Bone].BadgePoints;
@@ -267,10 +263,6 @@ public class CharacterDataModel(CharacterDbEntry entry, GameVersion version) : C
             case Elemental.Ice:
                 effect = ItemEffectType.IceDamage;
                 progression = TribesProgression[TribeType.Wild].BadgePoints;
-                break;
-            case Elemental.Lightning:
-                effect = ItemEffectType.LightningDamage;
-                progression = TribesProgression[TribeType.Grease].BadgePoints;
                 break;
             case Elemental.Poison:
                 effect = ItemEffectType.EarthDamage;
