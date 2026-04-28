@@ -46,7 +46,7 @@ public static class InternalDirectory
 
         if (EnvironmentExt.IsContainerOrNonInteractive())
         {
-            _baseDirectory = Environment.GetEnvironmentVariable("DATA_PATH") ?? "/data";
+            _baseDirectory = Environment.GetEnvironmentVariable("BASE_DIRECTORY") ?? "/data";
             return _baseDirectory;
         }
 

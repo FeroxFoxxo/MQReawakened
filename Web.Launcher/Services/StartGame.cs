@@ -89,7 +89,7 @@ public class StartGame(EventSink sink, ILogger<StartGame> logger, ServerConsole 
             {
                 logger.LogError("Please enter the absolute file path for your game's 'settings.txt' file.");
                 lWConfig.GameSettingsFile = EnvironmentExt.IsContainerOrNonInteractive() ?
-                    Environment.GetEnvironmentVariable("SETTINGS_FILE_LOCATION") ?? "/data/settings/settings.txt"
+                    Environment.GetEnvironmentVariable("SETTINGS_FILE_LOCATION") ?? "/data/Settings/settings.txt"
                     : ConsoleExt.ReadOrEnv("SETTINGS_FILE_LOCATION", logger);
                 continue;
             }
