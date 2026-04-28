@@ -12,6 +12,10 @@ services:
       - FORCE_REBUILD=${FORCE_REBUILD:-0}
       - SERVER_ADDRESS=${SERVER_ADDRESS:-localhost}
       - GAME_PORT=${GAME_PORT:-9339}
+      - SETTINGS_FILE_LOCATION=${SETTINGS_FILE_LOCATION:-./Game/Data/Settings/settings.txt}
+      - CACHE_INFO_LOCATION=${CACHE_INFO_LOCATION:-./Game/Data/Caches}
+      - DATA_PATH=${DATA_HOST_PATH:-./Game/Data}
+      - KEYS_PATH=${KEYS_PATH:-./Game/Data}
       - DOTNET_RUNNING_IN_CONTAINER=true
     ports:
       - "${HTTP_PORT:-80}:80"
