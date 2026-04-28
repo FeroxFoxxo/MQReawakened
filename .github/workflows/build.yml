@@ -3,7 +3,7 @@ name: Create Portable Release
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   build-portable:
