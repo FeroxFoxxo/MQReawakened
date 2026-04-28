@@ -155,9 +155,9 @@ jobs:
         with:
           tag_name: latest-master
           name: "Latest Master Build"
-          body: "Automated portable build from master branch. Commit: ${{ github.sha }}"
+          body: "Automated portable build from main branch. Commit: ${{ github.sha }}"
           files: MQRLauncher.zip
-          prerelease: true
+          prerelease: false
           make_latest: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
