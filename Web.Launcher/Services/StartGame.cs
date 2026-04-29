@@ -72,8 +72,11 @@ public class StartGame(EventSink sink, ILogger<StartGame> logger, ServerConsole 
 
         try
         {
-            lWConfig.GameSettingsFile = SetFileValue.SetIfNotNull(lWConfig.GameSettingsFile, "Get Settings File",
+            if (!EnvironmentExt.IsContainerOrNonInteractive())
+            {
+                lWConfig.GameSettingsFile = SetFileValue.SetIfNotNull(lWConfig.GameSettingsFile, "Get Settings File",
                 "Settings File (*.txt)\0*.txt\0");
+            }
         }
         catch
         {
@@ -85,7 +88,9 @@ public class StartGame(EventSink sink, ILogger<StartGame> logger, ServerConsole 
             if (string.IsNullOrEmpty(lWConfig.GameSettingsFile) || !lWConfig.GameSettingsFile.EndsWith("settings.txt"))
             {
                 logger.LogError("Please enter the absolute file path for your game's 'settings.txt' file.");
-                lWConfig.GameSettingsFile = EnvironmentExt.IsContainerOrNonInteractive() ? "/data/Settings/settings.txt" : ConsoleExt.ReadOrEnv("SETTINGS_FILE_LOCATION", logger);
+                lWConfig.GameSettingsFile = EnvironmentExt.IsContainerOrNonInteractive() ?
+                    Environment.GetEnvironmentVariable("SETTINGS_FILE_LOCATION") ?? "/data/Settings/settings.txt"
+                    : ConsoleExt.ReadOrEnv("SETTINGS_FILE_LOCATION", logger);
                 continue;
             }
 

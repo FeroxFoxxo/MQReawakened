@@ -39,8 +39,11 @@ public static class GetInfoFile
 
         try
         {
-            defaultFile = SetFileValue.SetIfNotNull(defaultFile, $"Get the {cacheName} '__info' Cache File",
+            if (!EnvironmentExt.IsContainerOrNonInteractive())
+            {
+                defaultFile = SetFileValue.SetIfNotNull(defaultFile, $"Get the {cacheName} '__info' Cache File",
                 $"{cacheName} Info File (__info)\0__info\0");
+            }
         }
         catch
         {
@@ -52,7 +55,9 @@ public static class GetInfoFile
             if (string.IsNullOrEmpty(defaultFile) || !defaultFile.EndsWith("__info"))
             {
                 logger.LogError("Please enter the absolute file path for the {Type} '__info' cache file.", lowerName);
-                defaultFile = EnvironmentExt.IsContainerOrNonInteractive() ? "/data/Caches/__info" : ConsoleExt.ReadOrEnv("CACHE_INFO_LOCATION", logger) ?? string.Empty;
+                defaultFile = EnvironmentExt.IsContainerOrNonInteractive()
+                    ? Environment.GetEnvironmentVariable("CACHE_INFO_LOCATION")
+                    ?? "/data/Caches/__info" : ConsoleExt.ReadOrEnv("CACHE_INFO_LOCATION", logger);
                 logger.LogInformation("Found cache file: {Path}", defaultFile);
                 continue;
             }

@@ -1,6 +1,5 @@
 ﻿using LitJson;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Server.Reawakened.Database.Characters;
 using Server.Reawakened.XMLs.Bundles.Internal;
 using Web.Apps.Leaderboards.Database.Scores;
@@ -9,7 +8,7 @@ namespace Web.Apps.Leaderboards.API.Scores;
 
 [Route("Apps/leaderboards/api/character/{uuid}/{characterId}/scores")]
 public class CharacterScoresController(InternalLeaderboards leaderboards, CharacterHandler characterHandler,
-    TopScoresHandler topScoresHandler, ILogger<CharacterScoresController> logger) : Controller
+    TopScoresHandler topScoresHandler) : Controller
 {
     [HttpGet]
     public IActionResult GetScores([FromRoute] string uuid, [FromRoute] string characterId)
@@ -36,16 +35,22 @@ public class CharacterScoresController(InternalLeaderboards leaderboards, Charac
         {
             var gameId = leaderboards.Games.FirstOrDefault(x => x.name == score.Key).id;
 
-            var topScore = topScoresHandler
-                .GetScoresFromId(gameId).Scores
+            var topScore = topScoresHandler.GetScoresFromId(gameId);
+
+            if (topScore == null)
+                continue;
+
+            var characterScore = topScore.Scores
                 .FirstOrDefault(x => x.CharacterId == character.Id);
 
-            if (topScore != null)
-                scores[gameId.ToString()] = new JsonData
-                {
-                    ["score"] = topScore.Score,
-                    ["time"] = topScore.Time
-                };
+            if (characterScore == null)
+                continue;
+
+            scores[gameId.ToString()] = new JsonData
+            {
+                ["score"] = characterScore.Score,
+                ["time"] = characterScore.Time
+            };
         }
 
         characterScores["scores"] = scores;
