@@ -14,6 +14,9 @@ $DefaultDOB    = if ($env:DEFAULT_DOB)      { $env:DEFAULT_DOB }      else { "01
 $ServerAddress = if ($env:SERVER_ADDRESS)   { $env:SERVER_ADDRESS }   else { "localhost" }
 $GamePort      = if ($env:GAME_PORT)        { $env:GAME_PORT }        else { "9339" }
 
+# Change this to $true to rebuild the server if you want to switch to a different game version
+$FORCE_REBUILD = if ($env:FORCE_REBUILD)    { $env:FORCE_REBUILD }    else { $false }
+
 # --- CONFIGURATION & PATHS ---
 $BaseDir = $PSScriptRoot
 $GameFilesDir = Join-Path $BaseDir "MQData"
@@ -118,10 +121,50 @@ function Sync-Directory {
     }
 }
 
+# --- SHORTCUT CREATOR ---
+function Create-DesktopShortcut {
+    param([string]$TargetBatchFile)
+    
+    $DesktopPath = [System.Environment]::GetFolderPath("Desktop")
+    $ShortcutPath = Join-Path $DesktopPath "Play MQReawakened.lnk"
+
+    # Only proceed if the shortcut does not exist
+    if (!(Test-Path $ShortcutPath)) {
+        try {
+            $WshShell = New-Object -ComObject WScript.Shell
+            $Shortcut = $WshShell.CreateShortcut($ShortcutPath)
+			$IconDir = Join-Path $SettingsDir "pa"
+            
+            # Point to cmd.exe to ensure the environment initializes correctly
+            $Shortcut.TargetPath = "cmd.exe"
+            $Shortcut.Arguments = "/c `"$TargetBatchFile`""
+            $Shortcut.WorkingDirectory = $PSScriptRoot
+            $Shortcut.Description = "Launch MQReawakened Server & Client"
+			
+			$Shortcut.IconLocation = Join-Path $IconDir "pa.exe"
+            
+            $Shortcut.Save()
+            Write-Host "[entrypoint] New desktop shortcut created." -ForegroundColor Green
+        } catch {
+            Write-Host "[entrypoint] Could not create desktop shortcut automatically." -ForegroundColor Yellow
+        }
+    }
+}
+
+# Helper for path joining in the shortcut function
+function Join-Object { param($Path, $ChildPath) return [System.IO.Path]::Combine($Path, $ChildPath) }
+
 # --- EXECUTION ---
 if (!(Check-Environment)) { 
     Write-Host "Please ensure your Tools folder is populated."
     Pause; return 
+}
+
+# Define the source .bat file in the root directory
+$BatFile = Join-Path $PSScriptRoot "Play MQReawakened.bat"
+
+if (Test-Path $BatFile) {
+    Create-DesktopShortcut -TargetBatchFile $BatFile
 }
 
 Write-Host "[entrypoint] Initializing MQReawakened" -ForegroundColor White
@@ -212,6 +255,11 @@ if (!(Test-Path $SettingsFileLocation)) {
 
 # --- STEP 4: CACHE EXTRACTION ---
 $CacheArchive = Get-ChildItem -Path $CachesArchivesDir -Include *.zip, *.7z -Recurse | Sort-Object LastWriteTime -Descending | Select-Object -First 1
+
+if ($null -eq $CacheArchive) {
+    Write-Host "CRITICAL: No UniqueBundles found in $CachesArchivesDir" -ForegroundColor Red
+    Pause; return
+}
 
 if ($null -ne $CacheArchive -and !(Test-Path $CacheInfoLocation)) {
     Write-Host "[entrypoint] Caches missing or cleared. Extracting..." -ForegroundColor Magenta
