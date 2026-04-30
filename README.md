@@ -29,6 +29,8 @@
 
 > [!IMPORTANT]
 > Looking to host your own server? Read the new step‑by‑step setup guide: [SETUP.md](SETUP.md)
+>
+> Looking to play the game? Read the new step‑by‑step setup guide: [SETUP_LAUNCHER.md](SETUP_LAUNCHER.md)
 
 ### Information
 
