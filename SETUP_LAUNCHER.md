@@ -19,6 +19,7 @@ If you’re ready to swing into Ook and host your own server emulator, this guid
 ## TL;DR
 
 - Download the [MQRLauncher](https://github.com/FeroxFoxxo/MQReawakened/releases/latest) file
+- Download the [MQClient](https://github.com/FeroxFoxxo/MQClient/releases/latest) file (this is used for playing the 2012 versions)
 - Create a `.env` file based on the [example env file](https://github.com/FeroxFoxxo/MQReawakened/blob/main/.env.example) (all variables you need to edit live there)
 - Place the original client zip under `MQData/Build/Archives/Client/...`
 - Place the caches archive (UniqueBundles.7z) under `MQData/Build/Archives/Caches/...`
@@ -30,6 +31,8 @@ If you’re ready to swing into Ook and host your own server emulator, this guid
 - .env example: [View](https://github.com/FeroxFoxxo/MQReawakened/blob/main/.env.example) • [Download raw](https://raw.githubusercontent.com/FeroxFoxxo/MQReawakened/main/.env.example)
   - Save as `.env` in the folder you plan to use for the server
 - Download the [MQRLauncher](https://github.com/FeroxFoxxo/MQReawakened/releases/latest)
+- Download the [MQClient](https://github.com/FeroxFoxxo/MQClient/releases/latest)
+  - This is used for the 2012 version
 
 ## Obtain required game files
 
@@ -39,7 +42,7 @@ If you’re ready to swing into Ook and host your own server emulator, this guid
 
 1. **2014 Client (Required for server compilation)**: Contains the DLLs needed to compile the server
 2. **2013 Client (Optional for playing the game)**: Version of the game you want to play on, defaults to what's used to compile the server (2014)
-3. **2012 Client (Optional for playing the game)**: Version of the game you want to play on, defaults to what's used to compile the server (2014)
+3. **2012 WebPlayer Client (Optional for playing the game)**: You can find these inside of the 2012 zip on the Override Client archive below.
 
 ### External Downloads
 
