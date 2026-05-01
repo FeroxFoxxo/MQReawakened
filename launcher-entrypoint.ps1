@@ -11,11 +11,18 @@ function Load-EnvFile {
         Write-Host "[entrypoint] Loading configuration from .env..." -ForegroundColor Cyan
         Get-Content $Path | ForEach-Object {
             $line = $_.Trim()
+            # Ignore truly empty lines or lines starting with a comment
             if ($line -and !$line.StartsWith("#") -and $line.Contains("=")) {
                 $name, $value = $line.Split("=", 2)
+                
                 $cleanName = $name.Trim()
-                $cleanValue = $value.Trim().Trim('"').Trim("'")
-                Set-Content -Path "env:$cleanName" -Value $cleanValue
+                
+                # Logic to strip trailing comments from the value
+                $cleanValue = $value.Split("#")[0].Trim().Trim('"').Trim("'")
+                
+                if ($cleanName) {
+                    Set-Content -Path "env:$cleanName" -Value $cleanValue
+                }
             }
         }
     }
