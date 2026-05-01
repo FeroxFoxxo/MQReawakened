@@ -278,6 +278,20 @@ if (!(Test-Path $SettingsFileLocation)) {
     $TargetArchive = if ($null -ne $ClientOverride) { $ClientOverride } else { $Client2014 }
     Expand-ArchiveSmart -Archive $TargetArchive -Destination $SettingsDir
     Flatten-Directory -TargetDir $SettingsDir
+	
+	# Check if a WebPlayers folder was extracted into Settings
+    $NestedWebPlayers = Join-Path $SettingsDir "WebPlayers"
+    if (Test-Path $NestedWebPlayers) {
+        Write-Host "  -> Detected WebPlayers in override. Migrating to Game/Data..." -ForegroundColor Cyan
+        
+        $TargetWebPath = Join-Path $DataDir "WebPlayers"
+        
+        # If a WebPlayers folder already exists in Game/Data, remove it to update
+        if (Test-Path $TargetWebPath) { Remove-Item $TargetWebPath -Recurse -Force }
+        
+        # Move it from Game/Data/Settings/WebPlayers -> Game/Data/WebPlayers
+        Move-Item -Path $NestedWebPlayers -Destination $TargetWebPath -Force
+    }
 }
 
 # --- STEP 4: CACHE EXTRACTION ---
