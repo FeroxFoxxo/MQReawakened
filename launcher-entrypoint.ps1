@@ -241,6 +241,10 @@ if ($NeedsClean) {
         Remove-Item -Path $BuildOutputDir -Recurse -Force -ErrorAction SilentlyContinue 
     }
     
+	if (Test-Path $SettingsDir) { 
+        Remove-Item -Path $SettingsDir -Recurse -Force -ErrorAction SilentlyContinue 
+    }
+	
     if (Test-Path $CachesDir) { 
         Remove-Item -Path $CachesDir -Recurse -Force -ErrorAction SilentlyContinue 
     }
