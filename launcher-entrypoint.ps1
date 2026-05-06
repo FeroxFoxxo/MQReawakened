@@ -4,8 +4,35 @@ $PSScriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Definition
 if ([string]::IsNullOrEmpty($PSScriptRoot)) { $PSScriptRoot = Get-Location }
 Set-Location $PSScriptRoot
 
+# --- LOAD EXTERNAL CONFIG ---
+function Load-EnvFile {
+    param([string]$Path)
+    if (Test-Path $Path) {
+        Write-Host "[entrypoint] Loading configuration from .env..." -ForegroundColor Cyan
+        Get-Content $Path | ForEach-Object {
+            $line = $_.Trim()
+            # Ignore truly empty lines or lines starting with a comment
+            if ($line -and !$line.StartsWith("#") -and $line.Contains("=")) {
+                $name, $value = $line.Split("=", 2)
+                
+                $cleanName = $name.Trim()
+                
+                # Logic to strip trailing comments from the value
+                $cleanValue = $value.Split("#")[0].Trim().Trim('"').Trim("'")
+                
+                if ($cleanName) {
+                    Set-Content -Path "env:$cleanName" -Value $cleanValue
+                }
+            }
+        }
+    }
+}
+
+Load-EnvFile -Path (Join-Path $PSScriptRoot ".env")
+
 # --- ENVIRONMENT VARIABLES ---
-$RepoUrl       = "https://github.com/FeroxFoxxo/MQReawakened.git"
+$GHCROwner     = if ($env:GHCR_OWNER)       { $env:GHCR_OWNER }       else { "FeroxFoxxo" }
+$GHCRRepo      = if ($env:GHCR_REPO)        { $env:GHCR_REPO }        else { "MQReawakened" }
 $DefaultUser   = if ($env:DEFAULT_USERNAME) { $env:DEFAULT_USERNAME } else { "admin" }
 $DefaultPass   = if ($env:DEFAULT_PASSWORD) { $env:DEFAULT_PASSWORD } else { "admin123" }
 $DefaultEmail  = if ($env:DEFAULT_EMAIL)    { $env:DEFAULT_EMAIL }    else { "admin@example.com" }
@@ -14,8 +41,12 @@ $DefaultDOB    = if ($env:DEFAULT_DOB)      { $env:DEFAULT_DOB }      else { "01
 $ServerAddress = if ($env:SERVER_ADDRESS)   { $env:SERVER_ADDRESS }   else { "localhost" }
 $GamePort      = if ($env:GAME_PORT)        { $env:GAME_PORT }        else { "9339" }
 
-# Change this to $true to rebuild the server if you want to switch to a different game version
-$FORCE_REBUILD = if ($env:FORCE_REBUILD)    { $env:FORCE_REBUILD }    else { $false }
+# Logic for boolean strings from .env
+$FORCE_REBUILD = ($env:FORCE_REBUILD -eq "1" -or $env:FORCE_REBUILD -eq "true")
+
+# This regex [0-9]+ ensures we ONLY take the numbers, ignoring any trailing comments
+$rawThreads = if ($env:SEVEN_Z_THREADS) { $env:SEVEN_Z_THREADS } else { "3" }
+$SevenZipThreads = if ($rawThreads -match "(\d+)") { $Matches[1] } else { "3" }
 
 # --- CONFIGURATION & PATHS ---
 $BaseDir = $PSScriptRoot
@@ -78,23 +109,24 @@ function Expand-ArchiveSmart {
     param([System.IO.FileInfo]$Archive, [string]$Destination)
     
     if (!(Test-Path $Destination)) { New-Item -ItemType Directory -Path $Destination -Force | Out-Null }
-    Write-Host "  -> Extracting $($Archive.Name)..." -ForegroundColor Gray
+    Write-Host "  -> Extracting $($Archive.Name) (Threads: $SevenZipThreads)..." -ForegroundColor Gray
     
-    # Path to your portable NanaZip
     $NanaZipPath = Join-Path $PSScriptRoot "MQData\Tools\NanaZip\x64\NanaZip.Universal.Console.exe"
 
     if (Test-Path $NanaZipPath) {
-        # x = Extract with full paths
-        # -o = Output directory (no space after -o)
-        # -y = Assume Yes to all queries (overwrite)
-        & "$NanaZipPath" x "$($Archive.FullName)" "-o$Destination" -y | Out-Null
-    } 
+        $archivePath = $Archive.FullName
+        $outPath = "-o$Destination"
+        $threadSwitch = "-mmt=$SevenZipThreads"
+
+        # Splatting or direct call with explicit variables
+        & "$NanaZipPath" x "$archivePath" "$outPath" $threadSwitch -y | Out-Null
+    }
     else {
         Write-Host "  -> NanaZip not found, falling back to System Zip..." -ForegroundColor Yellow
         if ($Archive.Extension -eq ".7z") {
             Write-Error "Cannot extract .7z files without NanaZip or 7-Zip installed."
         } else {
-            Expand-Archive -Path $Archive.FullName -DestinationPath $Destination -Force
+            Expand-Archive -Path "$($Archive.FullName)" -DestinationPath "$Destination" -Force
         }
     }
 }
@@ -193,6 +225,8 @@ if (Test-Path (Join-Path $ServerDir ".git")) {
     }
 } 
 elseif (!(Test-Path $InitProj)) {
+	$RepoUrl = "https://github.com/" + $GHCROwner + "/" + $GHCRRepo + ".git"
+	
     Write-Host "[entrypoint] Cloning repository into MQData..." -ForegroundColor Yellow
     # Clone into the specific server directory
     git clone $RepoUrl $ServerDir
@@ -207,6 +241,10 @@ if ($NeedsClean) {
         Remove-Item -Path $BuildOutputDir -Recurse -Force -ErrorAction SilentlyContinue 
     }
     
+	if (Test-Path $SettingsDir) { 
+        Remove-Item -Path $SettingsDir -Recurse -Force -ErrorAction SilentlyContinue 
+    }
+	
     if (Test-Path $CachesDir) { 
         Remove-Item -Path $CachesDir -Recurse -Force -ErrorAction SilentlyContinue 
     }
@@ -218,7 +256,7 @@ if ($NeedsClean) {
 	
 	$DownloadsDir = Join-Path $DataDir "Downloads"
 	if (Test-Path $DownloadsDir) { 
-        Remove-Item -Path $DownloadsDir -Force -ErrorAction SilentlyContinue 
+        Remove-Item -Path $DownloadsDir -Recurse -Force -ErrorAction SilentlyContinue 
     }
 }
 
@@ -251,6 +289,20 @@ if (!(Test-Path $SettingsFileLocation)) {
     $TargetArchive = if ($null -ne $ClientOverride) { $ClientOverride } else { $Client2014 }
     Expand-ArchiveSmart -Archive $TargetArchive -Destination $SettingsDir
     Flatten-Directory -TargetDir $SettingsDir
+	
+	# Check if a WebPlayers folder was extracted into Settings
+    $NestedWebPlayers = Join-Path $SettingsDir "WebPlayers"
+    if (Test-Path $NestedWebPlayers) {
+        Write-Host "  -> Detected WebPlayers in override. Migrating to Game/Data..." -ForegroundColor Cyan
+        
+        $TargetWebPath = Join-Path $DataDir "WebPlayers"
+        
+        # If a WebPlayers folder already exists in Game/Data, remove it to update
+        if (Test-Path $TargetWebPath) { Remove-Item $TargetWebPath -Recurse -Force }
+        
+        # Move it from Game/Data/Settings/WebPlayers -> Game/Data/WebPlayers
+        Move-Item -Path $NestedWebPlayers -Destination $TargetWebPath -Force
+    }
 }
 
 # --- STEP 4: CACHE EXTRACTION ---

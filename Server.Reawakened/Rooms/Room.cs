@@ -448,13 +448,12 @@ public class Room : Timer
 
     public static Vector2 GetSpawnCoordinates(BaseComponent spawnLocation)
     {
-        var rect = spawnLocation.Rectangle;
         var pos = spawnLocation.Position;
 
         return new Vector2()
         {
-            x = (rect.X == 0 ? pos.X : rect.X) + spawnLocation.Rectangle.Width / 2 - .5f,
-            y = (rect.Y == 0 ? pos.Y : rect.Y) + spawnLocation.Rectangle.Height / 2 + .25f
+            x = pos.X + spawnLocation.Rectangle.Width / 2 - .5f,
+            y = pos.Y + spawnLocation.Rectangle.Height / 2 + .25f
         };
     }
 
