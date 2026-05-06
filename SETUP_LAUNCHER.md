@@ -16,6 +16,9 @@ If you’re ready to swing into Ook and host your own server emulator, this guid
 > [!IMPORTANT]
 > Since we aren't modifying the installer, you should start the game from ``/pa/pa.exe`` (the patcher) directly. Most clients come with an InstallMQ.exe and uninstall.exe file that you may want to remove from the archive to not confuse players before uploading it to your server - adding a text file to direct them to run ``/pa/pa.exe``.
 
+> [!NOTE]
+> You can also watch this video guide: https://youtu.be/QB06PacS_0A
+
 ## TL;DR
 
 - Download the [MQRLauncher](https://github.com/FeroxFoxxo/MQReawakened/releases/latest) file
