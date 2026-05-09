@@ -9,7 +9,6 @@ using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models.Character;
 using Server.Reawakened.Players.Models.Pets;
-using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.XMLs.Bundles.Base;
 
 namespace Server.Reawakened.Players.Extensions;
@@ -118,14 +117,18 @@ public static class CharacterInventoryExtensions
             return;
 
         var characterData = player.Character;
+        var itemCount = 0;
 
         if (!characterData.Inventory.Items.ContainsKey(item.ItemId))
             characterData.Inventory.Items.Add(item.ItemId, new ItemModel(item.ItemId, count, item.BindingCount, item.DelayUseExpiry));
 
         else if (characterData.TryGetItem(item.ItemId, out var gottenItem))
+        {
             gottenItem.Count += count;
+            itemCount = gottenItem.Count;
+        }
 
-        player.CheckObjective(ObjectiveEnum.Inventorycheck, item.ItemId.ToString(), item.PrefabName, count, itemCatalog);
+        player.CheckObjective(ObjectiveEnum.Inventorycheck, item.ItemId.ToString(), item.PrefabName, itemCount, itemCatalog);
     }
 
     public static void AddKit(this CharacterModel characterData, List<ItemDescription> items, int count)
@@ -204,7 +207,8 @@ public static class CharacterInventoryExtensions
         var petId = player.GetEquippedPetId(serverRConfig);
         var refillCurrentEnergy = false;
 
-        if (petId == "0" || !itemCatalog.GetItemFromId(int.Parse(petId)).IsPet()) return;
+        if (petId == "0" || petId == string.Empty || itemCatalog.GetItemFromId(int.Parse(petId)) == null
+            || !itemCatalog.GetItemFromId(int.Parse(petId)).IsPet()) return;
 
         if (!player.Character.Pets.TryGetValue(petId, out var currentPet))
         {
@@ -227,7 +231,8 @@ public static class CharacterInventoryExtensions
 
         var petId = player.GetEquippedPetId(serverRConfig);
 
-        if (!itemCatalog.GetItemFromId(int.Parse(petId)).IsPet() ||
+        if (petId == "0" || petId == string.Empty || itemCatalog.GetItemFromId(int.Parse(petId)) == null ||
+            !itemCatalog.GetItemFromId(int.Parse(petId)).IsPet() ||
             !player.Character.Pets.TryGetValue(petId, out var currentPet)) return;
 
         else
