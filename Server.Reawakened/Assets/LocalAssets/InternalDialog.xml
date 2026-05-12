@@ -420,7 +420,7 @@
             <Dialog dialogId="691" conversationId="1941" minimumReputation="5" />
         </NPC>
     </Level>
-    <Level name="Cannon Corral" id="147">
+    <Level name="Cannon Corral" id="466">
         <NPC objectId="96928" name="Mainsail" descriptionId="0">
             <Dialog dialogId="1473" conversationId="3733" minimumReputation="5" />
         </NPC>
