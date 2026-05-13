@@ -112,6 +112,9 @@
         <NPC objectId="658" name="Samez" descriptionId="0">
             <Dialog dialogId="859" conversationId="2375" minimumReputation="1" />
         </NPC>
+        <NPC objectId="6580151" name="Lysa" descriptionId="0">
+            <Dialog dialogId="1471" conversationId="3731" minimumReputation="1" />
+        </NPC>
     </Level>
     <Level name="Crossroads Path" id="99">
         <NPC objectId="856" name="The Underbelly Guard" descriptionId="0">
@@ -357,6 +360,11 @@
             <Dialog dialogId="702" conversationId="1952" minimumReputation="1" />
         </NPC>
     </Level>
+    <Level name="Hidden Hollow" id="465">
+        <NPC objectId="5652" name="Yee" descriptionId="0">
+            <Dialog dialogId="1472" conversationId="3732" minimumReputation="1" />
+        </NPC>
+    </Level>
 
     <!-- Sea Dragons Tribe -->
     <Level name="Plunder Alley" id="274">
@@ -401,7 +409,8 @@
             <Dialog dialogId="678" conversationId="1928" minimumReputation="10" />
         </NPC>
     </Level>
-    <Level name="Outlaw Beach" id="295"> <!-- Custom -->
+    <Level name="Outlaw Beach" id="295">
+        <!-- Custom -->
         <NPC objectId="27997" name="Killick" descriptionId="0">
             <Dialog dialogId="1255" conversationId="3035" minimumReputation="1" />
         </NPC>
@@ -409,6 +418,11 @@
     <Level name="Anchor Falls" id="147">
         <NPC objectId="14397" name="Lucky" descriptionId="0">
             <Dialog dialogId="691" conversationId="1941" minimumReputation="5" />
+        </NPC>
+    </Level>
+    <Level name="Cannon Corral" id="466">
+        <NPC objectId="96928" name="Mainsail" descriptionId="0">
+            <Dialog dialogId="1473" conversationId="3733" minimumReputation="5" />
         </NPC>
     </Level>
 

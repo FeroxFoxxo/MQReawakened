@@ -20,7 +20,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: MQData/Tools
-          key: ${{ runner.os }}-tools-v4
+          key: ${{ runner.os }}-tools-v5
 
       - name: Create Project Directory Structure
         run: |
@@ -75,7 +75,7 @@ jobs:
           
           # We use -Runtime "dotnet" and specify the Channel. 
           # Forcing -InstallDir ensures it stays within your portable structure.
-          ./dotnet-install.ps1 -Channel 8.0 -InstallDir "MQData/Tools/dotnet" -Architecture x64
+          ./dotnet-install.ps1 -Channel 10.0 -InstallDir "MQData/Tools/dotnet" -Architecture x64
           
           # Verify installation
           if (Test-Path "MQData/Tools/dotnet/dotnet.exe") {
