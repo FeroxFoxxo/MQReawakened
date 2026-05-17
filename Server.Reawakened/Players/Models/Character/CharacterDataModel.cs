@@ -205,30 +205,34 @@ public class CharacterDataModel(CharacterDbEntry entry, GameVersion version) : C
         var itemList = new List<ItemDescription>();
 
         var defenseType = ItemEffectType.Defence;
-        var progression = 0;
+        var tribe = TribeType.Unknown;
         switch (effect)
         {
             case ItemEffectType.FireDamage:
                 defenseType = ItemEffectType.ResistFire;
-                progression = TribesProgression[TribeType.Outlaw].BadgePoints;
+                tribe = TribeType.Outlaw;
                 break;
             case ItemEffectType.EarthDamage:
                 defenseType = ItemEffectType.ResistEarth;
-                progression = TribesProgression[TribeType.Bone].BadgePoints;
+                tribe = TribeType.Bone;
                 break;
             case ItemEffectType.AirDamage:
                 defenseType = ItemEffectType.ResistAir;
-                progression = TribesProgression[TribeType.Shadow].BadgePoints;
+                tribe = TribeType.Shadow;
                 break;
             case ItemEffectType.IceDamage:
                 defenseType = ItemEffectType.ResistIce;
-                progression = TribesProgression[TribeType.Wild].BadgePoints;
+                tribe = TribeType.Wild;
                 break;
             case ItemEffectType.PoisonDamage:
                 defenseType = ItemEffectType.ResistEarth;
-                progression = TribesProgression[TribeType.Bone].BadgePoints;
+                tribe = TribeType.Bone;
                 break;
         }
+
+        var progression = TribesProgression.TryGetValue(tribe, out var badgeType)
+        ? badgeType.BadgePoints
+        : 0;
 
         foreach (var item in Equipment.EquippedItems)
             itemList.Add(itemCatalog.GetItemFromId(item.Value));
@@ -245,30 +249,38 @@ public class CharacterDataModel(CharacterDbEntry entry, GameVersion version) : C
 
         // For blunt damage
         var effect = ItemEffectType.Unknown;
-        var progression = 0;
-        switch (usedItem.Elemental)
+        var tribe = TribeType.Unknown;
+
+        if (usedItem != null)
         {
-            case Elemental.Fire:
-                effect = ItemEffectType.FireDamage;
-                progression = TribesProgression[TribeType.Outlaw].BadgePoints;
-                break;
-            case Elemental.Earth:
-                effect = ItemEffectType.EarthDamage;
-                progression = TribesProgression[TribeType.Bone].BadgePoints;
-                break;
-            case Elemental.Air:
-                effect = ItemEffectType.AirDamage;
-                progression = TribesProgression[TribeType.Shadow].BadgePoints;
-                break;
-            case Elemental.Ice:
-                effect = ItemEffectType.IceDamage;
-                progression = TribesProgression[TribeType.Wild].BadgePoints;
-                break;
-            case Elemental.Poison:
-                effect = ItemEffectType.EarthDamage;
-                progression = TribesProgression[TribeType.Bone].BadgePoints;
-                break;
+            switch (usedItem.Elemental)
+            {
+                case Elemental.Fire:
+                    effect = ItemEffectType.FireDamage;
+                    tribe = TribeType.Outlaw;
+                    break;
+                case Elemental.Earth:
+                    effect = ItemEffectType.EarthDamage;
+                    tribe = TribeType.Bone;
+                    break;
+                case Elemental.Air:
+                    effect = ItemEffectType.AirDamage;
+                    tribe = TribeType.Shadow;
+                    break;
+                case Elemental.Ice:
+                    effect = ItemEffectType.IceDamage;
+                    tribe = TribeType.Wild;
+                    break;
+                case Elemental.Poison:
+                    effect = ItemEffectType.EarthDamage;
+                    tribe = TribeType.Bone;
+                    break;
+            }
         }
+
+        var progression = TribesProgression.TryGetValue(tribe, out var badgeType)
+        ? badgeType.BadgePoints
+        : 0;
 
         foreach (var item in Equipment.EquippedItems)
             itemList.Add(itemCatalog.GetItemFromId(item.Value));
