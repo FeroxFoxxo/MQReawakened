@@ -40,7 +40,6 @@ public class GenericControllerComp : Component<GenericCollectible>
         Collected = true;
 
         var players = Room.GetPlayers();
-
         var collectedValue = Value * players.Length;
 
         Room.SentEntityTriggered(Id, player, true, true);
