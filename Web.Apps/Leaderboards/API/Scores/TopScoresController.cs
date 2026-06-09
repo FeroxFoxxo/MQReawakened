@@ -30,7 +30,7 @@ public class TopScoresController(CharacterHandler characterHandler, TopScoresHan
         {
             ["status"] = true,
             ["characters"] = NewArray(),
-            ["game"] = new JsonData()
+            ["game"] = new JsonData
             {
                 ["id"] = game.id,
                 ["name"] = game.name,
@@ -50,6 +50,10 @@ public class TopScoresController(CharacterHandler characterHandler, TopScoresHan
             topScoresObject["game"]["ranked"] = game.ranked;
 
         var topScores = topScoresHandler.GetScoresFromId(_gameId);
+        
+        var allScores = new List<TopScore>();
+        var dailyScores = new List<TopScore>();
+        var weeklyScores = new List<TopScore>();
 
         if (topScores != null)
         {
@@ -59,6 +63,8 @@ public class TopScoresController(CharacterHandler characterHandler, TopScoresHan
             var hasChanges = false;
 
             var rank = 1;
+            var dailyRank = 1;
+            var weeklyRank = 1;
             foreach (var score in sortedScores)
             {
                 var character = characterHandler.GetCharacterFromId(score.CharacterId);
@@ -69,7 +75,7 @@ public class TopScoresController(CharacterHandler characterHandler, TopScoresHan
                     hasChanges = true;
                     continue;
                 }
-
+                
                 var charJson = new JsonData
                 {
                     ["id"] = character.Id,
@@ -79,19 +85,48 @@ public class TopScoresController(CharacterHandler characterHandler, TopScoresHan
                     ["tribe"] = Enum.GetName(character.Allegiance)
                 };
 
-                topScoresObject["characters"].Add(charJson);
-
+                if (allScores.All(x => x.CharacterId != character.Id)
+                    && dailyScores.All(x => x.CharacterId != character.Id)
+                    && weeklyScores.All(x => x.CharacterId != character.Id))
+                    topScoresObject["characters"].Add(charJson);
+                
                 var scoreJson = new JsonData
                 {
                     ["score"] = score.Score,
-                    ["rank"] = rank,
+                    ["rank"] = score.Rank,
                     ["characterId"] = score.CharacterId,
                     ["time"] = score.Time
                 };
 
-                topScoresObject["scores"]["alltime"].Add(scoreJson);
+                if (allScores.All(x => x.CharacterId != score.CharacterId))
+                {
+                    scoreJson["rank"] = rank;
+                    topScoresObject["scores"]["alltime"].Add(scoreJson);
+                    rank++;
+                }
+                
+                var dateTime = DateTime.ParseExact(score.Time, "yyyy'-'MM'-'dd'T'HH':'mm':'sszzz", null);
 
-                rank++;
+                var timeDiff = dateTime - DateTime.Now;
+                
+                if (dailyScores.All(x => x.CharacterId != score.CharacterId) && dateTime.Day == DateTime.Now.Day)
+                {
+                    scoreJson["rank"] = dailyRank;
+                    topScoresObject["scores"]["day"].Add(scoreJson);
+                    dailyRank++;
+                }
+
+                if (weeklyScores.All(x => x.CharacterId != score.CharacterId) &&
+                    timeDiff.TotalDays < 7 && dateTime.Month == DateTime.Now.Month)
+                {
+                    scoreJson["rank"] = weeklyRank;
+                    topScoresObject["scores"]["week"].Add(scoreJson);
+                    weeklyRank++;
+                }
+                
+                allScores.Add(score);
+                dailyScores.Add(score);
+                weeklyScores.Add(score);
             }
 
             if (hasChanges)

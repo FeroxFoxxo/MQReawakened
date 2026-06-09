@@ -1,4 +1,5 @@
-﻿using Server.Reawakened.Network.Extensions;
+﻿using Server.Base.Core.Extensions;
+using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.XMLs.Bundles.Internal;
 using Web.Apps.Leaderboards.Data;
@@ -57,15 +58,26 @@ public class CompletedDistance : ExternalProtocol
 
         if (topScores.Scores.Any(x => x.CharacterId == Player.Character.Id))
         {
-            var existingScore = topScores.Scores.FirstOrDefault(x => x.CharacterId == Player.Character.Id);
+            var existingScores = topScores.Scores.FindAll(x => x.CharacterId == Player.Character.Id).DeepCopy();
 
-            if (score.Score < existingScore.Score)
-                return;
+            foreach (var existingScore in existingScores)
+            {
+                if (existingScore.Score < score.Score)
+                    continue;
 
-            topScores.Scores.Remove(existingScore);
-            topScores.Scores.Add(score);
+                if (existingScores.Count == 3)
+                {
+                    topScores.Scores.Remove(existingScore);
+                    topScores.Scores.Add(score);
+                }
+                else
+                {
+                    topScores.Scores.Add(score);
+                }
 
-            newHighScore = true;
+                newHighScore = true;
+                break;
+            }
         }
         else
         {
