@@ -66,6 +66,8 @@ public class RoomUpdate : ExternalProtocol
 
             Player.UpdateTribeProgression();
 
+			UpdateLeaderboards();
+
             Player.TempData.FirstLogin = false;
         }
         else
@@ -157,5 +159,43 @@ public class RoomUpdate : ExternalProtocol
                 sb.Append(setting);
 
         return sb.ToString();
+    }
+	
+    private void UpdateLeaderboards()
+    {
+        foreach (var score in Player.Character.BestMinigameTimes)
+        {
+            var gameId = Leaderboards.Games.FirstOrDefault(x => x.name == score.Key).id;
+
+            var topScores = TopScoresHandler.GetScoresFromId(gameId);
+
+            if (topScores == null)
+            {
+                var topScore = TopScoresHandler.Create(gameId, []);
+                topScores = TopScoresHandler.GetScoresFromData(topScore);
+            }
+
+            var characterScore = topScores.Scores
+                .FirstOrDefault(x => x.CharacterId == Player.Character.Id);
+
+            if (characterScore != null)
+                continue;
+
+            var scoreTime = DateTime.Now.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'sszzz");
+            
+            var leaderboardScore = score.Key == "LV_CRS_Minigame_MonkeyBlast" ? score.Value : score.Value * 100;
+
+            var newScore = new TopScore
+            {
+                Score = (int)leaderboardScore,
+                Rank = 0,
+                Time = scoreTime,
+                CharacterId = Player.Character.Id
+            };
+
+            topScores.Scores.Add(newScore);
+
+            TopScoresHandler.Update(topScores.Write);
+        }
     }
 }
