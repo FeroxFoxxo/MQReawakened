@@ -113,14 +113,9 @@ public class FinishedMinigame : ExternalProtocol
                     continue;
 
                 if (existingScores.Count == 3)
-                {
                     topScores.Scores.Remove(existingScore);
-                    topScores.Scores.Add(score);
-                }
-                else
-                {
-                    topScores.Scores.Add(score);
-                }
+                    
+                topScores.Scores.Add(score);
 
                 newHighScore = true;
                 break;

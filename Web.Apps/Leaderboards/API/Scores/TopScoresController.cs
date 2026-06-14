@@ -62,9 +62,9 @@ public class TopScoresController(CharacterHandler characterHandler, TopScoresHan
 
             var hasChanges = false;
 
-            var rank = 1;
-            var dailyRank = 1;
+            var allRank = 1;
             var weeklyRank = 1;
+            var dailyRank = 1;
             foreach (var score in sortedScores)
             {
                 var character = characterHandler.GetCharacterFromId(score.CharacterId);
@@ -100,33 +100,33 @@ public class TopScoresController(CharacterHandler characterHandler, TopScoresHan
 
                 if (allScores.All(x => x.CharacterId != score.CharacterId))
                 {
-                    scoreJson["rank"] = rank;
+                    scoreJson["rank"] = allRank;
                     topScoresObject["scores"]["alltime"].Add(scoreJson);
-                    rank++;
+                    allRank++;
+                    allScores.Add(score);
                 }
                 
                 var dateTime = DateTime.ParseExact(score.Time, "yyyy'-'MM'-'dd'T'HH':'mm':'sszzz", null);
 
                 var timeDiff = dateTime - DateTime.Now;
                 
-                if (dailyScores.All(x => x.CharacterId != score.CharacterId) && dateTime.Day == DateTime.Now.Day)
-                {
-                    scoreJson["rank"] = dailyRank;
-                    topScoresObject["scores"]["day"].Add(scoreJson);
-                    dailyRank++;
-                }
-
-                if (weeklyScores.All(x => x.CharacterId != score.CharacterId) &&
-                    timeDiff.TotalDays < 7 && dateTime.Month == DateTime.Now.Month)
+                if (weeklyScores.All(x => x.CharacterId != score.CharacterId)
+                    && timeDiff.TotalDays < 7 && dateTime.Month == DateTime.Now.Month)
                 {
                     scoreJson["rank"] = weeklyRank;
                     topScoresObject["scores"]["week"].Add(scoreJson);
                     weeklyRank++;
+                    weeklyScores.Add(score);
                 }
                 
-                allScores.Add(score);
-                dailyScores.Add(score);
-                weeklyScores.Add(score);
+                if (dailyScores.All(x => x.CharacterId != score.CharacterId)
+                    && dateTime.Day == DateTime.Now.Day)
+                {
+                    scoreJson["rank"] = dailyRank;
+                    topScoresObject["scores"]["day"].Add(scoreJson);
+                    dailyRank++;
+                    dailyScores.Add(score);
+                }
             }
 
             if (hasChanges)

@@ -62,18 +62,13 @@ public class CompletedDistance : ExternalProtocol
 
             foreach (var existingScore in existingScores)
             {
-                if (existingScore.Score < score.Score)
+                if (score.Score < existingScore.Score)
                     continue;
 
                 if (existingScores.Count == 3)
-                {
                     topScores.Scores.Remove(existingScore);
-                    topScores.Scores.Add(score);
-                }
-                else
-                {
-                    topScores.Scores.Add(score);
-                }
+                    
+                topScores.Scores.Add(score);
 
                 newHighScore = true;
                 break;
