@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net8</TargetFramework>
+        <TargetFramework>net10.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <DebugType>embedded</DebugType>
         <Platforms>AnyCPU;ARM64</Platforms>
@@ -10,7 +10,7 @@
     <ItemGroup>
         <ProjectReference Include="..\Server.Base\Server.Base.csproj" />
         <ProjectReference Include="..\Server.Web\Server.Web.csproj" />
-        <PackageReference Include="Discord.Net.WebSocket" Version="3.15.0" />
+        <PackageReference Include="Discord.Net.WebSocket" Version="3.19.1" />
         <PackageReference Include="ShellProgressBar" Version="5.2.0" />
     </ItemGroup>
 
