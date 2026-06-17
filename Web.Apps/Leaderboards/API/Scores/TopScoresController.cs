@@ -104,6 +104,7 @@ public class TopScoresController(CharacterHandler characterHandler, TopScoresHan
                     topScoresObject["scores"]["alltime"].Add(scoreJson);
                     allRank++;
                     allScores.Add(score);
+                    continue;
                 }
                 
                 var dateTime = DateTime.ParseExact(score.Time, "yyyy'-'MM'-'dd'T'HH':'mm':'sszzz", null);
@@ -117,6 +118,7 @@ public class TopScoresController(CharacterHandler characterHandler, TopScoresHan
                     topScoresObject["scores"]["week"].Add(scoreJson);
                     weeklyRank++;
                     weeklyScores.Add(score);
+                    continue;
                 }
                 
                 if (dailyScores.All(x => x.CharacterId != score.CharacterId)
@@ -126,6 +128,7 @@ public class TopScoresController(CharacterHandler characterHandler, TopScoresHan
                     topScoresObject["scores"]["day"].Add(scoreJson);
                     dailyRank++;
                     dailyScores.Add(score);
+                    continue;
                 }
             }
 
