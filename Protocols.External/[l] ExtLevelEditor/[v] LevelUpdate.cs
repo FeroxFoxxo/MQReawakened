@@ -20,6 +20,9 @@ using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.Bundles.Base;
 using Server.Reawakened.XMLs.Bundles.Internal;
 using Server.Reawakened.XMLs.Data.Achievements;
+using Web.Apps.Leaderboards.Data;
+using Web.Apps.Leaderboards.Database.Scores;
+using Web.Apps.Leaderboards.Enums;
 
 namespace Protocols.External._l__ExtLevelEditor;
 
@@ -186,12 +189,12 @@ public class RoomUpdate : ExternalProtocol
             var leaderboardScore = score.Key == "LV_CRS_Minigame_MonkeyBlast" ? score.Value : score.Value * 100;
 
             var newScore = new TopScore
-            {
-                Score = (int)leaderboardScore,
-                Rank = 0,
-                Time = scoreTime,
-                CharacterId = Player.Character.Id
-            };
+            (
+                (int)leaderboardScore,
+                0,
+                scoreTime,
+                Player.Character.Id
+            );
 
             topScores.Scores.Add(newScore);
 

@@ -5,6 +5,7 @@ using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Core.Enums;
 using Server.Reawakened.Database.Characters;
 using Server.Reawakened.XMLs.Bundles.Internal;
+using System.Globalization;
 using Web.Apps.Leaderboards.Data;
 using Web.Apps.Leaderboards.Database.Scores;
 
@@ -110,9 +111,10 @@ public class TopScoresController(CharacterHandler characterHandler, TopScoresHan
                 var dateTime = DateTime.ParseExact(score.Time, "yyyy'-'MM'-'dd'T'HH':'mm':'sszzz", null);
 
                 var timeDiff = dateTime - DateTime.Now;
-                
+
                 if (weeklyScores.All(x => x.CharacterId != score.CharacterId)
-                    && timeDiff.TotalDays < 7 && dateTime.Month == DateTime.Now.Month)
+                    && ISOWeek.GetWeekOfYear(dateTime) == ISOWeek.GetWeekOfYear(DateTime.Now)
+                    && dateTime.Year == DateTime.Now.Year)
                 {
                     scoreJson["rank"] = weeklyRank;
                     topScoresObject["scores"]["week"].Add(scoreJson);
@@ -120,9 +122,9 @@ public class TopScoresController(CharacterHandler characterHandler, TopScoresHan
                     weeklyScores.Add(score);
                     continue;
                 }
-                
+
                 if (dailyScores.All(x => x.CharacterId != score.CharacterId)
-                    && dateTime.Day == DateTime.Now.Day)
+                    && dateTime.Date == DateTime.Now.Date)
                 {
                     scoreJson["rank"] = dailyRank;
                     topScoresObject["scores"]["day"].Add(scoreJson);
