@@ -38,6 +38,8 @@ public class RoomUpdate : ExternalProtocol
     public ItemCatalog ItemCatalog { get; set; }
     public ILogger<RoomUpdate> Logger { get; set; }
     public TimerThread TimerThread { get; set; }
+    public InternalLeaderboards Leaderboards { get; set; }
+    public TopScoresHandler TopScoresHandler { get; set; }
 
     public override void Run(string[] message)
     {
