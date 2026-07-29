@@ -1,5 +1,7 @@
 ﻿using LitJson;
 using Microsoft.AspNetCore.Mvc;
+using Server.Reawakened.Core.Configs;
+using Server.Reawakened.Core.Enums;
 using Server.Reawakened.Database.Characters;
 using Server.Reawakened.XMLs.Bundles.Internal;
 using System.Globalization;
@@ -10,7 +12,7 @@ using Web.Apps.Leaderboards.Services;
 namespace Web.Apps.Leaderboards.API.Scores;
 [Route("leaderboards/api/top/scores/{gameId}")]
 public class TopScoresController(CharacterHandler characterHandler, TopScoresHandler topScoresHandler,
-    InternalLeaderboards leaderboards, LeaderboardHandler leaderboardHandler) : Controller
+    InternalLeaderboards leaderboards, ServerRConfig rConfig, LeaderboardHandler leaderboardHandler) : Controller
 {
     [HttpGet]
     public IActionResult GetScores([FromRoute] string gameId)
