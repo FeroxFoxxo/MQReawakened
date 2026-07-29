@@ -10,7 +10,7 @@ using Web.Apps.Leaderboards.Database.Scores;
 using Web.Apps.Leaderboards.Services;
 
 namespace Web.Apps.Leaderboards.API.Scores;
-[Route("leaderboards/api/top/scores/{gameId}")]
+[Route("Apps/leaderboards/api/top/scores/{gameId}")]
 public class TopScoresController(CharacterHandler characterHandler, TopScoresHandler topScoresHandler,
     InternalLeaderboards leaderboards, ServerRConfig rConfig, LeaderboardHandler leaderboardHandler) : Controller
 {
