@@ -117,7 +117,7 @@ public static class CharacterInventoryExtensions
             return;
 
         var characterData = player.Character;
-        var itemCount = 0;
+        var itemCount = count;
 
         if (!characterData.Inventory.Items.ContainsKey(item.ItemId))
             characterData.Inventory.Items.Add(item.ItemId, new ItemModel(item.ItemId, count, item.BindingCount, item.DelayUseExpiry));

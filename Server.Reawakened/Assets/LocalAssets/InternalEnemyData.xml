@@ -2573,44 +2573,6 @@
                 </LootTable>
             </Enemy>
         </EnemyCategory>
-        <EnemyCategory name="SpngBob">
-            <Enemy name="PF_Spite_MiniRoboPlankton01">
-                <LootTable>
-                </LootTable>
-            </Enemy>
-            <Enemy name="PF_Spite_MiniRoboPlankton02">
-                <LootTable>
-                </LootTable>
-            </Enemy>
-        </EnemyCategory>
-        <EnemyCategory name="TMNT">
-            <Enemy name="PF_Spite_TMNT_FootJumper01">
-                <LootTable>
-                </LootTable>
-            </Enemy>
-            <Enemy name="PF_Spite_TMNT_FootPatroller01">
-                <LootTable>
-                </LootTable>
-            </Enemy>
-            <Enemy name="PF_Spite_TMNT_FootThrower01">
-                <LootTable>
-                </LootTable>
-            </Enemy>
-        </EnemyCategory>
-        <EnemyCategory name="PwrRngr">
-            <Enemy name="PF_Spite_PR_XborgBoss01">
-                <LootTable>
-                </LootTable>
-            </Enemy>
-            <Enemy name="PF_Spite_PR_XborgPatroller01">
-                <LootTable>
-                </LootTable>
-            </Enemy>
-            <Enemy name="PF_Spite_PR_XborgShooter01">
-                <LootTable>
-                </LootTable>
-            </Enemy>
-        </EnemyCategory>
     </AiType>
     <AiType name="State">
         <EnemyCategory name="Spiderling">
@@ -2696,10 +2658,44 @@
                 <LootTable>
                 </LootTable>
             </Enemy>
+            <Enemy name="PF_Spite_MiniRoboPlankton01">
+                <LootTable>
+                </LootTable>
+            </Enemy>
+            <Enemy name="PF_Spite_MiniRoboPlankton02">
+                <LootTable>
+                </LootTable>
+            </Enemy>
         </EnemyCategory>
         <EnemyCategory name="TMNT">
             <!-- Uses SPIDERLING AI State Controller -->
             <Enemy name="PF_Spite_TMNT_Shredder01">
+                <LootTable>
+                </LootTable>
+            </Enemy>
+            <Enemy name="PF_Spite_TMNT_FootJumper01">
+                <LootTable>
+                </LootTable>
+            </Enemy>
+            <Enemy name="PF_Spite_TMNT_FootPatroller01">
+                <LootTable>
+                </LootTable>
+            </Enemy>
+            <Enemy name="PF_Spite_TMNT_FootThrower01">
+                <LootTable>
+                </LootTable>
+            </Enemy>
+        </EnemyCategory>
+        <EnemyCategory name="PwrRngr">
+            <Enemy name="PF_Spite_PR_XborgBoss01">
+                <LootTable>
+                </LootTable>
+            </Enemy>
+            <Enemy name="PF_Spite_PR_XborgPatroller01">
+                <LootTable>
+                </LootTable>
+            </Enemy>
+            <Enemy name="PF_Spite_PR_XborgShooter01">
                 <LootTable>
                 </LootTable>
             </Enemy>
