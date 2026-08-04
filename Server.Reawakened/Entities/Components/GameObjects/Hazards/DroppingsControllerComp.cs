@@ -29,6 +29,12 @@ public class DroppingsControllerComp : Component<DroppingsController>
             if (time - _activationStartTime > DropRate)
             {
                 _activationStartTime += DropRate;
+                
+                var players = Room.GetNearbyPlayers(Position.ToUnityVector3(), 15f);
+            
+                if (players.Count == 0)
+                    return;
+                
                 SendDrop();
             }
         }
