@@ -467,6 +467,14 @@ public class NPCControllerComp : Component<NPCController>
             }
         }
 
+        if (Config.GameVersion == GameVersion.vEarly2012 && questData.Id == 804)
+        {
+            Logger.LogTrace(
+                "[{QuestName} ({QuestId})] [SKIPPED QUEST] Quest was skipped as it does not meet valid preconditions",
+                questData.Name, questData.Id);
+            return NPCStatus.Unknown;
+        }
+        
         var previousQuests = new List<QuestDescription>();
 
         var canStartQuest = false;
@@ -487,7 +495,7 @@ public class NPCControllerComp : Component<NPCController>
         else
         {
             previousQuests = [.. questData.PreviousQuests.Select(x => QuestCatalog.GetQuestData(x.Key)).Where(q =>
-                q != null && (q.QuestLineId == 0 || QuestCatalog.GetQuestLineData(q.QuestLineId)?.ShowInJournal == true))];
+                q != null && q.Id != 804 && (q.QuestLineId == 0 || QuestCatalog.GetQuestLineData(q.QuestLineId)?.ShowInJournal == true))];
 
             canStartQuest = previousQuests.Count == 0 || previousQuests.All(q => player.Character.CompletedQuests.Contains(q.Id));
         }
