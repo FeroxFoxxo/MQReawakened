@@ -20,7 +20,7 @@ public static class ConsoleExt
 
     public static string ReadLineOrDefault(ILogger logger = null, string defaultVal = null)
     {
-        if (EnvironmentExt.IsContainerOrNonInteractive())
+        if (EnvironmentExt.IsContainerOrNonInteractive() && !EnvironmentExt.IsConsoleInteractive())
         {
             logger?.LogDebug("Non-interactive; returning default for ReadLine: {DefaultValue}", defaultVal);
             return defaultVal;
