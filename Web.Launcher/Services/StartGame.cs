@@ -156,7 +156,7 @@ public class StartGame(EventSink sink, ILogger<StartGame> logger, ServerConsole 
 
     public bool ShouldRun()
     {
-        if (EnvironmentExt.IsContainer())
+        if (EnvironmentExt.IsContainer() && !EnvironmentExt.IsConsoleInteractive())
             return false;
 
         if (iWConfig.NetworkType.HasFlag(NetworkType.Client))
@@ -205,7 +205,7 @@ public class StartGame(EventSink sink, ILogger<StartGame> logger, ServerConsole 
 
     public void LaunchGame()
     {
-        if (EnvironmentExt.IsContainer())
+        if (EnvironmentExt.IsContainer() && !EnvironmentExt.IsConsoleInteractive())
         {
             logger.LogInformation("Skipping launcher in container.");
             return;

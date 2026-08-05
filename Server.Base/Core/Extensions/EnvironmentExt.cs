@@ -5,7 +5,7 @@ public static class EnvironmentExt
     public static bool IsContainer() => string.Equals(
             Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER"),
             "true",
-            StringComparison.OrdinalIgnoreCase) && !IsConsoleInteractive();
+            StringComparison.OrdinalIgnoreCase);
 
     public static bool IsContainerOrNonInteractive()
     {
@@ -13,18 +13,13 @@ public static class EnvironmentExt
 
         var nonInteractive = Console.IsInputRedirected;
 
-        return (inContainer || nonInteractive) && !IsConsoleInteractive();
+        return inContainer || nonInteractive;
     }
-
-    public static bool IsConsoleInteractive()
-    {
-        var envVar = string.Equals(
+    
+    public static bool IsConsoleInteractive() => string.Equals(
             Environment.GetEnvironmentVariable("INTERACTIVE_CONSOLE"),
             "true",
             StringComparison.OrdinalIgnoreCase);
-        
-        return envVar;
-    }
 }
 
 
