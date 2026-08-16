@@ -48,7 +48,10 @@ public class OperationMode(EventSink eventSink, ServerConsole console, InternalR
     {
         if (EnvironmentExt.IsContainer())
         {
-            config.NetworkType = NetworkType.Server;
+            if (EnvironmentExt.IsConsoleInteractive())
+                config.NetworkType = NetworkType.Server | NetworkType.Client;
+            else
+                config.NetworkType = NetworkType.Server;
 
             if (string.IsNullOrWhiteSpace(config.ServerAddress))
             {

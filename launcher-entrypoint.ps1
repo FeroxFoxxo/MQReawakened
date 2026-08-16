@@ -341,6 +341,7 @@ $env:KEYS_PATH = $KeysDir
 $env:SETTINGS_FILE_LOCATION = $SettingsFileLocation
 $env:CACHE_INFO_LOCATION = $CacheInfoLocation
 $env:DOTNET_RUNNING_IN_CONTAINER = "true"
+$env:INTERACTIVE_CONSOLE = "true"
 $env:DEFAULT_USERNAME = $DefaultUser
 $env:DEFAULT_PASSWORD = $DefaultPass
 $env:DEFAULT_EMAIL = $DefaultEmail

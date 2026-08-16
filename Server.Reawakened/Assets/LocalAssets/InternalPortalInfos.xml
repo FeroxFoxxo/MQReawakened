@@ -239,6 +239,8 @@
     <GameVersion version="vMinigames2012">
     </GameVersion>
     <GameVersion version="vPets2012">
+    </GameVersion>
+    <GameVersion version="vEarly2012">
         <Portal id="143" isPremium="false" levelId="99" level="Crossroads Path" toLevelId="308" toLevel="Smuggler's Highway">
             <RequiredLevel level="10" />
         </Portal>
@@ -315,8 +317,6 @@
         <Portal id="8327" isPremium="true" levelId="438" level="Knight's Gate &amp; Vespid Lair" toLevelId="441" toLevel="Shard Cavern">
             <RequiredLevel level="5" />
         </Portal>
-    </GameVersion>
-    <GameVersion version="vEarly2012">
     </GameVersion>
     <GameVersion version="v2011">
     </GameVersion>

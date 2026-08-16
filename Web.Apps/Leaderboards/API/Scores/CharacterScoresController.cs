@@ -3,12 +3,13 @@ using Microsoft.AspNetCore.Mvc;
 using Server.Reawakened.Database.Characters;
 using Server.Reawakened.XMLs.Bundles.Internal;
 using Web.Apps.Leaderboards.Database.Scores;
+using Web.Apps.Leaderboards.Services;
 
 namespace Web.Apps.Leaderboards.API.Scores;
 
 [Route("Apps/leaderboards/api/character/{uuid}/{characterId}/scores")]
 public class CharacterScoresController(InternalLeaderboards leaderboards, CharacterHandler characterHandler,
-    TopScoresHandler topScoresHandler) : Controller
+    TopScoresHandler topScoresHandler, LeaderboardHandler leaderboardHandler) : Controller
 {
     [HttpGet]
     public IActionResult GetScores([FromRoute] string uuid, [FromRoute] string characterId)
@@ -16,8 +17,12 @@ public class CharacterScoresController(InternalLeaderboards leaderboards, Charac
         var _uuid = int.Parse(uuid);
         var _characterId = int.Parse(characterId);
 
-        var character = characterHandler.GetCharacterFromId(_characterId);
-
+        if (!leaderboardHandler.CharacterCache.TryGetValue(_characterId, out var character))
+        {
+            character = characterHandler.GetCharacterFromId(_characterId);
+            leaderboardHandler.CharacterCache[_characterId] = character;
+        }
+        
         if (character == null)
             return NotFound();
 
@@ -31,12 +36,10 @@ public class CharacterScoresController(InternalLeaderboards leaderboards, Charac
 
         var scores = new JsonData();
 
-        foreach (var score in character.BestMinigameTimes)
+        foreach (var game in leaderboards.Games)
         {
-            var gameId = leaderboards.Games.FirstOrDefault(x => x.name == score.Key).id;
-
-            var topScore = topScoresHandler.GetScoresFromId(gameId);
-
+            var topScore = topScoresHandler.GetScoresFromId(game.id);
+            
             if (topScore == null)
                 continue;
 
@@ -46,7 +49,7 @@ public class CharacterScoresController(InternalLeaderboards leaderboards, Charac
             if (characterScore == null)
                 continue;
 
-            scores[gameId.ToString()] = new JsonData
+            scores[game.id.ToString()] = new JsonData
             {
                 ["score"] = characterScore.Score,
                 ["time"] = characterScore.Time

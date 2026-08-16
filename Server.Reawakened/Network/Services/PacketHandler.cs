@@ -65,15 +65,27 @@ public class PacketHandler(IServiceScopeFactory serviceFact, ReflectionUtils ref
     {
         if (internalWConfig.IgnoreProtocolType.Length >= serverConfig.DefaultProtocolTypeIgnore.Length)
             return;
+        
+        var internalDebugs = internalWConfig.IgnoreProtocolType.ToList();
+        
+        if (EnvironmentExt.IsContainer())
+        {
+            foreach (var protocol in serverConfig.DefaultProtocolTypeIgnore)
+            {
+                if (!internalDebugs.Contains(protocol))
+                    internalDebugs.Add(protocol);
+            }
+
+            internalWConfig.IgnoreProtocolType = [.. internalDebugs];
+            return;
+        }
 
         if (!logger.Ask(
                 $"It's recommended to add the protocols '{string.Join(", ", serverConfig.DefaultProtocolTypeIgnore)}' " +
                 "to the server ignore ServerRConfig, as to reduce spam. Please press 'y' to enable this. " +
                 "You are able to add to this later in the related ServerRConfig file.", true))
             return;
-
-        var internalDebugs = internalWConfig.IgnoreProtocolType.ToList();
-
+        
         foreach (var protocol in serverConfig.DefaultProtocolTypeIgnore)
         {
             if (!internalDebugs.Contains(protocol))
