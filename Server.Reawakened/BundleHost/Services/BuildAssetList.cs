@@ -374,7 +374,7 @@ public class BuildAssetList(ILogger<BuildAssetList> logger, EventSink sink, Asse
 
             var asset = assetElement.XmlToAsset();
 
-            if (rConfig.GameVersion <= GameVersion.vEarly2012 && asset.Type == AssetInfo.TypeAsset.NavMesh)
+            if (rConfig.GameVersion <= GameVersion.vPets2012 && asset.Type == AssetInfo.TypeAsset.NavMesh)
                 continue;
             
             configuration.Add(asset);
