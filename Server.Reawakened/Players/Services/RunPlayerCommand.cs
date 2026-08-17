@@ -43,7 +43,7 @@ public class RunPlayerCommand(ServerConsole console, EventSink sink,
 
         logger.LogError("Enter command and arguments:");
 
-        if (EnvironmentExt.IsContainerOrNonInteractive())
+        if (EnvironmentExt.IsContainerOrNonInteractive() && !EnvironmentExt.IsConsoleInteractive())
         {
             logger.LogWarning("Non-interactive mode; skipping manual player command input.");
             return;

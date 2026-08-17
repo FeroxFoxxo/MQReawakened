@@ -77,7 +77,7 @@ public class ServerConsole : IService
 
         DisplayHelp();
 
-        if (EnvironmentExt.IsContainerOrNonInteractive())
+        if (EnvironmentExt.IsContainerOrNonInteractive() && !EnvironmentExt.IsConsoleInteractive())
         {
             _logger.LogInformation("Console input disabled (non-interactive/container). Use signals.");
             return;

@@ -55,7 +55,7 @@ public class ServerHandler(EventSink sink, ILogger<ServerHandler> logger, IHostA
         {
             logger.LogCritical("This exception is fatal.");
             
-            if (!EnvironmentExt.IsContainerOrNonInteractive())
+            if (!EnvironmentExt.IsContainerOrNonInteractive() || EnvironmentExt.IsConsoleInteractive())
                 ConsoleExt.ReadLineOrDefault(logger, null);
         }
 

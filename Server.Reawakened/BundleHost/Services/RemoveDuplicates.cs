@@ -39,7 +39,7 @@ public class RemoveDuplicates(ILogger<RemoveDuplicates> logger, EventSink sink,
 
         var assetList = new Dictionary<string, List<InternalAssetInfo>>();
         var assetDict = File.ReadAllText(buildAssetList.AssetDictLocation);
-        var allAssets = BuildAssetList.GetAssetsFromDictionary(assetDict)
+        var allAssets = BuildAssetList.GetAssetsFromDictionary(assetDict, config)
             .Where(x => filters?.Any(f => x.Type == f) ?? true)
             .ToArray();
 

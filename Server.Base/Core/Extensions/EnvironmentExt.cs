@@ -15,6 +15,11 @@ public static class EnvironmentExt
 
         return inContainer || nonInteractive;
     }
+    
+    public static bool IsConsoleInteractive() => string.Equals(
+            Environment.GetEnvironmentVariable("INTERACTIVE_CONSOLE"),
+            "true",
+            StringComparison.OrdinalIgnoreCase);
 }
 
 
