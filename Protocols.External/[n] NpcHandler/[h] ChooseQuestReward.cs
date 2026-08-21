@@ -154,7 +154,7 @@ public class ChooseQuestReward : ExternalProtocol
         Player.UpdateAllNpcsInLevel();
 
         Player.AddBananas(quest.BananaReward, InternalAchievement, Logger);
-        Player.AddReputation(quest.ReputationReward, Config);
+        Player.AddReputation(quest.ReputationReward, Config, ItemCatalog);
 
         Player.CheckAchievement(AchConditionType.CompleteQuest, [quest.Name], InternalAchievement, Logger); // Specific Quest by name for example EVT_SB_1_01
         Player.CheckAchievement(AchConditionType.CompleteQuestInLevel, [Player.Room.LevelInfo.Name], InternalAchievement, Logger); // Quest by Level/Trail if any exist

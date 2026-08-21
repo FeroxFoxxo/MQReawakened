@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LevelRewardData>
+    <Level level="3" prefabName="Add_COM_Explorator01_UF01" amount="1" />
+    <Level level="4" prefabName="Add_COM_Explorator01_LF01" amount="1" />
+    <Level level="5" prefabName="COL_PACK_Healing01" amount="1" />
+    <Level level="6" prefabName="Add_COM_Explorator01_TS01" amount="1" />
+    <Level level="7" prefabName="Add_COM_Explorator01_S01" amount="1" />
+    <Level level="8" prefabName="Add_COM_Explorator01_LS01" amount="1" />
+    <Level level="9" prefabName="Add_COM_Explorator01_W01" amount="1" />
+    <Level level="10" prefabName="COL_PACK_Healing02" amount="1" />
+    <Level level="18" prefabName="Add_SHD_Assassin01_TS01" amount="1" />
+</LevelRewardData>

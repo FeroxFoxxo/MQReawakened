@@ -33,6 +33,7 @@ public class ItemCatalog : ItemHandler, ILocalizationXml
     public EditItem EditItem { get; set; }
     public QuestCatalog QuestCatalog { get; set; }
     public ILogger<ItemCatalog> Logger { get; set; }
+    public InternalLevelReward InternalLevelReward { get; set; }
 
     public ItemCatalog() : base(null)
     {
