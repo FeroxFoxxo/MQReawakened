@@ -27,12 +27,9 @@ public class Program
 
             var builder = WebApplication.CreateBuilder();
 
-            var appSettings = Path.Join(Environment.GetEnvironmentVariable("DATA_PATH"),
-				"appsettings.json") ?? "/data/appsettings.json";
-
             builder.Configuration
                 .AddEnvironmentVariables()
-                .AddJsonFile(appSettings, optional: true, reloadOnChange: true);
+                .AddJsonFile("/data/appsettings.json", optional: true, reloadOnChange: true);
 
             logger.LogDebug("Getting modules");
             var modules = GetModules(logger);
