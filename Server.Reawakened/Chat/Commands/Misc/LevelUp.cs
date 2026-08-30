@@ -29,6 +29,7 @@ public class LevelUp : SlashCommand
     public WorldStatistics WorldStatistics { get; set; }
     public ServerRConfig ServerRConfig { get; set; }
     public ILogger<LevelUp> Logger { get; set; }
+    public ItemCatalog ItemCatalog { get; set; }
 
     public override void Execute(Player player, string[] args)
     {
@@ -38,7 +39,7 @@ public class LevelUp : SlashCommand
             level = ServerRConfig.MaxLevel;
         }
 
-        player.LevelUp(level, WorldStatistics, ServerRConfig, Logger);
+        player.LevelUp(level, WorldStatistics, ServerRConfig, Logger, ItemCatalog);
 
         player.Character.Write.Reputation = player.Character.ReputationForCurrentLevel;
     }

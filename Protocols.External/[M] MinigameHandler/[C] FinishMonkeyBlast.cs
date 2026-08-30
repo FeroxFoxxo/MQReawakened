@@ -25,7 +25,7 @@ public class FinishMonkeyBlast : ExternalProtocol
         var bounces = int.Parse(message[7]);
         var perfectLaunches = int.Parse(message[8]);
 
-        Player.AddReputation(GetXpReward(stars), ServerRConfig);
+        Player.AddReputation(GetXpReward(stars), ServerRConfig, ItemCatalog);
         Player.AddBananas(GetBananaReward(stars), InternalAchievement, Logger);
 
         Player.SendCashUpdate();
@@ -52,7 +52,7 @@ public class FinishMonkeyBlast : ExternalProtocol
     private int GetXpNeededToLevel()
     {
         var character = Player.Character;
-        if (character.GlobalLevel >= 65)
+        if (character.GlobalLevel >= ServerRConfig.MaxLevel)
             return 1;
         var reputationNeeded = character.ReputationForNextLevel - character.ReputationForCurrentLevel;
         return (reputationNeeded < 1) ? 1 : reputationNeeded;

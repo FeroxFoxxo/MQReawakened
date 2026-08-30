@@ -311,7 +311,7 @@ public abstract class BaseEnemy : IDestructible
 
         if (player != null)
         {
-            player.AddReputation(xpAward > 0 ? xpAward : 1, ServerRConfig);
+            player.AddReputation(xpAward > 0 ? xpAward : 1, ServerRConfig, ItemCatalog);
             
             if (EnemyModel.EnemyLootTable != null)
             {

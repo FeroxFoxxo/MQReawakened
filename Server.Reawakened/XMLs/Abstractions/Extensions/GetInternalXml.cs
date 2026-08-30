@@ -239,7 +239,7 @@ public static class GetInternalXml
                 case RewardType.Xp:
                     var xp = int.Parse(reward.value.ToString());
 
-                    player.AddReputation(xp, config);
+                    player.AddReputation(xp, config, itemCatalog);
                     break;
                 case RewardType.Title:
                     break;

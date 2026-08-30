@@ -1,6 +1,7 @@
 ﻿using A2m.Server;
 using Server.Base.Accounts.Extensions;
 using Server.Reawakened.Core.Configs;
+using Server.Reawakened.Core.Enums;
 using Server.Reawakened.Database.Characters;
 using Server.Reawakened.Entities.Colliders;
 using Server.Reawakened.Network.Extensions;
@@ -89,7 +90,7 @@ public static class PlayerExtensions
         receive.SendXt("ci", send.UserId, info, send.GameObjectId, levelInfo.Name);
     }
 
-    public static void SendLevelUp(this Player player, ServerRConfig rConfig)
+    public static void SendLevelUp(this Player player, ServerRConfig rConfig, ItemCatalog itemCatalog)
     {
         var levelUpData = new LevelUpDataModel
         {
@@ -105,6 +106,20 @@ public static class PlayerExtensions
             GameVersion = rConfig.GameVersion
         };
 
+        if (levelUpData.GameVersion <= GameVersion.vEarly2013)
+            if (itemCatalog.InternalLevelReward.LevelRewardData.TryGetValue(levelUpData.Level, out var rewardData))
+            {
+                var item = itemCatalog.GetItemFromPrefabName(rewardData.PrefabName);
+                var amount = rewardData.Amount;
+
+                if (item != null)
+                {
+                    levelUpData.ItemId = item.ItemId;
+            
+                    player.AddItem(item, amount, itemCatalog);
+                }
+            }
+        
         foreach (var currentPlayer in player.Room.GetPlayers())
             currentPlayer.SendXt("ce", levelUpData, player.UserId);
 
