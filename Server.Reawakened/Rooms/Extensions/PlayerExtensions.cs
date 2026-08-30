@@ -117,11 +117,11 @@ public static class PlayerExtensions
                     levelUpData.ItemId = item.ItemId;
             
                     player.AddItem(item, amount, itemCatalog);
-                    
-                    foreach (var currentPlayer in player.Room.GetPlayers())
-                        currentPlayer.SendXt("ce", levelUpData, player.UserId);
                 }
             }
+        
+        foreach (var currentPlayer in player.Room.GetPlayers())
+            currentPlayer.SendXt("ce", levelUpData, player.UserId);
 
         player.Character.Write.BadgePoints++;
 
