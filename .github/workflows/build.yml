@@ -7,7 +7,7 @@ on:
 
 jobs:
   build-portable:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     permissions:
       contents: write  # Required to create releases and upload assets
     
@@ -18,95 +18,137 @@ jobs:
       - name: Create Project Directory Structure
         run: |
           # 1. Create Tool Folders (under MQData/Tools)
-          mkdir -p MQData/Tools/Git
-          mkdir -p MQData/Tools/dotnet
-          mkdir -p MQData/Tools/NanaZip
+          New-Item -ItemType Directory -Path "MQData/Tools/Git" -Force
+          New-Item -ItemType Directory -Path "MQData/Tools/dotnet" -Force
+          New-Item -ItemType Directory -Path "MQData/Tools/NanaZip" -Force
           
           # 2. Create Game Data Folders (nested under MQData/Build)
-          mkdir -p MQData/Build/Archives/Client
-          mkdir -p MQData/Build/Archives/Caches
-          mkdir -p MQData/Build/Archives/ClientOverride
+          $buildPath = "MQData/Build/Archives"
+          New-Item -ItemType Directory -Path "$buildPath/Client" -Force
+          New-Item -ItemType Directory -Path "$buildPath/Caches" -Force
+          New-Item -ItemType Directory -Path "$buildPath/ClientOverride" -Force
 
-      - name: Install Dependencies (7-Zip & Unzip)
+      - name: Download and Extract Latest Portable Git
         run: |
-          sudo apt-get update
-          sudo apt-get install -y p7zip-full unzip
+          # 1. Get the latest URL
+          $apiUri = "https://api.github.com/repos/git-for-windows/git/releases/latest"
+          $val = Invoke-RestMethod -Uri $apiUri
+          $url = $val.assets | Where-Object { $_.name -like "PortableGit-*-64-bit.7z.exe" } | Select-Object -ExpandProperty browser_download_url
+          
+          # 2. Download to the root
+          curl -L $url -o "git-setup.exe"
+          
+          # 3. Create an absolute path for the target
+          $finalPath = "$PWD\MQData\Tools\Git"
+          
+          # 4. Run the installer. Even if it installs to a subfolder, we handle it next.
+          Start-Process "./git-setup.exe" -ArgumentList "-y -gm2 -InstallPath=`"$finalPath`"" -Wait
+          
+          # 5. THE FAIL-SAFE: Look for 'PortableGit' in the root OR the target
+          if (Test-Path "$PWD\PortableGit") {
+              Write-Host "Git found in root. Moving to target..."
+              Move-Item -Path "$PWD\PortableGit\*" -Destination $finalPath -Force
+              Remove-Item -Path "$PWD\PortableGit" -Recurse -Force
+          }
+          elseif (Test-Path "$finalPath\PortableGit") {
+              Write-Host "Git found in nested subfolder. Flattening..."
+              Move-Item -Path "$finalPath\PortableGit\*" -Destination $finalPath -Force
+              Remove-Item -Path "$finalPath\PortableGit" -Recurse -Force
+          }
 
-      - name: Download and Extract Latest Portable Git (Windows)
-        run: |
-          # 1. Get the latest URL using GitHub API and jq/grep
-          API_URL="https://api.github.com/repos/git-for-windows/git/releases/latest"
-          DOWNLOAD_URL=$(curl -s $API_URL | grep "browser_download_url" | grep "PortableGit-.*-64-bit.7z.exe" | head -n 1 | cut -d '"' -f 4)
-          
-          echo "Downloading Git from: $DOWNLOAD_URL"
-          curl -L "$DOWNLOAD_URL" -o "git-setup.exe"
-          
-          # 2. Extract Windows PortableGit using Linux 7z (since .7z.exe is an SFX archive)
-          FINAL_PATH="MQData/Tools/Git"
-          7z x "git-setup.exe" -o"$FINAL_PATH" -y
-          
-          # 3. Cleanup setup file
-          rm -f "git-setup.exe"
+          # 6. Final Cleanup
+          if (Test-Path "git-setup.exe") { Remove-Item "git-setup.exe" }
 
-      - name: Download .NET SDK for Windows
+      - name: Download .NET SDK
         run: |
-          # Download the official installation script for Bash
-          curl -L "https://dot.net/v1/dotnet-install.sh" -o "dotnet-install.sh"
-          chmod +x dotnet-install.sh
+          # Download the official installation script
+          Invoke-WebRequest -Uri "https://dot.net/v1/dotnet-install.ps1" -OutFile "dotnet-install.ps1"
           
-          # Install the Windows x64 version of .NET into your portable structure
-          ./dotnet-install.sh --channel 10.0 --install-dir "MQData/Tools/dotnet" --os win --architecture x64
+          # We use -Runtime "dotnet" and specify the Channel. 
+          # Forcing -InstallDir ensures it stays within your portable structure.
+          ./dotnet-install.ps1 -Channel 10.0 -InstallDir "MQData/Tools/dotnet" -Architecture x64
           
           # Verify installation
-          if [ -f "MQData/Tools/dotnet/dotnet.exe" ]; then
-              echo ".NET SDK for Windows installed successfully."
-          else
-              echo "Error: dotnet.exe not found!"
+          if (Test-Path "MQData/Tools/dotnet/dotnet.exe") {
+              Write-Host ".NET SDK installed successfully to MQData/Tools/dotnet" -ForegroundColor Green
+          } else {
+              Write-Error "dotnet.exe not found in install directory!"
               exit 1
-          fi
+          }
           
-          rm -f dotnet-install.sh
+          Remove-Item "dotnet-install.ps1"
 
-      - name: Download NanaZip Binaries (Windows)
+      - name: Download NanaZip
         run: |
-          # 1. Query GitHub API for NanaZip release assets
-          API_URL="https://api.github.com/repos/M2Team/NanaZip/releases/latest"
-          DOWNLOAD_URL=$(curl -s $API_URL | grep "browser_download_url" | grep "_Binaries.zip" | head -n 1 | cut -d '"' -f 4)
+          # 1. Query GitHub API for the latest release assets
+          $apiUri = "https://api.github.com/repos/M2Team/NanaZip/releases/latest"
+          $val = Invoke-RestMethod -Uri $apiUri
           
-          if [ -z "$DOWNLOAD_URL" ]; then
-              echo "Error: Could not find NanaZip binaries URL."
+          # 2. Filter for the file ending in _Binaries.zip
+          $url = $val.assets | Where-Object { $_.name -like "*_Binaries.zip" } | Select-Object -ExpandProperty browser_download_url
+          
+          if ($null -eq $url) {
+              Write-Error "Could not find a file matching *_Binaries.zip in the latest release."
               exit 1
-          fi
+          }
           
-          echo "Downloading NanaZip from: $DOWNLOAD_URL"
-          curl -L "$DOWNLOAD_URL" -o "nanazip_binaries.zip"
+          Write-Host "Found Binaries at: $url"
           
-          # 2. Extract using unzip
-          unzip -o "nanazip_binaries.zip" -d "MQData/Tools/NanaZip"
-          rm -f "nanazip_binaries.zip"
-          echo "NanaZip Binaries successfully deployed."
+          # 3. Download using curl (robust for redirects)
+          curl -L $url -o "nanazip_binaries.zip"
+          
+          # 4. Validation and Extraction
+          if (Test-Path "nanazip_binaries.zip") {
+              $size = (Get-Item "nanazip_binaries.zip").Length
+              if ($size -gt 1000000) { # Binaries are usually several MBs
+                  Expand-Archive -Path "nanazip_binaries.zip" -DestinationPath "MQData/Tools/NanaZip" -Force
+                  Remove-Item "nanazip_binaries.zip"
+                  Write-Host "NanaZip Binaries successfully deployed." -ForegroundColor Green
+              } else {
+                  Write-Error "Download failed or file corrupted. Size ($size bytes) is too small."
+                  exit 1
+              }
+          }
 
-      - name: Bundle Release with 7-Zip
+      - name: Bundle Release with NanaZip
         run: |
-          # Create the final Windows release zip archive using Linux 7z
-          # Note: Linux file paths are case-sensitive. Ensure script filenames match exactly.
-          7z a -tzip "MQRLauncher.zip" "launcher-entrypoint.ps1" "Play MQReawakened.bat" "MQData/" "-xr!.git*" "-xr!*.zip" "-xr!mtab" -r
+          # 1. Locate Binary
+          $nanaZipC = "MQData/Tools/NanaZip/x64/NanaZip.Universal.Console.exe"
+          if (!(Test-Path $nanaZipC)) { $nanaZipC = "MQData/Tools/NanaZip/NanaZip.Universal.Console.exe" }
           
-          if [ -f "MQRLauncher.zip" ]; then
-              echo "Archive created successfully."
-          else
-              echo "Error: Archive file not found."
-              exit 1
-          fi
-
+          Write-Host "Using NanaZip Console at: $nanaZipC"
+          
+          # 2. Run NanaZip
+          # We specify the inclusions:
+          #   "*.ps1" "*.bat" : Only these extensions from the root
+          #   "MQData/"       : The entire MQData directory structure
+          # -r                : Recurse subdirectories (for MQData)
+          # -xr!mtab          : Still exclude the virtual git file
+          # -xr!.git* : Still exclude git history
+          & $nanaZipC a -tzip "MQRLauncher.zip" "launcher-entrypoint.ps1" "Play MQReawakened.bat" "MQData/" "-xr!.git*" "-xr!*.zip" "-xr!mtab" -r
+          
+          # 3. Handle Exit Codes
+          if ($LASTEXITCODE -le 1) {
+              if (Test-Path "MQRLauncher.zip") {
+                  Write-Host "Archive created successfully (Strict file filtering applied)." -ForegroundColor Green
+              } else {
+                  Write-Error "Archive file not found after NanaZip execution."
+                  exit 1
+              }
+          } else {
+              Write-Error "NanaZip failed with critical exit code: $LASTEXITCODE"
+              exit $LASTEXITCODE
+          }
+          
       - name: Create GitHub Release
-        uses: softprops/action-gh-release@v3
+        id: create_github_release
+        uses: ncipollo/release-action@v1
         with:
-          tag_name: latest
-          name: "Latest Build"
-          body: "Automated portable build from main branch. Commit: ${{ github.sha }}"
-          files: MQRLauncher.zip
-          prerelease: false
-          make_latest: true
+            artifacts: "MQRLauncher.zip"
+            generateReleaseNotes: true
+            tag: ${{ github.run_number }}
+            draft: false
+            prerelease: false
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

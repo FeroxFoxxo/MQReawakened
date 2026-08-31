@@ -78,7 +78,9 @@ public class ServerRConfig : IRConfig
     public int BreathTimerDuration { get; }
     public int UnderwaterDamageInterval { get; }
     public int UnderwaterDamageRatio { get; }
-
+    
+    public string[] RemovedWarpCmdStrings { get; }
+    
     public bool Chat { get; set; }
     public bool Trading { get; set; }
     public bool Vendor { get; set; }
@@ -195,6 +197,10 @@ public class ServerRConfig : IRConfig
         Gravity = 14f;
 
         PetHotbarIndex = 4;
+        
+        RemovedWarpCmdStrings = [
+            " ", "'", "the"
+        ];
 
         Chat = true;
         Trading = true;

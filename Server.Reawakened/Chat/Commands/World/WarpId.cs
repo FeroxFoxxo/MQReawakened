@@ -1,25 +1,24 @@
-using Server.Base.Accounts.Enums;
+﻿using Server.Base.Accounts.Enums;
 using Server.Reawakened.Chat.Models;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Players;
 using Server.Reawakened.Rooms.Services;
 using Server.Reawakened.XMLs.Bundles.Base;
 using Server.Reawakened.XMLs.Data.Commands;
-using WorldGraphDefines;
 
 namespace Server.Reawakened.Chat.Commands.World;
-public class Warp : SlashCommand
+public class WarpId : SlashCommand
 {
-    public override string CommandName => "/warp";
+    public override string CommandName => "/warpid";
 
-    public override string CommandDescription => "Allows you to warp to a new level.";
+    public override string CommandDescription => "Change's your level to the specified level id.";
 
     public override List<ParameterModel> Parameters =>
     [
         new ParameterModel()
         {
-            Name = "inGameLevelName",
-            Description = "The in-game level name to warp to.",
+            Name = "levelId",
+            Description = "The level id.",
             Optional = false
         }
     ];
@@ -32,31 +31,19 @@ public class Warp : SlashCommand
 
     public override void Execute(Player player, string[] args)
     {
-        if (args.Length < 2)
+        if (args.Length != 2 || !int.TryParse(args[1], out var levelId))
         {
-            Log($"Please specify a valid level name.", player);
+            Log($"Please specify a valid level id.", player);
             return;
         }
 
-        var levelInfo = new LevelInfo();
-        var levelName = string.Empty;
-        foreach (var arg in args.Skip(1))
-            levelName += arg;
+        var levelName = WorldGraph.LevelNameFromID(levelId);
+        var levelInfo = WorldGraph.GetInfoLevel(levelName);
 
-        foreach (var levelPrefabName in ServerRConfig.LoadedAssets)
+        if (args.Length != 2 || levelInfo == null)
         {
-            var levelInGameName = WorldGraph.GetInfoLevel(levelPrefabName).InGameName;
-            foreach (var stringToRemove in ServerRConfig.RemovedWarpCmdStrings)
-            {
-                levelInGameName = levelInGameName.Replace(stringToRemove, "", StringComparison.OrdinalIgnoreCase);
-                levelName = levelName.Replace(stringToRemove, "", StringComparison.OrdinalIgnoreCase);
-            }
-
-            if (levelInGameName.ToLower() == levelName.ToLower())
-            {
-                levelInfo = WorldGraph.GetInfoLevel(levelPrefabName);
-                break;
-            }
+            Log($"Please specify a valid level id.", player);
+            return;
         }
 
         if (string.IsNullOrEmpty(levelInfo.Name) || !ServerRConfig.LoadedAssets.Contains(levelInfo.Name))
