@@ -177,4 +177,8 @@ These JSONs are auto‑created with sensible defaults if missing. You can safely
 - File extraction and/or asset bundle transversal taking a long time
   - Generally this should take ~30m depending on your system.
 
+## Asset Loader
+
+If you want to add custom content to the game you can try following this guide [Asset Loader Guide](ASSETLOADER.md)
+
 ## Happy playing — and see you in Ook.
