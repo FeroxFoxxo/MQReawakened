@@ -17,7 +17,8 @@ This guide will show you how to switch the asset loader system, reawakened has t
 - Custom - This asset loader allows changing all original game xml data and adding custom content on top of MQ if you have a decompiled client that can make asset bundles
 
 > [!IMPORTANT]
-> The `generateFixedBundles` command can only be run from a development environment or the MQRLauncher. 
+> The `generateFixedBundles` command can only be run from a development environment or the MQRLauncher.
+>
 > Docker can still be used as the final hosted server with UseCustomAssetLoader enabled and the first start after with FORCE_REBUILD enabled.
 
 ## TL;DR
@@ -25,13 +26,14 @@ This guide will show you how to switch the asset loader system, reawakened has t
 - Setup a server from the [Setup Launcher Guide](SETUP_LAUNCHER.md)
 - Once the server is setup run `generateFixedBundles` and wait for it to finish
 - These fixed bundles can be found in `MQData/Game/Data/Assets/FixedBundles`
-- Create a new folder called `MQBundles` (name doesn't matter) with this folder structure: Bundles, Levels and XMLs 
+- Create a new folder called `MQBundles` (name doesn't matter) with this folder structure: Bundles, Levels and XMLs
 - Copy the fixed bundles to the Bundles folder inside of MQBundles
 - Find the assetDictionary/PublishConfiguration files in `MQData/Game/Data/Assets/AssetDictionaries`
 - Copy these files both normal .xml and .VGMT.xml to the Bundles folder inside of MQBundles
 - Copy the XML files from `MQData/Game/Data/XMLs/XMLFiles` to the XMLs folder inside of MQBundles
 - Copy the Level files from `MQData/Game/Data/XMLs/Levels` to the Levels folder inside of MQBundles
-- Set `UseCustomAssetLoader` to true in `MQData/Game/Data/Configs/AssetBundle.json`
+- Zip the MQBundles folder and upload it to your server under the `Build/Archives/Caches` folder
+- Set `UseCustomAssetLoader` to true in `Game/Data/Configs/AssetBundle.json`
 - Enable `FORCE_REBUILD` in the environment variables
 - Restart the server
 - Disable `FORCE_REBUILD` in the environment variables
@@ -45,6 +47,7 @@ This guide will show you how to switch the asset loader system, reawakened has t
 
 > [!IMPORTANT]
 > You must run the server using the default asset loader at least once for these files to exist.
+>
 > You can get the fixed asset bundles by running `generateFixedBundles` in the server console.
 
 - The fixed asset bundles can be found in `MQData/Game/Data/Assets/FixedBundles`
@@ -54,6 +57,9 @@ This guide will show you how to switch the asset loader system, reawakened has t
 What you want to do is copy those files to the correct folders in the File Placement section, then enable `FORCE_REBUILD` and restart the server and disable it after.
 
 ## File Placement
+
+> [!IMPORTANT]
+> You should create this locally then zip it up and replace UniqueBundles inside of `Build/Archives/Caches`.
 
 You will want to create a new folder called MQBundles along with the other 3 below.
 
