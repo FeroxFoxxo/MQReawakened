@@ -11,7 +11,7 @@ public static class GetInfoFile
         Microsoft.Extensions.Logging.ILogger logger)
     {
         rwConfig.WebPlayerInfoFile = TryGetInfoFile($"Web Player '{rConfig.DefaultWebPlayerCacheLocation}'",
-            rwConfig.WebPlayerInfoFile, logger);
+            rwConfig.WebPlayerInfoFile, logger, rwConfig);
 
         if (rwConfig.WebPlayerInfoFile == rwConfig.CacheInfoFile)
         {
@@ -31,7 +31,7 @@ public static class GetInfoFile
     }
 
     public static string TryGetInfoFile(string cacheName, string defaultFile,
-        Microsoft.Extensions.Logging.ILogger logger)
+        Microsoft.Extensions.Logging.ILogger logger, AssetBundleRwConfig rwConfig)
     {
         var lowerName = cacheName.ToLower();
 
@@ -41,7 +41,10 @@ public static class GetInfoFile
         {
             if (!EnvironmentExt.IsContainerOrNonInteractive())
             {
-                defaultFile = SetFileValue.SetIfNotNull(defaultFile, $"Get the {cacheName} '__info' Cache File",
+				defaultFile = rwConfig.UseCustomAssetLoader
+                ? SetFileValue.SetIfNotNull(rwConfig.DatabaseDirectory, $"Select the assetDictionary.xml",
+                $"Asset Dictionary (assetDictionary.xml)\0assetDictionary.xml\0")
+                : SetFileValue.SetIfNotNull(defaultFile, $"Get the {cacheName} '__info' Cache File",
                 $"{cacheName} Info File (__info)\0__info\0");
             }
         }
@@ -52,14 +55,29 @@ public static class GetInfoFile
 
         while (true)
         {
-            if (string.IsNullOrEmpty(defaultFile) || !defaultFile.EndsWith("__info"))
+            if (rwConfig.UseCustomAssetLoader)
             {
-                logger.LogError("Please enter the absolute file path for the {Type} '__info' cache file.", lowerName);
-                defaultFile = EnvironmentExt.IsContainerOrNonInteractive()
-                    ? Environment.GetEnvironmentVariable("CACHE_INFO_LOCATION")
-                    ?? "/data/Caches/__info" : ConsoleExt.ReadOrEnv("CACHE_INFO_LOCATION", logger);
-                logger.LogInformation("Found cache file: {Path}", defaultFile);
-                continue;
+                if (string.IsNullOrEmpty(defaultFile) || !defaultFile.EndsWith("assetDictionary.xml"))
+                {
+                    logger.LogError("Please enter the absolute file path for the 'assetDictionary.xml' cache file.");
+                    defaultFile = EnvironmentExt.IsContainerOrNonInteractive()
+						? Environment.GetEnvironmentVariable("CACHE_INFO_LOCATION")
+						?? "/data/Caches/Bundles/assetDictionary.xml" : ConsoleExt.ReadOrEnv("CACHE_INFO_LOCATION", logger);
+                    logger.LogInformation("Found cache file: {Path}", defaultFile);
+                    continue;
+                }
+            }
+            else
+            {
+                if (string.IsNullOrEmpty(defaultFile) || !defaultFile.EndsWith("__info"))
+                {
+                    logger.LogError("Please enter the absolute file path for the {Type} '__info' cache file.", lowerName);
+					defaultFile = EnvironmentExt.IsContainerOrNonInteractive()
+						? Environment.GetEnvironmentVariable("CACHE_INFO_LOCATION")
+						?? "/data/Caches/__info" : ConsoleExt.ReadOrEnv("CACHE_INFO_LOCATION", logger);
+					logger.LogInformation("Found cache file: {Path}", defaultFile);
+					continue;
+                }
             }
 
             break;

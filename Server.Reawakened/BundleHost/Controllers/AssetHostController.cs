@@ -13,13 +13,12 @@ using Server.Reawakened.BundleHost.Models;
 using Server.Reawakened.BundleHost.Services;
 using FileIO = System.IO.File;
 using System.Collections.Concurrent;
-using System.Threading;
 
 namespace Server.Reawakened.BundleHost.Controllers;
 
 [Route("/Client/{folder}/{file}")]
 public class AssetHostController(BuildAssetList buildAssetList, ILogger<AssetHostController> logger,
-    AssetBundleRConfig config, BuildXmlFiles buildXmlList) : Controller
+    AssetBundleRConfig config, BuildXmlFiles buildXmlList, AssetBundleRwConfig rwConfig, GetAssetDict getAssetDict) : Controller
 {
     private static readonly ConcurrentDictionary<string, SemaphoreSlim> _bundleLocks = new(StringComparer.OrdinalIgnoreCase);
     [HttpGet]
@@ -30,7 +29,7 @@ public class AssetHostController(BuildAssetList buildAssetList, ILogger<AssetHos
         if (!publishConfig.IsDefault())
         {
             logger.LogDebug("Getting Publish Configuration {Type} ({Folder})", publishConfig.Key, folder);
-            return Ok(buildAssetList.PublishConfigs[publishConfig.Key]);
+            return Ok(rwConfig.UseCustomAssetLoader ? getAssetDict.PublishConfigs[publishConfig.Key] : buildAssetList.PublishConfigs[publishConfig.Key]);
         }
 
         var assetDict = config.AssetDictConfigs.FirstOrDefault(a => string.Equals(a.Value, file));
@@ -38,25 +37,55 @@ public class AssetHostController(BuildAssetList buildAssetList, ILogger<AssetHos
         if (!assetDict.IsDefault())
         {
             logger.LogDebug("Getting Asset Dictionary {Type} ({Folder})", assetDict.Key, folder);
-            return Ok(buildAssetList.AssetDict[assetDict.Key]);
+            return Ok(rwConfig.UseCustomAssetLoader ? getAssetDict.AssetDict[assetDict.Key] : buildAssetList.AssetDict[assetDict.Key]);
         }
 
-        var name = file.Split('.')[0];
+        var separatedFileName = file.Split('.');
 
-        if (!buildAssetList.InternalAssets.TryGetValue(name, out var asset))
+        var asset = new InternalAssetInfo();
+
+        if (!rwConfig.UseCustomAssetLoader && !buildAssetList.InternalAssets.TryGetValue(separatedFileName[0], out asset)
+            && rwConfig.UseCustomAssetLoader && !getAssetDict.InternalAssets.TryGetValue(separatedFileName[0], out asset))
             return NotFound();
 
-        var path = file.EndsWith(".xml")
-            ? buildXmlList.XmlFiles.TryGetValue(name, out var xmlFile)
+        var path = rwConfig.UseCustomAssetLoader
+            ? WriteFixedBundle(separatedFileName, separatedFileName[^1].Equals("xml"))
+            : file.EndsWith(".xml")
+            ? buildXmlList.XmlFiles.TryGetValue(separatedFileName[0], out var xmlFile)
                 ? xmlFile
                 : throw new FileNotFoundException(
-                    $"Could not find: {name}. Did you mean:\n{string.Join('\n', buildXmlList.XmlFiles.Keys)}")
+                    $"Could not find: {separatedFileName}. Did you mean:\n{string.Join('\n', buildXmlList.XmlFiles.Keys)}")
             : await WriteFixedBundleAsync(asset);
 
         if (config.LogAssetLoadInfo)
             logger.LogDebug("Getting asset {Name} from {File} ({Folder})", asset.Name, path, folder);
 
         return PhysicalFile(path, "application/octet-stream", enableRangeProcessing: true);
+    }
+
+    private string WriteFixedBundle(string[] name, bool isXml)
+    {
+        var assetName = name[0].Trim();
+
+        var baseDirectory =
+            config.DebugInfo
+                ? Path.Join(config.BundleSaveDirectory, assetName)
+                : config.BundleSaveDirectory;
+
+        InternalDirectory.CreateDirectory(baseDirectory);
+
+        var directory = rwConfig.DatabaseXMLDirectory;
+        var pathEnding = ".xml";
+        if (!isXml)
+        {
+            directory = rwConfig.DatabaseDirectory;
+            pathEnding = string.Empty;
+            assetName = assetName.ToLower();
+        }
+
+        var bundlePath = directory + assetName + pathEnding;
+
+        return bundlePath;
     }
 
     private async Task<string> WriteFixedBundleAsync(InternalAssetInfo asset)

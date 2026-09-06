@@ -237,4 +237,8 @@ These JSONs are auto‑created with sensible defaults if missing. You can safely
 - File extraction and/or asset bundle transversal taking a long time
   - Generally this should take ~30m, but if you are mounting folders between file systems (i.e. using WSL and pointing to a folder on your Windows filesystem) this can take 10x-30x longer. Please make sure, if you're using WSL, the folder is pointed to your Linux distro (i.e. Ubuntu).
 
+## Asset Loader
+
+If you want to add custom content to the game you can try following this guide [Asset Loader Guide](ASSETLOADER.md)
+
 ## Happy hosting — and see you in Ook.

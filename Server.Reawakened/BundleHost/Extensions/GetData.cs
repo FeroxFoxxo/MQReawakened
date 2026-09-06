@@ -1,4 +1,6 @@
 ﻿using AssetStudio;
+using Server.Base.Core.Abstractions;
+using Server.Reawakened.BundleHost.Configs;
 using Server.Reawakened.BundleHost.Models;
 using System.Text;
 using System.Xml;
@@ -7,9 +9,9 @@ namespace Server.Reawakened.BundleHost.Extensions;
 
 public static class GetData
 {
-    public static string GetXmlData(this InternalAssetInfo asset)
+    public static string GetXmlData(this InternalAssetInfo asset, AssetBundleRwConfig rwConfig)
     {
-        var file = File.ReadAllText(asset.Path);
+        var file = File.ReadAllText(rwConfig.UseCustomAssetLoader ? rwConfig.DatabaseXMLDirectory + asset.Name + ".xml" : asset.Path);
 
         if (file.FirstOrDefault() == '<')
             try
@@ -20,6 +22,9 @@ public static class GetData
             catch (XmlException)
             {
             }
+
+        if (rwConfig.UseCustomAssetLoader)
+            return file;
 
         var manager = new AssetsManager();
 

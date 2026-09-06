@@ -23,6 +23,7 @@ public class AssetBundleRConfig : IRConfig
     public string AssetSaveDirectory { get; }
     public string RemovedDuplicateDirectory { get; }
     public string CopiedCurrentBundles { get; }
+    public string FixedBundles { get; }
     public string LocalAssetsDirectory { get; }
     public string ScriptsConfigDirectory { get; }
 
@@ -38,6 +39,8 @@ public class AssetBundleRConfig : IRConfig
 
     public bool LogAssetLoadInfo { get; }
 
+    public string AssetDictionaryName { get; }
+
     public AssetBundleRConfig()
     {
         AssetSaveDirectory = InternalDirectory.GetDirectory("Assets/AssetDictionaries");
@@ -46,12 +49,14 @@ public class AssetBundleRConfig : IRConfig
         CopiedCurrentBundles = InternalDirectory.GetDirectory("Assets/CopiedCurrentBundles");
         ScriptsConfigDirectory = InternalDirectory.GetDirectory("Assets/Scripts");
         LocalAssetsDirectory = InternalDirectory.GetDirectory("Assets/LocalAssets");
+        FixedBundles = InternalDirectory.GetDirectory("Assets/FixedBundles");
 
         AlwaysRecreateBundle = false;
         DebugInfo = false;
         ShouldLogAssets = false;
 
         SaveBundleExtension = "bundleGen";
+        AssetDictionaryName = "assetDictionary.xml";
         StoredAssetDict = "StoredAssets.xml";
 
         Message = "Loading Asset Bundles";
@@ -64,7 +69,9 @@ public class AssetBundleRConfig : IRConfig
                 GameVersion.v2011,
                 new Dictionary<string, string>()
                 {
-                    { "FX_GiftBoxconfettis", "FX_GiftBoxConfettis" }
+                    { "FX_GiftBoxconfettis", "FX_GiftBoxConfettis" },
+                    { "AE_CRS_BigTree01", "AE_CRS_Bigtree01" },
+                    { "AE_CRS_BigTree02", "AE_CRS_Bigtree02" }
                 }
             }
         };

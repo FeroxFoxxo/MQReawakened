@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Base.Core.Abstractions;
 using Server.Base.Core.Extensions;
+using Server.Reawakened.BundleHost.Configs;
 using Server.Reawakened.BundleHost.Events;
 using Server.Reawakened.BundleHost.Events.Arguments;
 using Server.Reawakened.BundleHost.Extensions;
@@ -11,7 +12,7 @@ using System.Xml;
 namespace Server.Reawakened.BundleHost.Services;
 
 public class BuildXmlFiles(AssetEventSink eventSink, IServiceProvider services,
-    ILogger<BuildXmlFiles> logger, ServerRConfig rConfig) : IService, IInjectModules
+    ILogger<BuildXmlFiles> logger, ServerRConfig rConfig, AssetBundleRwConfig rwConfig) : IService, IInjectModules
 {
     public readonly Dictionary<string, string> XmlFiles = [];
 
@@ -54,7 +55,7 @@ public class BuildXmlFiles(AssetEventSink eventSink, IServiceProvider services,
 
         foreach (var asset in assets)
         {
-            var text = asset.GetXmlData();
+            var text = asset.GetXmlData(rwConfig);
 
             if (string.IsNullOrEmpty(text))
                 continue;
@@ -73,7 +74,7 @@ public class BuildXmlFiles(AssetEventSink eventSink, IServiceProvider services,
                         )
                     );
 
-                    var localizedXml = localizedAsset.GetXmlData();
+                    var localizedXml = localizedAsset.GetXmlData(rwConfig);
 
                     var localXml = new XmlDocument();
                     localXml.LoadXml(localizedXml);

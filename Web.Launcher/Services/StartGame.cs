@@ -9,6 +9,7 @@ using Server.Base.Core.Services;
 using Server.Base.Logging;
 using Server.Base.Network.Enums;
 using Server.Base.Worlds;
+using Server.Reawakened.BundleHost.Configs;
 using Server.Reawakened.BundleHost.Services;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Core.Enums;
@@ -26,7 +27,8 @@ namespace Web.Launcher.Services;
 
 public class StartGame(EventSink sink, ILogger<StartGame> logger, ServerConsole _console,
     World world, PlayerEventSink playerEventSink, RandomKeyGenerator generator, BuildAssetList assetList,
-    LauncherRConfig lRConfig, LauncherRwConfig lWConfig, InternalRwConfig iWConfig, ServerRConfig sConfig) : IService
+    LauncherRConfig lRConfig, LauncherRwConfig lWConfig, InternalRwConfig iWConfig, AssetBundleRwConfig rwConfig,
+    GetAssetDict getAssetDict, ServerRConfig sConfig) : IService
 {
     private string _directory;
     private bool _dirSet = false, _appStart = false;
@@ -133,7 +135,10 @@ public class StartGame(EventSink sink, ILogger<StartGame> logger, ServerConsole 
 
         logger.LogInformation("Set version to: {Version}", Enum.GetName(sConfig.GameVersion));
 
-        assetList.LoadAssets();
+        if (rwConfig.UseCustomAssetLoader)
+            getAssetDict.LoadAssets();
+        else
+            assetList.LoadAssets();
 
         _dirSet = true;
 

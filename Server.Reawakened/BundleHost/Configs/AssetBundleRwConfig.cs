@@ -9,6 +9,10 @@ public class AssetBundleRwConfig : IRwConfig
     public bool FlushCacheOnStart { get; set; }
     public bool LogProgressBars { get; set; }
     public long LastDecompiledScriptUpdate { get; set; }
+    public string DatabaseDirectory { get; set; }
+    public string DatabaseXMLDirectory { get; set; }
+    public string DatabaseLevelDirectory { get; set; }
+    public bool UseCustomAssetLoader { get; set; }
 
     public AssetBundleRwConfig()
     {
@@ -17,5 +21,9 @@ public class AssetBundleRwConfig : IRwConfig
         CacheInfoFile = string.Empty;
         LogProgressBars = false;
         LastDecompiledScriptUpdate = 0;
+        DatabaseDirectory = string.Empty;
+        DatabaseXMLDirectory = string.Empty;
+        DatabaseLevelDirectory = string.Empty;
+        UseCustomAssetLoader = false;
     }
 }
