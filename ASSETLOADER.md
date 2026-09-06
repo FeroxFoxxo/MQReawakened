@@ -61,7 +61,7 @@ You will want to create a new folder called MQBundles along with the other 3 bel
 - `MQBundles/Levels` - All Level/Trail XML files
 - `MQBundles/XMLs` - All Game Data XML files
 
-![example](https://cdn.discordapp.com/attachments/1186024656227024966/1543368650998943814/image.png?ex=6a974090&is=6a95ef10&hm=3e8e95a5702bcd94583859e36314fb83e835da999a0fb96835f7a0550623277c&)
+<img width="491" height="205" alt="image" src="https://github.com/user-attachments/assets/7ddd9288-8b7f-443e-b9ba-f704afbdb5f8" />
 
 ## How to enable
 
