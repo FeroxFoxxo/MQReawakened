@@ -57,13 +57,60 @@ public class VendorGift : ExternalProtocol
         var package = ItemCatalog.GetItemFromId(packageId);
         var item = ItemCatalog.GetItemFromId(itemId);
 
+        if (item == null || package == null)
+        {
+            Player.SendXt("wm", "302");
+            Logger.LogError("Invalid gift item or package found: {ItemId} {PackageId}", itemId, packageId);
+            return;
+        }
+
+        var valid = false;
+
+        // Check if Vendor has item
+        var vendors = InternalVendor.GetVendorsById(Player.Character.LevelId, vendorId);
+
+        foreach (var vendor in vendors)
+        {
+            var items = VendorCatalog.GetVendorItemList(vendor.CatalogId);
+
+            if (items.Contains(item.PrefabName))
+                valid = true;
+        }
+
+        if (!valid)
+        {
+            Logger.LogError("[ANTICHEAT] Player \"{Name}\" attempted to purchase invalid item from Vendor {VendorID}", Player.CharacterName, vendors[0]?.VendorId);
+            Player.SendXt("wm", "302");
+            return;
+        }
+
+        var price = item.RegularPrice;
+        if (item.isDiscounted())
+            price = item.DiscountPrice;
+
         if (item.Currency == CurrencyType.NickCash)
         {
+            if (price > Player.Character.NCash && price > 1)
+            {
+                Player.SendXt("Ce", -1);
+                return;
+            }
+            
             Player.RemoveBananas(package.RegularPrice);
-            Player.RemoveNCash(item.RegularPrice);
+            Player.RemoveNCash(price);
         }
         else
-            Player.RemoveBananas(package.RegularPrice + item.RegularPrice);
+        {
+            price += package.RegularPrice;
+            
+            if (price > Player.Character.Cash && price > 1)
+            {
+                Player.SendXt("Ce", -1);
+                return;
+            }
+            
+            Player.RemoveBananas(price);
+        }
 
         var mailId = isOnline ? friend.Character.EmailMessages.Count : friendImage.EmailMessages.Count;
         while (true)
