@@ -1,12 +1,10 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
-using Server.Base.Core.Abstractions;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Core.Enums;
 using Server.Reawakened.XMLs.Abstractions.Enums;
-using Server.Reawakened.XMLs.Abstractions.Extensions;
 using Server.Reawakened.XMLs.Abstractions.Interfaces;
-using Server.Reawakened.XMLs.Data.Enemy.Enums;
+using Server.Reawakened.XMLs.Bundles.Base;
 using Server.Reawakened.XMLs.Data.Portals.Models;
 using System.Xml;
 
@@ -18,18 +16,12 @@ public class InternalPortalInfos : InternalXml
     public override BundlePriority Priority => BundlePriority.High;
 
     public ILogger<InternalPortalInfos> Logger { get; set; }
-    public ServerRConfig Config { get; set; }
 
-    public Dictionary<GameVersion, Dictionary<int, PortalInfosModel>> PortalInfos;
-    private GameVersion[] _possibleVersions;
+    public Dictionary<int, PortalInfosModel> PortalInfos;
+    
+    public ItemCatalog ItemCatalog { get; set; }
 
-    public override void InitializeVariables()
-    {
-        PortalInfos = [];
-        _possibleVersions = [];
-    }
-
-    public GameVersion[] GetPossibleVersions() => [.. PortalInfos.Keys.Where(v => v <= Config.GameVersion).OrderBy(v => v)];
+    public override void InitializeVariables() => PortalInfos = [];
 
     public override void ReadDescription(XmlDocument xmlDocument)
     {
@@ -37,30 +29,17 @@ public class InternalPortalInfos : InternalXml
         {
             if (portalInfosXml.Name != "PortalInfos") continue;
 
-            var gameVersion = GameVersion.Unknown;
-
-            foreach (XmlNode gVXml in portalInfosXml.ChildNodes)
-            {
-                if (!(gVXml.Name == "GameVersion")) continue;
-
-                foreach (XmlAttribute gVAttribute in gVXml.Attributes)
-                    switch (gVAttribute.Name)
-                    {
-                        case "version":
-                            gameVersion = gameVersion.GetEnumValue(gVAttribute.Value, Logger);
-                            break;
-                    }
-
-                PortalInfos.Add(gameVersion, []);
-
-                foreach (XmlNode portal in gVXml.ChildNodes)
+                foreach (XmlNode portal in portalInfosXml.ChildNodes)
                 {
                     if (portal.Name != "Portal") continue;
 
                     var goId = 0;
                     var levelId = 0;
                     var isPremium = true;
-                    var portalConditionsList = new List<PortalConditionModel>();
+                    var reqItems = new List<int>();
+                    var reqQuests = new List<int>();
+                    var reqLevel = 0;
+                    var portalCondition = new PortalConditionModel([], [], 0, null, null);
 
                     foreach (XmlAttribute portalObjInfo in portal.Attributes)
                         switch (portalObjInfo.Name)
@@ -68,7 +47,7 @@ public class InternalPortalInfos : InternalXml
                             case "id":
                                 goId = int.Parse(portalObjInfo.Value);
                                 break;
-                            case "levelId":
+                            case "toLevelId":
                                 levelId = int.Parse(portalObjInfo.Value);
                                 break;
                             case "isPremium":
@@ -78,11 +57,6 @@ public class InternalPortalInfos : InternalXml
 
                     foreach (XmlNode portalConditions in portal.ChildNodes)
                     {
-                        var conditionType = PortalConditionType.Unknown;
-                        var reqItems = new List<int>();
-                        var reqQuests = new List<int>();
-                        var reqLevels = new Dictionary<TribeType, int>();
-
                         switch (portalConditions.Name)
                         {
                             case "RequiredItem":
@@ -93,7 +67,6 @@ public class InternalPortalInfos : InternalXml
                                             reqItems.Add(int.Parse(itemInfo.Value));
                                             break;
                                     }
-                                conditionType = PortalConditionType.RequiredItem;
                                 break;
                             case "RequiredQuest":
                                 foreach (XmlAttribute questInfo in portalConditions.Attributes)
@@ -103,7 +76,6 @@ public class InternalPortalInfos : InternalXml
                                             reqQuests.Add(int.Parse(questInfo.Value));
                                             break;
                                     }
-                                conditionType = PortalConditionType.RequiredQuest;
                                 break;
                             case "RequiredLevel":
                                 var minLevel = 0;
@@ -115,73 +87,29 @@ public class InternalPortalInfos : InternalXml
                                         case "level":
                                             minLevel = int.Parse(levelsInfo.Value);
                                             break;
-                                        case "tribe":
-                                            switch (levelsInfo.Value)
-                                            {
-                                                case "Crossroads":
-                                                case "Global":
-                                                    break;
-                                                case "Outlaw":
-                                                    tribe = TribeType.Outlaw;
-                                                    break;
-                                                case "Shadow":
-                                                    tribe = TribeType.Shadow;
-                                                    break;
-                                                case "Bone":
-                                                    tribe = TribeType.Bone;
-                                                    break;
-                                                case "Wild":
-                                                    tribe = TribeType.Wild;
-                                                    break;
-                                                case "Grease":
-                                                    tribe = TribeType.Grease;
-                                                    break;
-                                                default:
-                                                    Logger.LogError("Unknown tribe XP type: '{Type}' for portal '{Portal}', defaulting to global...", levelsInfo.Value, goId);
-                                                    break;
-                                            }
-                                            break;
                                     }
-                                    reqLevels.TryAdd(tribe, minLevel);
+                                    reqLevel = minLevel;
                                 }
-                                conditionType = PortalConditionType.RequiredLevel;
                                 break;
                             default:
                                 Logger.LogError("Unknown portal condition type: '{Condition}', skipping...", portalConditions.Name);
                                 break;
                         }
-
-                        switch (conditionType)
-                        {
-                            case PortalConditionType.RequiredItem:
-                                portalConditionsList.Add(new PortalConditionModel(conditionType, reqItems));
-                                break;
-                            case PortalConditionType.RequiredQuest:
-                                portalConditionsList.Add(new PortalConditionModel(conditionType, reqQuests));
-                                break;
-                            case PortalConditionType.RequiredLevel:
-                                portalConditionsList.Add(new PortalConditionModel(conditionType, reqLevels));
-                                break;
-                        }
                     }
-                    var infosModel = new PortalInfosModel(portalConditionsList, isPremium);
+                    
+                    portalCondition = new PortalConditionModel(reqItems, reqQuests, reqLevel, ItemCatalog, ItemCatalog.QuestCatalog);
+                    
+                    var infosModel = new PortalInfosModel(portalCondition, isPremium);
 
-                    PortalInfos[gameVersion].TryAdd(goId, infosModel);
+                    PortalInfos.TryAdd(levelId, infosModel);
                 }
-            }
         }
-
-        _possibleVersions = GetPossibleVersions();
     }
 
     public PortalInfosModel GetPortalInfos(int levelId, int goId)
     {
-        if (PortalInfos[Config.GameVersion].TryGetValue(goId, out var info))
+        if (PortalInfos.TryGetValue(levelId, out var info))
             return info;
-        else
-            foreach (var version in _possibleVersions)
-                if (PortalInfos[version].TryGetValue(goId, out info))
-                    return info;
 
         return null;
     }

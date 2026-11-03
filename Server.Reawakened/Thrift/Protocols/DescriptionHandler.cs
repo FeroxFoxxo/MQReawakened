@@ -13,7 +13,7 @@ using static A2m.Server.Protocol.DescriptionHandlerServer;
 namespace Server.Reawakened.Thrift.Protocols;
 
 public class DescriptionHandler(ILogger<DescriptionHandler> logger, WorldGraph worldGraph,
-    MiscTextDictionary miscTextDictionary, QuestCatalog questCatalog, InternalPortalInfos portalInfos) : ThriftHandler(logger)
+    MiscTextDictionary miscTextDictionary, QuestCatalog questCatalog, UseSubConditionInfos portalInfos) : ThriftHandler(logger)
 {
     public override void AddProcesses(Dictionary<string, ProcessFunction> processes) =>
         processes.Add("getPortalInfo", GetPortalInfo);
@@ -28,72 +28,72 @@ public class DescriptionHandler(ILogger<DescriptionHandler> logger, WorldGraph w
         var portalId = int.Parse(args.GoId);
 
         var newLevelId = worldGraph.GetLevelFromPortal(args.LevelId, portalId);
-        var newLevelName = worldGraph.GetInfoLevel(newLevelId).InGameName;
+
+        if (newLevelId <= 0)
+            logger.LogError("Could not find level for portal {PortalId} in room {RoomId}", portalId, args.LevelId);
+        
+        var newLevel = worldGraph.GetInfoLevel(newLevelId);
+        var newLevelName = newLevel.InGameName;
         var newLevelNameId = miscTextDictionary.LocalizationDict.FirstOrDefault(x => x.Value == newLevelName);
 
         var player = netState.Get<Player>();
 
         var collectedIdols = player.Character.CollectedIdols;
 
-        var portalInfo = portalInfos.GetPortalInfos(newLevelId, portalId);
+        var portalInfo = portalInfos.GetUseSubConditionInfo(newLevel.UseconditionID);
 
         var portalConditions = new List<A2m.Server.Protocol.PortalCondition>();
 
-        if (portalInfo != null && portalInfo.PortalConditions.Count > 0)
+        if (portalInfo != null)
         {
             var requiredQuestNames = new List<int>();
             var requiredItemNames = new List<int>();
 
-            foreach (var condition in portalInfo.PortalConditions)
+            if (portalInfo.QuestsID.Count > 0)
             {
-                if (condition.RequiredQuests.Count > 0)
+                foreach (var quest in portalInfo.QuestsID)
                 {
-                    foreach (var quest in condition.RequiredQuests)
-                    {
-                        var questData = questCatalog.GetQuestData(quest);
+                    var questData = questCatalog.GetQuestData(quest);
 
-                        if (questData == null)
-                            continue;
+                    if (questData == null)
+                        continue;
 
-                        var questNameId = miscTextDictionary.LocalizationDict.FirstOrDefault(x => x.Value == questData.Title).Key;
+                    var questNameId = miscTextDictionary.LocalizationDict.FirstOrDefault(x => x.Value == questData.Title).Key;
 
-                        if (!requiredQuestNames.Contains(questNameId))
-                            requiredQuestNames.Add(questNameId);
-                    }
+                    if (!requiredQuestNames.Contains(questNameId))
+                        requiredQuestNames.Add(questNameId);
                 }
-
-                if (condition.RequiredItems.Count > 0)
-                {
-                    foreach (var item in condition.RequiredItems)
-                    {
-                        var itemDescription = questCatalog.ItemCatalog.GetItemFromId(item);
-
-                        if (itemDescription == null)
-                            continue;
-
-                        var itemName = questCatalog.ItemCatalog.GetTextIdFromName(itemDescription.ItemName);
-
-                        if (!requiredItemNames.Contains(itemName))
-                            requiredItemNames.Add(itemName);
-                    }
-                }
-
-                var requiredLevel = condition.RequiredLevels.Count > 0 ? condition.RequiredLevels.FirstOrDefault().Value : 1;
-
-                portalConditions.Add(new A2m.Server.Protocol.PortalCondition()
-                {
-                    ItemIds = condition.RequiredItems,
-                    ItemNameIds = requiredItemNames,
-                    QuestIds = condition.RequiredQuests,
-                    QuestNameIds = requiredQuestNames,
-                    HasFinishedQuests = condition.CheckRequiredQuests(player),
-                    OwnItems = condition.CheckRequiredItems(player),
-                    ReputationLevel = requiredLevel,
-                    HasReputation = condition.CheckRequiredLevels(player),
-                    OperatorItem = 0,
-                    OperatorQuest = 0
-                });
             }
+
+            if (portalInfo.ItemsID.Count > 0)
+            {
+                foreach (var item in portalInfo.ItemsID)
+                {
+                    var itemDescription = questCatalog.ItemCatalog.GetItemFromId(item);
+
+                    if (itemDescription == null)
+                        continue;
+
+                    var itemName = questCatalog.ItemCatalog.GetTextIdFromName(itemDescription.ItemName);
+
+                    if (!requiredItemNames.Contains(itemName))
+                        requiredItemNames.Add(itemName);
+                }
+            }
+            
+            portalConditions.Add(new A2m.Server.Protocol.PortalCondition()
+            {
+                ItemIds = portalInfo.ItemsID,
+                ItemNameIds = requiredItemNames,
+                QuestIds = portalInfo.QuestsID,
+                QuestNameIds = requiredQuestNames,
+                HasFinishedQuests = portalInfos.IsSatisfied(player, portalInfo),
+                OwnItems = portalInfos.IsSatisfied(player, portalInfo),
+                ReputationLevel = portalInfos.GetReputation(portalInfo),
+                HasReputation = portalInfos.IsSatisfied(player, portalInfo),
+                OperatorItem = portalInfo.ItemOperation,
+                OperatorQuest = portalInfo.QuestOperation
+            });
         }
 
         var result = new getPortalInfo_result
@@ -103,9 +103,9 @@ public class DescriptionHandler(ILogger<DescriptionHandler> logger, WorldGraph w
                 LevelId = args.LevelId,
                 IdolCount = collectedIdols.TryGetValue(newLevelId, out var value) ? value.Count : 0,
                 GoId = portalId,
-                IsLocked = portalInfo != null && !portalInfo.CheckConditions(player),
-                IsMemberOnly = false,
-                IsPremium = portalInfo != null && portalInfo.ShowPremiumPortal,
+                IsLocked = portalInfo != null && !portalInfos.IsSatisfied(player, portalInfo),
+                IsMemberOnly = portalInfo != null && portalInfos.IsMemberOnly(portalInfo),
+                IsPremium = portalInfo != null && portalInfos.IsPremiumCondition(portalInfo),
                 DestinationLevelNameId = newLevelNameId.Key,
                 Conditions = portalInfo != null ? portalConditions : []
             }
