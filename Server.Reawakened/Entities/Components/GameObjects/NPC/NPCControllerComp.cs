@@ -360,17 +360,21 @@ public class NPCControllerComp : Component<NPCController>
 
         if (QuestCatalog.QuestLineCatalogs.TryGetValue(questData.QuestLineId, out var questLine))
         {
-            var giverQuest = GiverQuests.OrderBy(x => x.QuestgGiverName == NpcName && questLine.ShowInJournal);
-            var validatorQuest = ValidatorQuests.OrderBy(x => x.ValidatorName == NpcName && questLine.ShowInJournal);
-
-            if (giverQuest.All(y => player.Character.CompletedQuests.Any(z => y.Id == z))
-                && validatorQuest.All(y => player.Character.CompletedQuests.Any(z => y.Id == z))
-                && !giverQuest.Any(x => player.Character.QuestLog.Any(y => x.Id == y.Id))
-                && !validatorQuest.Any(x => player.Character.QuestLog.Any(y => x.Id == y.Id))
-                && questLine.QuestType != QuestType.Daily)
+            if (questLine.QuestType != QuestType.Daily)
             {
-                Logger.LogTrace("[{QuestLineId}] [COMPLETED QUESTLINE] Completed {NpcName}'s questline.", questData.QuestLineId, NpcName);
-                return VendorInfo != null ? VendorInfo.VendorType : NPCStatus.Dialog;
+                var giverQuests = GiverQuests.OrderBy(x =>
+                    x.QuestgGiverName == NpcName && questLine.ShowInJournal);
+                var validatorQuests = ValidatorQuests.OrderBy(x =>
+                    x.ValidatorName == NpcName && questLine.ShowInJournal);
+
+                var allQuests = giverQuests.Concat(validatorQuests).ToList();
+                
+                if (allQuests.All(q => player.Character.CompletedQuests.Contains(q.Id))
+                    && allQuests.All(q => player.Character.QuestLog.All(l => l.Id != q.Id)))
+                {
+                    Logger.LogTrace("[{QuestLineId}] [COMPLETED QUESTLINE] Completed {NpcName}'s questline.", questData.QuestLineId, NpcName);
+                    return VendorInfo != null ? VendorInfo.VendorType : NPCStatus.Dialog;
+                }
             }
         }
 
@@ -642,7 +646,7 @@ public class NPCControllerComp : Component<NPCController>
     {
         if (!player.Character.CurrentQuestDailies.ContainsKey(dailyObjectId) ||
             player.Character.CurrentQuestDailies.TryGetValue(dailyObjectId, out var dailyObject) &&
-            dailyObject.GameObjectId == dailyObjectId && DateTime.Now.Date > dailyObject.TimeOfHarvest.Date)
+            dailyObject.GameObjectId == dailyObjectId && DateTime.UtcNow.Date > dailyObject.TimeOfHarvest.Date)
         {
             player.Character.CurrentQuestDailies.Remove(dailyObjectId);
             return true;

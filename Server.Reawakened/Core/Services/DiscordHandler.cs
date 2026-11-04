@@ -71,6 +71,26 @@ public class DiscordHandler(DiscordRwConfig rwConfig, PlayerContainer playerCont
 
         socketChannel.SendMessageAsync(null, false, embed.Build());
     }
+    
+    public void SendPunishmentLog(string type, string punisher, string punished, string reason, string duration)
+    {
+        if (_socketClient == null)
+            return;
+
+        var socketChannel = (ISocketMessageChannel)_socketClient.GetChannel(rwConfig.PunishmentsChannelId);
+
+        var embed = new EmbedBuilder();
+        embed.WithTitle("New Punishment");
+        embed.WithDescription(
+            "**Punishment Type:** " + type + "\n" +
+            "**Punisher:** " + punisher + "\n" +
+            "**Punished:** " + punished + "\n" +
+            "**Reason:** " + (reason == string.Empty ? "N/A" : reason) + "\n" +
+            "**Duration:** " + (duration == string.Empty ? "N/A" : duration.Replace(" for", string.Empty))
+        );
+
+        socketChannel.SendMessageAsync(null, false, embed.Build());
+    }
 
     private async Task ClientOnMessageReceived(SocketMessage socketMessage) =>
         await Task.Run(() =>

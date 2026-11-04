@@ -22,9 +22,7 @@ public class PlayerContainer
     {
         lock (Lock)
         {
-            foreach (var player in _playerList)
-                if (player == null)
-                    _playerList.Remove(player);
+            _playerList.RemoveAll(player => player == null);
 
             return [.. _playerList];
         }
@@ -39,19 +37,31 @@ public class PlayerContainer
     public IEnumerable<Player> GetPlayersByFriend(int friendId)
     {
         lock (Lock)
-            return _playerList.ToList().Where(p => p.Character.Friends.Contains(friendId));
+        {
+            _playerList.RemoveAll(player => player == null);
+
+            return _playerList.ToList().Where(p => p.Character.Friends.Contains(friendId)) ?? [];
+        }
     }
 
     public IEnumerable<Player> GetPlayersByCharacterId(int characterId)
     {
         lock (Lock)
+        {
+            _playerList.RemoveAll(player => player == null);
+
             return _playerList.ToList().Where(p => p.CharacterId == characterId);
+        }
     }
 
     public IEnumerable<Player> GetPlayersByUserId(int playerId)
     {
         lock (Lock)
+        {
+            _playerList.RemoveAll(player => player == null);
+
             return _playerList.ToList().Where(p => p.UserId == playerId);
+        }
     }
 
     public bool AnyPlayersByUserId(int playerId)

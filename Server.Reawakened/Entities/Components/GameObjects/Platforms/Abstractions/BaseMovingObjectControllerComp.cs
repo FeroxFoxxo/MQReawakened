@@ -27,8 +27,8 @@ public abstract class BaseMovingObjectControllerComp<T> : Component<T>, IRecieve
 
     public override object[] GetInitData(Player player) =>
     [
-        Room.Time,
-        Movement.GetBehaviorRatio(Room.Time),
+        0f,
+        InitialProgressRatio,
         Movement.Activated ? 1 : 0
     ];
 

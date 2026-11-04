@@ -9,6 +9,7 @@ public class DiscordRwConfig : IRwConfig
     public ulong PrivateMessagesChannelId { get; set; }
     public ulong GlobalChannelId { get; set; }
     public ulong ReportsChannelId { get; set; }
+    public ulong PunishmentsChannelId { get; set; }
 
     public DiscordRwConfig()
     {
@@ -18,5 +19,6 @@ public class DiscordRwConfig : IRwConfig
         PrivateMessagesChannelId = 0;
         GlobalChannelId = 0;
         ReportsChannelId = 0;
+        PunishmentsChannelId = 0;
     }
 }

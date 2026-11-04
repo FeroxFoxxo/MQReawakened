@@ -24,7 +24,7 @@ public class AIBehaviorShooting(BehaviorEnemy enemy, ShootingProperties fallback
             Fallback(enemy.Global.Shooting_FireSpreadStartAngle, fallback.shooting_FireSpreadStartAngle)
         );
 
-    public override object[] GetStartArgs() => [];
+    public override object[] GetStartArgs(bool _) => [];
 
     public override StateType GetStateType() => StateType.Shooting;
 

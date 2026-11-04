@@ -14,7 +14,7 @@ public class AIBehaviorComeBack(BehaviorEnemy enemy, ComeBackProperties fallback
             Fallback(enemy.Global.ComeBack_MoveSpeed, fallback.comeBack_MoveSpeed)
         );
 
-    public override object[] GetStartArgs() => [enemy.Position.X, _aiData.Intern_SpawnPosY];
+    public override object[] GetStartArgs(bool _) => [enemy.Global.Patrol_MoveSpeed == 0 ? _aiData.Intern_SpawnPosX : enemy.Position.X, _aiData.Intern_SpawnPosY];
 
     public override StateType GetStateType() => StateType.ComeBack;
 

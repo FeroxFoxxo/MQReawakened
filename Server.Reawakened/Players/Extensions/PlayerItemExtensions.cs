@@ -5,6 +5,7 @@ using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Core.Enums;
+using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Controller;
 using Server.Reawakened.Entities.Components.GameObjects.Breakables;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players.Helpers;
@@ -58,6 +59,8 @@ public static class PlayerItemExtensions
             return;
 
         var player = drop.Player;
+        var dropTime = 2.3f;
+        var radius = 4f;
 
         var dropItem = new LaunchItem_SyncEvent(new SyncEvent(player.GameObjectId.ToString(), SyncEvent.EventType.LaunchItem, player.Room.Time));
         dropItem.EventDataList.Add(player.TempData.Position.X + drop.DropDirection);
@@ -79,15 +82,15 @@ public static class PlayerItemExtensions
 
         var bombData = new BombData()
         {
-            Position = player.TempData.CopyPosition(),
-            Radius = 5.4f,
+            Position = player.TempData.CopyPosition().ToUnityVector3(),
+            Radius = radius,
             Thread = drop.TimerThread,
             Damage = drop.UsedItem.GetDamageAmount(drop.Logger, drop.ItemRConfig),
-            DamageType = drop.UsedItem.Elemental,
+            ItemEffects = drop.UsedItem.ItemEffects,
             Player = player,
         };
 
-        drop.TimerThread.RunDelayed(ExplodeBomb, bombData, TimeSpan.FromMilliseconds(2850));
+        drop.TimerThread.RunDelayed(ExplodeBomb, bombData, TimeSpan.FromSeconds(dropTime));
     }
 
     private class BombData : PlayerRoomTimer
@@ -95,7 +98,7 @@ public static class PlayerItemExtensions
         public Vector3 Position { get; set; }
         public float Radius { get; set; }
         public int Damage { get; set; }
-        public Elemental DamageType { get; set; }
+        public List<ItemEffect> ItemEffects { get; set; }
         public TimerThread Thread { get; set; }
         public ServerRConfig ServerRConfig { get; set; }
     }
@@ -105,20 +108,31 @@ public static class PlayerItemExtensions
         if (data is not BombData bomb)
             return;
 
-        ExplodeBomb(bomb.Player.Room, bomb.Player, bomb.Position, bomb.Radius, bomb.Damage, bomb.DamageType, bomb.ServerRConfig, bomb.Thread);
+        ExplodeBomb(bomb.Player.Room, bomb.Player, bomb.Position, bomb.Radius, bomb.Damage, bomb.ItemEffects, bomb.ServerRConfig, bomb.Thread);
     }
 
     public static void ExplodeBomb(this Room room, Player player, Vector3 position,
-        float radius, int damage, Elemental damageType, ServerRConfig serverRConfig, TimerThread thread)
+        float radius, int damage, List<ItemEffect> itemEffects, ServerRConfig serverRConfig, TimerThread thread)
     {
+        var initialEffect = itemEffects.Any() ? itemEffects.First().Type : ItemEffectType.BluntDamage;
+
         foreach (var component in room.GetEntitiesFromType<BreakableEventControllerComp>().Where(comp =>
-            Vector3.Distance(position, new Vector3(comp.Position.X, comp.Position.Y, comp.Position.Z)) <= radius
-        ))
-            component.Damage(damage, damageType, player);
+                     Vector3.Distance(position, new Vector3(comp.Position.X, comp.Position.Y, comp.Position.Z)) <= radius
+                 ))
+            component.Damage(damage, initialEffect, player);
 
         if (player == null)
+        {
             foreach (var nearPlayer in room.GetNearbyPlayers(position, radius))
-                nearPlayer.ApplyCharacterDamage(damage, nearPlayer.GameObjectId, 1, serverRConfig, thread);
+                nearPlayer.ApplyCharacterDamage(damage, ItemEffectType.BluntDamage, nearPlayer.GameObjectId, 1);
+        }
+        else
+        {
+            foreach (var component in room.GetEntitiesFromType<EnemyControllerComp>().Where(comp =>
+                         Vector3.Distance(position, new Vector3(comp.Position.X, comp.Position.Y, comp.Position.Z)) <= radius
+                     ))
+                component.Damage(player, damage);
+        }
 
         room.Logger.LogInformation("Running bomb at coords: {Position} of radius {Radius}", position, radius);
     }

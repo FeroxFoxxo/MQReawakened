@@ -21,7 +21,7 @@ public abstract class BaseChestControllerComp<T> : Component<T> where T : BaseCh
         if (!player.Character.CurrentCollectedDailies.ContainsKey(dailyHarvestId) ||
             player.Character.CurrentCollectedDailies.TryGetValue(dailyHarvestId, out var dailyHarvest) &&
             dailyHarvest.GameObjectId == dailyHarvestId && dailyHarvest.LevelId == player.Room.LevelInfo.LevelId &&
-            DateTime.Now.Date > dailyHarvest.TimeOfHarvest.Date)
+            DateTime.UtcNow.Date > dailyHarvest.TimeOfHarvest.Date)
         {
             player.Character.CurrentCollectedDailies.Remove(dailyHarvestId);
             return true;

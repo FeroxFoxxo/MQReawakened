@@ -58,8 +58,8 @@ public static class AISyncEventHelper
         return aiInit;
     }
 
-    public static AIDo_SyncEvent AIDo(float posX, float posY, float speedFactor, float targetPosX, float targetPosY, int direction, bool awareBool, BehaviorEnemy enemy) =>
-        AIDo(enemy.Id, enemy.Room, posX, posY, speedFactor, targetPosX, targetPosY, direction, awareBool, IndexOf(enemy.CurrentState, enemy.EnemyModel.BehaviorData), enemy.CurrentBehavior.GetStartArgsString());
+    public static AIDo_SyncEvent AIDo(float posX, float posY, float speedFactor, float targetPosX, float targetPosY, int direction, bool awareBool, BehaviorEnemy enemy, bool afterRoomLoad = false) =>
+        AIDo(enemy.Id, enemy.Room, posX, posY, speedFactor, targetPosX, targetPosY, direction, awareBool, IndexOf(enemy.CurrentState, enemy.EnemyModel.BehaviorData), enemy.CurrentBehavior.GetStartArgsString(afterRoomLoad));
 
     public static AIDo_SyncEvent AIDo(string id, Room room, float posX, float posY, float speedFactor, float targetPosX, float targetPosY, int direction, bool awareBool, int index, string startString)
     {

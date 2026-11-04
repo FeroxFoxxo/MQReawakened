@@ -11,20 +11,31 @@ public class AIBehaviorStinger(BehaviorEnemy enemy, StingerProperties fallback) 
 
     public override AiProperties GetProperties() => GetInternalProperties();
 
-    private StingerProperties GetInternalProperties() => fallback;
+    private StingerProperties GetInternalProperties() => 
+        // These are "hardcoded", but they just match the data in the scripts
+        new StingerProperties(
+            16,
+            8,
+            0.43f,
+            2.67f,
+            1f,
+            1f,
+            3
+        );
 
-    public override object[] GetStartArgs() {
+    public override object[] GetStartArgs(bool _) {
         var properties = GetInternalProperties();
 
+        // Some of these are hardcoded
         return [
             _aiData.Sync_TargetPosX,
             _aiData.Sync_TargetPosY,
-            0, // Target will always be on first plane
-            _aiData.Intern_SpawnPosX,
-            _aiData.Intern_SpawnPosY,
-            _aiData.Intern_SpawnPosZ,
-            properties.speedForward,
-            properties.speedBackward
+            1,
+            _aiData.Sync_TargetPosX,
+            _aiData.Sync_TargetPosY,
+            10,
+            16,
+            8
         ]; }
 
     public override StateType GetStateType() => StateType.Stinger;

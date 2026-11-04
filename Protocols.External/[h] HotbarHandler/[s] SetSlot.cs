@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Reawakened.Core.Configs;
+using Server.Reawakened.Core.Enums;
 using Server.Reawakened.Network.Protocols;
-using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.Bundles.Base;
@@ -30,16 +30,24 @@ public class SetSlot : ExternalProtocol
             return;
         }
 
-        if (ItemCatalog.GetItemFromId(itemId).IsPet() && Player.GetEquippedPetId(ServerRConfig) != itemId.ToString() &&
+        if (Player.Character.Hotbar.HotbarButtons.ContainsKey(hotbarSlotId) &&
+            Player.Character.Hotbar.HotbarButtons.Any(x => x.Value.ItemId == itemId))
+        {
+            Player.SwapSlots(hotbarSlotId, item);
+            return;
+        }
+        
+        if (ItemCatalog.GetItemFromId(itemId).IsPet() && Player.GetItemIdOfEquippedPet() != itemId.ToString() &&
             PetAbilities.PetAbilityData.TryGetValue(itemId, out var petAbility) && petAbility != null)
         {
-            Player.UnequipPet(petAbility, WorldStatistics, ServerRConfig, ItemCatalog);
-            Player.SetHotbarSlot(ServerRConfig.PetHotbarIndex, item, ItemRConfig);
-            Player.EquipPet(petAbility, WorldStatistics, ServerRConfig, ItemCatalog);
+            Player.UnequipPet(Player.GetItemIdOfEquippedPet(), petAbility, ItemCatalog, WorldStatistics, ItemRConfig);
+            Player.SetHotbarSlot(ServerRConfig.PetHotbarIndex, item);
+            Player.EquipPet(itemId.ToString(), petAbility, ItemCatalog, WorldStatistics, ServerRConfig, ItemRConfig);
         }
-
         else
-            Player.SetHotbarSlot(hotbarSlotId, item, ItemRConfig);
+        {
+            Player.SetHotbarSlot(hotbarSlotId, item);
+        }
 
         SendXt("hs", Player.Character.Hotbar);
     }

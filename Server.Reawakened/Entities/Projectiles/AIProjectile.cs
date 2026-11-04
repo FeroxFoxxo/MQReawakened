@@ -17,16 +17,15 @@ public class AIProjectile : BaseProjectile
     private readonly string _ownerId;
 
     public AIProjectile(Room room, string ownerId, string projectileId, Vector3Model position, RectModel size,
-        Vector2 speed, float lifeTime, TimerThread timerThread, int baseDamage,
-        ItemEffectType effect, bool gravity, ServerRConfig config, ItemCatalog itemCatalog)
+        Vector2 speed, float lifeTime, ItemEffectType effect, bool gravity)
         : base(projectileId, lifeTime, room, position, speed, null, gravity)
     {
         _ownerId = ownerId;
 
         Collider = new AIProjectileCollider(
             projectileId, ownerId, room, Position,
-            size, PrjPlane, LifeTime, timerThread,
-            baseDamage, effect, itemCatalog, config
+            size, PrjPlane, LifeTime,
+            effect
         );
     }
 

@@ -94,8 +94,8 @@ public abstract class BaseTriggerStatueComp<T> : BaseTriggerCoopController<T> wh
                         trigger.Trigger(true, player.GameObjectId);
 
                 foreach (var gamer in players)
-                {
-                    gamer.TemporaryInvincibility(TimerThread, ServerRConfig, 2);
+                {                    
+                    gamer.TemporaryInvincibility(2);
                     gamer.CheckObjective(ObjectiveEnum.Score, Id, PrefabName, 1, QuestCatalog);
                     gamer.Character.Write.SpawnPointId = Id;
                 }

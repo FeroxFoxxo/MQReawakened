@@ -3,7 +3,7 @@
 namespace Server.Reawakened.Entities.Components.Characters.Controllers.Base.Abstractions;
 public abstract class DamagableAiStateMachine<T> : BaseAIStateMachine<T>, IAIDamageEnemy
 {
-    public void EnemyDamaged(bool isDead)
+    public virtual void EnemyDamaged(bool isDead)
     {
         AddNextState<AIStateStunnedComp>();
 

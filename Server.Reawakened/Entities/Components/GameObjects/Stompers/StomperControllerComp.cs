@@ -2,7 +2,6 @@
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Entities.Colliders;
 using Server.Reawakened.Entities.Components.GameObjects.Platforms.Abstractions;
-using UnityEngine;
 
 namespace Server.Reawakened.Entities.Components.GameObjects.Stompers;
 
@@ -16,17 +15,26 @@ public class StomperControllerComp : BaseMovingObjectControllerComp<StomperContr
     public bool Hazard => ComponentData.Hazard;
 
     private StomperZoneCollider _collider;
-    public TimerThread TimerThread { get; set; }
-    public ServerRConfig ServerRConfig { get; set; }
+    private Stomper_Movement _stomperMovement;
 
     public override void InitializeComponent()
     {
-        Movement = new Stomper_Movement(DownMoveTime, WaitTimeDown, UpMoveTime, WaitTimeUp, VerticalDistance);
-        Movement.Init(
-            Position.ToVector3(),
-            true, 0, InitialProgressRatio
+        _stomperMovement = new Stomper_Movement(
+            DownMoveTime,
+            WaitTimeDown,
+            UpMoveTime,
+            WaitTimeUp,
+            VerticalDistance
         );
-        Movement.Activate(Room.Time);
+        Movement = _stomperMovement;
+
+        _stomperMovement.Init(
+            Position.ToVector3(),
+            true,
+            0f,
+            InitialProgressRatio
+        );
+        _stomperMovement.Activate(Room.Time);
 
         _collider = new StomperZoneCollider(this);
 
@@ -35,7 +43,8 @@ public class StomperControllerComp : BaseMovingObjectControllerComp<StomperContr
 
     public override void Update()
     {
-        if (Room == null)
+        var room = Room;
+        if (room == null || _stomperMovement == null)
             return;
 
         base.Update();

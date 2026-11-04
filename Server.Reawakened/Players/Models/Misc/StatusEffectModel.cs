@@ -6,10 +6,13 @@ public class StatusEffectModel
     public float Value { get; set; }
     public DateTime Expiry { get; set; }
 
-    public StatusEffectModel(ItemEffectType effect, float value, DateTime expiry)
+    public string PrefabName { get; set; }
+
+    public StatusEffectModel(ItemEffectType effect, float value, DateTime expiry, string prefabName)
     {
         Effect = effect;
         Value = value;
         Expiry = expiry;
+        PrefabName = prefabName;
     }
 }

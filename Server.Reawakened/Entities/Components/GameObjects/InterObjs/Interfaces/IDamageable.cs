@@ -9,5 +9,5 @@ public interface IDamageable
     int Stars { get; }
     int DifficultyLevel { get; }
 
-    int GetDamageAmount(int damage, Elemental damageType);
+    int GetDamageAmount(int damage, ItemEffectType itemEffectType, bool applyResist = true);
 }

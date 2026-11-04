@@ -1,26 +1,19 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
-using Server.Base.Core.Abstractions;
-using Server.Base.Timers.Extensions;
-using Server.Base.Timers.Services;
 using Server.Reawakened.Chat.Services;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Core.Enums;
 using Server.Reawakened.Entities.Components.GameObjects.NPC;
-using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
-using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
-using Server.Reawakened.Rooms.Models.Timers;
 using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.Bundles.Base;
 using Server.Reawakened.XMLs.Bundles.Internal;
 using Server.Reawakened.XMLs.Data.Achievements;
-using Web.Apps.Leaderboards.Data;
 using Web.Apps.Leaderboards.Database.Scores;
 using Web.Apps.Leaderboards.Enums;
 
@@ -32,12 +25,12 @@ public class RoomUpdate : ExternalProtocol
 
     public MQRSlashCommands MQRSlashCommands { get; set; }
     public ServerRConfig ServerRConfig { get; set; }
+    public ItemRConfig ItemRConfig { get; set; }
     public InternalAchievement InternalAchievement { get; set; }
     public WorldStatistics WorldStatistics { get; set; }
     public PetAbilities PetAbilities { get; set; }
     public ItemCatalog ItemCatalog { get; set; }
     public ILogger<RoomUpdate> Logger { get; set; }
-    public TimerThread TimerThread { get; set; }
     public InternalLeaderboards Leaderboards { get; set; }
     public TopScoresHandler TopScoresHandler { get; set; }
 
@@ -55,11 +48,6 @@ public class RoomUpdate : ExternalProtocol
 
         Player.TempData.CurrentArena = null;
 
-        Player.Room.SendCharacterInfo(Player);
-
-        foreach (var npc in Player.Room.GetEntitiesFromType<NPCControllerComp>())
-            npc.SendNpcInfo(Player);
-
         if (Player.TempData.FirstLogin)
         {
             // Tribe selection reminder protocol
@@ -71,8 +59,14 @@ public class RoomUpdate : ExternalProtocol
 
             Player.UpdateTribeProgression();
 
-			UpdateLeaderboards();
-
+            // Add existing scores to leaderboards
+            UpdateLeaderboards();
+            
+            // Fix daily quest bugs
+            if (Player.Character.ActiveQuestId != 0 &&
+                Player.Character.QuestLog.All(q => q.Id != Player.Character.ActiveQuestId))
+                Player.Character.Write.ActiveQuestId = 0;
+            
             Player.TempData.FirstLogin = false;
         }
         else
@@ -84,9 +78,35 @@ public class RoomUpdate : ExternalProtocol
             Player.DiscoverTribe(levelInfo.Tribe);
         }
 
-        if (Player.Character.Pets.TryGetValue(Player.GetEquippedPetId(ServerRConfig), out var pet) &&
-            pet != null && pet.IsEquipped && PetAbilities.PetAbilityData.TryGetValue(int.Parse(pet.PetId), out var petAbility))
-            Player.EquipPet(petAbility, WorldStatistics, ServerRConfig, ItemCatalog);
+        Player.Room.SendCharacterInfo(Player);
+
+        //Check for player life
+        if (Player.Character.CurrentLife < 1)
+        {
+            Player.Character.SetHealthStat(ItemCatalog);
+            Player.Room.SendSyncEvent(new Health_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
+                Player.Character.CurrentLife, Player.Character.MaxLife, Player.GameObjectId.ToString()));
+        }
+        
+        //Reapply still-active status effects
+        Player.Character.StatusEffects.UpdateStatus();
+        foreach (var status in Player.Character.StatusEffects.Snapshot())
+        {
+            Player.Room.SendSyncEvent(new StatusEffect_SyncEvent(Player.GameObjectId, Player.Room.Time,
+                (int)status.Key, (int)status.Value.Value, (int)(status.Value.Expiry - DateTime.UtcNow).TotalSeconds, true, status.Value.PrefabName, true));
+        }
+
+        foreach (var npc in Player.Room.GetEntitiesFromType<NPCControllerComp>())
+            npc.SendNpcInfo(Player);
+
+        if (Player.Character.Pets.TryGetValue(Player.Character.PetItemId.ToString(), out var pet) && pet != null)
+        {
+            // not sure why we have this line
+            //pet.ItemId = Player.Character.PetItemId.ToString();
+
+            if (PetAbilities.PetAbilityData.TryGetValue(int.Parse(pet.ItemId), out var petAbility))
+                Player.EquipPet(pet.ItemId, petAbility, ItemCatalog, WorldStatistics, ServerRConfig, ItemRConfig);
+        }
     }
 
     private string GetGameObjectStore(Room room)
@@ -170,37 +190,30 @@ public class RoomUpdate : ExternalProtocol
     {
         foreach (var score in Player.Character.BestMinigameTimes)
         {
-            var gameId = Leaderboards.Games.FirstOrDefault(x => x.name == score.Key).id;
+            var game = Leaderboards.Games.FirstOrDefault(x => x.name == score.Key);
+            
+            if (game == null)
+                return;
+            
+            var gameId = game.id;
+            
+            var characterScores = TopScoresHandler.GetScoresFromCharacter(Player.Character.Id);
 
-            var topScores = TopScoresHandler.GetScoresFromId(gameId);
-
-            if (topScores == null)
+            var leaderboardScore = score.Key == "LV_CRS_Minigame_MonkeyBlast" ? score.Value : score.Value * 100;
+            
+            if (characterScores == null || characterScores.Count == 0 || characterScores.All(x => x.GameId != gameId))
             {
-                var topScore = TopScoresHandler.Create(gameId, []);
-                topScores = TopScoresHandler.GetScoresFromData(topScore);
+                TopScoresHandler.Create(gameId, (int)leaderboardScore, 0, DateTime.UtcNow, Player.Character.Id, ScoreType.AllTime);
+                continue;
             }
 
-            var characterScore = topScores.Scores
+            var characterScore = characterScores
                 .FirstOrDefault(x => x.CharacterId == Player.Character.Id);
 
             if (characterScore != null)
                 continue;
-
-            var scoreTime = DateTime.Now.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'sszzz");
             
-            var leaderboardScore = score.Key == "LV_CRS_Minigame_MonkeyBlast" ? score.Value : score.Value * 100;
-
-            var newScore = new TopScore
-            (
-                (int)leaderboardScore,
-                0,
-                scoreTime,
-                Player.Character.Id
-            );
-
-            topScores.Scores.Add(newScore);
-
-            TopScoresHandler.Update(topScores.Write);
+            TopScoresHandler.Create(gameId, (int)leaderboardScore, 0, DateTime.UtcNow, Player.Character.Id, ScoreType.AllTime);
         }
     }
 }

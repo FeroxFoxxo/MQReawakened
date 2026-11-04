@@ -21,6 +21,6 @@ public class IncreaseTokens : ExternalProtocol
         Player.Character.Write.Tokens += tokens;
         Player.Character.Write.Cash -= 1000;
 
-        SendXt("Mg", 0, gameName, Player.Character.Tokens, DateTime.Now.AddYears(10).ToString(), 1, (int)AvailablePlaysSource.INC);
+        SendXt("Mg", 0, gameName, Player.Character.Tokens, DateTime.UtcNow.AddYears(10).ToString(), 1, (int)AvailablePlaysSource.INC);
     }
 }

@@ -286,6 +286,259 @@
                 <Item itemName="COL_RECIP_COM_AnimalWood01_S03" count="1" />
             </Items>
         </LootInfo>
+        <LootInfo objectId="4492" doLootWheel="True">
+            <Items rewardAmount="1">
+                <Item itemName="COL_RECIP_POT_Healing01" count="1" />
+                <Item itemName="COL_RECIP_POT_PotionOfShielding01" count="1" />
+                <Item itemName="Add_COM_KidBoy01_LS01" count="1" />
+                <Item itemName="Add_COM_Clown01_UF01" count="1" />
+                <Item itemName="Add_OUT_CaptainBoy01_LF02" count="1" />
+                <Item itemName="Add_COM_PlainClothes01_TS02" count="1" />
+                <Item itemName="Add_COM_Turtle01_LS02" count="1" />
+                <Item itemName="COL_RECIP_COM_AnimalWood01_S03" count="1" />
+            </Items>
+        </LootInfo>
+        <!--Green Chest Near Idol-->
+        <LootInfo objectId="3542" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="COL_POT_Healing01" count="1" />
+                <Item itemName="COL_BUFF_GlyphProtection01" count="1" />
+            </Items>
+        </LootInfo>
+        <!--Puzzle Green Chest 1-->
+        <LootInfo objectId="3544" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="COL_POT_Healing01" count="1" />
+                <Item itemName="COL_BUFF_GlyphProtection01" count="1" />
+            </Items>
+        </LootInfo>
+        <!--Puzzle Green Chest 2-->
+        <LootInfo objectId="3543" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="COL_POT_Healing01" count="1" />
+                <Item itemName="COL_BUFF_GlyphProtection01" count="1" />
+            </Items>
+        </LootInfo>
+        <!--Daily Apple Tree 1-->
+        <LootInfo objectId="4477" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="COL_FOOD_Apple01" count="2" />
+                <Item itemName="COL_FOOD_Apple01" count="3" />
+            </Items>
+        </LootInfo>
+        <!--Daily Apple Tree 2-->
+        <LootInfo objectId="4475" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="COL_FOOD_Apple01" count="2" />
+                <Item itemName="COL_FOOD_Apple01" count="3" />
+            </Items>
+        </LootInfo>
+        <!--Daily Apple Tree 3-->
+        <LootInfo objectId="4476" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="COL_FOOD_Apple01" count="2" />
+                <Item itemName="COL_FOOD_Apple01" count="3" />
+            </Items>
+        </LootInfo>
+        <!--Barrels-->
+        <LootInfo objectId="4279" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="COL_FOOD_Apple01" count="1" />
+                <Item itemName="COL_ING_C_ShadowDust01" count="1" />
+                <Item itemName="COL_ING_C_MediumThread01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment02" count="1" />
+                <Item itemName="COL_ING_C_CocoShell01" count="1" />
+                <Item itemName="COL_ING_C_WeakThread01" count="1" />
+                <Item itemName="COL_ING_C_PureWater01" count="1" />
+                <Item itemName="COL_ING_G_Aloe01" count="1" />
+                <Item itemName="COL_ING_G_GoldPebble01" count="1" />
+                <Item itemName="COL_ING_G_Leather01" count="1" />
+                <Item itemName="COL_ING_G_ShadowShard01" count="1" />
+                <Item itemName="COL_ING_G_Cotton01" count="1" />
+                <Item itemName="COL_ING_G_Garlic01" count="1" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="4280" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="COL_FOOD_Apple01" count="1" />
+                <Item itemName="COL_ING_C_ShadowDust01" count="1" />
+                <Item itemName="COL_ING_C_MediumThread01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment02" count="1" />
+                <Item itemName="COL_ING_C_CocoShell01" count="1" />
+                <Item itemName="COL_ING_C_WeakThread01" count="1" />
+                <Item itemName="COL_ING_C_PureWater01" count="1" />
+                <Item itemName="COL_ING_G_Aloe01" count="1" />
+                <Item itemName="COL_ING_G_GoldPebble01" count="1" />
+                <Item itemName="COL_ING_G_Leather01" count="1" />
+                <Item itemName="COL_ING_G_ShadowShard01" count="1" />
+                <Item itemName="COL_ING_G_Cotton01" count="1" />
+                <Item itemName="COL_ING_G_Garlic01" count="1" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="4222" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="COL_FOOD_Apple01" count="1" />
+                <Item itemName="COL_ING_C_ShadowDust01" count="1" />
+                <Item itemName="COL_ING_C_MediumThread01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment02" count="1" />
+                <Item itemName="COL_ING_C_CocoShell01" count="1" />
+                <Item itemName="COL_ING_C_WeakThread01" count="1" />
+                <Item itemName="COL_ING_C_PureWater01" count="1" />
+                <Item itemName="COL_ING_G_Aloe01" count="1" />
+                <Item itemName="COL_ING_G_GoldPebble01" count="1" />
+                <Item itemName="COL_ING_G_Leather01" count="1" />
+                <Item itemName="COL_ING_G_ShadowShard01" count="1" />
+                <Item itemName="COL_ING_G_Cotton01" count="1" />
+                <Item itemName="COL_ING_G_Garlic01" count="1" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="4458" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="COL_FOOD_Apple01" count="1" />
+                <Item itemName="COL_ING_C_ShadowDust01" count="1" />
+                <Item itemName="COL_ING_C_MediumThread01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment02" count="1" />
+                <Item itemName="COL_ING_C_CocoShell01" count="1" />
+                <Item itemName="COL_ING_C_WeakThread01" count="1" />
+                <Item itemName="COL_ING_C_PureWater01" count="1" />
+                <Item itemName="COL_ING_G_Aloe01" count="1" />
+                <Item itemName="COL_ING_G_GoldPebble01" count="1" />
+                <Item itemName="COL_ING_G_Leather01" count="1" />
+                <Item itemName="COL_ING_G_ShadowShard01" count="1" />
+                <Item itemName="COL_ING_G_Cotton01" count="1" />
+                <Item itemName="COL_ING_G_Garlic01" count="1" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="4201" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="COL_FOOD_Apple01" count="1" />
+                <Item itemName="COL_ING_C_ShadowDust01" count="1" />
+                <Item itemName="COL_ING_C_MediumThread01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment02" count="1" />
+                <Item itemName="COL_ING_C_CocoShell01" count="1" />
+                <Item itemName="COL_ING_C_WeakThread01" count="1" />
+                <Item itemName="COL_ING_C_PureWater01" count="1" />
+                <Item itemName="COL_ING_G_Aloe01" count="1" />
+                <Item itemName="COL_ING_G_GoldPebble01" count="1" />
+                <Item itemName="COL_ING_G_Leather01" count="1" />
+                <Item itemName="COL_ING_G_ShadowShard01" count="1" />
+                <Item itemName="COL_ING_G_Cotton01" count="1" />
+                <Item itemName="COL_ING_G_Garlic01" count="1" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="4363" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="COL_FOOD_Apple01" count="1" />
+                <Item itemName="COL_ING_C_ShadowDust01" count="1" />
+                <Item itemName="COL_ING_C_MediumThread01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment02" count="1" />
+                <Item itemName="COL_ING_C_CocoShell01" count="1" />
+                <Item itemName="COL_ING_C_WeakThread01" count="1" />
+                <Item itemName="COL_ING_C_PureWater01" count="1" />
+                <Item itemName="COL_ING_G_Aloe01" count="1" />
+                <Item itemName="COL_ING_G_GoldPebble01" count="1" />
+                <Item itemName="COL_ING_G_Leather01" count="1" />
+                <Item itemName="COL_ING_G_ShadowShard01" count="1" />
+                <Item itemName="COL_ING_G_Cotton01" count="1" />
+                <Item itemName="COL_ING_G_Garlic01" count="1" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="4145" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="COL_FOOD_Apple01" count="1" />
+                <Item itemName="COL_ING_C_ShadowDust01" count="1" />
+                <Item itemName="COL_ING_C_MediumThread01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment02" count="1" />
+                <Item itemName="COL_ING_C_CocoShell01" count="1" />
+                <Item itemName="COL_ING_C_WeakThread01" count="1" />
+                <Item itemName="COL_ING_C_PureWater01" count="1" />
+                <Item itemName="COL_ING_G_Aloe01" count="1" />
+                <Item itemName="COL_ING_G_GoldPebble01" count="1" />
+                <Item itemName="COL_ING_G_Leather01" count="1" />
+                <Item itemName="COL_ING_G_ShadowShard01" count="1" />
+                <Item itemName="COL_ING_G_Cotton01" count="1" />
+                <Item itemName="COL_ING_G_Garlic01" count="1" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="4169" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="COL_FOOD_Apple01" count="1" />
+                <Item itemName="COL_ING_C_ShadowDust01" count="1" />
+                <Item itemName="COL_ING_C_MediumThread01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment02" count="1" />
+                <Item itemName="COL_ING_C_CocoShell01" count="1" />
+                <Item itemName="COL_ING_C_WeakThread01" count="1" />
+                <Item itemName="COL_ING_C_PureWater01" count="1" />
+                <Item itemName="COL_ING_G_Aloe01" count="1" />
+                <Item itemName="COL_ING_G_GoldPebble01" count="1" />
+                <Item itemName="COL_ING_G_Leather01" count="1" />
+                <Item itemName="COL_ING_G_ShadowShard01" count="1" />
+                <Item itemName="COL_ING_G_Cotton01" count="1" />
+                <Item itemName="COL_ING_G_Garlic01" count="1" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="4148" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="COL_FOOD_Apple01" count="1" />
+                <Item itemName="COL_ING_C_ShadowDust01" count="1" />
+                <Item itemName="COL_ING_C_MediumThread01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment02" count="1" />
+                <Item itemName="COL_ING_C_CocoShell01" count="1" />
+                <Item itemName="COL_ING_C_WeakThread01" count="1" />
+                <Item itemName="COL_ING_C_PureWater01" count="1" />
+                <Item itemName="COL_ING_G_Aloe01" count="1" />
+                <Item itemName="COL_ING_G_GoldPebble01" count="1" />
+                <Item itemName="COL_ING_G_Leather01" count="1" />
+                <Item itemName="COL_ING_G_ShadowShard01" count="1" />
+                <Item itemName="COL_ING_G_Cotton01" count="1" />
+                <Item itemName="COL_ING_G_Garlic01" count="1" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="4227" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="COL_FOOD_Apple01" count="1" />
+                <Item itemName="COL_ING_C_ShadowDust01" count="1" />
+                <Item itemName="COL_ING_C_MediumThread01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment02" count="1" />
+                <Item itemName="COL_ING_C_CocoShell01" count="1" />
+                <Item itemName="COL_ING_C_WeakThread01" count="1" />
+                <Item itemName="COL_ING_C_PureWater01" count="1" />
+                <Item itemName="COL_ING_G_Aloe01" count="1" />
+                <Item itemName="COL_ING_G_GoldPebble01" count="1" />
+                <Item itemName="COL_ING_G_Leather01" count="1" />
+                <Item itemName="COL_ING_G_ShadowShard01" count="1" />
+                <Item itemName="COL_ING_G_Cotton01" count="1" />
+                <Item itemName="COL_ING_G_Garlic01" count="1" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="4147" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="COL_FOOD_Apple01" count="1" />
+                <Item itemName="COL_ING_C_ShadowDust01" count="1" />
+                <Item itemName="COL_ING_C_MediumThread01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment02" count="1" />
+                <Item itemName="COL_ING_C_CocoShell01" count="1" />
+                <Item itemName="COL_ING_C_WeakThread01" count="1" />
+                <Item itemName="COL_ING_C_PureWater01" count="1" />
+                <Item itemName="COL_ING_G_Aloe01" count="1" />
+                <Item itemName="COL_ING_G_GoldPebble01" count="1" />
+                <Item itemName="COL_ING_G_Leather01" count="1" />
+                <Item itemName="COL_ING_G_ShadowShard01" count="1" />
+                <Item itemName="COL_ING_G_Cotton01" count="1" />
+                <Item itemName="COL_ING_G_Garlic01" count="1" />
+            </Items>
+        </LootInfo>
     </Level>
     <Level name="Soggy Creek" id="91">
         <!--Arena Blue Chest-->

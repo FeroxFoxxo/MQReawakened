@@ -2562,12 +2562,188 @@
                     <ProjectilePrefabName value="COL_PRJ_WaspProjectile01" />
                 </GlobalProperties>
                 <Behaviors>
-                    <Patrol speed="0" smoothMove="false" endPathWaitTime="0" />
                     <Stinger speedForward="12" speedBackward="4" inDurationForward="0.43" attackDuration="2.67" damageAttackTimeOffset="1" inDurationBackward="1.29" damageDistance="2">
                         <Resource type="EABIL" name="PF_EABIL_Spite_Vespid_StingerAttack" />
                     </Stinger>
                     <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
                     <ComeBack speed="2.4" />
+                </Behaviors>
+                <LootTable>
+                </LootTable>
+            </Enemy>
+        </EnemyCategory>
+        <EnemyCategory name="TMNT">
+            <Enemy name="PF_Spite_TMNT_Shredder01">
+                <GenericScript>
+                    <AttackBehavior value="Aggro" />
+                    <AwareBehaviorDuration value="0.5" />
+                    <AwareBehavior value="LookAround" />
+                    <UnawareBehavior value="Patrol" />
+                    <HealthRegenAmount value="0" />
+                    <HealthRegenFrequency value="0" />
+                </GenericScript>
+                <GlobalProperties>
+                    <DetectionLimitedByPatrolLine value="true" />
+                    <FrontDetectionRangeX value="6" />
+                    <FrontDetectionRangeUpY value="1" />
+                    <FrontDetectionRangeDownY value="0.25" />
+                    <BackDetectionRangeX value="3" />
+                    <BackDetectionRangeUpY value="1" />
+                    <BackDetectionRangeDownY value="0" />
+                    <ViewOffsetY value="0" />
+                    <ProjectilePrefabName value="" />
+                </GlobalProperties>
+                <Behaviors>
+                    <Patrol speed="1.8" smoothMove="false" endPathWaitTime="3" />
+                    <Aggro speed="4.8" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0" />
+                    <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                </Behaviors>
+                <LootTable>
+                    <Drop type="item" id="524" chance="0.25" minLevel="1" maxLevel="65" />
+                    <Drop type="item" id="12836" chance="0.4" minLevel="1" maxLevel="65" />
+                    <Drop type="item" id="12837" chance="0.35" minLevel="1" maxLevel="65" />
+                </LootTable>
+            </Enemy>
+            <Enemy name="PF_Spite_TMNT_FootPatroller01">
+                <GenericScript>
+                    <AttackBehavior value="Aggro" />
+                    <AwareBehaviorDuration value="0.5" />
+                    <AwareBehavior value="LookAround" />
+                    <UnawareBehavior value="Patrol" />
+                    <HealthRegenAmount value="0" />
+                    <HealthRegenFrequency value="0" />
+                </GenericScript>
+                <GlobalProperties>
+                    <DetectionLimitedByPatrolLine value="true" />
+                    <FrontDetectionRangeX value="6" />
+                    <FrontDetectionRangeUpY value="1" />
+                    <FrontDetectionRangeDownY value="0.25" />
+                    <BackDetectionRangeX value="3" />
+                    <BackDetectionRangeUpY value="1" />
+                    <BackDetectionRangeDownY value="0" />
+                    <ViewOffsetY value="0" />
+                    <ProjectilePrefabName value="" />
+                </GlobalProperties>
+                <Behaviors>
+                    <Patrol speed="1.6" smoothMove="false" endPathWaitTime="3" />
+                    <Aggro speed="4.0" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0" />
+                    <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                </Behaviors>
+                <LootTable>
+                </LootTable>
+            </Enemy>
+        </EnemyCategory>
+        <EnemyCategory name="PwrRngr">
+            <Enemy name="PF_Spite_PR_XborgBoss01">
+                <GenericScript>
+                    <AttackBehavior value="Aggro" />
+                    <AwareBehaviorDuration value="0.5" />
+                    <AwareBehavior value="LookAround" />
+                    <UnawareBehavior value="Patrol" />
+                    <HealthRegenAmount value="0" />
+                    <HealthRegenFrequency value="0" />
+                </GenericScript>
+                <GlobalProperties>
+                    <DetectionLimitedByPatrolLine value="true" />
+                    <FrontDetectionRangeX value="6" />
+                    <FrontDetectionRangeUpY value="1" />
+                    <FrontDetectionRangeDownY value="0.25" />
+                    <BackDetectionRangeX value="3" />
+                    <BackDetectionRangeUpY value="1" />
+                    <BackDetectionRangeDownY value="0" />
+                    <ViewOffsetY value="0" />
+                    <ProjectilePrefabName value="" />
+                </GlobalProperties>
+                <Behaviors>
+                    <Patrol speed="1.8" smoothMove="false" endPathWaitTime="3" />
+                    <Aggro speed="4.8" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0" />
+                    <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                </Behaviors>
+                <LootTable>
+                </LootTable>
+            </Enemy>
+            <Enemy name="PF_Spite_PR_XborgPatroller01">
+                <GenericScript>
+                    <AttackBehavior value="Aggro" />
+                    <AwareBehaviorDuration value="0.5" />
+                    <AwareBehavior value="LookAround" />
+                    <UnawareBehavior value="Patrol" />
+                    <HealthRegenAmount value="0" />
+                    <HealthRegenFrequency value="0" />
+                </GenericScript>
+                <GlobalProperties>
+                    <DetectionLimitedByPatrolLine value="true" />
+                    <FrontDetectionRangeX value="6" />
+                    <FrontDetectionRangeUpY value="1" />
+                    <FrontDetectionRangeDownY value="0.25" />
+                    <BackDetectionRangeX value="3" />
+                    <BackDetectionRangeUpY value="1" />
+                    <BackDetectionRangeDownY value="0" />
+                    <ViewOffsetY value="0" />
+                    <ProjectilePrefabName value="" />
+                </GlobalProperties>
+                <Behaviors>
+                    <Patrol speed="1.6" smoothMove="false" endPathWaitTime="3" />
+                    <Aggro speed="4.0" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0" />
+                    <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                </Behaviors>
+                <LootTable>
+                </LootTable>
+            </Enemy>
+        </EnemyCategory>
+        <EnemyCategory name="SpngBob">
+            <Enemy name="PF_Spite_MiniRoboPlankton01">
+                <GenericScript>
+                    <AttackBehavior value="Aggro" />
+                    <AwareBehaviorDuration value="0.5" />
+                    <AwareBehavior value="LookAround" />
+                    <UnawareBehavior value="Patrol" />
+                    <HealthRegenAmount value="0" />
+                    <HealthRegenFrequency value="0" />
+                </GenericScript>
+                <GlobalProperties>
+                    <DetectionLimitedByPatrolLine value="true" />
+                    <FrontDetectionRangeX value="6" />
+                    <FrontDetectionRangeUpY value="1" />
+                    <FrontDetectionRangeDownY value="0.25" />
+                    <BackDetectionRangeX value="3" />
+                    <BackDetectionRangeUpY value="1" />
+                    <BackDetectionRangeDownY value="0" />
+                    <ViewOffsetY value="0" />
+                    <ProjectilePrefabName value="" />
+                </GlobalProperties>
+                <Behaviors>
+                    <Patrol speed="1.6" smoothMove="false" endPathWaitTime="3" />
+                    <Aggro speed="4.0" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0" />
+                    <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                </Behaviors>
+                <LootTable>
+                </LootTable>
+            </Enemy>
+            <Enemy name="PF_Spite_MiniRoboPlankton02">
+                <GenericScript>
+                    <AttackBehavior value="Aggro" />
+                    <AwareBehaviorDuration value="0.5" />
+                    <AwareBehavior value="LookAround" />
+                    <UnawareBehavior value="Patrol" />
+                    <HealthRegenAmount value="0" />
+                    <HealthRegenFrequency value="0" />
+                </GenericScript>
+                <GlobalProperties>
+                    <DetectionLimitedByPatrolLine value="true" />
+                    <FrontDetectionRangeX value="6" />
+                    <FrontDetectionRangeUpY value="1" />
+                    <FrontDetectionRangeDownY value="0.25" />
+                    <BackDetectionRangeX value="3" />
+                    <BackDetectionRangeUpY value="1" />
+                    <BackDetectionRangeDownY value="0" />
+                    <ViewOffsetY value="0" />
+                    <ProjectilePrefabName value="" />
+                </GlobalProperties>
+                <Behaviors>
+                    <Patrol speed="1.6" smoothMove="false" endPathWaitTime="3" />
+                    <Aggro speed="4.0" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0" />
+                    <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
                 </Behaviors>
                 <LootTable>
                 </LootTable>
@@ -2579,6 +2755,7 @@
             <!-- Spiderling -->
             <Enemy name="PF_Spite_Spiderling_Boss01">
                 <LootTable>
+                    <Drop type="item" id="404" chance="0.2" minLevel="1" maxLevel="65" />
                 </LootTable>
             </Enemy>
         </EnemyCategory>
@@ -2597,51 +2774,82 @@
             <!-- Spiker -->
             <Enemy name="PF_Spite_Squirrel_Ice">
                 <LootTable>
+                    <Drop type="item" id="13415" chance="0.2" minLevel="1" maxLevel="65" />
+                    <Drop type="item" id="13403" chance="0.25" minLevel="1" maxLevel="65" />
+                    <Drop type="item" id="13404" chance="0.3" minLevel="1" maxLevel="65" />
+                    <Drop type="item" id="13405" chance="0.25" minLevel="1" maxLevel="65" />
                 </LootTable>
             </Enemy>
             <Enemy name="PF_Spite_Squirrel_Shadow">
                 <LootTable>
+                    <Drop type="item" id="13415" chance="0.2" minLevel="1" maxLevel="65" />
+                    <Drop type="item" id="13403" chance="0.25" minLevel="1" maxLevel="65" />
+                    <Drop type="item" id="13404" chance="0.3" minLevel="1" maxLevel="65" />
+                    <Drop type="item" id="13405" chance="0.25" minLevel="1" maxLevel="65" />
                 </LootTable>
             </Enemy>
             <Enemy name="PF_Spite_Squirrel_Rock">
                 <LootTable>
+                    <Drop type="item" id="13415" chance="0.2" minLevel="1" maxLevel="65" />
+                    <Drop type="item" id="13403" chance="0.25" minLevel="1" maxLevel="65" />
+                    <Drop type="item" id="13404" chance="0.3" minLevel="1" maxLevel="65" />
+                    <Drop type="item" id="13405" chance="0.25" minLevel="1" maxLevel="65" />
                 </LootTable>
             </Enemy>
         </EnemyCategory>
         <EnemyCategory name="Draicon">
             <Enemy name="PF_Critter_Drake_Boss01">
                 <LootTable>
+                    <Drop type="item" id="13415" chance="0.2" minLevel="1" maxLevel="65" />
+                    <Drop type="item" id="13400" chance="0.25" minLevel="1" maxLevel="65" />
+                    <Drop type="item" id="13401" chance="0.3" minLevel="1" maxLevel="65" />
+                    <Drop type="item" id="13402" chance="0.25" minLevel="1" maxLevel="65" />
                 </LootTable>
             </Enemy>
             <!-- Draicon -->
             <Enemy name="PF_Critter_Drake01">
                 <LootTable>
+                    <Drop type="item" id="13415" chance="0.2" minLevel="1" maxLevel="65" />
+                    <Drop type="item" id="13400" chance="0.25" minLevel="1" maxLevel="65" />
+                    <Drop type="item" id="13401" chance="0.3" minLevel="1" maxLevel="65" />
+                    <Drop type="item" id="13402" chance="0.25" minLevel="1" maxLevel="65" />
                 </LootTable>
             </Enemy>
         </EnemyCategory>
         <EnemyCategory name="Stormbeast">
             <Enemy name="PF_Critter_Dragon_Boss01">
                 <LootTable>
+                    <Drop type="item" id="13415" chance="0.2" minLevel="1" maxLevel="65" />
+                    <Drop type="item" id="13400" chance="0.25" minLevel="1" maxLevel="65" />
+                    <Drop type="item" id="13401" chance="0.3" minLevel="1" maxLevel="65" />
+                    <Drop type="item" id="13402" chance="0.25" minLevel="1" maxLevel="65" />
                 </LootTable>
             </Enemy>
             <!-- Stormbeast -->
             <Enemy name="PF_Critter_Dragon01">
                 <LootTable>
+                    <Drop type="item" id="13415" chance="0.2" minLevel="1" maxLevel="65" />
+                    <Drop type="item" id="13400" chance="0.25" minLevel="1" maxLevel="65" />
+                    <Drop type="item" id="13401" chance="0.3" minLevel="1" maxLevel="65" />
+                    <Drop type="item" id="13402" chance="0.25" minLevel="1" maxLevel="65" />
                 </LootTable>
             </Enemy>
         </EnemyCategory>
         <EnemyCategory name="Stomper">
             <Enemy name="PF_Spite_Hamster_Ice">
                 <LootTable>
+                    <Drop type="item" id="13415" chance="0.2" minLevel="1" maxLevel="65" />
                 </LootTable>
             </Enemy>
             <Enemy name="PF_Spite_Hamster_Rock">
                 <LootTable>
+                    <Drop type="item" id="13415" chance="0.2" minLevel="1" maxLevel="65" />
                 </LootTable>
             </Enemy>
             <!-- Stomper -->
             <Enemy name="PF_Spite_Hamster_Shadow">
                 <LootTable>
+                    <Drop type="item" id="13415" chance="0.2" minLevel="1" maxLevel="65" />
                 </LootTable>
             </Enemy>
         </EnemyCategory>
@@ -2658,43 +2866,20 @@
                 <LootTable>
                 </LootTable>
             </Enemy>
-            <Enemy name="PF_Spite_MiniRoboPlankton01">
-                <LootTable>
-                </LootTable>
-            </Enemy>
-            <Enemy name="PF_Spite_MiniRoboPlankton02">
-                <LootTable>
-                </LootTable>
-            </Enemy>
         </EnemyCategory>
         <EnemyCategory name="TMNT">
-            <!-- Uses SPIDERLING AI State Controller -->
-            <Enemy name="PF_Spite_TMNT_Shredder01">
-                <LootTable>
-                </LootTable>
-            </Enemy>
+            <!-- Uses HAMSTER AI State Controller -->
             <Enemy name="PF_Spite_TMNT_FootJumper01">
                 <LootTable>
                 </LootTable>
             </Enemy>
-            <Enemy name="PF_Spite_TMNT_FootPatroller01">
-                <LootTable>
-                </LootTable>
-            </Enemy>
+            <!-- Uses SPIDERLING AI State Controller -->
             <Enemy name="PF_Spite_TMNT_FootThrower01">
                 <LootTable>
                 </LootTable>
             </Enemy>
         </EnemyCategory>
         <EnemyCategory name="PwrRngr">
-            <Enemy name="PF_Spite_PR_XborgBoss01">
-                <LootTable>
-                </LootTable>
-            </Enemy>
-            <Enemy name="PF_Spite_PR_XborgPatroller01">
-                <LootTable>
-                </LootTable>
-            </Enemy>
             <Enemy name="PF_Spite_PR_XborgShooter01">
                 <LootTable>
                 </LootTable>

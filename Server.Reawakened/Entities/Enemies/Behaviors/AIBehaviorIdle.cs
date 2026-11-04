@@ -10,7 +10,7 @@ public class AIBehaviorIdle(BehaviorEnemy enemy) : AIBaseBehavior(enemy.AiData, 
 
     public override AiProperties GetProperties() => new EmptyAiProperties();
 
-    public override object[] GetStartArgs() => [];
+    public override object[] GetStartArgs(bool _) => [];
 
     public override StateType GetStateType() => StateType.Idle;
 

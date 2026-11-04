@@ -59,8 +59,48 @@ public class GiftItemShop : ExternalProtocol
         var package = ItemCatalog.GetItemFromId(packageId);
         var item = ItemCatalog.GetItemFromId(itemId);
 
+        if (item == null || package == null)
+        {
+            Player.SendXt("wm", "302");
+            Logger.LogError("Invalid gift item or package found: {ItemId} {PackageId}", itemId, packageId);
+            return;
+        }
+
+        var valid = false;
+
+        var catalogs = VendorCatalog.GetCurrentCashShop().VendorCatalogIds;
+
+        foreach (var catalog in catalogs)
+            if (VendorCatalog.GetVendorItemList(catalog).Contains(item.PrefabName))
+            {
+                valid = true;
+                break;
+            }
+
+        if (!valid)
+        {
+            Player.SendXt("wm", "302");
+            return;
+        }
+
+        var price = item.RegularPrice;
+        if (item.isDiscounted())
+            price = item.DiscountPrice;
+        
+        if (price > Player.Character.NCash && price > 1)
+        {
+            Player.SendXt("Ce", -1);
+            return;
+        }
+
+        if (package.RegularPrice > Player.Character.Cash && package.RegularPrice > 1)
+        {
+            Player.SendXt("Ce", -1);
+            return;
+        }
+        
         Player.RemoveBananas(package.RegularPrice);
-        Player.RemoveNCash(item.RegularPrice);
+        Player.RemoveNCash(price);
 
         var mailId = isOnline ? friend.Character.EmailMessages.Count : friendImage.EmailMessages.Count;
         while (true)

@@ -8,19 +8,34 @@ public class AIBehaviorSpike(BehaviorEnemy enemy, SpikeProperties fallback) : AI
     public override bool ShouldDetectPlayers => false;
     public override bool ShouldAggroOnHit => false;
 
-    public override AiProperties GetProperties() => GetInternalProperties();
+    public override AiProperties GetProperties() =>
+        // These are "hardcoded", but they just match the data in the scripts
+        new SpikeProperties
+        (
+            16,     // Travel In Speed
+            8,      // Travel Out Speed
+            0.7f,
+            3.3f,
+            1.34f,
+            0.416f,
+            15,     // Targetted Spread Angle
+            16,     // Detection Range
+            3,      // Targetted Projectile Count
+            12,     // Random Projectile Count
+            7       // 
+        );
 
     private SpikeProperties GetInternalProperties() => fallback;
 
-    public override object[] GetStartArgs()
+    public override object[] GetStartArgs(bool _)
     {
         var properties = GetInternalProperties();
         return [
             _aiData.Sync_TargetPosX,
             _aiData.Sync_TargetPosY,
-            _aiData.Intern_SpawnPosZ,
-            properties.speedForward,
-            properties.speedBackward
+            10,
+            16,
+            8
         ] ;
     }
 

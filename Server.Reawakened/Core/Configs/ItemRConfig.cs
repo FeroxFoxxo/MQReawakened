@@ -44,6 +44,8 @@ public class ItemRConfig : IRConfig
     public float PetHoldChainDelay { get; }
     public float PetPosYOffset { get; }
     public float PetPosOnButtonYOffset { get; }
+    public float PetSnackConsumptionDuration { get; }
+    public float PetSnackBoostXP { get; }
     public ItemModel EmptySlot { get; }
 
     public ItemRConfig()
@@ -135,7 +137,9 @@ public class ItemRConfig : IRConfig
         PetHoldChainDelay = 1f;
         PetPosYOffset = 0.75f;
         PetPosOnButtonYOffset = 0.25f;
-
-        EmptySlot = new ItemModel(-1, 0, 0, DateTime.Now);
+        PetSnackConsumptionDuration = 3f;
+        PetSnackBoostXP = 100f;
+        
+        EmptySlot = new ItemModel(-1, 0, 0, DateTime.UtcNow);
     }
 }

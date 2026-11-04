@@ -2,7 +2,6 @@
 using Server.Reawakened.Players;
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Rooms.Services;
-using Server.Reawakened.XMLs.Bundles.Internal;
 
 namespace Server.Reawakened.Entities.Components.GameObjects.Global;
 
@@ -17,7 +16,6 @@ public class PortalComp : Component<PortalController>
 
     public NetState NetState;
     public WorldHandler WorldHandler { get; set; }
-    public InternalPortalInfos PortalInfos { get; set; }
 
     public override object[] GetInitData(Player player) =>
         [string.Empty];
@@ -39,11 +37,6 @@ public class PortalComp : Component<PortalController>
 
         var levelId = player.Room.LevelInfo.LevelId;
         var defaultSpawn = portal.EventDataList.Count < 4 ? string.Empty : portal.SpawnPointID;
-
-        var portalInfos = PortalInfos.GetPortalInfos(levelId, portalId);
-
-        if (portalInfos != null && !portalInfos.CheckConditions(player))
-            return;
 
         WorldHandler.UsePortal(player, levelId, portalId, defaultSpawn);
     }

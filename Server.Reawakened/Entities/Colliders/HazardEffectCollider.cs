@@ -19,20 +19,15 @@ public class HazardEffectCollider(BaseComponent hazardController, ILogger<BaseHa
     public override string Plane => hazardController.ParentPlane;
     public override ColliderType Type => ColliderType.Hazard;
 
-    public override void SendCollisionEvent(BaseCollider received)
-    {
-        if (received is not PlayerCollider playerCollider)
-            return;
-
-        ApplyEffectBasedOffHazardType(Id, playerCollider.Player);
-
-        if (!playerCollider.Player.TempData.CollidingHazards.Contains(Id))
+    public override bool CanCollideWithType(BaseCollider collider) =>
+        collider.Type switch
         {
-            logger.LogInformation("{characterName} collided with hazard ({Id}).", playerCollider.Player.CharacterName, Id);
-            playerCollider.Player.TempData.CollidingHazards.Add(Id);
-        }
-    }
-
+            ColliderType.Player => true,
+            _ => false
+        };
+    
+    public override string[] RunCollisionDetection() => RunBaseCollisionDetection();
+    
     public void ApplyEffectBasedOffHazardType(string hazardId, Player player)
     {
         Room.GetEntityFromId<BaseHazardControllerComp<HazardController>>(hazardId)?.ApplyHazardEffect(player);

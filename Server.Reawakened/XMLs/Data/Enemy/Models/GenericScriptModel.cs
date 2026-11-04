@@ -7,6 +7,9 @@ public class GenericScriptModel(string attackBehavior, string awareBehavior, str
 
     public void ApplyGenericPropertiesFromModel(AIStatsGlobalComp globalStats)
     {
+        if (globalStats is null || genericGlobalStats is null)
+            return;
+        
         if (genericGlobalStats.GenericScript_AttackBehavior == globalStats.GenericScript_AttackBehavior)
             globalStats.ComponentData.GenericScript_AttackBehavior = attackBehavior;
 

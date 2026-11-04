@@ -1,5 +1,5 @@
 ﻿namespace Server.Reawakened.XMLs.Data.Enemy.Enums;
-public enum ActingState
+public enum ActingStateType
 {
     Frozen,
     Stunned,

@@ -19,59 +19,106 @@ public class BuyItems : ExternalProtocol
     public ItemCatalog ItemCatalog { get; set; }
     public InternalAchievement InternalAchievement { get; set; }
     public ILogger<BuyItems> Logger { get; set; }
+    public InternalVendor InternalVendor { get; set; }
+    public VendorCatalog VendorCatalog { get; set; }
 
     public override void Run(string[] message)
     {
         var items = message[6].Split('|');
-
         // On 2014, vendorGoId[5] is the vendor id (unused)
         var vendorGoId = int.Parse(message[ServerConfig.GameVersion >= GameVersion.vEarly2014 ? 7 : 5]);
+        var itemList = new Dictionary<ItemDescription, int>();
 
-        var bought = new List<Tuple<ItemDescription, int>>();
         var bananaPrice = 0;
         var cashPrice = 0;
 
+        //Hack Prevention
         foreach (var item in items)
         {
-            if (string.IsNullOrEmpty(item)) 
-                continue;
+            if (string.IsNullOrEmpty(item)) continue;
 
             var args = item.Split(":");
             var itemId = int.Parse(args[0]);
             var amount = int.Parse(args[1]);
 
             var itemDescription = ItemCatalog.GetItemFromId(itemId);
+            if (itemDescription.Currency == CurrencyType.Banana)
+            {
+                var price = itemDescription.RegularPrice;
+                if (itemDescription.isDiscounted())
+                    price = itemDescription.DiscountPrice;
 
-            if (itemDescription.IsBananaItem())
-                bananaPrice += itemDescription.RegularPrice * amount;
-            else if (itemDescription.IsNcItem())
-                cashPrice += itemDescription.RegularPrice * amount;
+                bananaPrice += price * amount;
+                if (Player.Character.Cash < bananaPrice)
+                {
+                    Player.SendXt("Ce", -1);
+                    return;
+                }
+            }
+            else if (itemDescription.Currency == CurrencyType.NickCash)
+            {
+                var price = itemDescription.RegularPrice;
+                if (itemDescription.isDiscounted())
+                    price = itemDescription.DiscountPrice;
 
-            bought.Add(new(itemDescription, amount));
+                cashPrice += price * amount;
+                if (Player.Character.NCash < cashPrice)
+                {
+                    Player.SendXt("Ce", -1);
+                    return;
+                }
+            }
+
+            itemList.Add(itemDescription, amount);
         }
 
-        if (bananaPrice > Player.Character.Cash && bananaPrice > 1
-            || cashPrice > Player.Character.NCash && cashPrice > 1)
+        var valid = false;
+
+        // Check if Vendor has item
+        var vendors = InternalVendor.GetVendorsById(Player.Character.LevelId, vendorGoId);
+
+        foreach (var item in itemList)
         {
-            Player.SendXt("Ce", -1);
+            foreach (var vendor in vendors)
+            {
+                if (VendorCatalog.GetVendorItemList(vendor.CatalogId).Contains(item.Key.ItemId))
+                {
+                    valid = true;
+                    break;
+                }
+            }
+        }
+
+        if (!valid)
+        {
+            Logger.LogError("[ANTICHEAT] Player \"{Name}\" attempted to purchase invalid item from Vendor {VendorID}", Player.CharacterName, vendors[0]?.VendorId);
+            Player.SendXt("wm", "302");
             return;
         }
 
-        foreach (var item in bought)
+        foreach (var itemDescription in itemList)
         {
-            if (item.Item1.IsBananaItem())
-                Player.RemoveBananas(item.Item1.RegularPrice * item.Item2);
-            else if (item.Item1.IsNcItem())
-                Player.RemoveNCash(item.Item1.RegularPrice * item.Item2);
+            var price = itemDescription.Key.RegularPrice;
+            if (itemDescription.Key.isDiscounted())
+                price = itemDescription.Key.DiscountPrice;
 
-            Player.AddItem(item.Item1, item.Item2, ItemCatalog);
+            if (itemDescription.Key.Currency == CurrencyType.Banana)
+                Player.RemoveBananas(price * itemDescription.Value);
+            else if (itemDescription.Key.Currency == CurrencyType.NickCash)
+                Player.RemoveNCash(price * itemDescription.Value);
 
-            Player.CheckObjective(ObjectiveEnum.Buyitem, vendorGoId.ToString(), item.Item1.PrefabName, item.Item2, ItemCatalog);
+            Player.AddItem(itemDescription.Key, itemDescription.Value, ItemCatalog);
 
-            Player.CheckAchievement(AchConditionType.BuyItem, [item.Item1.PrefabName], InternalAchievement, Logger);
-            Player.CheckAchievement(AchConditionType.BuyPet, [item.Item1.PrefabName], InternalAchievement, Logger);
+            Player.CheckObjective(ObjectiveEnum.Buyitem, vendorGoId.ToString(), itemDescription.Key.PrefabName, itemDescription.Value, ItemCatalog);
+
+            Player.CheckAchievement(AchConditionType.BuyItem, [itemDescription.Key.PrefabName], InternalAchievement, Logger);
+            
+            if (itemDescription.Key.IsPet())
+                Player.CheckAchievement(AchConditionType.BuyPet, [itemDescription.Key.PrefabName], InternalAchievement, Logger);
         }
 
+        Player.SendCashUpdate();
         Player.SendUpdatedInventory();
+        Player.SendXt("nb", 1);
     }
 }

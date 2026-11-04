@@ -3,6 +3,7 @@ using Server.Base.Accounts.Enums;
 using Server.Base.Accounts.Extensions;
 using Server.Base.Database.Accounts;
 using Server.Reawakened.Chat.Models;
+using Server.Reawakened.Core.Services;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Helpers;
@@ -28,6 +29,12 @@ public class Ban : SlashCommand
             Name = "duration",
             Description = "The ban duration in a format similar to 1d1h1m1s etc.",
             Optional = true
+        },
+        new ParameterModel()
+        {
+            Name = "reason",
+            Description = "The reason",
+            Optional = true
         }
     ];
 
@@ -35,6 +42,7 @@ public class Ban : SlashCommand
 
     public AccountHandler AccountHandler { get; set; }
     public PlayerContainer PlayerContainer { get; set; }
+    public DiscordHandler DiscordHandler { get; set; }
 
     public override void Execute(Player player, string[] args)
     {
@@ -46,6 +54,10 @@ public class Ban : SlashCommand
 
         var online = PlayerContainer.GetPlayerByAccountId(id);
         TimeSpan time;
+        var reason = string.Empty;
+        
+        if (args.Length >= 4)
+            reason = string.Join(" ", args.Skip(3));
 
         if (online != null)
         {
@@ -59,9 +71,11 @@ public class Ban : SlashCommand
             online.SendXt("yM", type.ToJson());
 
             online.Account.SetBanned(true);
-            online.Account.SetBanTags(null, DateTime.Now, time);
+            online.Account.SetBanTags(null, DateTime.UtcNow, time);
 
             Log($"Banned {online.Account.Username}'s account{online.Account.FormatBanTime()}.", player);
+            
+            DiscordHandler.SendPunishmentLog("Banned", player.Account.Username, online.Account.Username, reason, online.Account.FormatBanTime());
             return;
         }
         else
@@ -73,11 +87,13 @@ public class Ban : SlashCommand
                 time = args.Length < 3 ? TimeSpan.MaxValue : target.ParseTime(args[2]);
 
                 target.SetBanned(true);
-                target.SetBanTags(null, DateTime.Now, time);
+                target.SetBanTags(null, DateTime.UtcNow, time);
 
                 AccountHandler.Update(target.Write);
 
                 Log($"Banned {target.Username}'s account{target.FormatBanTime()}.", player);
+                
+                DiscordHandler.SendPunishmentLog("Banned", player.Account.Username, target.Username, reason, target.FormatBanTime());
                 return;
             }
         }

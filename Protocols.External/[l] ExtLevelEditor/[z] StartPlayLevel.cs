@@ -1,6 +1,7 @@
 ﻿using Server.Reawakened.Entities.Colliders;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players.Extensions;
+using Server.Reawakened.Rooms.Enums;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Services;
 
@@ -14,13 +15,24 @@ public class StartPlayRoom : ExternalProtocol
 
     public override void Run(string[] message)
     {
+        Player.Character.StatusEffects.UpdateStatus();
+
+        Player.TemporaryInvincibility(2);
+		
         Player.QuickJoinRoom(Player.GetLevelId(), WorldHandler, out var reason);
 
-        SendXt("lz", reason.GetJoinReasonError(), Player.Room.LevelInfo.LevelId, Player.Room.LevelInfo.Name);
+        var room = Player.Room;
 
-        var tribe = Player.Room.LevelInfo.Tribe;
-        Player.DiscoverTribe(tribe);
+        if (reason != JoinReason.Accepted || room == null)
+        {
+            SendXt("lz", reason.GetJoinReasonError(), -1, string.Empty);
+            return;
+        }
 
-        Player.TempData.Invincible = true;
+        var levelInfo = room.LevelInfo;
+
+        SendXt("lz", reason.GetJoinReasonError(), levelInfo.LevelId, levelInfo.Name);
+
+        Player.DiscoverTribe(levelInfo.Tribe);
     }
 }

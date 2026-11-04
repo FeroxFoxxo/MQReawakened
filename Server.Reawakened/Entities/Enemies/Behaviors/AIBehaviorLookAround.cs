@@ -18,7 +18,7 @@ public class AIBehaviorLookAround(BehaviorEnemy enemy, LookAroundProperties fall
             Fallback(enemy.Global.LookAround_SnapOnGround, fallback.lookAround_SnapOnGround)
         );
 
-    public override object[] GetStartArgs() => [];
+    public override object[] GetStartArgs(bool _) => [];
 
     public override StateType GetStateType() => StateType.LookAround;
 

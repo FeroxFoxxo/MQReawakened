@@ -5,7 +5,6 @@ using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Database.Characters;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
-using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.XMLs.Bundles.Base;
 using Server.Reawakened.XMLs.Bundles.Internal;
@@ -74,12 +73,17 @@ public class UseItem : ExternalProtocol
     private void HandlePet(ItemDescription usedItem)
     {
         var itemModel = Player.Character.Inventory.Items[usedItem.ItemId];
-        Player.SetHotbarSlot(ServerRConfig.PetHotbarIndex, itemModel, ItemRConfig);
+        Player.SetHotbarSlot(ServerRConfig.PetHotbarIndex, itemModel);
         SendXt("hs", Player.Character.Hotbar);
     }
 
     private void HandleBomb(ItemDescription usedItem, Vector3 position, int direction)
     {
+        Player.CheckAchievement(AchConditionType.Bomb, [usedItem.PrefabName], InternalAchievement, Logger);
+
+        if (usedItem.ItemEffects.Any())
+            Player.HandleItemEffect(usedItem, TimerThread, ServerRConfig, Logger);
+
         Player.HandleDrop(ItemRConfig, TimerThread, Logger, usedItem, position, direction, ServerRConfig);
 
         var removeFromHotbar = true;
@@ -97,7 +101,22 @@ public class UseItem : ExternalProtocol
 
     private void HandleConsumable(ItemDescription usedItem)
     {
-        Player.HandleItemEffect(usedItem, TimerThread, ItemRConfig, ServerRConfig, Logger);
+        if (usedItem.ItemActionType == ItemActionType.PetUse)
+        {
+            if (!Player.Character.Pets.TryGetValue(Player.GetItemIdOfEquippedPet(), out var pet))
+            {
+                Logger.LogWarning("Couldn't find equipped pet for {characterName}", Player.CharacterName);
+                return;
+            }
+
+            if (pet.PetIsBusy(Player))
+            {
+                //Send pet is busy popup.
+                return;
+            }
+        }
+
+        Player.HandleItemEffect(usedItem, TimerThread, ServerRConfig, Logger);
 
         var removeFromHotbar = true;
 

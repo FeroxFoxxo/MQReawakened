@@ -1,4 +1,5 @@
 ﻿using Server.Reawakened.Entities.Colliders;
+using Server.Reawakened.Entities.Components.GameObjects.Hazards.Abstractions;
 using Server.Reawakened.Entities.Components.GameObjects.Platforms.Abstractions;
 
 namespace Server.Reawakened.Entities.Components.GameObjects.Platforms;
@@ -15,7 +16,7 @@ public class LinearPlatformComp : BaseMovingObjectControllerComp<LinearPlatform>
     public bool StopIfNotTriggered => ComponentData.StopIfNotTriggered;
     public float DelayBeforeStart => ComponentData.DelayBeforeStart;
     public bool TriggeredBySwitch => ComponentData.TriggeredBySwitch;
-
+    
     public override void InitializeComponent()
     {
         var distance = new vector3(DistanceX, DistanceY, DistanceZ);
@@ -30,7 +31,11 @@ public class LinearPlatformComp : BaseMovingObjectControllerComp<LinearPlatform>
 
         base.InitializeComponent();
 
-        _ = new MovingPlatformCollider(this);
+        var hazard = Room.GetEntityFromId<BaseHazardControllerComp<HazardController>>(Id);
+        var trapHazard = Room.GetEntityFromId<BaseHazardControllerComp<TrapHazardController>>(Id);
+
+        if (hazard == null && trapHazard == null)
+            _ = new MovingPlatformCollider(this);
     }
 
     public override void Update()

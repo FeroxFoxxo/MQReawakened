@@ -21,12 +21,15 @@ public class BreakableCollider(BaseComponent component, bool enemyHurt) : BaseCo
     public override void SendCollisionEvent(BaseCollider received)
     {
         if (received is AttackCollider attack && !EnemyHurt)
+        {
             foreach (var breakable in Room.GetEntitiesFromId<BreakableEventControllerComp>(Id))
-                breakable.Damage(attack.Damage, attack.DamageType, attack.Owner);
-
-        if (received is AIProjectileCollider aiprj && EnemyHurt)
-            foreach (var breakable in Room.GetEntitiesFromId<BreakableEventControllerComp>(Id))
-                breakable.Damage(aiprj.Damage, aiprj.OwnderId);
+            {
+                breakable.Damage(
+                    attack.Item != null
+                        ? attack.Owner.Character.CalculateDamage(attack.Item, attack.ItemCatalog)
+                        : attack.ItemEffects.First().Value, attack.ItemEffects.First().Type, attack.Owner);
+            }
+        }
 
         if (received is PlayerCollider)
             foreach (var collapsingPlatform in Room.GetEntitiesFromId<CollapsingPlatformComp>(Id))

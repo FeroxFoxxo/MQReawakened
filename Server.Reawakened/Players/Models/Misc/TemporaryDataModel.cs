@@ -1,5 +1,6 @@
 ﻿using Server.Base.Core.Extensions;
 using Server.Reawakened.Entities.Colliders;
+using Server.Reawakened.Entities.Enemies.EnemyTypes.Abstractions;
 using Server.Reawakened.Players.Models.Groups;
 using Server.Reawakened.Players.Models.Trade;
 using Server.Reawakened.Rooms.Models.Entities;
@@ -13,25 +14,24 @@ public class TemporaryDataModel
 {
     public int ProjectileId { get; set; } = -1;
     public string GameObjectId { get; set; } = "0";
+    public string CurrentCoopTriggerId { get; set; } = "0";
     public int Direction { get; set; } = 0;
     public int Locale { get; set; }
 
-    public bool PetDefense { get; set; }
-    public bool PetDefensiveBarrier { get; set; }
-    public bool Invincible { get; set; } = false;
     public bool OnGround { get; set; } = false;
     public bool Underwater { get; set; } = false;
-    public Timer UnderwaterTimer { get; set; } = null;
-    public Timer PetEnergyRegenTimer { get; set; } = null;
+    public float UnderwaterTime { get; set; } = 0;
+    public Timer PoisonEffectTimer { get; set; } = null;
     public bool BananaBoostsElixir { get; set; }
     public bool ReputationBoostsElixir { get; set; }
     public bool IsSuperStomping { get; set; } = false;
+    public bool IsPoisoned { get; set; } = false;
     public bool IsSlowed { get; set; } = false;
     public BaseComponent CurrentArena { get; set; } = null;
     public bool IsKnockedOut { get; set; } = false;
 
-    public List<string> CollidingHazards { get; set; } = [];
     public Dictionary<int, bool> VotedForItem { get; set; } = [];
+    public Dictionary<float, BaseEnemy> EnemiesInPetAbilityZone { get; set; }
 
     public Vector3Model Position { get; set; } = new Vector3Model(0, 0, 0);
     public Vector3 Velocity { get; set; } = new Vector3();
@@ -46,6 +46,8 @@ public class TemporaryDataModel
 
     public PlayerCollider PlayerCollider { get; set; }
 
-    public Vector3 CopyPosition() =>
+    public DateTime LastPetEnergyRegen { get; set; }
+
+    public Vector3Model CopyPosition() =>
         new(Position.X, Position.Y, Position.Z);
 }

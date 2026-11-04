@@ -9,7 +9,7 @@ public class ItemModel
     public int Count { get; set; }
     public int BindingCount { get; set; }
 
-    public DateTime DelayUseExpiry = DateTime.Now;
+    public DateTime DelayUseExpiry = DateTime.UtcNow;
 
     public ItemModel()
     {

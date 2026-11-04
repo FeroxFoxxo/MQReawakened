@@ -2,6 +2,7 @@
 using Server.Reawakened.Entities.Enemies.Behaviors.Abstractions;
 using Server.Reawakened.Entities.Enemies.EnemyTypes;
 using Server.Reawakened.XMLs.Data.Enemy.Enums;
+using System.Diagnostics.Eventing.Reader;
 
 namespace Server.Reawakened.Entities.Enemies.Behaviors;
 
@@ -21,18 +22,25 @@ public class AIBehaviorPatrol(BehaviorEnemy enemy, PatrolProperties fallback) : 
             Fallback(enemy.Generic.Patrol_InitialProgressRatio, fallback.patrolInitialProgressRatio)
         );
 
-    public override object[] GetStartArgs()
+    public override object[] GetStartArgs(bool onEnterRoom)
     {
         var behavior = _behaviour as AI_Behavior_Patrol;
 
         behavior.SetStats(_aiData);
 
-        var method = behavior.GetMethod("CalculateProgressRatio");
-        method.Invoke(behavior, [_aiData]);
+        object ratio;
 
-        var ratio = behavior.GetField("Patrol_InitialProgressRatio");
+        if (onEnterRoom)
+            ratio = behavior.GetBehaviorRatio(_aiData, enemy.Room.Time);
+        else
+        {
+            var method = behavior.GetMethod("CalculateProgressRatio");
+            method.Invoke(behavior, [_aiData]);
 
-        return ratio is float f && float.IsNaN(f) ? ([]) : (object[])([ratio]);
+            ratio = behavior.GetField("Patrol_InitialProgressRatio");
+        }
+
+        return ratio is float f && float.IsNaN(f) ? [] : [ratio];
     }
 
     public override StateType GetStateType() => StateType.Patrol;

@@ -17,6 +17,27 @@ public static class CharacterExtensions
         character.Write.CurrentLife = character.Write.MaxLife;
     }
 
+    public static void SetHealthStat(this CharacterModel character, ItemCatalog itemCatalog)
+    {
+        var level = character.GlobalLevel;
+
+        var health = GameFlow.StatisticData.GetValue(ItemEffectType.IncreaseHitPoints, WorldStatisticsGroup.Player, level);
+        var statManager = new CharacterStatsManager(character.CharacterName);
+        var itemList = new List<ItemDescription>();
+
+        foreach (var item in character.Equipment.EquippedItems)
+            itemList.Add(itemCatalog.GetItemFromId(item.Value));
+        health += statManager.ComputeEquimentBoost(ItemEffectType.IncreaseHitPoints, itemList);
+
+        var partition = (float)character.Write.CurrentLife / character.Write.MaxLife;
+
+        character.Write.MaxLife = health;
+        character.Write.CurrentLife = (int)(health * partition) + 1;
+        if (character.Write.CurrentLife > character.Write.MaxLife || character.Write.CurrentLife < 1)
+            character.Write.CurrentLife = character.Write.MaxLife;
+
+    }
+    
     public static int GetReputationForLevel(int level)
     {
         var currentLevel = Convert.ToInt32(Math.Pow(level, 2));

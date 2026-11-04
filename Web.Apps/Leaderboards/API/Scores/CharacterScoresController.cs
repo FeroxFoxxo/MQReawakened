@@ -38,12 +38,9 @@ public class CharacterScoresController(InternalLeaderboards leaderboards, Charac
 
         foreach (var game in leaderboards.Games)
         {
-            var topScore = topScoresHandler.GetScoresFromId(game.id);
-            
-            if (topScore == null)
-                continue;
+            var topScore = topScoresHandler.GetScoresFromGame(game.id);
 
-            var characterScore = topScore.Scores
+            var characterScore = topScore?
                 .FirstOrDefault(x => x.CharacterId == character.Id);
 
             if (characterScore == null)
@@ -52,7 +49,7 @@ public class CharacterScoresController(InternalLeaderboards leaderboards, Charac
             scores[game.id.ToString()] = new JsonData
             {
                 ["score"] = characterScore.Score,
-                ["time"] = characterScore.Time
+                ["time"] = characterScore.Time.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'sszzz"),
             };
         }
 

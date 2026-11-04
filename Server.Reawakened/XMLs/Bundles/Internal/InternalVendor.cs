@@ -24,6 +24,11 @@ public class InternalVendor : InternalXml
     public VendorInfo GetVendorById(int levelId, int id) =>
         VendorCatalog.TryGetValue(levelId, out var vendors) ? vendors.FirstOrDefault(x => x.GameObjectId == id) : null;
 
+    public List<VendorInfo> GetVendorsById(int levelId, int id) =>
+        VendorCatalog.TryGetValue(levelId, out var vendors)
+            ? vendors.Where(x => x.GameObjectId == id).ToList()
+            : new List<VendorInfo>();
+    
     public override void ReadDescription(XmlDocument xmlDocument)
     {
         foreach (XmlNode vendorXml in xmlDocument.ChildNodes)

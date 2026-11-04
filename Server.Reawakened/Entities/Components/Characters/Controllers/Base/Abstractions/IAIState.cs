@@ -7,11 +7,11 @@ public interface IAIState
 {
     string StateName { get; }
 
-    void StartState();
+    void StartState(float time);
     void UpdateState();
     void StopState();
 
-    ComponentSettings GetFullSettings();
+    ComponentSettings GetFullSettings(float time);
     void SetStateMachine(IAIStateMachine machine);
     void SetEnemyController(AIStateEnemy enemyController);
 }

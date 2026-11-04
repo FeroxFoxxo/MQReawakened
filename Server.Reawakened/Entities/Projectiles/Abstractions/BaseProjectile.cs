@@ -41,6 +41,7 @@ public abstract class BaseProjectile(string id, float lifetime,
             Hit("0");
     }
 
+
     public void RunCollisionCheck()
     {
         var collisions = Collider.RunCollisionDetection();
@@ -51,7 +52,6 @@ public abstract class BaseProjectile(string id, float lifetime,
                 Hit(collision);
             }
     }
-
     public virtual void Move() => SetPositionBasedOnTime();
 
     private void SetPositionBasedOnTime()

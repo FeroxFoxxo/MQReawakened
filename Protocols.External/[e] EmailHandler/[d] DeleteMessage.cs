@@ -12,7 +12,6 @@ public class DeleteMessage : ExternalProtocol
     public override string ProtocolName => "ed";
 
     public ItemCatalog ItemCatalog { get; set; }
-    public TimerThread TimerThread { get; set; }
 
     public override void Run(string[] message)
     {

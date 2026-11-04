@@ -31,30 +31,34 @@ public abstract class BaseInterObjStatusComp<T> : Component<T>, IDamageable wher
 
     public override void InitializeComponent() => CurrentHealth = MaxHealth;
 
-    public int GetDamageAmount(int damage, Elemental damageType)
+    public int GetDamageAmount(int damage, ItemEffectType itemEffectType, bool applyResist = true)
     {
-        switch (damageType)
+        if (applyResist)
         {
-            case Elemental.Air:
-                damage -= AirDamageResistPoints;
-                break;
-            case Elemental.Fire:
-                damage -= FireDamageResistPoints;
-                break;
-            case Elemental.Ice:
-                damage -= IceDamageResistPoints;
-                break;
-            case Elemental.Earth:
-                damage -= EarthDamageResistPoints;
-                break;
-            case Elemental.Poison:
-                damage -= PoisonDamageResistPoints;
-                break;
-            case Elemental.Standard:
-            case Elemental.Unknown:
-            case Elemental.Invalid:
-                damage -= StandardDamageResistPoints;
-                break;
+            switch (itemEffectType)
+            {
+                case ItemEffectType.AirDamage:
+                    damage -= AirDamageResistPoints;
+                    break;
+                case ItemEffectType.FireDamage:
+                    damage -= FireDamageResistPoints;
+                    break;
+                case ItemEffectType.IceDamage:
+                    damage -= IceDamageResistPoints;
+                    break;
+                case ItemEffectType.EarthDamage:
+                    damage -= EarthDamageResistPoints;
+                    break;
+                case ItemEffectType.PoisonDamage:
+                    damage -= PoisonDamageResistPoints;
+                    break;
+                case ItemEffectType.LightningDamage:
+                    damage -= LightningDamageResistPoints;
+                    break;
+                default:
+                    damage -= StandardDamageResistPoints;
+                    break;
+            }
         }
 
         if (damage < 1)

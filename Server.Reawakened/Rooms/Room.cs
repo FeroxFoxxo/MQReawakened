@@ -6,7 +6,6 @@ using Server.Base.Timers.Services;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Core.Enums;
 using Server.Reawakened.Database.Characters;
-using Server.Reawakened.Entities.Colliders;
 using Server.Reawakened.Entities.Colliders.Abstractions;
 using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Abstractions;
 using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Controller;
@@ -29,10 +28,10 @@ using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.Rooms.Services;
 using Server.Reawakened.XMLs.Bundles.Base;
 using Server.Reawakened.XMLs.Bundles.Internal;
-using UnityEngine;
 using WorldGraphDefines;
 using Random = System.Random;
 using Timer = Server.Base.Timers.Timer;
+using Vector2 = UnityEngine.Vector2;
 
 namespace Server.Reawakened.Rooms;
 
@@ -55,6 +54,11 @@ public class Room : Timer
     private readonly HashSet<string> _killedObjects;
     private readonly HashSet<string> _killedUpdatingObjects;
 
+    private readonly List<BaseComponent> _entitiesTickCache = [];
+    private readonly List<BaseProjectile> _projectilesTickCache = [];
+    private readonly List<BaseEnemy> _enemiesTickCache = [];
+    private readonly List<Player> _playersTickCache = [];
+
     public ILogger<Room> Logger;
 
     public Dictionary<string, PlaneModel> Planes;
@@ -63,8 +67,7 @@ public class Room : Timer
 
     private readonly ServerRConfig _config;
     private readonly ItemRConfig _itemConfig;
-    private readonly TimerThread _timerThread;
-
+    
     public ItemCatalog ItemCatalog;
     public InternalColliders ColliderCatalog;
 
@@ -82,7 +85,7 @@ public class Room : Timer
 
     public float DeltaTime => Time - _lastTickTime;
 
-    public bool IsOpen;
+    public volatile bool IsOpen;
 
     public Room(int roomId, Level level, IServiceProvider services, TimerThread timerThread, ServerRConfig config) :
         base(TimeSpan.Zero, TimeSpan.FromSeconds(1.0 / config.RoomTickRate), 0, timerThread)
@@ -91,7 +94,6 @@ public class Room : Timer
 
         _roomId = roomId;
         _config = config;
-        _timerThread = timerThread;
         _lastTickTime = Time;
 
         IsOpen = true;
@@ -105,7 +107,6 @@ public class Room : Timer
         _level = level;
 
         _projectiles = [];
-
         _players = [];
         _gameObjectIds = [];
         _killedObjects = [];
@@ -120,7 +121,6 @@ public class Room : Timer
         {
             Planes = [];
             _entities = [];
-
             return;
         }
 
@@ -131,14 +131,17 @@ public class Room : Timer
 
         _entities = this.LoadEntities(services);
         Logger.LogTrace("Loaded entities");
-        
+
         this.LoadTerrainColliders();
         Logger.LogTrace("Loaded colliders");
 
         _defaultSpawn = GetEntitiesFromType<SpawnPointComp>().MinBy(p => p.Index);
 
-        foreach (var type in UnknownEntities.Values.SelectMany(x => x).Distinct().Order())
-            Logger.LogWarning("Could not find synced entity for {EntityType}", type);
+        if (UnknownEntities != null)
+        {
+            foreach (var type in UnknownEntities.Values.SelectMany(x => x).Distinct().Order())
+                Logger.LogWarning("Could not find synced entity for {EntityType}", type);
+        }
 
         foreach (var gameObjectId in Planes.Values
                      .Select(x => x.GameObjects)
@@ -189,43 +192,65 @@ public class Room : Timer
 
     public override void OnTick()
     {
-        List<BaseComponent> entitiesCopy;
-        List<BaseProjectile> projectilesCopy;
-        List<BaseEnemy> enemiesCopy;
-        List<Player> playersCopy;
-
         lock (_roomLock)
         {
-            entitiesCopy = [.. _entities.Values.SelectMany(s => s)];
-            projectilesCopy = [.. _projectiles.Values];
-            enemiesCopy = [.. _enemies.Values];
-            playersCopy = [.. _players.Values];
+            if (!IsOpen)
+                return;
+
+            _entitiesTickCache.Clear();
+            foreach (var entityList in _entities.Values)
+                _entitiesTickCache.AddRange(entityList);
+
+            _projectilesTickCache.Clear();
+            _projectilesTickCache.AddRange(_projectiles.Values);
+
+            _enemiesTickCache.Clear();
+            _enemiesTickCache.AddRange(_enemies.Values);
+
+            _playersTickCache.Clear();
+            _playersTickCache.AddRange(_players.Values);
         }
 
-        foreach (var entityComponent in entitiesCopy)
-            if (!IsObjectKilled(entityComponent.Id) || _killedUpdatingObjects.Contains(entityComponent.Id))
-                entityComponent.Update();
-
-        foreach (var projectile in projectilesCopy)
-            projectile.Update();
-
-        foreach (var enemy in enemiesCopy)
-            enemy.Update();
-
-        foreach (var player in playersCopy)
+        foreach (var entityComponent in _entitiesTickCache)
         {
+            if (!IsOpen) return;
+
+            if (!IsObjectKilled(entityComponent.Id) || IsUpdatingKilled(entityComponent.Id))
+                entityComponent.Update();
+        }
+
+        foreach (var projectile in _projectilesTickCache)
+        {
+            if (!IsOpen) return;
+            projectile?.Update();
+        }
+
+        foreach (var enemy in _enemiesTickCache)
+        {
+            if (!IsOpen) return;
+            enemy?.Update();
+        }
+
+        foreach (var player in _playersTickCache)
+        {
+            if (!IsOpen) return;
+
             if (GetTime.GetCurrentUnixMilliseconds() - player.TempData.CurrentPing > _config.KickAfterTime)
             {
                 player.Remove(Logger);
                 continue;
             }
-            else
-            {
-                player.TempData.PlayerCollider?.RunCollisionDetection();
-            }
+
+            player.Update();
         }
 
         _lastTickTime = Time;
+    }
+
+    private bool IsUpdatingKilled(string id)
+    {
+        lock (_roomLock)
+            return _killedUpdatingObjects.Contains(id);
     }
 
     public void AddClient(Player currentPlayer, out JoinReason reason)
@@ -260,7 +285,6 @@ public class Room : Timer
                     return;
 
                 // USER ENTER
-
                 foreach (var roomCharacter in _players.Values)
                 {
                     currentPlayer.SendUserEnterDataTo(roomCharacter);
@@ -286,37 +310,35 @@ public class Room : Timer
     {
         Logger.LogTrace("Removing player from room {RoomId}", _roomId);
 
+        Player[] remaining;
+
         lock (_roomLock)
         {
             _players.Remove(player.GameObjectId);
             _gameObjectIds.Remove(player.GameObjectId);
             RemoveCollider(player.GameObjectId);
+            remaining = [.. _players.Values];
         }
 
         if (LevelInfo.LevelId <= 0)
             return;
 
-        if (_players.Count != 0)
+        if (remaining.Length != 0)
         {
-            lock (_roomLock)
-            {
-                foreach (var currentPlayer in _players.Values)
-                    player.SendUserGoneDataTo(currentPlayer);
+            foreach (var currentPlayer in remaining)
+                player.SendUserGoneDataTo(currentPlayer);
 
-                foreach (var entity in GetEntitiesFromType<TriggerCoopControllerComp>())
-                    entity.RemovePhysicalInteractor(player, player.GameObjectId);
-            }
-
+            player.RemoveAssociatedTriggers();
             return;
         }
 
         lock (_level.Lock)
-        {
             _level.Rooms.Remove(_roomId);
-        }
 
         lock (_roomLock)
         {
+            if (!IsOpen)
+                return;
             CleanData();
         }
 
@@ -373,11 +395,11 @@ public class Room : Timer
             return _players.TryGetValue(id, out var value) ? value : null;
     }
 
-    public bool IsGameObjectOfPet(string id, ServerRConfig serverRConfig)
+    public bool IsGameObjectOfPet(string id)
     {
         foreach (var player in _players)
-            if (player.Value.Character.Pets.TryGetValue(player.Value.GetEquippedPetId(serverRConfig), out var pet))
-                if (pet.CoopTriggerableId == id) return true;
+            if (player.Value.Character.Pets.TryGetValue(player.Value.GetItemIdOfEquippedPet(), out var pet))
+                if (pet.GameObjectId == id) return true;
 
         return false;
     }
@@ -418,18 +440,32 @@ public class Room : Timer
     {
         lock (_roomLock)
             _colliders.Remove(colliderId);
-        
+
         Logger.LogTrace("Removed collider with id {ColliderId} from room {RoomId}", colliderId, _roomId);
     }
 
     public void ToggleCollider(string colliderId, bool active)
     {
         if (_colliders.TryGetValue(colliderId, out var collider))
+        {
             lock (_roomLock)
+            {
                 foreach (var col in collider)
                     col.Active = active;
-        
+            }
+        }
+
         Logger.LogTrace("Toggled collider with id {ColliderId} to {Active} in room {RoomId}", colliderId, active, _roomId);
+    }
+
+    public void GetCollidersById(string id, List<BaseCollider> outputList)
+    {
+        outputList.Clear();
+        lock (_roomLock)
+        {
+            if (_colliders.TryGetValue(id, out var value))
+                outputList.AddRange(value);
+        }
     }
 
     public List<BaseCollider> GetCollidersById(string id)
@@ -438,10 +474,33 @@ public class Room : Timer
             return _colliders.TryGetValue(id, out var value) ? [.. value] : [];
     }
 
+    public void GetColliders(List<BaseCollider> outputList)
+    {
+        outputList.Clear();
+        lock (_roomLock)
+        {
+            foreach (var list in _colliders.Values)
+                outputList.AddRange(list);
+        }
+    }
+
     public BaseCollider[] GetColliders()
     {
         lock (_roomLock)
-            return [.. _colliders.Values.SelectMany(x => x)];
+        {
+            var totalCount = 0;
+            foreach (var list in _colliders.Values)
+                totalCount += list.Count;
+
+            var result = new BaseCollider[totalCount];
+            var index = 0;
+            foreach (var list in _colliders.Values)
+            {
+                list.CopyTo(result, index);
+                index += list.Count;
+            }
+            return result;
+        }
     }
 
     // Spawn Points
@@ -538,6 +597,24 @@ public class Room : Timer
                 : [.. _entities.SelectMany(x => x.Value).Where(x => x is T and not null).Select(x => x as T)];
     }
 
+    public string CreatePetGameObjectId()
+    {
+        var gameObjectId = new Random().Next(1000000, int.MaxValue);
+
+        while (_gameObjectIds.Contains(gameObjectId.ToString()))
+            gameObjectId++;
+
+        _gameObjectIds.Add(gameObjectId.ToString());
+
+        return gameObjectId.ToString();
+    }
+
+    public void RemovePetGameObjectId(string petGameObjectId)
+    {
+        if (_gameObjectIds.Contains(petGameObjectId))
+            _gameObjectIds.Remove(petGameObjectId);
+    }
+    
     // Projectiles
 
     public void AddProjectile(BaseProjectile projectile)
@@ -571,7 +648,7 @@ public class Room : Timer
     }
 
     public void AddRangedProjectile(string ownerId, Vector3Model position, Vector2 speed,
-        float lifeTime, int damage, ItemEffectType effect, bool isGrenade, string prefabName = "")
+        float lifeTime, ItemEffectType effect, bool isGrenade, string prefabName = "")
     {
         var projectileId = CreateProjectileId();
 
@@ -580,7 +657,7 @@ public class Room : Timer
 
         var aiProjectile = new AIProjectile(
             this, ownerId, projectileId.ToString(), prjPosition, size,
-            speed, lifeTime, _timerThread, damage, effect, isGrenade, _config, ItemCatalog
+            speed, lifeTime, effect, isGrenade
         );
 
         this.SendSyncEvent(
@@ -614,8 +691,6 @@ public class Room : Timer
 
         Logger.LogInformation("Killing object {id}...", id);
 
-        var roomEntities = _entities.Values.SelectMany(s => s).ToList();
-
         foreach (var destructible in GetEntitiesFromId<IDestructible>(id))
         {
             if (destructible is BaseComponent component)
@@ -641,6 +716,8 @@ public class Room : Timer
     {
         lock (_roomLock)
             _killedUpdatingObjects.Remove(killedEnemy);
+        
+        RemoveEnemy(killedEnemy);
     }
 
     // Enemies
@@ -685,7 +762,8 @@ public class Room : Timer
         {
             foreach (var component in entity.Value)
             {
-                component.Entity.Room = null;
+                if (component?.Entity != null)
+                    component.Entity.Room = null;
             }
         }
 
@@ -697,13 +775,20 @@ public class Room : Timer
         _players.Clear();
         _colliders.Clear();
 
-        Planes.Clear();
-        UnknownEntities.Clear();
-        DuplicateEntities.Clear();
+        Planes?.Clear();
+        UnknownEntities?.Clear();
+        DuplicateEntities?.Clear();
 
         _enemies.Clear();
         _entities.Clear();
         _projectiles.Clear();
+
+        /*
+        _entitiesTickCache.Clear();
+        _projectilesTickCache.Clear();
+        _enemiesTickCache.Clear();
+        _playersTickCache.Clear();
+        */
     }
 
     public override string ToString() =>

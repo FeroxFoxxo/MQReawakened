@@ -217,6 +217,7 @@ public class InternalItem : InternalXml
                                             duration = int.Parse(effectAttribute.Value);
                                             break;
                                     }
+                                
                                 itemEffects.Add(new ItemEffect(type, value, duration));
                             }
                         }

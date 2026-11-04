@@ -5,17 +5,20 @@ using Server.Reawakened.Entities.Colliders.Enums;
 using Server.Reawakened.Players;
 using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Models.Planes;
+using Server.Reawakened.XMLs.Bundles.Base;
 
 namespace Server.Reawakened.Entities.Colliders;
 
 public class AttackCollider(string id, Vector3Model position,
     RectModel box, string plane, Player player,
-    int damage, Elemental type, float lifeTime, float offset, bool canSeeInvis) : BaseCollider
+    ItemDescription item, List<ItemEffect> itemEffects, string prefabFrom, float lifeTime, float offset, bool canSeeInvis, ItemCatalog itemCatalog, float dmgScale = 1) : BaseCollider
 {
     public Player Owner => player;
-    public int Damage => damage;
-    public Elemental DamageType => type;
+    public ItemDescription Item => item;
+    public List<ItemEffect> ItemEffects => itemEffects;
+    public string PrefabFrom => prefabFrom;
     public bool CanSeeInvisible => canSeeInvis;
+    public ItemCatalog ItemCatalog => itemCatalog;
 
     public override Room Room => player.Room;
     public override string Id => id;
@@ -26,6 +29,8 @@ public class AttackCollider(string id, Vector3Model position,
 
     public readonly float OffsetTime = player.Room.Time + offset;
     public readonly float LifeTime = player.Room.Time + lifeTime;
+
+    public float DamageScale => dmgScale;
 
     public override bool CanOverrideInvisibleDetection() => CanSeeInvisible;
 

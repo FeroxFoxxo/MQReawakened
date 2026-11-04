@@ -23,7 +23,7 @@ public abstract class AIBaseBehavior
         _behaviour = EnemyBehaviorFactory.create(typeName, properties);
     }
 
-    public void Start() => _behaviour.Start(_aiData, _room.Time, GetStartArgsArray());
+    public void Start() => _behaviour.Start(_aiData, _room.Time, GetStartArgsArray(false));
 
     public bool TryUpdate()
     {
@@ -49,23 +49,23 @@ public abstract class AIBaseBehavior
     public virtual float GetBehaviorTime() => 1.0f;
 
     public abstract AiProperties GetProperties();
-    public abstract object[] GetStartArgs();
+    public abstract object[] GetStartArgs(bool onEnterRoom = false);
 
-    private string[] GetStartArgsArray()
+    private string[] GetStartArgsArray(bool afterRoomLoad)
     {
         var objs = new List<string>();
 
-        foreach (var obj in GetStartArgs())
+        foreach (var obj in GetStartArgs(afterRoomLoad))
             objs.Add((obj is bool booleanValue ? booleanValue ? 1 : 0 : obj).ToString());
 
         return [.. objs];
     }
 
-    public string GetStartArgsString()
+    public string GetStartArgsString(bool afterRoomLoad)
     {
         var sb = new SeparatedStringBuilder('`');
 
-        foreach (var obj in GetStartArgsArray())
+        foreach (var obj in GetStartArgsArray(afterRoomLoad))
             sb.Append(obj);
 
         return sb.ToString();

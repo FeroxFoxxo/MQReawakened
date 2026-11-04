@@ -64,11 +64,11 @@ public class Hotbar : SlashCommand
             ItemFilterCategory.Consumables or
             ItemFilterCategory.NestedSuperPack)
         {
-            var itemModel = new ItemModel(item.ItemId, 0, 0, DateTime.Now);
+            var itemModel = new ItemModel(item.ItemId, 0, 0, DateTime.UtcNow);
 
             player.Character.Inventory.Items.TryAdd(item.ItemId, itemModel);
 
-            player.SetHotbarSlot(hotbarId - 1, itemModel, ItemRConfig);
+            player.SetHotbarSlot(hotbarId - 1, itemModel);
 
             player.SendXt("hs", player.Character.Hotbar);
 

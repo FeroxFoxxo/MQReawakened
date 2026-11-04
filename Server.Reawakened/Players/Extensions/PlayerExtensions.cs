@@ -144,6 +144,12 @@ public static class PlayerExtensions
         player.CheckAchievement(AchConditionType.CollectBanana, [], internalAchievement, logger, (int)Math.Floor(collectedBananas));
     }
 
+    public static void AddCash(this Player player, float collectedCash)
+    {
+        player.Character.Write.Cash += collectedCash;
+        player.SendCashUpdate();
+    }
+
     public static void RemoveBananas(this Player player, int collectedBananas)
     {
         player.Character.Write.Cash -= collectedBananas;
@@ -174,7 +180,7 @@ public static class PlayerExtensions
     {
         player.Character.Write.BadgePoints += 100;
         player.SendLevelUp(rConfig, itemCatalog);
-    }
+	}
 
     public static void SendCashUpdate(this Player player) =>
         player.SendXt("ca", Math.Floor(player.Character.Cash), Math.Floor(player.Character.NCash));
@@ -260,13 +266,13 @@ public static class PlayerExtensions
     }
 
     public static void LevelUp(this Player player, int level, WorldStatistics worldStatistics,
-    ServerRConfig config, Microsoft.Extensions.Logging.ILogger logger, ItemCatalog itemCatalog)
+        ServerRConfig config, Microsoft.Extensions.Logging.ILogger logger, ItemCatalog itemCatalog)
     {
         player.Character.SetLevelXp(level, config);
         player.SendLevelUp(config, itemCatalog);
 
-        if (player.Character.Pets.TryGetValue(player.GetEquippedPetId(config), out var pet))
-            pet.GainEnergy(player, player.GetMaxPetEnergy(worldStatistics, config));
+        if (player.Character.Pets.TryGetValue(player.GetItemIdOfEquippedPet(), out var pet))
+            pet.GainMaxPetEnergy(player, worldStatistics);
 
         //Temporary NCash reward until original level up system is implemented.
         player.AddNCash(config.LevelUpNCashReward);

@@ -9,6 +9,7 @@ namespace Server.Reawakened.Entities.Components.Characters.Controllers.Base.Abst
 public abstract class BaseAIState<T, T2> : Component<T>, IAIState where T2 : class, IState
 {
     public abstract string StateName { get; }
+    protected virtual bool ShouldResetStateTime { get; }
 
     public ILogger<T> Logger { get; set; }
 
@@ -20,6 +21,7 @@ public abstract class BaseAIState<T, T2> : Component<T>, IAIState where T2 : cla
 
     protected float _stateStartTime;
     protected IState _state;
+
 
     // Abstract methods
 
@@ -68,7 +70,7 @@ public abstract class BaseAIState<T, T2> : Component<T>, IAIState where T2 : cla
         }
     }
 
-    public void StartState() => SetStateStartTime(Room.Time);
+    public void StartState(float time) => SetStateStartTime(time);
 
     public void UpdateState()
     {
@@ -77,7 +79,9 @@ public abstract class BaseAIState<T, T2> : Component<T>, IAIState where T2 : cla
             _state.Execute(Room.Time);
 
             if (_state.Activated)
+            {
                 Execute();
+            }
         }
         else if (_stateStartTime != 0f)
             Execute();
@@ -103,11 +107,11 @@ public abstract class BaseAIState<T, T2> : Component<T>, IAIState where T2 : cla
 
     public void SetEnemyController(AIStateEnemy enemyController) => EnemyController = enemyController;
 
-    private ComponentSettings GetStartSettings() => ["ST", _stateStartTime.ToString()];
+    protected virtual ComponentSettings GetStartSettings(float time) => ["ST", time.ToString()];
 
-    public ComponentSettings GetFullSettings()
+    public ComponentSettings GetFullSettings(float time = -1)
     {
-        var startSettings = GetStartSettings();
+        var startSettings = GetStartSettings(time);
         startSettings.AddRange(GetSettings());
         return startSettings;
     }

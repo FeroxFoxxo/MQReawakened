@@ -23,7 +23,6 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
 {
     public ItemCatalog ItemCatalog { get; set; }
     public InternalLoot LootCatalog { get; set; }
-    public TimerThread TimerThread { get; set; }
     public InternalAchievement InternalAchievement { get; set; }
     public ILogger<BreakableEventControllerComp> Logger { get; set; }
 
@@ -58,7 +57,7 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
             ? [Damageable.CurrentHealth + "|" + Damageable.MaxHealth]
             : _spawner != null ? [_spawner.CurrentHealth + "|" + _spawner.MaxHealth] : ["5|5"];
 
-    public void Damage(int damage, Elemental damageType, Player origin)
+    public void Damage(int damage, ItemEffectType itemEffectType, Player origin)
     {
         if (Room.IsObjectKilled(Id) || !CanBreak || Damageable is null)
         {
@@ -68,8 +67,8 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
 
         Logger.LogInformation("Damaged object: '{PrefabName}' ({Id})", PrefabName, Id);
 
-        damage = RunDamage(damage, damageType);
-
+        damage = RunDamage(damage, itemEffectType);
+        
         Room.SendSyncEvent(new AiHealth_SyncEvent(Id.ToString(), Room.Time, Damageable.CurrentHealth, damage, 0, 0, origin == null ? string.Empty : origin.CharacterName, false, true));
 
         if (Damageable.CurrentHealth <= 0)
@@ -86,14 +85,12 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
                     {
                         groupie.CheckObjective(ObjectiveEnum.Score, Id, PrefabName, 1, ItemCatalog);
                         groupie.CheckObjective(ObjectiveEnum.Scoremultiple, Id, PrefabName, 1, ItemCatalog);
-                        groupie.SendUpdatedInventory(false);
                     }
                 }
                 else
                 {
                     origin.CheckObjective(ObjectiveEnum.Score, Id, PrefabName, 1, ItemCatalog);
                     origin.CheckObjective(ObjectiveEnum.Scoremultiple, Id, PrefabName, 1, ItemCatalog);
-                    origin.SendUpdatedInventory(false);
                 }
 
                 origin.GrantLoot(Id, LootCatalog, ItemCatalog, InternalAchievement, Logger);
@@ -120,31 +117,13 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
         }
     }
 
-    public void Damage(int damage, string enemyId)
-    {
-        if (Room.IsObjectKilled(Id) || !CanBreak || Damageable is null)
-            return;
-
-        Logger.LogInformation("Damaged object (from enemy): '{PrefabName}' ({Id})", PrefabName, Id);
-
-        damage = RunDamage(damage, Elemental.Standard);
-
-        Room.SendSyncEvent(new AiHealth_SyncEvent(Id.ToString(), Room.Time, Damageable.CurrentHealth, damage, 0, 0, enemyId, false, true));
-
-        if (Damageable.CurrentHealth <= 0)
-        {
-            Room.KillEntity(Id);
-            Destroy(Room, Id);
-        }
-    }
-
-    public int RunDamage(int damage, Elemental damageType)
+    public int RunDamage(int damage, ItemEffectType itemEffectType)
     {
         if (Damageable is null)
             return 0;
 
-        var dmgAmount = Damageable.GetDamageAmount(damage, damageType);
-
+        var dmgAmount = Damageable.GetDamageAmount(damage, itemEffectType);
+        
         if (Damageable is IBreakable breakable)
         {
             // This is here so that if the damage is totally resisted, the obj won't break.
@@ -157,9 +136,7 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
             if (breakable.NumberOfHitsToBreak > 0)
             {
                 if (breakable.NumberOfHits >= breakable.NumberOfHitsToBreak)
-                {
                     Damageable.CurrentHealth = 0;
-                }
                 else
                 {
                     Damageable.CurrentHealth = Convert.ToInt32(

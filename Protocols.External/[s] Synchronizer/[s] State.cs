@@ -1,9 +1,5 @@
-﻿using A2m.Server;
-using Microsoft.Extensions.Logging;
-using Server.Base.Core.Abstractions;
+﻿using Microsoft.Extensions.Logging;
 using Server.Base.Logging;
-using Server.Base.Timers.Extensions;
-using Server.Base.Timers.Services;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Core.Enums;
 using Server.Reawakened.Entities.Projectiles;
@@ -14,7 +10,6 @@ using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Rooms.Models.Planes;
-using Server.Reawakened.Rooms.Models.Timers;
 using Server.Reawakened.Rooms.Services;
 using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.Bundles.Base;
@@ -29,10 +24,11 @@ public class State : ExternalProtocol
     public override string ProtocolName => "ss";
     public PetAbilities PetAbilities { get; set; }
     public SyncEventManager SyncEventManager { get; set; }
+    public ItemRConfig ItemRConfig { get; set; }
     public ServerRConfig ServerRConfig { get; set; }
+    public ItemCatalog ItemCatalog { get; set; }
     public WorldStatistics WorldStatistics { get; set; }
     public FileLogger FileLogger { get; set; }
-    public TimerThread TimerThread { get; set; }
     public ILogger<State> Logger { get; set; }
 
     public override void Run(string[] message)
@@ -60,29 +56,25 @@ public class State : ExternalProtocol
             switch (syncEvent.Type)
             {
                 case SyncEvent.EventType.PetState:
-                    if (Player.Character.Pets.TryGetValue(Player.GetEquippedPetId(ServerRConfig), out var pet) &&
-                        PetAbilities.PetAbilityData.TryGetValue(int.Parse(pet.PetId), out var petAbilityParams))
+                    if (Player.Character.Pets.TryGetValue(Player.Character.PetItemId.ToString(), out var pet) &&
+                        PetAbilities.PetAbilityData.TryGetValue(int.Parse(pet.ItemId), out var petAbilityParams))
                     {
                         Player.Room.SendSyncEvent(new PetState_SyncEvent(Player.GameObjectId, Player.Room.Time, PetInformation.StateSyncType.PetStateVanish, Player.GameObjectId));
-                        pet.DespawnPet(Player, petAbilityParams, WorldStatistics, ServerRConfig);
+                        Player.UnequipPet(pet.ItemId, petAbilityParams, ItemCatalog, WorldStatistics, ItemRConfig);
                     }
                     break;
                 case SyncEvent.EventType.ChargeAttack:
                     Player.TempData.IsSuperStomping = true;
-                    Player.TempData.Invincible = true;
 
                     var attack = new ChargeAttack_SyncEvent(syncEvent);
-                    var superStompDamage = (int)Math.Ceiling(WorldStatistics.GetValue(ItemEffectType.AbilityPower, WorldStatisticsGroup.Player, Player.Character.GlobalLevel) +
-                        WorldStatistics.GlobalStats[Globals.StompDamageBonus]) * 2;
 
                     var itemId = -1;
                     var zoneId = -1;
-
+                    
+                    itemId = attack.ItemId;
+                    
                     if (ServerRConfig.GameVersion > GameVersion.vPets2012)
-                    {
-                        itemId = attack.ItemId;
                         zoneId = attack.ZoneId;
-                    }
 
                     Logger.LogTrace("Super attack is charging: '{Charging}' at ({X}, {Y}) in time: {Delay} " +
                         "at speed ({X}, {Y}) with max pos ({X}, {Y}) for item id: '{Id}' and zone: {Zone}",
@@ -98,15 +90,14 @@ public class State : ExternalProtocol
                         new Vector3Model(attack.PosX, attack.PosY, Player.TempData.Position.Z),
                         new Vector3(attack.MaxPosX, attack.MaxPosY, Player.TempData.Position.Z),
                         new Vector2(attack.SpeedX, attack.SpeedY),
-                        15, itemId, zoneId, superStompDamage,
-                        Elemental.Standard, ServerRConfig, TimerThread
+                        15, ItemCatalog.GetItemFromId(itemId), zoneId,
+                        ServerRConfig, ItemCatalog
                     );
 
                     Player.Room.AddProjectile(chargeAttackProjectile);
                     break;
                 case SyncEvent.EventType.ChargeAttackStop:
                     Player.TempData.IsSuperStomping = false;
-                    Player.TempData.Invincible = false;
 
                     Player.RemovePlayerProjectile();
                     
@@ -128,6 +119,9 @@ public class State : ExternalProtocol
                 case SyncEvent.EventType.PhysicBasic:
                     var physicsBasicEvent = new PhysicBasic_SyncEvent(syncEvent);
 
+                    if (!physicsBasicEvent.OnGround && newPlayer.TempData.IsSlowed)
+                        newPlayer.NullifySlowStatusEffect();
+                    
                     newPlayer.TempData.Position.SetPosition(
                         physicsBasicEvent.PositionX,
                         physicsBasicEvent.PositionY,
@@ -143,6 +137,9 @@ public class State : ExternalProtocol
 
                     newPlayer.TempData.OnGround = physicsBasicEvent.OnGround;
 
+                    if (newPlayer.TempData.Position.Z is not 0 and not 20)
+                        newPlayer.TemporaryInvincibility(ServerRConfig.CrossBridgeTime);
+
                     UpdatePlayerCollider(newPlayer);
                     break;
                 case SyncEvent.EventType.Direction:
@@ -157,15 +154,23 @@ public class State : ExternalProtocol
 
                     if (physicStatus.GravityEnabled && Player.TempData.Underwater)
                     {
-                        Player.StopUnderwater();
+                        Player.ResetUnderwaterTime();
                         Player.TempData.Underwater = false;
+                    }
+                    else if (Player.TempData.Underwater)
+                    {
+                        Player.RunUnderwaterTick(ServerRConfig);
+                    }
+                    else if (Player.TempData.Underwater && Player.TempData.UnderwaterTime != 0)
+                    {
+                        Player.ResetUnderwaterTime();
                     }
                     break;
                 case SyncEvent.EventType.FX:
                     var fxEvent = new FX_SyncEvent(syncEvent);
 
                     if (fxEvent.PrefabName == ServerRConfig.FXWaterSplashName)
-                        Player.StartUnderwater(newPlayer.Character.MaxLife / ServerRConfig.UnderwaterDamageRatio, TimerThread, ServerRConfig);
+                        Player.RunUnderwaterTick(ServerRConfig);
                     break;
             }
 
@@ -199,9 +204,9 @@ public class State : ExternalProtocol
 
     private void RequestRespawn(string entityId, float triggerTime)
     {
+        Player.TemporaryInvincibility(2);
         Player.SendSyncEventToPlayer(new RequestRespawn_SyncEvent(entityId.ToString(), triggerTime));
 
-        Player.TempData.Invincible = true;
         Player.Character.Write.CurrentLife = Player.Character.MaxLife;
 
         Player.SendSyncEventToPlayer(new Health_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
@@ -216,18 +221,10 @@ public class State : ExternalProtocol
             Player.SendSyncEventToPlayer(new PhysicTeleport_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
             respawnPosition.Position.X, respawnPosition.Position.Y, respawnPosition.IsOnBackPlane(Logger)));
 
-        TimerThread.RunDelayed(DisableInvincibility, new PlayerTimer() { Player = Player }, TimeSpan.FromSeconds(1.5));
-    }
+        Player.ResetUnderwaterTime();
 
-    private static void DisableInvincibility(ITimerData data)
-    {
-        if (data is not PlayerTimer playerTimer)
-            return;
-
-        if (playerTimer.Player.TempData.Invincible)
-            playerTimer.Player.TempData.Invincible = false;
-
-        playerTimer.Player.TempData.IsKnockedOut = false;
+        Player.TempData.IsKnockedOut = false;
+        Player.TempData.Underwater = false;
     }
 
     public void LogEvent(SyncEvent syncEvent, string entityId, Room room)

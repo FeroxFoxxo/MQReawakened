@@ -5,9 +5,9 @@ using Server.Reawakened.Core.Enums;
 using Server.Reawakened.Entities.Colliders;
 using Server.Reawakened.Entities.Projectiles.Abstractions;
 using Server.Reawakened.Players;
-using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Planes;
+using Server.Reawakened.XMLs.Bundles.Base;
 using UnityEngine;
 
 namespace Server.Reawakened.Entities.Projectiles;
@@ -16,8 +16,8 @@ public class MeleeEntity : BaseProjectile
 {
     private readonly string _gameObjectId;
 
-    public MeleeEntity(string id, Vector3Model position, Player player, int direction, float lifeTime, ItemDescription item, int damage, Elemental type, ItemRConfig config,
-        ServerRConfig serverRConfig)
+    public MeleeEntity(string id, Vector3Model position, Player player, int direction, float lifeTime, ItemDescription item,
+        ItemRConfig config, ServerRConfig rConfig, ItemCatalog itemCatalog)
         : base(id, lifeTime, player.Room, position, new Vector2(0, 0), null, false)
     {
         _gameObjectId = player.GameObjectId;
@@ -33,17 +33,18 @@ public class MeleeEntity : BaseProjectile
         var meleeHeight = onGround ? config.MeleeHeight : config.MeleeAerialRange;
 
         Collider = new AttackCollider(id, Position, new RectModel(meleeLeft, meleeTop, meleeWidth, meleeHeight),
-            PrjPlane, player, damage, type, LifeTime, onGround ? 0.1f : 0.5f, player.Character.StatusEffects.HasEffect(ItemEffectType.Detect)
+            PrjPlane, player, item, item.ItemEffects, item.PrefabName, LifeTime, onGround ? 0.1f : 0.5f,
+            player.Character.StatusEffects.HasEffect(ItemEffectType.Detect), itemCatalog
         );
 
-        var hitEvent = new Melee_SyncEvent(new SyncEvent(player.GameObjectId.ToString(), SyncEvent.EventType.Melee, Room.Time));
-        hitEvent.EventDataList.Add(lifeTime);
+        var hitEvent = new Melee_SyncEvent(new SyncEvent(_gameObjectId, SyncEvent.EventType.Melee, Room.Time));
+        hitEvent.EventDataList.Add(LifeTime);
         hitEvent.EventDataList.Add(Position.X);
         hitEvent.EventDataList.Add(Position.Y);
         hitEvent.EventDataList.Add(Position.Z);
         hitEvent.EventDataList.Add(item.PrefabName);
 
-        if (serverRConfig.GameVersion <= GameVersion.vMinigames2012)
+        if (rConfig.GameVersion <= GameVersion.vMinigames2012)
             hitEvent.EventDataList.Add(1); // Attack Strength
 
         Room.SendSyncEvent(hitEvent);

@@ -21,7 +21,7 @@ public class NewsData
     public static NewsData FromXmlNode(XmlNode node) =>
         new(
             node.Attributes["default"] != null && bool.Parse(node.Attributes["default"].Value),
-            "\u2022 " + node.Attributes["news_date"].Value.Replace("{CurrentDate}", DateTime.Now.ToShortDateString()),
+            "\u2022 " + node.Attributes["news_date"].Value.Replace("{CurrentDate}", DateTime.UtcNow.ToShortDateString()),
             node.Attributes["start_date"] == null ? "" : node.Attributes["start_date"].Value,
             node.Attributes["end_date"] == null ? "" : node.Attributes["end_date"].Value,
             FromXmlNodes(node.SelectNodes("Lines"))
@@ -40,12 +40,12 @@ public class NewsData
                     case "List":
                         var list = "\u2022 " + childNode.Attributes["note"].Value;
 
-                        news.Add(list.Replace("{CurrentYear}", DateTime.Now.Year.ToString()));
+                        news.Add(list.Replace("{CurrentYear}", DateTime.UtcNow.Year.ToString()));
                         break;
                     case "Line":
                         var note = childNode.Attributes["note"].Value;
 
-                        news.Add(note.Replace("{CurrentYear}", DateTime.Now.Year.ToString()));
+                        news.Add(note.Replace("{CurrentYear}", DateTime.UtcNow.Year.ToString()));
                         break;
                 }
             }

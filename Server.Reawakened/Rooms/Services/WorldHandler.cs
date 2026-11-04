@@ -7,11 +7,13 @@ using Server.Base.Core.Extensions;
 using Server.Base.Timers.Services;
 using Server.Reawakened.BundleHost.Configs;
 using Server.Reawakened.Core.Configs;
+using Server.Reawakened.Core.Enums;
 using Server.Reawakened.Database.Characters;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.XMLs.Bundles.Base;
+using Server.Reawakened.XMLs.Bundles.Internal;
 using System.Collections.Specialized;
 using System.Text.Json;
 using WorldGraphDefines;
@@ -20,7 +22,7 @@ namespace Server.Reawakened.Rooms.Services;
 
 public class WorldHandler(EventSink sink, ServerRConfig config, WorldGraph worldGraph,
     TimerThread timerThread, IServiceProvider services, ILogger<WorldHandler> logger,
-    CharacterHandler handler) : IService
+    CharacterHandler handler, UseSubConditionInfos portalInfos, InternalPortalInfos internalPortalInfos) : IService
 {
     private readonly Dictionary<int, Level> _levels = [];
     private readonly object Lock = new();
@@ -30,7 +32,7 @@ public class WorldHandler(EventSink sink, ServerRConfig config, WorldGraph world
     public Dictionary<string, Dictionary<string, OrderedDictionary>> PrefabOverrides { get; private set; } = [];
 
     public ServerRConfig Config => config;
-
+    
     public void Initialize() => sink.WorldLoad += LoadRooms;
 
     private void LoadRooms()
@@ -187,6 +189,23 @@ public class WorldHandler(EventSink sink, ServerRConfig config, WorldGraph world
             logger.LogError("Could not find level for portal {PortalId} in room {RoomId}", portalId, levelId);
             return;
         }
+        
+        var levelInfo = worldGraph.GetInfoLevel(newLevelId);
+
+        if (Config.GameVersion >= GameVersion.vEarly2013)
+        {
+            var portalInfo = portalInfos.GetUseSubConditionInfo(levelInfo.UseconditionID);
+        
+            if (portalInfo != null && !portalInfos.IsSatisfied(player, portalInfo))
+                return;
+        }
+        else
+        {
+            var portalInfo = internalPortalInfos.GetPortalInfos(newLevelId, portalId);
+        
+            if (portalInfo != null && !portalInfo.CheckConditions(player))
+                return;
+        }
 
         var node = worldGraph.GetDestinationNodeFromPortal(levelId, portalId);
 
@@ -208,8 +227,6 @@ public class WorldHandler(EventSink sink, ServerRConfig config, WorldGraph world
             logger.LogError("Attempt made to teleport to the same portal! Skipping...");
             return;
         }
-
-        var levelInfo = worldGraph.GetInfoLevel(newLevelId);
 
         logger.LogInformation(
             "Teleporting {CharacterName} ({CharacterId}) to {LevelName} ({LevelId}) " +

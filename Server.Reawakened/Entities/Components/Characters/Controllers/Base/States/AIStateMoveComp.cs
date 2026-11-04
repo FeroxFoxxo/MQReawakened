@@ -1,6 +1,6 @@
-﻿using A2m.Server;
-using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Abstractions;
+﻿using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Abstractions;
 using Server.Reawakened.Entities.DataComponentAccessors.Base.States;
+using static A2m.Server.ExtLevelEditor;
 
 namespace Server.Reawakened.Entities.Components.Characters.Controllers.Base.States;
 public class AIStateMoveComp : BaseAIState<AIStateMoveMQR, AI_State_Move>
@@ -11,20 +11,23 @@ public class AIStateMoveComp : BaseAIState<AIStateMoveMQR, AI_State_Move>
 
     private readonly vector3 _dampingVelocity = new(0f, 0f, 0f);
 
-    // TODO!!!
     public vector3 TargetPosition = new(0f, 0f, 0f);
+    
+    public float EndTime = 0f;
 
     public override AI_State_Move GetInitialAIState() => new (MovementSpeed);
 
-    public override ExtLevelEditor.ComponentSettings GetSettings() => [
+    public override ComponentSettings GetSettings() => [
         Position.X.ToString(), Position.Y.ToString(), Position.Z.ToString(),
         TargetPosition.x.ToString(), TargetPosition.y.ToString(), TargetPosition.z.ToString()
     ];
 
     public override void OnAIStateIn()
     {
-        State.Init(Position.ToVector3(), TargetPosition);
+        EndTime = Room.Time + 1f;
+        
         StateMachine.SetForceDirectionX(Convert.ToInt32(TargetPosition.x - Position.X));
+        State.Init(Position.ToVector3(), TargetPosition);
     }
 
     public override void Execute()

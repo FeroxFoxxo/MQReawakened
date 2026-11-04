@@ -14,7 +14,7 @@ public class AIBehaviorGoTo(BehaviorEnemy enemy) : AIBaseBehavior(enemy.AiData, 
 
     public override AiProperties GetProperties() => new EmptyAiProperties();
 
-    public override object[] GetStartArgs() => [GoToPosition.x, GoToPosition.y, GoToPosition.z, Velocity];
+    public override object[] GetStartArgs(bool _) => [GoToPosition.x, GoToPosition.y, GoToPosition.z, Velocity];
 
     public override StateType GetStateType() => StateType.GoTo;
 

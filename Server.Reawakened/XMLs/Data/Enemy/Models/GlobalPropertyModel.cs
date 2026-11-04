@@ -11,6 +11,9 @@ public class GlobalPropertyModel(bool detectionLimitedByPatrolLine, float backDe
 
     public void ApplyGlobalPropertiesFromModel(AIStatsGlobalComp globalStats)
     {
+        if (globalStats is null || genericGlobalStats is null)
+            return;
+        
         if (genericGlobalStats.Global_DetectionLimitedByPatrolLine == globalStats.Global_DetectionLimitedByPatrolLine)
             globalStats.ComponentData.Global_DetectionLimitedByPatrolLine = detectionLimitedByPatrolLine;
 

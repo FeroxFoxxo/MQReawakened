@@ -2,6 +2,7 @@
 using Server.Base.Accounts.Extensions;
 using Server.Base.Database.Accounts;
 using Server.Reawakened.Chat.Models;
+using Server.Reawakened.Core.Services;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.XMLs.Data.Commands;
@@ -20,14 +21,20 @@ public class UnBan : SlashCommand
             Name = "accountId",
             Description = "The player account id",
             Optional = false
+        },
+        new ParameterModel()
+        {
+            Name = "reason",
+            Description = "The reason",
+            Optional = true
         }
     ];
 
     public override AccessLevel AccessLevel => AccessLevel.Moderator;
 
     public AccountHandler AccountHandler { get; set; }
-    public PlayerContainer PlayerContainer { get; set; }
-
+    public DiscordHandler DiscordHandler { get; set; }
+    
     public override void Execute(Player player, string[] args)
     {
         if (!int.TryParse(args[1], out var id))
@@ -36,26 +43,22 @@ public class UnBan : SlashCommand
             return;
         }
 
-        var online = PlayerContainer.GetPlayerByAccountId(id);
+        var target = AccountHandler.GetAccountFromId(id);
 
-        if (online != null)
+        var reason = string.Empty;
+        
+        if (args.Length >= 3)
+            reason = string.Join(" ", args.Skip(2));
+        
+        if (target != null)
         {
-            online.Account.SetBanned(false);
+            target.SetBanned(false);
 
-            Log($"Unbanned player {online.Account.Username}.", player);
-        }
-        else
-        {
-            var target = AccountHandler.GetAccountFromId(id);
+            AccountHandler.Update(target.Write);
 
-            if (target != null)
-            {
-                target.SetBanned(false);
-
-                AccountHandler.Update(target.Write);
-
-                Log($"Unbanned player {target.Username}.", player);
-            }
+            Log($"Unbanned player {target.Username}.", player);
+            
+            DiscordHandler.SendPunishmentLog("Unbanned", player.Account.Username, target.Username, reason, string.Empty);
         }
     }
 }

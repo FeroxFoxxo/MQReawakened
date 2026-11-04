@@ -19,7 +19,7 @@ public class ConsoleFileLogger : TextWriter
         FileName = file;
 
         using var writer = GetFile.GetStreamWriter(file, config.LogDirectory, FileMode.Create);
-        writer.WriteLine(">>>Logging started on {0:f}.", DateTime.Now);
+        writer.WriteLine(">>>Logging started on {0:f}.", DateTime.UtcNow);
 
         _newLine = true;
     }

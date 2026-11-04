@@ -595,6 +595,78 @@
             <EditAttribute key="global_level" value="18"/>
             <EditAttribute key="item_level" value="18"/>
         </Item>
+        <Item name="COL_CRS_TrailPass04">
+            <EditAttribute key="id" value="2581"/>
+        </Item>
+        <Item name="COL_CRS_TrailPass05">
+            <EditAttribute key="id" value="2582"/>
+        </Item>
+        <Item name="COL_CRS_TrailPass06">
+            <EditAttribute key="id" value="2519"/>
+        </Item>
+        <Item name="COL_CRS_DungeonPass02">
+            <EditAttribute key="id" value="2521"/>
+        </Item>
+        <Item name="COL_SHD_TrailPass02">
+            <EditAttribute key="id" value="2503"/>
+        </Item>
+        <Item name="COL_SHD_TrailPass03">
+            <EditAttribute key="id" value="2569"/>
+        </Item>
+        <Item name="COL_SHD_TrailPass04">
+            <EditAttribute key="id" value="2570"/>
+        </Item>
+        <Item name="COL_SHD_TrailPass05">
+            <EditAttribute key="id" value="2577"/>
+        </Item>
+        <Item name="COL_SHD_TrailPass06">
+            <EditAttribute key="id" value="2578"/>
+        </Item>
+        <Item name="COL_SHD_DungeonPass01">
+            <EditAttribute key="id" value="2579"/>
+        </Item>
+        <Item name="COL_SHD_DungeonPass02">
+            <EditAttribute key="id" value="2580"/>
+        </Item>
+        <Item name="COL_OUT_TrailPass03">
+            <EditAttribute key="id" value="2560"/>
+        </Item>
+        <Item name="COL_OUT_TrailPass04">
+            <EditAttribute key="id" value="2561"/>
+        </Item>
+        <Item name="COL_OUT_TrailPass05">
+            <EditAttribute key="id" value="2565"/>
+        </Item>
+        <Item name="COL_OUT_TrailPass06">
+            <EditAttribute key="id" value="2566"/>
+        </Item>
+        <Item name="COL_OUT_DungeonPass01">
+            <EditAttribute key="id" value="2567"/>
+        </Item>
+        <Item name="COL_OUT_DungeonPass02">
+            <EditAttribute key="id" value="2568"/>
+        </Item>
+        <Item name="COL_BON_TrailPass03">
+            <EditAttribute key="id" value="2549"/>
+        </Item>
+        <Item name="COL_BON_TrailPass04">
+            <EditAttribute key="id" value="2550"/>
+        </Item>
+        <Item name="COL_BON_TrailPass05">
+            <EditAttribute key="id" value="2553"/>
+        </Item>
+        <Item name="COL_BON_TrailPass06">
+            <EditAttribute key="id" value="2554"/>
+        </Item>
+        <Item name="COL_BON_DungeonPass01">
+            <EditAttribute key="id" value="2501"/>
+        </Item>
+        <Item name="COL_BON_DungeonPass02">
+            <EditAttribute key="id" value="2502"/>
+        </Item>
+        <Item name="COL_R01_TrailPass02">
+            <EditAttribute key="id" value="2877"/>
+        </Item>
     </GameVersion>
     <GameVersion version="v2011">
     </GameVersion>

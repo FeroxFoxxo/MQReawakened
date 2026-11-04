@@ -290,6 +290,11 @@
             <Dialog dialogId="1605" conversationId="4078" minimumReputation="1" />
         </NPC>
     </Level>
+    <Level name="PwrRngr Arena" id="561">
+        <NPC objectId="26294226" name="Red Ranger Monkey" descriptionId="0">
+            <Dialog dialogId="1596" conversationId="4057" minimumReputation="1" />
+        </NPC>
+    </Level>
 
     <!-- Ootu Mystics Tribe -->
     <Level name="Mystic Plaza" id="133">

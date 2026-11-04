@@ -31,11 +31,16 @@ public class PlayerCollider(Player player) : BaseCollider
         {
             var enemy = Room?.GetEnemy(aiProjectileCollider.OwnderId);
 
-            var damage = 1;
-            enemy?.EnemyDamagePlayer(Player);
+            var damage = enemy is null ? 1 : enemy.EnemyDamagePlayer(Player);
 
-            player.ApplyCharacterDamage(damage, aiProjectileCollider.Id, 1, aiProjectileCollider.ServerRConfig, aiProjectileCollider.TimerThread);
-            player.TemporaryInvincibility(aiProjectileCollider.TimerThread, aiProjectileCollider.ServerRConfig, 1);
+            //if (aiProjectileCollider.Effect == ItemEffectType.PoisonDamage)
+            //    player.ApplyPoisonDamage(player.GetPoisonEffectData(damage, Id, string.Empty,
+            //        aiProjectileCollider.HazardRConfig, aiProjectileCollider.ServerRConfig, aiProjectileCollider.TimerThread));
+            //
+            //else
+            player.ApplyCharacterDamage(damage, aiProjectileCollider.Effect, aiProjectileCollider.Id, 1);
+
+            player.TemporaryInvincibility(1);
 
             Room.RemoveCollider(aiProjectileCollider.Id);
         }
@@ -45,13 +50,13 @@ public class PlayerCollider(Player player) : BaseCollider
 
         if (received is StomperZoneCollider stomper)
         {
-            if (!player.TempData.Invincible)
+            if (!player.Character.StatusEffects.HasEffect(ItemEffectType.Invincibility))
             {
                 if (stomper.Hazard)
-                    player.ApplyDamageByPercent(0.1, stomper.Id, 1, stomper.ServerRConfig, stomper.TimerThread);
+                    player.ApplyDamageByPercent(0.1, ItemEffectType.StompDamage, stomper.Id, 1);
 
-                Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, Room.Time, (int)ItemEffectType.StompDamage, 0, 1, true, stomper.Id, false));
-                player.TemporaryInvincibility(stomper.TimerThread, stomper.ServerRConfig, 1);
+                Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, Room.Time, (int)ItemEffectType.StompDamage, 1, 2, true, stomper.Id, false));
+                player.TemporaryInvincibility(2);
             }
         }
     }
@@ -63,6 +68,6 @@ public class PlayerCollider(Player player) : BaseCollider
             ColliderType.Attack => false,
             _ => true
         };
-
+	
     public override string[] RunCollisionDetection() => RunBaseCollisionDetection();
 }

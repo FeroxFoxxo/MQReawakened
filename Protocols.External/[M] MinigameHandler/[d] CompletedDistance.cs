@@ -1,9 +1,7 @@
-﻿using Server.Base.Core.Extensions;
-using Server.Reawakened.Network.Extensions;
+﻿using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.XMLs.Bundles.Internal;
 using System.Globalization;
-using Web.Apps.Leaderboards.Data;
 using Web.Apps.Leaderboards.Database.Scores;
 using Web.Apps.Leaderboards.Enums;
 
@@ -34,26 +32,15 @@ public class CompletedDistance : ExternalProtocol
         if (game == null)
             return;
 
-        var scoreTime = DateTime.Now.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'sszzz");
+        var scoreTime = DateTime.UtcNow;
 
-        var score = new TopScore
-        (
-            (int)completedDistance,
-            0,
-            scoreTime,
-            Player.Character.Id
-        );
-
-        var topScores = TopScoresHandler.GetScoresFromId(game.id);
+        var topScores = TopScoresHandler.GetScoresFromGame(game.id);
 
         if (topScores == null)
         {
-            var scoreDaily = new TopScore(score, ScoreType.Daily);
-            var scoreWeekly = new TopScore(score, ScoreType.Weekly);
-
-            var scores = new List<TopScore> { score, scoreDaily, scoreWeekly };
-
-            TopScoresHandler.Create(game.id, scores);
+            TopScoresHandler.Create(game.id, completedDistance, 0, scoreTime, Player.Character.Id, ScoreType.AllTime);
+            TopScoresHandler.Create(game.id, completedDistance, 0, scoreTime, Player.Character.Id, ScoreType.Daily);
+            TopScoresHandler.Create(game.id, completedDistance, 0, scoreTime, Player.Character.Id, ScoreType.Weekly);
 
             Player.SendXt("Ms", Player.Room.LevelInfo.Name);
             return;
@@ -61,38 +48,41 @@ public class CompletedDistance : ExternalProtocol
 
         var newHighScore = false;
 
-        if (topScores.Scores.Any(x => x.CharacterId == Player.Character.Id))
+        if (topScores.Any(x => x.CharacterId == Player.Character.Id))
         {
-            var existingScores = topScores.Scores.FindAll(x => x.CharacterId == Player.Character.Id).DeepCopy();
-            var existingTypes = existingScores.Select(x => x.ScoreType).ToHashSet();
+            var existingScores = topScores
+                .Where(x => x.CharacterId == Player.Character.Id).ToList();
+            var existingTypes = topScores
+                .Where(x => x.CharacterId == Player.Character.Id)
+                .Select(x => x.ScoreType).ToList();
 
             foreach (var existingScore in existingScores)
             {
-                var scoreDate = DateTime.Parse(existingScore.Time);
+                var scoreDate = existingScore.Time;
 
                 switch (existingScore.ScoreType)
                 {
                     case ScoreType.Daily:
-                        if (existingScore.Score < score.Score || scoreDate.Date < DateTime.Now.Date)
+                        if (existingScore.Score < completedDistance || scoreDate.Date < DateTime.UtcNow.Date)
                         {
-                            topScores.Scores.Remove(existingScore);
-                            topScores.Scores.Add(new TopScore(score, ScoreType.Daily));
+                            TopScoresHandler.Remove(existingScore.Id);
+                            TopScoresHandler.Create(game.id, completedDistance, 0, scoreTime, Player.Character.Id, ScoreType.Daily);
                             newHighScore = true;
                         }
                         break;
                     case ScoreType.Weekly:
-                        if (existingScore.Score < score.Score || ISOWeek.GetWeekOfYear(scoreDate) != ISOWeek.GetWeekOfYear(DateTime.Now) || scoreDate.Year != DateTime.Now.Year)
+                        if (existingScore.Score < completedDistance || ISOWeek.GetWeekOfYear(scoreDate) != ISOWeek.GetWeekOfYear(DateTime.UtcNow) || scoreDate.Year != DateTime.UtcNow.Year)
                         {
-                            topScores.Scores.Remove(existingScore);
-                            topScores.Scores.Add(new TopScore(score, ScoreType.Weekly));
+                            TopScoresHandler.Remove(existingScore.Id);
+                            TopScoresHandler.Create(game.id, completedDistance, 0, scoreTime, Player.Character.Id, ScoreType.Weekly);
                             newHighScore = true;
                         }
                         break;
                     default:
-                        if (existingScore.Score < score.Score)
+                        if (existingScore.Score < completedDistance)
                         {
-                            topScores.Scores.Remove(existingScore);
-                            topScores.Scores.Add(score);
+                            TopScoresHandler.Remove(existingScore.Id);
+                            TopScoresHandler.Create(game.id, completedDistance, 0, scoreTime, Player.Character.Id, ScoreType.AllTime);
                             newHighScore = true;
                         }
                         break;
@@ -103,25 +93,21 @@ public class CompletedDistance : ExternalProtocol
             {
                 if (!existingTypes.Contains(scoreType))
                 {
-                    topScores.Scores.Add(new TopScore(score, scoreType));
+                    TopScoresHandler.Create(game.id, completedDistance, 0, scoreTime, Player.Character.Id, scoreType);
                     newHighScore = true;
                 }
             }
         }
         else
         {
-            topScores.Scores.Add(score);
-            topScores.Scores.Add(new TopScore(score, ScoreType.Daily));
-            topScores.Scores.Add(new TopScore(score, ScoreType.Weekly));
-
+            TopScoresHandler.Create(game.id, completedDistance, 0, scoreTime, Player.Character.Id, ScoreType.AllTime);
+            TopScoresHandler.Create(game.id, completedDistance, 0, scoreTime, Player.Character.Id, ScoreType.Daily);
+            TopScoresHandler.Create(game.id, completedDistance, 0, scoreTime, Player.Character.Id, ScoreType.Weekly);
+            
             newHighScore = true;
         }
 
         if (newHighScore)
-        {
-            TopScoresHandler.Update(topScores.Write);
-
             Player.SendXt("Ms", Player.Room.LevelInfo.Name);
-        }
     }
 }

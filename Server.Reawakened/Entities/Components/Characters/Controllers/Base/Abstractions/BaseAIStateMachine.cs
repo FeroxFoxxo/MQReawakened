@@ -97,33 +97,35 @@ public abstract class BaseAIStateMachine<T> : Component<T>, IAIStateMachine
             state.StopState();
         }
 
+        var time = Room.Time;
+        
         var syncEvent2 = new AiStateSyncEvent()
         {
-            InStates = GetGameComponents(CurrentStates),
-            GoToStates = GetGameComponents(NextStates)
+            InStates = GetGameComponents(CurrentStates, 0),
+            GoToStates = GetGameComponents(NextStates, time)
         };
 
         CurrentStates = [.. NextStates];
         NextStates.Clear();
-
+        
         foreach (var state in CurrentStates)
         {
             Logger.LogTrace(
                 "Starting state '{State}' for '{Name} ({Id})'",
                 state.StateName, PrefabName, Id
             );
-            state.StartState();
+            state.StartState(time);
         }
 
-        Room.SendSyncEvent(syncEvent2.GetSyncEvent(Id, Room));
+        Room.SendSyncEvent(syncEvent2.GetSyncEvent(Id, time));
     }
 
-    private static GameObjectComponents GetGameComponents(IEnumerable<IAIState> states)
+    private static GameObjectComponents GetGameComponents(IEnumerable<IAIState> states, float time)
     {
         var components = new GameObjectComponents();
 
         foreach (var state in states)
-            components.Add(state.StateName, state.GetFullSettings());
+            components.Add(state.StateName, state.GetFullSettings(time));
 
         return components;
     }

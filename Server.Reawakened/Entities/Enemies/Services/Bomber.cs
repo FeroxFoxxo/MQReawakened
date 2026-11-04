@@ -9,22 +9,24 @@ public class Bomber(BehaviorEnemy enemy) : IBomber
 {
     public override void bomb(int direction)
     {
+        var bombEffects = new List<ItemEffect>() { new(enemy.EnemyController.EnemyEffectType, enemy.GetDamage(), 1) };
+
         if (enemy.CurrentBehavior is AIBehaviorStinger stinger)
         {
             var stingerProperties = stinger.GetProperties() as StingerProperties;
-            enemy.Room.ExplodeBomb(null, enemy.Position.ToUnityVector3(), stingerProperties.damageDistance, enemy.GetDamage(), Elemental.Standard, enemy.ServerRConfig, enemy.TimerThread);
+            enemy.Room.ExplodeBomb(null, enemy.Position.ToUnityVector3(), stingerProperties.damageDistance, enemy.GetDamage(), bombEffects, enemy.ServerRConfig, enemy.TimerThread);
         }
         else if (enemy.CurrentBehavior is AIBehaviorStomper stomper)
         {
             var stomperProperties = stomper.GetProperties() as StomperProperties;
             enemy.Room.ExplodeBomb(null, new Vector3(enemy.Position.X + (direction > 0 ? 1 : -1) * stomperProperties.damageOffset,
-                enemy.Position.Y, enemy.Position.Z), stomperProperties.damageDistance, enemy.GetDamage(), Elemental.Standard, enemy.ServerRConfig, enemy.TimerThread);
+                enemy.Position.Y, enemy.Position.Z), stomperProperties.damageDistance, enemy.GetDamage(), bombEffects, enemy.ServerRConfig, enemy.TimerThread);
         }
         else if (enemy.CurrentBehavior is AIBehaviorBomber bomber)
         {
             var bomberProperties = bomber.GetProperties() as BomberProperties;
-            enemy.Room.ExplodeBomb(null, enemy.Position.ToUnityVector3(), bomberProperties.bombRadius, enemy.GetDamage(), Elemental.Standard, enemy.ServerRConfig, enemy.TimerThread);
-            enemy.Damage(null, 99999);
+            enemy.Room.ExplodeBomb(null, enemy.Position.ToUnityVector3(), bomberProperties.bombRadius, enemy.GetDamage(), bombEffects, enemy.ServerRConfig, enemy.TimerThread);
+            enemy.Damage(null, 99999, false);
         }
         else
             LogFacade.error("Running unimplemented AI method 'bomb' (from Bomber.cs)");

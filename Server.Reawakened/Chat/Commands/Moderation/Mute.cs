@@ -2,6 +2,7 @@
 using Server.Base.Accounts.Extensions;
 using Server.Base.Database.Accounts;
 using Server.Reawakened.Chat.Models;
+using Server.Reawakened.Core.Services;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Helpers;
@@ -27,6 +28,12 @@ public class Mute : SlashCommand
             Name = "duration",
             Description = "The mute duration in a format similar to 1d1h1m1s etc.",
             Optional = true
+        },
+        new ParameterModel()
+        {
+            Name = "reason",
+            Description = "The reason",
+            Optional = true
         }
     ];
 
@@ -34,6 +41,7 @@ public class Mute : SlashCommand
 
     public AccountHandler AccountHandler { get; set; }
     public PlayerContainer PlayerContainer { get; set; }
+    public DiscordHandler DiscordHandler { get; set; }
 
     public override void Execute(Player player, string[] args)
     {
@@ -45,19 +53,25 @@ public class Mute : SlashCommand
 
         var online = PlayerContainer.GetPlayerByAccountId(id);
         TimeSpan time;
-
+        var reason = string.Empty;
+        
+        if (args.Length >= 4)
+            reason = string.Join(" ", args.Skip(3));
+        
         if (online != null)
         {
             time = args.Length < 3 ? TimeSpan.MaxValue : online.Account.ParseTime(args[2]);
 
             online.Account.SetMuted(true);
-            online.Account.SetMuteTags(null, DateTime.Now, time);
+            online.Account.SetMuteTags(null, DateTime.UtcNow, time);
 
             Log($"Muted {online.Account.Username}'s account{online.Account.FormatMuteTime()}.", player);
 
             online.SendWarningMessage("mute");
 
             Log($"You have been muted{online.Account.FormatMuteTime()}.", online);
+
+            DiscordHandler.SendPunishmentLog("Muted", player.Account.Username, online.Account.Username, reason, online.Account.FormatMuteTime());
             return;
         }
         else
@@ -69,11 +83,13 @@ public class Mute : SlashCommand
                 time = args.Length < 3 ? TimeSpan.MaxValue : target.ParseTime(args[2]);
 
                 target.SetMuted(true);
-                target.SetMuteTags(null, DateTime.Now, time);
+                target.SetMuteTags(null, DateTime.UtcNow, time);
 
                 AccountHandler.Update(target.Write);
 
                 Log($"Muted {target.Username}'s account{target.FormatMuteTime()}.", player);
+                
+                DiscordHandler.SendPunishmentLog("Muted", player.Account.Username, target.Username, reason, target.FormatMuteTime());
             }
         }
     }

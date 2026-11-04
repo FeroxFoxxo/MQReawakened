@@ -20,7 +20,7 @@ public class AIBehaviorAggro(BehaviorEnemy enemy, AggroProperties fallback) : AI
             fallback.aggro_DetectionRangeDownY
         );
 
-    public override object[] GetStartArgs() => [];
+    public override object[] GetStartArgs(bool _) => [];
 
     public override StateType GetStateType() => StateType.Aggro;
 

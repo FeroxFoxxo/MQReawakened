@@ -1,323 +1,188 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PortalInfos>
-    <GameVersion version="vLate2014">
-        <Portal id="147" isPremium="false" levelId="99" level="Crossroads Path" toLevelId="89" toLevel="The Floating Isles">
-            <RequiredQuest id="815" />
-        </Portal>
-        <Portal id="147" isPremium="false" levelId="514" level="Crossroads Path" toLevelId="89" toLevel="The Floating Isles">
-            <RequiredQuest id="815" />
-        </Portal>
-        <Portal id="148" isPremium="false" levelId="99" level="Crossroads Path" toLevelId="91" toLevel="Soggy Creek">
-            <RequiredQuest id="938" />
-        </Portal>
-        <Portal id="203" isPremium="false" levelId="99" level="Crossroads Path" toLevelId="95" toLevel="Forest Ruins">
-            <RequiredQuest id="938" />
-        </Portal>
-        <Portal id="202" isPremium="false" levelId="99" level="Crossroads Path" toLevelId="96" toLevel="Cindertop Highland">
-            <RequiredQuest id="938" />
-        </Portal>
-        <Portal id="260" isPremium="false" levelId="99" level="Crossroads Path" toLevelId="93" toLevel="The Crumbling Gates">
-            <RequiredQuest id="938" />
-        </Portal>
-        <Portal id="253" isPremium="true" levelId="99" level="Crossroads Path" toLevelId="209" toLevel="The Volcano Lair">
-            <RequiredQuest id="938" />
-        </Portal>
-        <Portal id="248" isPremium="true" levelId="99" level="Crossroads Path" toLevelId="208" toLevel="Magma Citadel">
-            <RequiredQuest id="938" />
-        </Portal>
-
-        <Portal id="213282" isPremium="false" levelId="47" level="Clock Tower Square" toLevelId="514" toLevel="Crossroads Path">
-            <RequiredQuest id="815" />
-        </Portal>
-        <Portal id="213282" isPremium="false" levelId="47" level="Clock Tower Square" toLevelId="99" toLevel="Crossroads Path">
-            <RequiredQuest id="815" />
-        </Portal>
-        <!-- Hardtack / Sea Dragons -->
-        <Portal id="636" isPremium="false" levelId="47" level="Clock Tower Square" toLevelId="452" toLevel="Noogo Village">
-            <RequiredQuest id="970" />
-        </Portal>
-        <Portal id="213145" isPremium="false" levelId="47" level="Clock Tower Square" toLevelId="466" toLevel="Cannon Corral">
-            <RequiredQuest id="850" />
-        </Portal>
-        <!-- Memee / Ootu Mystics -->
-        <Portal id="87" isPremium="false" levelId="47" level="Clock Tower Square" toLevelId="452" toLevel="Noogo Village">
-            <RequiredQuest id="972" />
-        </Portal>
-        <Portal id="213148" isPremium="false" levelId="47" level="Clock Tower Square" toLevelId="467" toLevel="Whispering Spirits">
-            <RequiredQuest id="851" />
-        </Portal>
-        <!-- Kama / Chim Foo -->
-        <Portal id="209167" isPremium="false" levelId="47" level="Clock Tower Square" toLevelId="452" toLevel="Noogo Village">
-            <RequiredQuest id="971" />
-        </Portal>
-        <Portal id="213151" isPremium="false" levelId="47" level="Clock Tower Square" toLevelId="465" toLevel="Hidden Hollow">
-            <RequiredQuest id="849" />
-        </Portal>
-        <!-- Flit / Ice Raiders -->
-        <Portal id="208619" isPremium="false" levelId="47" level="Clock Tower Square" toLevelId="452" toLevel="Noogo Village">
-            <RequiredQuest id="965" />
-        </Portal>
-        <Portal id="213142" isPremium="false" levelId="47" level="Clock Tower Square" toLevelId="497" toLevel="Snowdrift Hills">
-            <RequiredQuest id="928" />
-        </Portal>
-    </GameVersion>
-    <GameVersion version="vPetMasters2014">
-        <Portal id="147" isPremium="false" levelId="99" level="Crossroads Path" toLevelId="89" toLevel="The Floating Isles">
-            <RequiredQuest id="815" />
-        </Portal>
-        <Portal id="147" isPremium="false" levelId="514" level="Crossroads Path" toLevelId="89" toLevel="The Floating Isles">
-            <RequiredQuest id="815" />
-        </Portal>
-        <Portal id="148" isPremium="false" levelId="99" level="Crossroads Path" toLevelId="91" toLevel="Soggy Creek">
-            <RequiredQuest id="938" />
-        </Portal>
-        <Portal id="203" isPremium="false" levelId="99" level="Crossroads Path" toLevelId="95" toLevel="Forest Ruins">
-            <RequiredQuest id="938" />
-        </Portal>
-        <Portal id="202" isPremium="false" levelId="99" level="Crossroads Path" toLevelId="96" toLevel="Cindertop Highland">
-            <RequiredQuest id="938" />
-        </Portal>
-        <Portal id="260" isPremium="false" levelId="99" level="Crossroads Path" toLevelId="93" toLevel="The Crumbling Gates">
-            <RequiredQuest id="938" />
-        </Portal>
-        <Portal id="253" isPremium="true" levelId="99" level="Crossroads Path" toLevelId="209" toLevel="The Volcano Lair">
-            <RequiredQuest id="938" />
-        </Portal>
-        <Portal id="248" isPremium="true" levelId="99" level="Crossroads Path" toLevelId="208" toLevel="Magma Citadel">
-            <RequiredQuest id="938" />
-        </Portal>
-
-        <Portal id="213282" isPremium="false" levelId="47" level="Clock Tower Square" toLevelId="514" toLevel="Crossroads Path">
-            <RequiredQuest id="815" />
-        </Portal>
-        <Portal id="213282" isPremium="false" levelId="47" level="Clock Tower Square" toLevelId="99" toLevel="Crossroads Path">
-            <RequiredQuest id="815" />
-        </Portal>
-        <!-- Hardtack / Sea Dragons -->
-        <Portal id="636" isPremium="false" levelId="47" level="Clock Tower Square" toLevelId="452" toLevel="Noogo Village">
-            <RequiredQuest id="970" />
-        </Portal>
-        <Portal id="213145" isPremium="false" levelId="47" level="Clock Tower Square" toLevelId="466" toLevel="Cannon Corral">
-            <RequiredQuest id="850" />
-        </Portal>
-        <!-- Memee / Ootu Mystics -->
-        <Portal id="87" isPremium="false" levelId="47" level="Clock Tower Square" toLevelId="452" toLevel="Noogo Village">
-            <RequiredQuest id="972" />
-        </Portal>
-        <Portal id="213148" isPremium="false" levelId="47" level="Clock Tower Square" toLevelId="467" toLevel="Whispering Woods">
-            <RequiredQuest id="851" />
-        </Portal>
-        <!-- Kama / Chim Foo -->
-        <Portal id="209167" isPremium="false" levelId="47" level="Clock Tower Square" toLevelId="452" toLevel="Noogo Village">
-            <RequiredQuest id="971" />
-        </Portal>
-        <Portal id="213151" isPremium="false" levelId="47" level="Clock Tower Square" toLevelId="465" toLevel="Hidden Hollow">
-            <RequiredQuest id="849" />
-        </Portal>
-        <!-- Flit / Ice Raiders -->
-        <Portal id="208619" isPremium="false" levelId="47" level="Clock Tower Square" toLevelId="452" toLevel="Noogo Village">
-            <RequiredQuest id="965" />
-        </Portal>
-        <Portal id="213142" isPremium="false" levelId="47" level="Clock Tower Square" toLevelId="497" toLevel="Snowdrift Hills">
-            <RequiredQuest id="928" />
-        </Portal>
-    </GameVersion>
-    <GameVersion version="vEarly2014">
-        <Portal id="147" isPremium="false" levelId="99" level="Crossroads Path" toLevelId="89" toLevel="The Floating Isles">
-            <RequiredQuest id="815" />
-        </Portal>
-        <Portal id="147" isPremium="false" levelId="514" level="Crossroads Path" toLevelId="89" toLevel="The Floating Isles">
-            <RequiredQuest id="815" />
-        </Portal>
-        <Portal id="148" isPremium="false" levelId="99" level="Crossroads Path" toLevelId="91" toLevel="Soggy Creek">
-            <RequiredQuest id="938" />
-        </Portal>
-        <Portal id="203" isPremium="false" levelId="99" level="Crossroads Path" toLevelId="95" toLevel="Forest Ruins">
-            <RequiredQuest id="938" />
-        </Portal>
-        <Portal id="202" isPremium="false" levelId="99" level="Crossroads Path" toLevelId="96" toLevel="Cindertop Highland">
-            <RequiredQuest id="938" />
-        </Portal>
-        <Portal id="260" isPremium="false" levelId="99" level="Crossroads Path" toLevelId="93" toLevel="The Crumbling Gates">
-            <RequiredQuest id="938" />
-        </Portal>
-        <Portal id="253" isPremium="true" levelId="99" level="Crossroads Path" toLevelId="209" toLevel="The Volcano Lair">
-            <RequiredQuest id="938" />
-        </Portal>
-        <Portal id="248" isPremium="true" levelId="99" level="Crossroads Path" toLevelId="208" toLevel="Magma Citadel">
-            <RequiredQuest id="938" />
-        </Portal>
-
-        <Portal id="213282" isPremium="false" levelId="47" level="Clock Tower Square" toLevelId="514" toLevel="Crossroads Path">
-            <RequiredQuest id="815" />
-        </Portal>
-        <Portal id="213282" isPremium="false" levelId="47" level="Clock Tower Square" toLevelId="99" toLevel="Crossroads Path">
-            <RequiredQuest id="815" />
-        </Portal>
-        <!-- Hardtack / Sea Dragons -->
-        <Portal id="636" isPremium="false" levelId="47" level="Clock Tower Square" toLevelId="452" toLevel="Noogo Village">
-            <RequiredQuest id="970" />
-        </Portal>
-        <Portal id="213145" isPremium="false" levelId="47" level="Clock Tower Square" toLevelId="466" toLevel="Cannon Corral">
-            <RequiredQuest id="850" />
-        </Portal>
-        <!-- Memee / Ootu Mystics -->
-        <Portal id="87" isPremium="false" levelId="47" level="Clock Tower Square" toLevelId="452" toLevel="Noogo Village">
-            <RequiredQuest id="972" />
-        </Portal>
-        <Portal id="213148" isPremium="false" levelId="47" level="Clock Tower Square" toLevelId="467" toLevel="Whispering Woods">
-            <RequiredQuest id="851" />
-        </Portal>
-        <!-- Kama / Chim Foo -->
-        <Portal id="209167" isPremium="false" levelId="47" level="Clock Tower Square" toLevelId="452" toLevel="Noogo Village">
-            <RequiredQuest id="971" />
-        </Portal>
-        <Portal id="213151" isPremium="false" levelId="47" level="Clock Tower Square" toLevelId="465" toLevel="Hidden Hollow">
-            <RequiredQuest id="849" />
-        </Portal>
-        <!-- Flit / Ice Raiders -->
-        <Portal id="208619" isPremium="false" levelId="47" level="Clock Tower Square" toLevelId="452" toLevel="Noogo Village">
-            <RequiredQuest id="965" />
-        </Portal>
-        <Portal id="213142" isPremium="false" levelId="47" level="Clock Tower Square" toLevelId="497" toLevel="Snowdrift Hills">
-            <RequiredQuest id="928" />
-        </Portal>
-    </GameVersion>
-    <GameVersion version="vLate2013">
-        <Portal id="706" isPremium="false" levelId="99" level="Crossroads Path" toLevelId="302" toLevel="The Underbelly">
-            <RequiredQuest id="938" />
-        </Portal>
-        <Portal id="708" isPremium="false" levelId="99" level="Crossroads Path" toLevelId="301" toLevel="Hovering Markets">
-            <RequiredQuest id="938" />
-        </Portal>
-        <Portal id="147" isPremium="false" levelId="99" level="Crossroads Path" toLevelId="89" toLevel="The Floating Isles">
-            <RequiredQuest id="815" />
-        </Portal>
-        <Portal id="147" isPremium="false" levelId="514" level="Crossroads Path" toLevelId="89" toLevel="The Floating Isles">
-            <RequiredQuest id="815" />
-        </Portal>
-        <Portal id="156" isPremium="false" levelId="99" level="Crossroads Path" toLevelId="508" toLevel="Rachnok's Lair">
-            <RequiredQuest id="937" />
-        </Portal>
-        <Portal id="148" isPremium="false" levelId="99" level="Crossroads Path" toLevelId="91" toLevel="Soggy Creek">
-            <RequiredQuest id="939" />
-        </Portal>
-        <Portal id="203" isPremium="false" levelId="99" level="Crossroads Path" toLevelId="95" toLevel="Forest Ruins">
-            <RequiredQuest id="939" />
-        </Portal>
-        <Portal id="202" isPremium="false" levelId="99" level="Crossroads Path" toLevelId="96" toLevel="Cindertop Highland">
-            <RequiredQuest id="939" />
-        </Portal>
-        <Portal id="260" isPremium="false" levelId="99" level="Crossroads Path" toLevelId="93" toLevel="The Crumbling Gates">
-            <RequiredQuest id="939" />
-        </Portal>
-        <Portal id="253" isPremium="true" levelId="99" level="Crossroads Path" toLevelId="209" toLevel="The Volcano Lair">
-            <RequiredQuest id="938" />
-        </Portal>
-        <Portal id="248" isPremium="true" levelId="99" level="Crossroads Path" toLevelId="208" toLevel="Magma Citadel">
-            <RequiredQuest id="939" />
-        </Portal>
-
-        <Portal id="637" isPremium="false" levelId="47" level="Clock Tower Square" toLevelId="302" toLevel="The Underbelly">
-            <RequiredQuest id="938" />
-        </Portal>
-        <Portal id="635" isPremium="false" levelId="47" level="Clock Tower Square" toLevelId="301" toLevel="Hovering Markets">
-            <RequiredQuest id="938" />
-        </Portal>
-        
-        <Portal id="92" isPremium="false" levelId="301" level="Hovering Markets" toLevelId="465" toLevel="Hidden Hollow">
-            <RequiredQuest id="831" />
-        </Portal>
-    </GameVersion>
-    <GameVersion version="vEarly2013">
-        <Portal id="636" isPremium="false" levelId="47" level="Clock Tower Square" toLevelId="466" toLevel="Cannon Corral">
-            <RequiredQuest id="898" />
-        </Portal>
-    </GameVersion>
-    <GameVersion version="vLate2012">
-    </GameVersion>
-    <GameVersion version="vMinigames2012">
-    </GameVersion>
-    <GameVersion version="vPets2012">
-    </GameVersion>
-    <GameVersion version="vEarly2012">
-        <Portal id="143" isPremium="false" levelId="99" level="Crossroads Path" toLevelId="308" toLevel="Smuggler's Highway">
-            <RequiredLevel level="10" />
-        </Portal>
-        <Portal id="706" isPremium="false" levelId="99" level="Crossroads Path" toLevelId="302" toLevel="The Underbelly">
-            <RequiredQuest id="820" />
-        </Portal>
-        <Portal id="708" isPremium="false" levelId="99" level="Crossroads Path" toLevelId="301" toLevel="Hovering Markets">
-            <RequiredQuest id="817" />
-        </Portal>
-        <Portal id="147" isPremium="false" levelId="99" level="Crossroads Path" toLevelId="89" toLevel="The Floating Isles">
-            <RequiredQuest id="813" />
-        </Portal>
-        <Portal id="155" isPremium="false" levelId="99" level="Crossroads Path" toLevelId="92" toLevel="Blimp Ridge">
-            <RequiredQuest id="821" />
-        </Portal>
-        <Portal id="148" isPremium="false" levelId="99" level="Crossroads Path" toLevelId="91" toLevel="Soggy Creek">
-            <RequiredQuest id="838" />
-        </Portal>
-        <Portal id="149" isPremium="true" levelId="99" level="Crossroads Path" toLevelId="437" toLevel="The Forgotten Temple">
-            <RequiredLevel level="5" />
-        </Portal>
-        <Portal id="203" isPremium="false" levelId="99" level="Crossroads Path" toLevelId="95" toLevel="Forest Ruins">
-            <RequiredQuest id="838" />
-        </Portal>
-        <Portal id="202" isPremium="false" levelId="99" level="Crossroads Path" toLevelId="96" toLevel="Cindertop Highland">
-            <RequiredQuest id="838" />
-        </Portal>
-        <Portal id="260" isPremium="false" levelId="99" level="Crossroads Path" toLevelId="93" toLevel="The Crumbling Gates">
-            <RequiredQuest id="838" />
-        </Portal>
-        <Portal id="253" isPremium="true" levelId="99" level="Crossroads Path" toLevelId="209" toLevel="The Volcano Lair">
-            <RequiredQuest id="834" />
-        </Portal>
-        <Portal id="248" isPremium="true" levelId="99" level="Crossroads Path" toLevelId="208" toLevel="Magma Citadel">
-            <RequiredQuest id="838" />
-        </Portal>
-
-        <Portal id="766" isPremium="false" levelId="47" level="Clock Tower Square" toLevelId="99" toLevel="Crossroads Path">
-            <RequiredQuest id="813" />
-        </Portal>
-        <Portal id="637" isPremium="false" levelId="47" level="Clock Tower Square" toLevelId="302" toLevel="The Underbelly">
-            <RequiredQuest id="820" />
-        </Portal>
-        <Portal id="635" isPremium="false" levelId="47" level="Clock Tower Square" toLevelId="301" toLevel="Hovering Markets">
-            <RequiredQuest id="817" />
-        </Portal>
-        <Portal id="636" isPremium="false" levelId="47" level="Clock Tower Square" toLevelId="466" toLevel="Cannon Corral">
-            <RequiredQuest id="828" />
-        </Portal>
-        <Portal id="97121" isPremium="false" levelId="47" level="Clock Tower Square" toLevelId="476" toLevel="The Warrior Games">
-            <RequiredQuest id="838" />
-        </Portal>
-        <Portal id="208619" isPremium="false" levelId="47" level="Clock Tower Square" toLevelId="497" toLevel="Snowdrift Hills">
-            <RequiredQuest id="828" />
-        </Portal>
-
-        <Portal id="92" isPremium="false" levelId="301" level="Hovering Markets" toLevelId="465" toLevel="Hidden Hollow">
-            <RequiredQuest id="825" />
-        </Portal>
-        <Portal id="89" isPremium="false" levelId="301" level="Hovering Markets" toLevelId="302" toLevel="The Underbelly">
-            <RequiredQuest id="820" />
-        </Portal>
-
-        <Portal id="87" isPremium="false" levelId="302" level="The Underbelly" toLevelId="467" toLevel="Whispering Spirits">
-            <RequiredQuest id="830" />
-        </Portal>
-
-        <Portal id="31497" isPremium="true" levelId="437" level="Forgotten Temple" toLevelId="436" toLevel="Guardian's Keep">
-            <RequiredLevel level="5" />
-        </Portal>
-        <Portal id="1791" isPremium="true" levelId="437" level="Forgotten Temple" toLevelId="438" toLevel="Knight's Gate &amp; Vespid Lair">
-            <RequiredLevel level="5" />
-        </Portal>
-        <Portal id="8327" isPremium="true" levelId="438" level="Knight's Gate &amp; Vespid Lair" toLevelId="441" toLevel="Shard Cavern">
-            <RequiredLevel level="5" />
-        </Portal>
-    </GameVersion>
-    <GameVersion version="v2011">
-    </GameVersion>
+    <!-- Crossroads -->
+    <Portal isPremium="false" toLevelId="302" toLevel="The Underbelly">
+        <RequiredQuest id="820" />
+    </Portal>
+    <Portal isPremium="false" toLevelId="301" toLevel="Hovering Markets">
+        <RequiredQuest id="817" />
+    </Portal>
+    <Portal isPremium="false" toLevelId="89" toLevel="The Floating Isles">
+        <RequiredQuest id="813" />
+    </Portal>
+    <Portal isPremium="false" toLevelId="92" toLevel="Blimp Ridge">
+        <RequiredQuest id="821" />
+    </Portal>
+    <Portal isPremium="false" toLevelId="91" toLevel="Soggy Creek">
+        <RequiredQuest id="654" />
+        <RequiredQuest id="660" />
+        <RequiredQuest id="813" />
+    </Portal>
+    <Portal isPremium="true" toLevelId="437" toLevel="The Forgotten Temple">
+        <RequiredItem id="2877" />
+        <RequiredQuest id="643" />
+        <RequiredQuest id="853" />
+    </Portal>
+    <Portal isPremium="true" toLevelId="95" toLevel="Forest Ruins">
+        <RequiredItem id="2581" />
+        <RequiredQuest id="643" />
+        <RequiredQuest id="853" />
+    </Portal>
+    <Portal isPremium="true" toLevelId="96" toLevel="Cindertop Highland">
+        <RequiredItem id="2519" />
+        <RequiredQuest id="654" />
+        <RequiredQuest id="660" />
+        <RequiredQuest id="813" />
+    </Portal>
+    <Portal isPremium="true" toLevelId="93" toLevel="The Crumbling Gates">
+        <RequiredItem id="2582" />
+        <RequiredQuest id="643" />
+        <RequiredQuest id="853" />
+    </Portal>
+    <Portal isPremium="true" toLevelId="209" toLevel="The Volcano Lair">
+        <RequiredQuest id="654" />
+        <RequiredQuest id="660" />
+        <RequiredQuest id="813" />
+    </Portal>
+    <Portal isPremium="true" toLevelId="208" toLevel="Magma Citadel">
+        <RequiredItem id="2521" />
+        <RequiredQuest id="654" />
+        <RequiredQuest id="660" />
+        <RequiredQuest id="813" />
+    </Portal>
+    <Portal isPremium="true" toLevelId="436" toLevel="Guardian's Keep">
+        <RequiredItem id="2877" />
+        <RequiredQuest id="643" />
+        <RequiredQuest id="853" />
+    </Portal>
+    <Portal isPremium="true" toLevelId="438" toLevel="Knight's Gate &amp; Vespid Lair">
+        <RequiredItem id="2877" />
+        <RequiredQuest id="643" />
+        <RequiredQuest id="853" />
+    </Portal>
+    <Portal isPremium="true" toLevelId="441" toLevel="Shard Cavern">
+        <RequiredItem id="2877" />
+        <RequiredQuest id="643" />
+        <RequiredQuest id="853" />
+    </Portal>
+    <Portal isPremium="false" toLevelId="308" toLevel="Smuggler's Highway">
+        <RequiredQuest id="838" />
+    </Portal>
+    <Portal isPremium="false" toLevelId="309" toLevel="Fire Canyon Highway">
+        <RequiredQuest id="838" />
+    </Portal>
+    <Portal isPremium="false" toLevelId="310" toLevel="Iron Mountain Highway">
+        <RequiredQuest id="838" />
+    </Portal>
+    
+    <!-- Chim Foo -->
+    <Portal isPremium="true" toLevelId="48" toLevel="Chim Foo Path">
+        <RequiredQuest id="838" />
+    </Portal>
+    <Portal isPremium="true" toLevelId="107" toLevel="Chim Foo Rooftops"/>
+    <Portal isPremium="true" toLevelId="106" toLevel="Mountain Shrine"/>
+    <Portal isPremium="true" toLevelId="104" toLevel="Magnolia Lake">
+        <RequiredItem id="2569" />
+        <RequiredQuest id="466" />
+        <RequiredQuest id="856" />
+    </Portal>
+    <Portal isPremium="true" toLevelId="102" toLevel="Lantern Ridge">
+        <RequiredItem id="2570" />
+        <RequiredQuest id="466" />
+        <RequiredQuest id="856" />
+    </Portal>
+    <Portal isPremium="true" toLevelId="100" toLevel="Bonsai Peaks">
+        <RequiredItem id="2577" />
+        <RequiredQuest id="643" />
+        <RequiredQuest id="853" />
+    </Portal>
+    <Portal isPremium="true" toLevelId="103" toLevel="Lost Fortress">
+        <RequiredItem id="2578" />
+        <RequiredQuest id="643" />
+        <RequiredQuest id="853" />
+    </Portal>
+    <Portal isPremium="true" toLevelId="105" toLevel="Forbidden Keep">
+        <RequiredItem id="2579" />
+        <RequiredQuest id="643" />
+        <RequiredQuest id="853" />
+    </Portal>
+    <Portal isPremium="true" toLevelId="101" toLevel="Stone Gardens">
+        <RequiredItem id="2580" />
+        <RequiredQuest id="643" />
+        <RequiredQuest id="853" />
+    </Portal>
+    
+    <!-- Sea Dragons -->
+    <Portal isPremium="true" toLevelId="54" toLevel="Sea Dragons Path">
+        <RequiredQuest id="838" />
+    </Portal>
+    <Portal isPremium="true" toLevelId="296" toLevel="Forgotten Lighthouse"/>
+    <Portal isPremium="true" toLevelId="297" toLevel="Overlook Cliff"/>
+    <Portal isPremium="true" toLevelId="295" toLevel="Outlaw Beach">
+        <RequiredItem id="2560" />
+        <RequiredQuest id="651" />
+        <RequiredQuest id="859" />
+    </Portal>
+    <Portal isPremium="true" toLevelId="147" toLevel="Anchor Falls">
+        <RequiredItem id="2561" />
+        <RequiredQuest id="651" />
+        <RequiredQuest id="859" />
+    </Portal>
+    <Portal isPremium="true" toLevelId="66" toLevel="Skull Cove">
+        <RequiredItem id="2565" />
+        <RequiredQuest id="466" />
+        <RequiredQuest id="856" />
+    </Portal>
+    <Portal isPremium="true" toLevelId="59" toLevel="Sunken City">
+        <RequiredItem id="2566" />
+        <RequiredQuest id="466" />
+        <RequiredQuest id="856" />
+    </Portal>
+    <Portal isPremium="true" toLevelId="70" toLevel="The Goon Cave">
+        <RequiredItem id="2567" />
+        <RequiredQuest id="466" />
+        <RequiredQuest id="856" />
+    </Portal>
+    <Portal isPremium="true" toLevelId="69" toLevel="Rosy's Reef">
+        <RequiredItem id="2568" />
+        <RequiredQuest id="466" />
+        <RequiredQuest id="856" />
+    </Portal>
+    
+    <!-- Ootu Mystics -->
+    <Portal isPremium="true" toLevelId="46" toLevel="Ootu Mystics Path">
+        <RequiredQuest id="838" />
+    </Portal>
+    <Portal isPremium="true" toLevelId="85" toLevel="Mushroom Hollow"/>
+    <Portal isPremium="true" toLevelId="88" toLevel="The Deep Swamps"/>
+    <Portal isPremium="true" toLevelId="80" toLevel="The Spider Cave">
+        <RequiredItem id="2549" />
+        <RequiredQuest id="651" />
+        <RequiredQuest id="859" />
+    </Portal>
+    <Portal isPremium="true" toLevelId="83" toLevel="Driftwood Village">
+        <RequiredItem id="2550" />
+        <RequiredQuest id="651" />
+        <RequiredQuest id="859" />
+    </Portal>
+    <Portal isPremium="true" toLevelId="73" toLevel="Marsh Sanctuary">
+        <RequiredItem id="2553" />
+        <RequiredQuest id="651" />
+        <RequiredQuest id="859" />
+    </Portal>
+    <Portal isPremium="true" toLevelId="86" toLevel="Moss Temple">
+        <RequiredItem id="2554" />
+        <RequiredQuest id="651" />
+        <RequiredQuest id="859" />
+    </Portal>
+    <Portal isPremium="true" toLevelId="81" toLevel="The Giant Tree">
+        <RequiredItem id="2501" />
+        <RequiredQuest id="651" />
+        <RequiredQuest id="859" />
+    </Portal>
+    <Portal isPremium="true" toLevelId="72" toLevel="The Underground River">
+        <RequiredItem id="2502" />
+        <RequiredQuest id="651" />
+        <RequiredQuest id="859" />
+    </Portal>
 </PortalInfos>

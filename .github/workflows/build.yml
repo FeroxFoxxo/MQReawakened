@@ -149,6 +149,7 @@ jobs:
             tag: ${{ github.run_number }}
             draft: false
             prerelease: false
+            name: Release v${{ github.run_number }}
         env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
             GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

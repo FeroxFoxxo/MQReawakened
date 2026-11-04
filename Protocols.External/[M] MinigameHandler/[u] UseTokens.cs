@@ -12,6 +12,6 @@ public class UseTokens : ExternalProtocol
 
         Player.Character.Write.Tokens -= 1;
 
-        SendXt("Mg", 0, gameName, Player.Character.Tokens, DateTime.Now.AddYears(10).ToString(), 1, (int)AvailablePlaysSource.USE);
+        SendXt("Mg", 0, gameName, Player.Character.Tokens, DateTime.UtcNow.AddYears(10).ToString(), 1, (int)AvailablePlaysSource.USE);
     }
 }

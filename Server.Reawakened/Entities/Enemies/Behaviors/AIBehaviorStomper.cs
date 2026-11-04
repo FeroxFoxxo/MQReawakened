@@ -11,7 +11,7 @@ public class AIBehaviorStomper(BehaviorEnemy enemy, StomperProperties fallback) 
 
     public override AiProperties GetProperties() => fallback;
 
-    public override object[] GetStartArgs() => [];
+    public override object[] GetStartArgs(bool _) => [];
 
     public override StateType GetStateType() => StateType.Stomper;
 

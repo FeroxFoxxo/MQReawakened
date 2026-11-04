@@ -10,10 +10,11 @@ namespace Server.Reawakened.Entities.Colliders;
 
 public class DamageZoneCollider(string id, Vector3Model position,
     RectModel box, string plane, Player player,
-    int damage, Elemental type, float lifeTime, bool canSeeInvis) : BaseCollider
+    List<ItemEffect> itemEffects, string prefabFrom, float lifeTime, bool canSeeInvis) : BaseCollider
 {
-    public Player Owner => player; public int Damage => damage;
-    public Elemental DamageType => type;
+    public Player Owner => player;
+    public List<ItemEffect> ItemEffects => itemEffects;
+    public string PrefabFrom => prefabFrom;
     public bool CanSeeInvisible => canSeeInvis;
 
     public override Room Room => player.Room;
@@ -38,5 +39,8 @@ public class DamageZoneCollider(string id, Vector3Model position,
             _ => false
         };
 
-    public override string[] RunCollisionDetection() => RunBaseCollisionDetection();
+    public override string[] RunCollisionDetection()
+    {
+        return RunBaseCollisionDetection();
+    }
 }

@@ -5,53 +5,97 @@ namespace Server.Reawakened.Players.Models.Character;
 
 public class StatusEffectsModel(CharacterDbEntry entry)
 {
+    private readonly object _lock = new();
+
+    // Raw access is unsafe. Marked obsolete so every remaining caller shows up as a warning.
+    [Obsolete("Not thread-safe. Use the methods on StatusEffectsModel or Snapshot().")]
     public Dictionary<ItemEffectType, StatusEffectModel> Effects => entry.StatusEffects;
 
-    public void Add(ItemEffect effect)
+    public void Add(ItemEffect effect, string prefabName)
     {
-        var shouldReplaceEffect = true;
-
-        if (Effects.TryGetValue(effect.Type, out var statusData))
-            if (statusData.Value > effect.Value && statusData.Expiry > DateTime.Now)
-                shouldReplaceEffect = false;
-
-        if (shouldReplaceEffect)
+        lock (_lock)
         {
+            var effects = entry.StatusEffects;
+
+            if (effects.TryGetValue(effect.Type, out var existing) &&
+                existing.Value > effect.Value && existing.Expiry > DateTime.UtcNow)
+                return;
+
             var duration = TimeSpan.FromSeconds(effect.Duration);
-            Remove(effect.Type);
-            Effects.Add(effect.Type, new StatusEffectModel(effect.Type, effect.Value, DateTime.Now + duration));
+            effects[effect.Type] = new StatusEffectModel(
+                effect.Type, effect.Value, DateTime.UtcNow + duration, prefabName);
         }
     }
 
-    public void Remove(ItemEffectType effect) => Effects.Remove(effect);
+    public bool TryAddIfInactive(StatusEffectModel model)
+    {
+        lock (_lock)
+        {
+            var effects = entry.StatusEffects;
+
+            if (effects.TryGetValue(model.Effect, out var existing) && existing.Expiry > DateTime.UtcNow)
+                return false;
+
+            effects[model.Effect] = model;
+            return true;
+        }
+    }
+
+    public void Remove(ItemEffectType effect)
+    {
+        lock (_lock)
+            entry.StatusEffects.Remove(effect);
+    }
+
+    public void UpdateStatus()
+    {
+        lock (_lock)
+        {
+            var now = DateTime.UtcNow;
+
+            var expired = entry.StatusEffects
+                .Where(x => x.Value == null || x.Value.Expiry <= now)
+                .Select(x => x.Key)
+                .ToList();
+
+            foreach (var key in expired)
+                entry.StatusEffects.Remove(key);
+        }
+    }
 
     public float GetEffect(ItemEffectType effect)
     {
-        var output = 0f;
+        lock (_lock)
+        {
+            if (!entry.StatusEffects.TryGetValue(effect, out var data) || data.Effect != effect)
+                return 0f;
 
-        if (Effects.TryGetValue(effect, out var statusData))
-            if (statusData.Effect == effect)
-            {
-                if (statusData.Expiry > DateTime.Now)
-                    output = statusData.Value;
-                else
-                    Remove(effect);
-            }
+            if (data.Expiry > DateTime.UtcNow)
+                return data.Value;
 
-        return output;
+            entry.StatusEffects.Remove(effect);
+            return 0f;
+        }
     }
 
     public bool HasEffect(ItemEffectType effect)
     {
-        if (Effects.TryGetValue(effect, out var statusData))
-            if (statusData.Effect == effect)
-            {
-                if (statusData.Expiry > DateTime.Now)
-                    return true;
-                else
-                    Remove(effect);
-            }
+        lock (_lock)
+        {
+            if (!entry.StatusEffects.TryGetValue(effect, out var data) || data.Effect != effect)
+                return false;
 
-        return false;
+            if (data.Expiry > DateTime.UtcNow)
+                return true;
+
+            entry.StatusEffects.Remove(effect);
+            return false;
+        }
+    }
+
+    public Dictionary<ItemEffectType, StatusEffectModel> Snapshot()
+    {
+        lock (_lock)
+            return new Dictionary<ItemEffectType, StatusEffectModel>(entry.StatusEffects);
     }
 }

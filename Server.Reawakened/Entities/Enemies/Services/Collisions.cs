@@ -1,4 +1,5 @@
-﻿using Server.Reawakened.Entities.Colliders.Abstractions;
+﻿using Microsoft.Extensions.Logging;
+using Server.Reawakened.Entities.Colliders.Abstractions;
 using Server.Reawakened.Entities.Enemies.EnemyTypes;
 
 namespace Server.Reawakened.Entities.Enemies.Services;
@@ -8,17 +9,24 @@ public class Collisions(BehaviorEnemy enemy) : ICollisions
 
     public override void enable(bool enable)
     {
+        if (colliders.Count <= 0)
+            colliders = enemy.Room.GetCollidersById(enemy.Id);
+
         if (enable)
         {
             foreach (var collider in colliders)
             {
-                enemy.Room.AddColliderToList(collider);
+                enemy.Logger.LogInformation("Collisions Enabled");
+                enemy.Room.ToggleCollider(collider.Id, true);
             }
         }
         else
         {
-            colliders = enemy.Room.GetCollidersById(enemy.Id);
-            enemy.Room.RemoveCollider(enemy.Id);
+            foreach (var collider in colliders)
+            {
+                enemy.Logger.LogInformation("Collisions Disabled");
+                enemy.Room.ToggleCollider(collider.Id, false);
+            }
         }
     }
 }

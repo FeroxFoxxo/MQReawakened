@@ -15,25 +15,26 @@ namespace Server.Reawakened.Players.Extensions;
 
 public static class CharacterInventoryExtensions
 {
-    public static void HandleItemEffect(this Player player, ItemDescription usedItem,
-        TimerThread timerThread, ItemRConfig config, ServerRConfig serverRConfig, ILogger<PlayerStatus> logger)
+    public static void HandleItemEffect(this Player player, ItemDescription usedItem, TimerThread timerThread,
+        ServerRConfig serverRConfig, ILogger<PlayerStatus> logger)
     {
-        foreach (var effect in usedItem.ItemEffects)
+        var sendFx = true;
+        foreach (var itemEffect in usedItem.ItemEffects)
         {
-			var sendFx = true;
-            switch (effect.Type)
+            switch (itemEffect.Type)
             {
                 case ItemEffectType.PetRegainEnergy:
                     // Pet energy/abilities doesn't exist yet
                     if (serverRConfig.GameVersion <= GameVersion.vMinigames2012)
                         break;
                     
-                    if (!player.Character.Pets.TryGetValue(player.GetEquippedPetId(serverRConfig), out var pet))
+                    if (!player.Character.Pets.TryGetValue(player.Character.PetItemId.ToString(), out var pet))
                     {
                         logger.LogWarning("Couldn't find equipped pet for {characterName}", player.CharacterName);
                         return;
                     }
-                    pet.GainEnergy(player, effect != null ? effect.Value : 0);
+                    
+                    pet.EatSnack(player, itemEffect.Value);
                     break;
                 case ItemEffectType.Healing:
                 case ItemEffectType.HealthBoost:
@@ -42,7 +43,7 @@ public static class CharacterInventoryExtensions
                     if (player.Character.CurrentLife >= player.Character.MaxLife)
                         return;
 
-                    player.HealCharacter(usedItem, timerThread, config, effect.Type);
+                    player.HealCharacter(usedItem, itemEffect, timerThread, itemEffect.Type);
                     break;
                 case ItemEffectType.IncreaseBluntDamage:
                 case ItemEffectType.IncreaseAirDamage:
@@ -57,7 +58,7 @@ public static class CharacterInventoryExtensions
                 case ItemEffectType.ResistEarth:
                 case ItemEffectType.ResistIce:
                 case ItemEffectType.ResistLightning:
-					player.Character.StatusEffects.Add(effect);
+					player.Character.StatusEffects.Add(itemEffect, usedItem.PrefabName);
                     sendFx = false;
                     break;
                 case ItemEffectType.WaterBreathing:
@@ -65,7 +66,7 @@ public static class CharacterInventoryExtensions
                 case ItemEffectType.Invisibility:
                 case ItemEffectType.BananaMultiplier:
                 case ItemEffectType.ExperienceMultiplier:
-                    player.Character.StatusEffects.Add(effect);
+                    player.Character.StatusEffects.Add(itemEffect, usedItem.PrefabName);
                     break;
                 case ItemEffectType.ColorTonic:
                     // ColorTonic effect doesn't exist yet
@@ -78,10 +79,10 @@ public static class CharacterInventoryExtensions
 
                         player.Character.StatusEffects.Remove(ItemEffectType.ColorTonic);
 
-                        player.SendItemEffectToPlayer(effect, string.Empty, sendFx, usedItem.Currency == CurrencyType.NickCash);
+                        player.SendItemEffectToPlayer(itemEffect, string.Empty, sendFx, true);
                     }
 
-                    player.Character.StatusEffects.Add(effect);
+                    player.Character.StatusEffects.Add(itemEffect, usedItem.PrefabName);
                     sendFx = true;
                     break;
                 case ItemEffectType.Invalid:
@@ -90,14 +91,14 @@ public static class CharacterInventoryExtensions
                 case ItemEffectType.Unknown_70:
                 case ItemEffectType.Unknown_74:
                 default:
-                    logger.LogError("Unknown ItemEffectType of ({effectType}) for item {usedItemName}", effect.Type, usedItem.PrefabName);
+                    logger.LogError("Unknown ItemEffectType of ({effectType}) for item {usedItemName}", itemEffect.Type, usedItem.PrefabName);
                     return;
             }
 
-            player.SendItemEffectToPlayer(effect, usedItem.PrefabName, sendFx, usedItem.Currency == CurrencyType.NickCash);
+            player.SendItemEffectToPlayer(itemEffect, usedItem.PrefabName, sendFx, usedItem.Currency == CurrencyType.NickCash);
 
             logger.LogInformation("Applied ItemEffectType of ({effectType}) from item {usedItemName} for _player {playerName}",
-                effect.Type, usedItem.PrefabName, player.CharacterName);
+                itemEffect.Type, usedItem.PrefabName, player.CharacterName);
         }
     }
 
@@ -112,9 +113,6 @@ public static class CharacterInventoryExtensions
             return;
 
         gottenItem.Count -= count;
-
-        if (gottenItem.Count <= 0)
-            player.SetEmptySlot(item.ItemId, config);
 
         player.CheckObjective(ObjectiveEnum.Inventorycheck, gottenItem.ItemId.ToString(), item.PrefabName, gottenItem.Count, itemCatalog);
     }
@@ -184,80 +182,96 @@ public static class CharacterInventoryExtensions
         player.SendUpdatedInventory(true);
     }
 
-    public static void SetHotbarSlot(this Player player, int slotId, ItemModel itemModel, ItemRConfig config)
+    public static void SetHotbarSlot(this Player player, int slotId, ItemModel itemModel, bool swappedItem = false)
     {
         var hotbar = player.Character.Hotbar;
 
-        foreach (var hotbarSlot in hotbar.HotbarButtons.Where
-            (slot => slot.Key != slotId && slot.Value.ItemId == itemModel.ItemId))
-            player.SetEmptySlot(hotbarSlot.Key, config);
+        // Remove slot if it is not from the swap slot protocol
+        if (!swappedItem)
+            foreach (var hotbarSlot in hotbar.HotbarButtons.Where
+                         (slot => slot.Key != slotId && slot.Value.ItemId == itemModel.ItemId))
+                player.SetEmptySlot(hotbarSlot.Key);
 
         hotbar.HotbarButtons.TryAdd(slotId, itemModel);
         hotbar.HotbarButtons[slotId] = itemModel;
     }
 
-    public static void SetEmptySlot(this Player player, int slotId, ItemRConfig config)
+    public static void SetEmptySlot(this Player player, int slotId)
     {
         var hotbar = player.Character.Hotbar;
 
         if (!hotbar.HotbarButtons.ContainsKey(slotId))
             return;
 
-        hotbar.HotbarButtons[slotId] = config.EmptySlot;
+        hotbar.HotbarButtons.Remove(slotId);
     }
 
-    public static void EquipPet(this Player player, PetAbilityParams petAbilityParams,
-     WorldStatistics worldStatistics, ServerRConfig serverRConfig, ItemCatalog itemCatalog)
+    public static void EquipPet(this Player player, string petId, PetAbilityParams petAbilityParams, ItemCatalog itemCatalog,
+        WorldStatistics worldStatistics, ServerRConfig serverRConfig, ItemRConfig itemRConfig)
     {
-        if (player == null || !player.Character.Hotbar.HotbarButtons.ContainsKey(serverRConfig.PetHotbarIndex))
+        if (player == null || !player.Character.Hotbar.HotbarButtons.ContainsKey(4))
             return;
 
-        var petId = player.GetEquippedPetId(serverRConfig);
-        var refillCurrentEnergy = false;
+        if (petId == "0" || petId == string.Empty || itemCatalog.GetItemFromId(int.Parse(petId)) == null ||
+            !itemCatalog.GetItemFromId(int.Parse(petId)).IsPet()) return;
 
-        if (petId == "0" || petId == string.Empty || itemCatalog.GetItemFromId(int.Parse(petId)) == null
-            || !itemCatalog.GetItemFromId(int.Parse(petId)).IsPet()) return;
+        var refillEnergy = false;
 
         if (!player.Character.Pets.TryGetValue(petId, out var currentPet))
         {
             player.Character.Pets.Add(petId, currentPet = new PetModel());
-
-            refillCurrentEnergy = true;
+            refillEnergy = true;
         }
 
         player.Character.Write.PetItemId = int.Parse(petId);
 
-        currentPet.LastTimePetWasEquipped = DateTime.Now;
-        currentPet.IsEquipped = true;
-        currentPet.SpawnPet(player, petAbilityParams, refillCurrentEnergy, worldStatistics, serverRConfig);
+        currentPet.SpawnPet(player, petAbilityParams, true, refillEnergy, itemCatalog,
+            worldStatistics, itemRConfig);
     }
 
-    public static void UnequipPet(this Player player, PetAbilityParams petAbilityParams,
-        WorldStatistics worldStatistics, ServerRConfig serverRConfig, ItemCatalog itemCatalog)
+    public static void UnequipPet(this Player player, string petId, PetAbilityParams petAbilityParams,
+        ItemCatalog itemCatalog, WorldStatistics worldStatistics, ItemRConfig itemRConfig)
     {
-        if (player == null) return;
+        if (player == null || itemCatalog == null || string.IsNullOrEmpty(petId) || petId == "0") return;
 
-        var petId = player.GetEquippedPetId(serverRConfig);
+        if (!int.TryParse(petId, out var parsedPetId)) return;
 
-        if (petId == "0" || petId == string.Empty || itemCatalog.GetItemFromId(int.Parse(petId)) == null ||
-            !itemCatalog.GetItemFromId(int.Parse(petId)).IsPet() ||
-            !player.Character.Pets.TryGetValue(petId, out var currentPet)) return;
+        var petItem = itemCatalog.GetItemFromId(parsedPetId);
+        if (petItem == null || !petItem.IsPet()) return;
 
-        else
-        {
+        if (!player.Character.Pets.TryGetValue(petId, out var currentPet)) return;
+
+        currentPet.SpawnPet(player, petAbilityParams, false, false, itemCatalog, worldStatistics, itemRConfig);
+
+        if (!player.Character.Hotbar.HotbarButtons.ContainsKey(4))
             player.Character.Write.PetItemId = 0;
-            currentPet.IsEquipped = false;
-            currentPet.DespawnPet(player, petAbilityParams, worldStatistics, serverRConfig);
-        }
     }
 
-    public static string GetEquippedPetId(this Player player, ServerRConfig serverRConfig) =>
-        player.Character.Hotbar.HotbarButtons.TryGetValue
-        (serverRConfig.PetHotbarIndex, out var petItem) ? petItem.ItemId.ToString() : 0.ToString();
+    public static string GetItemIdOfEquippedPet(this Player player) => player?.Character == null ? "0" : player.Character.PetItemId.ToString();
 
-    public static int GetMaxPetEnergy(this Player player, WorldStatistics worldStatistics, ServerRConfig config) =>
-        // Needed due to pets not having abilities/energy in early 2012
-        config.GameVersion < GameVersion.vLate2012
-            ? 0
-            : worldStatistics.Statistics[ItemEffectType.PetEnergyValue][WorldStatisticsGroup.Pet][player.Character.GlobalLevel];
+    public static string GetGameObjectIdOfEquippedPet(this Player player) =>
+        player != null && player.Character.Pets.TryGetValue(player.GetItemIdOfEquippedPet(), out var pet)
+            ? pet.GameObjectId : "0";
+
+    public static void SwapSlots(this Player player, int slotId, ItemModel item)
+    {
+        foreach (var hotbarKVP in player.Character.Hotbar.HotbarButtons)
+        {
+            if (!player.Character.Hotbar.HotbarButtons.ContainsKey(slotId))
+            {
+                player.SetHotbarSlot(slotId, item);
+                break;
+            }
+            
+            if (hotbarKVP.Value.ItemId == item.ItemId)
+            {
+                var otherItem = player.Character.Hotbar.HotbarButtons[slotId];
+
+                player.SetHotbarSlot(hotbarKVP.Key, otherItem, true);
+                player.SetHotbarSlot(slotId, item, true);
+            }
+        }
+        
+        player.SendXt("hw", player.Character.Hotbar);
+    }
 }

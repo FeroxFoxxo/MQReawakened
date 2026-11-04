@@ -11,7 +11,7 @@ public class AIBehaviorBomber(BehaviorEnemy enemy, BomberProperties fallback) : 
 
     public override AiProperties GetProperties() => fallback;
 
-    public override object[] GetStartArgs() => [];
+    public override object[] GetStartArgs(bool _) => [];
 
     public override StateType GetStateType() => StateType.Bomber;
 

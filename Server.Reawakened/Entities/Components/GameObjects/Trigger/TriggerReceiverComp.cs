@@ -1,5 +1,6 @@
 using Server.Base.Logging;
 using Server.Reawakened.Entities.Colliders;
+using Server.Reawakened.Entities.Components.GameObjects.Hazards.Abstractions;
 using Server.Reawakened.Entities.Components.GameObjects.Items;
 using Server.Reawakened.Entities.Components.GameObjects.Trigger.Enums;
 using Server.Reawakened.Entities.Components.GameObjects.Trigger.Interfaces;
@@ -34,14 +35,12 @@ public class TriggerReceiverComp : Component<TriggerReceiver>, ICoopTriggered
 
     public override void InitializeComponent()
     {
-        if (Room == null || IsChest()) return;
+        if (Room == null || IsChest() || IsHazard()) return;
 
         _collider = new TriggerReceiverCollider(this);
-
-        if (CollisionType == TriggerReceiver.ReceiverCollisionType.Never || PrefabName.Equals("PF_SHD_StatueHazard02"))
+        
+        if (CollisionType == TriggerReceiver.ReceiverCollisionType.Never)
             _collider.Active = false;
-
-        Room.AddColliderToList(_collider);
     }
 
     public override void DelayedComponentInitialization()
@@ -165,4 +164,7 @@ public class TriggerReceiverComp : Component<TriggerReceiver>, ICoopTriggered
         Room.SendSyncEvent(new TriggerReceiver_SyncEvent(Id.ToString(), Room.Time, triggeredBy, activated, 0));
 
     private bool IsChest() => Room.GetEntityFromId<ChestControllerComp>(Id) != null;
+    
+    private bool IsHazard() =>
+        Room.GetEntityFromId<BaseHazardControllerComp<HazardController>>(Id) != null || Room.GetEntityFromId<BaseHazardControllerComp<TrapHazardController>>(Id) != null;
 }

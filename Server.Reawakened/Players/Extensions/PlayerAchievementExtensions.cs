@@ -109,7 +109,9 @@ public static class PlayerAchievementExtensions
                 player.TempData.CurrentAchievements[type].Add(achValue);
 
             if (amountLeft <= 0)
+            {
                 achievement.Key.rewards.RewardPlayer(player, internalAchievement, logger);
+            }
         }
     }
 

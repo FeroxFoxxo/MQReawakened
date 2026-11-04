@@ -29,6 +29,6 @@ public class HarvestControllerComp : BaseChestControllerComp<HarvestController>
         player.SendUpdatedInventory();
         player.CheckObjective(ObjectiveEnum.Collect, Id, PrefabName, 1, QuestCatalog);
 
-        player.Character.CurrentCollectedDailies.TryAdd(Id, SetDailyHarvest(Id, Room.LevelInfo.LevelId, DateTime.Now));
+        player.Character.CurrentCollectedDailies.TryAdd(Id, SetDailyHarvest(Id, Room.LevelInfo.LevelId, DateTime.UtcNow));
     }
 }

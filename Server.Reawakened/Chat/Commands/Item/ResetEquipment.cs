@@ -28,13 +28,7 @@ public class ResetEquipment : SlashCommand
                 return;
 
             foreach (var equippedItem in target.Equipment.EquippedItems)
-                target.Inventory.Items.TryAdd(equippedItem.Value, new ItemModel()
-                {
-                    ItemId = equippedItem.Value,
-                    Count = 1,
-                    BindingCount = 0,
-                    DelayUseExpiry = DateTime.Now
-                });
+                target.Inventory.Items.TryAdd(equippedItem.Value, new ItemModel(equippedItem.Value, 1, 0, DateTime.UtcNow));
 
             foreach (var equippedItem in target.Hotbar.HotbarButtons)
                 target.Inventory.Items.TryAdd(equippedItem.Value.ItemId, equippedItem.Value);

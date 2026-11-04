@@ -86,7 +86,7 @@ public class ArchivedSaves(EventSink sink, InternalRConfig rConfig, InternalRwCo
 
         try
         {
-            var now = DateTime.Now;
+            var now = DateTime.UtcNow;
 
             var ampm = now.Hour < 12 ? "AM" : "PM";
             var hour12 = now.Hour > 12 ? now.Hour - 12 : now.Hour <= 0 ? 12 : now.Hour;

@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using A2m.Server;
+using Microsoft.Extensions.Logging;
 using Server.Base.Core.Models;
 using Server.Base.Database.Accounts;
 using Server.Base.Network;
@@ -8,9 +9,11 @@ using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models.Misc;
+using Server.Reawakened.Players.Models.Pets;
 using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Services;
+using Server.Reawakened.XMLs.Bundles.Base;
 
 namespace Server.Reawakened.Players;
 
@@ -37,6 +40,23 @@ public class Player(AccountModel account, UserInfoModel userInfo, NetState state
     public void RemovedState(NetState _, IServiceProvider services,
         Microsoft.Extensions.Logging.ILogger logger) => Remove(logger);
 
+    public void Update()
+    {
+        TempData.PlayerCollider?.RunCollisionDetection();
+        UpdatePet();
+    }
+
+    public void UpdatePet()
+    {
+        if (Character is null || Character.Pets is null || Character.PetItemId == 0)
+            return;
+
+        if (!Character.Pets.TryGetValue(Character.PetItemId.ToString(), out var pet))
+            return;
+
+        pet.RegenEnergy(this);
+    }
+    
     public void Remove(Microsoft.Extensions.Logging.ILogger logger)
     {
         if (_hasLoggedOut)
@@ -45,7 +65,9 @@ public class Player(AccountModel account, UserInfoModel userInfo, NetState state
         _hasLoggedOut = true;
 
         lock (PlayerContainer.Lock)
+        {
             playerContainer.RemovePlayer(this);
+        }
 
         this.RemoveFromGroup();
 
@@ -60,26 +82,29 @@ public class Player(AccountModel account, UserInfoModel userInfo, NetState state
             if (TempData.TradeModel != null)
             {
                 var tradingPlayer = TempData.TradeModel.TradingPlayer;
-                tradingPlayer.TempData.TradeModel = null;
-                tradingPlayer.SendXt("tc", Character.CharacterName);
+                if (tradingPlayer?.TempData != null)
+                {
+                    tradingPlayer.TempData.TradeModel = null;
+                    tradingPlayer.SendXt("tc", Character.CharacterName);
+                }
             }
 
+            this.RemoveAssociatedTriggers();
             Character = null;
         }
 
         if (Room != null)
         {
-            if (!Room.LevelInfo.IsValid())
-                return;
-
-            var roomName = Room.LevelInfo.Name;
-
-            if (!string.IsNullOrEmpty(roomName))
-                logger.LogDebug("Dumped player with ID '{User}' from room '{Room}'", UserId, roomName);
+            if (Room.LevelInfo.IsValid())
+            {
+                var roomName = Room.LevelInfo.Name;
+                if (!string.IsNullOrEmpty(roomName))
+                    logger.LogDebug("Dumped player with ID '{User}' from room '{Room}'", UserId, roomName);
+            }
         }
 
         this.DumpToLobby(worldHandler);
-
+        
         try
         {
             NetState.RemoveAllData();

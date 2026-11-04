@@ -20,8 +20,8 @@ public class NewsController(InternalNews internalNews) : Controller
 
             if (!notes.DefaultNews && !string.IsNullOrEmpty(notes.StartDate) &&
                 !string.IsNullOrEmpty(notes.EndDate) &&
-                DateTime.Now >= XmlConvert.ToDateTime(notes.StartDate, "MM/dd/yyyy") &&
-                DateTime.Now <= XmlConvert.ToDateTime(notes.EndDate, "MM/dd/yyyy"))
+                DateTime.UtcNow >= XmlConvert.ToDateTime(notes.StartDate, "MM/dd/yyyy") &&
+                DateTime.UtcNow <= XmlConvert.ToDateTime(notes.EndDate, "MM/dd/yyyy"))
             {
                 sb.Append(notes.NewsDate);
 

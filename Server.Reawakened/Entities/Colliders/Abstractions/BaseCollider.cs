@@ -1,4 +1,5 @@
-﻿using Server.Reawakened.Entities.Colliders.Enums;
+﻿using System.Collections.Generic;
+using Server.Reawakened.Entities.Colliders.Enums;
 using Server.Reawakened.Entities.Components.GameObjects.Attributes;
 using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Models.Planes;
@@ -19,21 +20,20 @@ public abstract class BaseCollider
     public bool Active { get; set; }
 
     public Rect ColliderBox => new(
-            Position.X + BoundingBox.X,
-            Position.Y + BoundingBox.Y,
-            BoundingBox.Width,
-            BoundingBox.Height
-        );
+        Position.X + BoundingBox.X,
+        Position.Y + BoundingBox.Y,
+        BoundingBox.Width,
+        BoundingBox.Height
+    );
 
     protected BaseCollider(bool addToRoom = true)
     {
         Active = true;
 
-        var invisible = Room.GetEntityFromId<InvisibilityControllerComp>(Id);
-
+        var invisible = Room?.GetEntityFromId<InvisibilityControllerComp>(Id);
         IsInvisible = invisible != null && invisible.ApplyInvisibility;
 
-        if (addToRoom)
+        if (addToRoom && Room != null)
             Room.AddColliderToList(this);
     }
 
@@ -42,19 +42,27 @@ public abstract class BaseCollider
     public virtual void SendCollisionEvent(BaseCollider received) { }
 
     public bool CheckCollision(BaseCollider collided) =>
-        collided.ColliderBox.Overlaps(ColliderBox) && Plane == collided.Plane;
+        collided != null && collided.ColliderBox.Overlaps(ColliderBox) && Plane == collided.Plane;
 
     public virtual bool CanCollideWithType(BaseCollider collider) => false;
     public virtual bool CanOverrideInvisibleDetection() => true;
-    
+
     public string[] RunBaseCollisionDetection()
     {
+        if (Room == null)
+            return [];
+
         var colliders = Room.GetColliders();
         var collidedWith = new HashSet<string>();
 
         foreach (var collider in colliders)
         {
-            if (CheckCollision(collider) && CanCollideWithType(collider) && collider.Active && (!collider.IsInvisible || CanOverrideInvisibleDetection()))
+            if (collider != null &&
+                collider != this &&
+                collider.Active &&
+                (!collider.IsInvisible || CanOverrideInvisibleDetection()) &&
+                CanCollideWithType(collider) &&
+                CheckCollision(collider))
             {
                 collidedWith.Add(collider.Id);
                 collider.SendCollisionEvent(this);

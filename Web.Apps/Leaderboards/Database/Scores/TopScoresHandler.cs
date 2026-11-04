@@ -1,5 +1,7 @@
-﻿using Server.Base.Database.Abstractions;
-using Web.Apps.Leaderboards.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Server.Base.Database.Abstractions;
+using Web.Apps.Leaderboards.Enums;
 
 namespace Web.Apps.Leaderboards.Database.Scores;
 public class TopScoresHandler(IServiceProvider services, LeaderboardLock dbLock) :
@@ -9,18 +11,39 @@ public class TopScoresHandler(IServiceProvider services, LeaderboardLock dbLock)
 
     public override TopScoresDbEntry CreateDefault() => null;
 
-    public TopScoresDbEntry Create(int gameId, List<TopScore> scores)
+    public TopScoresDbEntry Create(int gameId, int score, short rank, DateTime time, int id, ScoreType type)
     {
-        var user = new TopScoresDbEntry(gameId, scores);
+        var scoreEntry = new TopScoresDbEntry(gameId, score, rank, time, id, type);
 
-        Add(user, gameId);
+        Add(scoreEntry);
 
-        return user;
+        return scoreEntry;
     }
 
-    public TopScoresModel GetScoresFromId(int id) =>
-        GetScoresFromData(Get(id));
+    public List<TopScoresModel> GetScoresFromGame(int gameId)
+    {
+        using var scope = Services.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<LeaderboardDatabase>();
 
-    public TopScoresModel GetScoresFromData(TopScoresDbEntry characterScores) =>
+        lock (DbLock.Lock)
+        {
+            return [.. db.TopScores.AsNoTracking()
+                .Where(t => t.GameId == gameId).AsEnumerable().Select(GetScoreFromData)];
+        }
+    }
+
+    public List<TopScoresModel> GetScoresFromCharacter(int characterId)
+    {
+        using var scope = Services.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<LeaderboardDatabase>();
+
+        lock (DbLock.Lock)
+        {
+            return [.. db.TopScores.AsNoTracking()
+                .Where(t => t.CharacterId == characterId).AsEnumerable().Select(GetScoreFromData)];
+        }
+    }
+
+    public TopScoresModel GetScoreFromData(TopScoresDbEntry characterScores) =>
         characterScores != null ? new(characterScores) : null;
 }

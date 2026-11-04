@@ -9,9 +9,9 @@ public class AiStateSyncEvent()
     public GameObjectComponents InStates = [];
     public GameObjectComponents GoToStates = [];
 
-    public SyncEvent GetSyncEvent(string id, Room room)
+    public SyncEvent GetSyncEvent(string id, float time)
     {
-        var aiEvent = new SyncEvent(id.ToString(), SyncEvent.EventType.AIState, room.Time);
+        var aiEvent = new SyncEvent(id.ToString(), SyncEvent.EventType.AIState, time);
 
         aiEvent.EventDataList.Add(GetAllStates());
 

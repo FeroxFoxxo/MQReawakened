@@ -1,6 +1,7 @@
 ﻿using LitJson;
 using Server.Base.Accounts.Enums;
 using Server.Reawakened.Chat.Models;
+using Server.Reawakened.Core.Services;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Helpers;
@@ -20,12 +21,19 @@ public class Warn : SlashCommand
             Name = "accountId",
             Description = "The player account id",
             Optional = false
+        },
+        new ParameterModel()
+        {
+            Name = "reason",
+            Description = "The reason",
+            Optional = true
         }
     ];
 
     public override AccessLevel AccessLevel => AccessLevel.Moderator;
 
     public PlayerContainer PlayerContainer { get; set; }
+    public DiscordHandler DiscordHandler { get; set; }
 
     public override void Execute(Player player, string[] args)
     {
@@ -42,6 +50,11 @@ public class Warn : SlashCommand
             Log("The provided player account is null.", player);
             return;
         }
+        
+        var reason = string.Empty;
+        
+        if (args.Length >= 3)
+            reason = string.Join(" ", args.Skip(2));
 
         var type = new JsonData()
         {
@@ -51,5 +64,7 @@ public class Warn : SlashCommand
         online.SendXt("yM", type.ToJson());
 
         Log($"Warned player {online.Account.Username}.", player);
+        
+        DiscordHandler.SendPunishmentLog("Warning", player.Account.Username, online.Account.Username, reason, string.Empty);
     }
 }

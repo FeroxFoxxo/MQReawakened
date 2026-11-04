@@ -40,6 +40,8 @@ public class FindPlayer : SlashCommand
             return;
         }
 
-        Log($"{target.CharacterName}'s id is {target.UserUuid}", player);
+        var username = AccountHandler.GetAccountFromId(target.UserUuid).Username;
+
+        Log($"{target.CharacterName}| User ID: {target.UserUuid}, Username: {username}", player);
     }
 }

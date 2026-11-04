@@ -22,12 +22,15 @@ public class AcceptQuest : ExternalProtocol
         var quest = int.Parse(message[5]);
         var setActive = message[6] == "1";
 
-        if (Player.Character.ActiveQuestId == quest || Player.Character.CompletedQuests.Contains(quest))
+        if (Player.Character.QuestLog.Any(q => q.Id == quest))
+            return;
+
+        if (Player.Character.CompletedQuests.Contains(quest))
             return;
 
         var newQuest = QuestCatalog.GetQuestData(quest);
 
         if (newQuest != null)
-            Player.AddQuest(newQuest, QuestItems, ItemCatalog, FileLogger, $"Accept quest protocol", Logger, setActive);
+            Player.AddQuest(newQuest, QuestItems, ItemCatalog, FileLogger, "Accept quest protocol", Logger, setActive);
     }
 }

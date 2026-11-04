@@ -50,10 +50,9 @@ public class DroppingsControllerComp : Component<DroppingsController>
             y = -6
         };
 
-        var damage = 0;
         var effect = ItemEffectType.Freezing;
 
-        Room.AddRangedProjectile(Id, Position, speed, 3, damage, effect, false, PrefabName);
+        Room.AddRangedProjectile(Id, Position, speed, 3, effect, false, PrefabName);
     }
 
     public void FreezePlayer(Player player)

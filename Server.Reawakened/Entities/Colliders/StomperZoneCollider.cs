@@ -11,8 +11,6 @@ namespace Server.Reawakened.Entities.Colliders;
 public class StomperZoneCollider(StomperControllerComp stomperController) : BaseCollider
 {
     public bool Hazard => stomperController.Hazard;
-    public TimerThread TimerThread => stomperController.TimerThread;
-    public ServerRConfig ServerRConfig => stomperController.ServerRConfig;
     public override Vector3Model Position => stomperController.Position;
     public override Room Room => stomperController.Room;
     public override string Id => stomperController.Id;

@@ -1,9 +1,13 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Server.Base.Core.Abstractions;
+using Server.Base.Timers.Extensions;
+using Server.Base.Timers.Services;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Entities.Colliders;
 using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Abstractions;
+using Server.Reawakened.Entities.Components.GameObjects.Hazards.Abstractions;
 using Server.Reawakened.Entities.Components.GameObjects.InterObjs;
 using Server.Reawakened.Entities.Components.GameObjects.InterObjs.Interfaces;
 using Server.Reawakened.Entities.Components.GameObjects.Spawners;
@@ -20,9 +24,11 @@ using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Rooms.Models.Planes;
+using Server.Reawakened.Rooms.Models.Timers;
 using Server.Reawakened.XMLs.Bundles.Base;
 using Server.Reawakened.XMLs.Bundles.Internal;
 using Server.Reawakened.XMLs.Data.Achievements;
+using Server.Reawakened.XMLs.Data.Enemy.Enums;
 using Server.Reawakened.XMLs.Data.Enemy.Models;
 using UnityEngine;
 
@@ -35,7 +41,8 @@ public abstract class BaseEnemy : IDestructible
     public readonly QuestCatalog QuestCatalog;
     public readonly ItemCatalog ItemCatalog;
     public readonly ServerRConfig ServerRConfig;
-
+    public readonly TimerThread TimerThread;
+    
     public readonly Room Room;
 
     public bool Init;
@@ -69,22 +76,26 @@ public abstract class BaseEnemy : IDestructible
 
     public IServiceProvider Services;
 
+    public BaseHazardControllerComp<HazardController> HazardController;
+    
     public BaseEnemy(EnemyData data)
     {
         Room = data.Room;
         Id = data.EntityId;
         PrefabName = data.PrefabName;
-        EnemyController = data.EnemyController;
         EnemyModel = data.EnemyModel;
         Services = data.Services;
 
-        IsFromSpawner = false;
+        EnemyController = Room.GetEntityFromId<IEnemyController>(Id);
+        
+        HazardController = Room.GetEntityFromId<BaseHazardControllerComp<HazardController>>(Id);
 
         Logger = Services.GetRequiredService<ILogger<BaseEnemy>>();
         InternalAchievement = Services.GetRequiredService<InternalAchievement>();
         QuestCatalog = Services.GetRequiredService<QuestCatalog>();
         ItemCatalog = Services.GetRequiredService<ItemCatalog>();
         ServerRConfig = Services.GetRequiredService<ServerRConfig>();
+        TimerThread = Services.GetRequiredService<TimerThread>();
         WorldStatistics = Services.GetRequiredService<WorldStatistics>();
 
         Logger.LogDebug("Creating enemy {PrefabName} with ID {Id}", PrefabName, Id);
@@ -170,7 +181,8 @@ public abstract class BaseEnemy : IDestructible
 
     public void GenerateHitbox()
     {
-        var serverObjectSize = Room.GetEntityFromId<ServerObjectSizeInfoComp>(Id);
+        var serverObjectSize = Room.GetEntityFromId<
+            ServerObjectSizeInfoComp>(Id);
         var objectSize = Room.GetEntityFromId<ObjectSizeInfoComp>(Id);
 
         Logger.LogDebug("Generating hitbox for enemy {PrefabName} (ID: {Id})", PrefabName, Id);
@@ -194,7 +206,7 @@ public abstract class BaseEnemy : IDestructible
         var offset = box.GetOffset();
 
         var width = size.x * Math.Abs(EnemyController.Scale.X);
-        var height = size.y * Math.Abs(EnemyController.Scale.Y);
+        var height = size.y * Math.Abs(EnemyController.Scale.Y) + 0.5f;
 
         var bottomX = offset.x * EnemyController.Scale.X;
         var bottomY = offset.y * EnemyController.Scale.Y;
@@ -209,26 +221,88 @@ public abstract class BaseEnemy : IDestructible
         Hitbox = new EnemyCollider(this, rect);
     }
 
-    public virtual void Damage(Player player, int damage)
+    public virtual void Damage(Player player, int damage, bool notifyAggro = true)
     {
         if (Room.IsObjectKilled(Id))
             return;
 
-        var resistance = GameFlow.StatisticData.GetValue(ItemEffectType.Defence, WorldStatisticsGroup.Enemy, Level);
-        var resistedDamage = damage - resistance;
+        // var resistance = GameFlow.StatisticData.GetValue(ItemEffectType.Defence, WorldStatisticsGroup.Enemy, Level);
 
-        if (resistedDamage <= 0)
-            resistedDamage = 1;
+        if (damage <= 0)
+            damage = 1;
 
-        Health -= resistedDamage;
+        Health -= damage;
 
-        Room.SendSyncEvent(new AiHealth_SyncEvent(Id.ToString(), Room.Time, Health, damage, resistance, resistedDamage, player == null ? string.Empty : player.CharacterName, false, true));
+        Room.SendSyncEvent(new AiHealth_SyncEvent(Id.ToString(), Room.Time, Health, damage, 0,
+            0, player == null ? string.Empty : player.CharacterName, false, true));
 
         NotifyDamaged(player);
     }
 
+    public void SendTypeOfDamage(Player player, List<ItemEffect> itemEffects, string prefabFrom, float mult = 1)
+    {
+        var usedItem = ItemCatalog.GetItemFromPrefabName(prefabFrom);
+        var initialDamage = GetCalculatedDamage(player, itemEffects.FirstOrDefault(), usedItem) * mult;
+
+        foreach (var itemEffect in itemEffects)
+        {
+            SendItemEffectToEnemy(player, itemEffect, prefabFrom);
+            var damage = (int) (GetCalculatedDamage(player, itemEffect, usedItem) * mult);
+
+            switch (itemEffect.Type)
+            {
+                case ItemEffectType.PoisonDamage:
+                    damage = (int) (initialDamage * itemEffect.Value / 100);
+
+                    var damageData = new DamageOverTimeData()
+                    {
+                        Player = player,
+                        Damage = damage / itemEffect.Duration
+                    };
+
+                    TimerThread.RunInterval(DamageOverTime, damageData,
+                        TimeSpan.FromSeconds(1),
+                        itemEffect.Duration, TimeSpan.FromSeconds(1));
+                    break;
+                default:
+                    damage = (int) (GetCalculatedDamage(player, itemEffect, usedItem) * mult);
+
+                    Damage(player, damage);
+                    break;
+                case ItemEffectType.StunStatusEffect:
+                    StartActing(ActingStateType.Stunned, itemEffects.Find(x => x.Type == ItemEffectType.StunStatusEffect).Duration);
+                    break;
+                case ItemEffectType.Invalid:
+                case ItemEffectType.Unknown:
+                case ItemEffectType.Unknown_61:
+                case ItemEffectType.Unknown_70:
+                case ItemEffectType.Unknown_74:
+                    Logger.LogWarning($"Unknown item effect for item by prefab name; {prefabFrom}");
+                    break;
+            }
+        }
+    }
+
+    private void SendItemEffectToEnemy(Player player, ItemEffect itemEffect, string prefabFrom)
+    {
+        if (player == null || itemEffect == null) return;
+
+        Room.SendSyncEvent(new StatusEffect_SyncEvent(Id, Room.Time, (int)itemEffect.Type,
+            itemEffect.Value, itemEffect.Duration, true, prefabFrom, false));
+    }
+
+    private int GetCalculatedDamage(Player player, ItemEffect itemEffect, ItemDescription usedItem) =>
+        Room.GetEntityFromId<IDamageable>(Id).
+             GetDamageAmount(player.Character.CalculateDamage(usedItem, ItemCatalog), itemEffect.Type, false);
+
+    private class DamageOverTimeData() : PlayerTimer
+    {
+        public int Damage;
+    }
+
     public int EnemyDamagePlayer(Player player)
     {
+        int damage;
         var element = ItemEffectType.BluntDamage;
 
         if (EnemyController.PrefabName.Contains("_Boss"))
@@ -240,8 +314,25 @@ public abstract class BaseEnemy : IDestructible
         else if (EnemyController.PrefabName.Contains("Lava"))
             element = ItemEffectType.FireDamage;
 
-        return WorldStatistics.GetValue(ItemEffectType.AbilityPower, WorldStatisticsGroup.Enemy, Level) -
+        damage = WorldStatistics.GetValue(ItemEffectType.AbilityPower, WorldStatisticsGroup.Enemy, Level) -
                  player.Character.CalculateDefense(element, ItemCatalog);
+
+        if (damage < Level * 2)
+        {
+            var rand = new System.Random();
+            var min = (int) (Level * 1.8);
+            var max = (int) (Level * 2.2);
+            damage = rand.Next(min, max);
+        }
+
+        return damage;
+    }
+
+    private void DamageOverTime(ITimerData data)
+    {
+        if (data == null || data is not DamageOverTimeData damageData) return;
+
+        Damage(damageData.Player, damageData.Damage, false);
     }
 
     public virtual void PetDamage(Player player)
@@ -249,15 +340,22 @@ public abstract class BaseEnemy : IDestructible
         if (Room.IsObjectKilled(Id) || player == null)
             return;
 
-        if (!player.Character.Pets.TryGetValue(player.GetEquippedPetId(ServerRConfig), out var pet))
+        if (player == null || !player.Character.Pets.TryGetValue(player.GetItemIdOfEquippedPet(), out var pet))
         {
             Logger.LogError("Could not find pet that damaged {PrefabName}! Returning...", PrefabName);
             return;
         }
-;
-        var petDamage = (int)Math.Ceiling(MaxHealth * pet.AbilityParams.ItemEffectStatRatio);
+        
+        var health = GameFlow.StatisticData.GetValue(ItemEffectType.IncreaseHitPoints, WorldStatisticsGroup.Enemy, player.Character.GlobalLevel);
+        var defense = GameFlow.StatisticData.GetValue(ItemEffectType.Defence, WorldStatisticsGroup.Enemy, player.Character.GlobalLevel);
+        
+        var ratio = 0f;
+        if (pet.AbilityParams.ItemEffectStatRatio != 0f)
+            ratio = health / pet.AbilityParams.ItemEffectStatRatio + defense;
+        
+        var damageValue = (int)(Mathf.Ceil(ratio / 10f) * 10f);
 
-        Room.SendSyncEvent(new AiHealth_SyncEvent(Id.ToString(), Room.Time, Health -= petDamage, petDamage, 1, 1, player.CharacterName, false, true));
+        Room.SendSyncEvent(new AiHealth_SyncEvent(Id.ToString(), Room.Time, Health -= damageValue, damageValue, 1, 1, player.CharacterName, false, true));
 
         NotifyDamaged(player);
     }
@@ -336,9 +434,7 @@ public abstract class BaseEnemy : IDestructible
 
         if (player != null)
         {
-            player.CheckAchievement(AchConditionType.DefeatEnemy, [PrefabName], InternalAchievement, Logger);
             player.CheckAchievement(AchConditionType.DefeatEnemy, [Enum.GetName(EnemyModel.EnemyCategory)], InternalAchievement, Logger);
-            player.CheckAchievement(AchConditionType.DefeatEnemy, [EnemyController.PrefabName], InternalAchievement, Logger);
             player.CheckAchievement(AchConditionType.DefeatEnemyInLevel, [player.Room.LevelInfo.Name], InternalAchievement, Logger);
         }
     }
@@ -358,12 +454,32 @@ public abstract class BaseEnemy : IDestructible
     }
 
     public void FireProjectile(Vector3Model position, Vector2 speed, bool isGrenade) =>
-        Room.AddRangedProjectile(Id, position, speed, 3, GetDamage(), EnemyController.EnemyEffectType, isGrenade, PrefabName);
+        Room.AddRangedProjectile(Id, position, speed, 3, EnemyController.EnemyEffectType, isGrenade);
 
     public int GetDamage() =>
         GameFlow.StatisticData.GetValue(
             ItemEffectType.AbilityPower, WorldStatisticsGroup.Enemy, Level
         );
-    
-    public virtual void OnCollideWithPlayer(Player player) {}
+
+    public virtual void OnCollideWithPlayer(Player player)
+    {
+        if (player.TempData.IsKnockedOut)
+            return;
+        
+        if (Room.ContainsEnemy(Id))
+        {
+            if (player.Character.Pets.TryGetValue(player.Character.PetItemId.ToString(), out var pet) && pet != null)
+            {
+                if (pet.GuardingPlayer)
+                {
+                    PetDamage(player);
+                    return;
+                }
+            }
+        }
+        
+        HazardController?.ApplyHazardEffect(player);
+    }
+
+    public abstract void StartActing(ActingStateType state, float duration);
 }

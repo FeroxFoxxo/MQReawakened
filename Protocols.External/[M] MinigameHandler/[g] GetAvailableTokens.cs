@@ -10,6 +10,6 @@ public class GetAvailableTokens : ExternalProtocol
     {
         var gameName = message[5];
 
-        SendXt("Mg", 0, gameName, Player.Character.Write.Tokens, DateTime.Now.AddYears(10).ToString(), 1, (int)AvailablePlaysSource.GET);
+        SendXt("Mg", 0, gameName, Player.Character.Write.Tokens, DateTime.UtcNow.AddYears(10).ToString(), 1, (int)AvailablePlaysSource.GET);
     }
 }

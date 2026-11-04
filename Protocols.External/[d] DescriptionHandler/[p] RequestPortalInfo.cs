@@ -33,13 +33,13 @@ public class RequestPortalInfo : ExternalProtocol
             return;
         }
 
-        var portalInfos = PortalInfos.GetPortalInfos(levelId, portalId);
+        var portalInfos = PortalInfos.GetPortalInfos(newLevelId, portalId);
 
         var isLockedOrPremium = 0;
 
         var portalConditions = new SeparatedStringBuilder('#');
 
-        if (portalInfos != null && portalInfos.PortalConditions.Count > 0)
+        if (portalInfos != null)
         {
             if (!portalInfos.CheckConditions(Player))
                 isLockedOrPremium = 1;
@@ -48,75 +48,72 @@ public class RequestPortalInfo : ExternalProtocol
             if (!portalInfos.CheckConditions(Player) && portalInfos.ShowPremiumPortal)
                 isLockedOrPremium = 3;
 
-            foreach (var condition in portalInfos.PortalConditions)
-            {
-                portalConditions.Append(condition.RequiredItems.Count); // Item Id count
+            var condition = portalInfos.PortalCondition;
+            
+            portalConditions.Append(condition.RequiredItems.Count); // Item Id count
 
-                if (condition.RequiredItems.Count > 0)
-                    foreach (var item in condition.RequiredItems)
+            if (condition.RequiredItems.Count > 0)
+                foreach (var item in condition.RequiredItems)
+                {
+                    var itemDescription = QuestCatalog.ItemCatalog.GetItemFromId(item);
+
+                    if (itemDescription != null)
+                        portalConditions.Append(itemDescription.ItemId);
+                }
+
+            portalConditions.Append(condition.RequiredItems.Count); // Item Name Id count
+
+            if (condition.RequiredItems.Count > 0)
+                foreach (var item in condition.RequiredItems)
+                {
+                    var itemDescription = QuestCatalog.ItemCatalog.GetItemFromId(item);
+
+                    if (itemDescription != null)
                     {
-                        var itemDescription = QuestCatalog.ItemCatalog.GetItemFromId(item);
+                        var itemName = QuestCatalog.ItemCatalog.GetTextIdFromName(itemDescription.ItemName);
 
-                        if (itemDescription != null)
-                            portalConditions.Append(itemDescription.ItemId);
+                        portalConditions.Append(itemName);
                     }
+                }
 
-                portalConditions.Append(condition.RequiredItems.Count); // Item Name Id count
+            portalConditions.Append(portalInfos.CheckConditions(Player) ? 1 : 0);
 
-                if (condition.RequiredItems.Count > 0)
-                    foreach (var item in condition.RequiredItems)
+            portalConditions.Append(condition.RequiredQuests.Count); // Quest Id count
+
+            if (condition.RequiredQuests.Count > 0)
+                foreach (var quest in condition.RequiredQuests)
+                {
+                    var questData = QuestCatalog.GetQuestData(quest);
+
+                    if (questData != null)
+                        portalConditions.Append(questData.Id);
+                }
+
+            portalConditions.Append(condition.RequiredQuests.Count); // Quest Name Id count
+
+            if (condition.RequiredQuests.Count > 0)
+                foreach (var quest in condition.RequiredQuests)
+                {
+                    var questData = QuestCatalog.GetQuestData(quest);
+
+                    if (questData != null)
                     {
-                        var itemDescription = QuestCatalog.ItemCatalog.GetItemFromId(item);
+                        var questNameId = MiscText.LocalizationDict.FirstOrDefault(x => x.Value == questData.Title).Key;
 
-                        if (itemDescription != null)
-                        {
-                            var itemName = QuestCatalog.ItemCatalog.GetTextIdFromName(itemDescription.ItemName);
-
-                            portalConditions.Append(itemName);
-                        }
+                        portalConditions.Append(questNameId);
                     }
-
-                portalConditions.Append(condition.CheckRequiredItems(Player) ? 1 : 0);
-
-                portalConditions.Append(condition.RequiredQuests.Count); // Quest Id count
-
-                if (condition.RequiredQuests.Count > 0)
-                    foreach (var quest in condition.RequiredQuests)
-                    {
-                        var questData = QuestCatalog.GetQuestData(quest);
-
-                        if (questData != null)
-                            portalConditions.Append(questData.Id);
-                    }
-
-                portalConditions.Append(condition.RequiredQuests.Count); // Quest Name Id count
-
-                if (condition.RequiredQuests.Count > 0)
-                    foreach (var quest in condition.RequiredQuests)
-                    {
-                        var questData = QuestCatalog.GetQuestData(quest);
-
-                        if (questData != null)
-                        {
-                            var questNameId = MiscText.LocalizationDict.FirstOrDefault(x => x.Value == questData.Title).Key;
-
-                            portalConditions.Append(questNameId);
-                        }
-                    }
-
-                var requiredLevel = condition.RequiredLevels.Count > 0 ? condition.RequiredLevels.FirstOrDefault().Value : 1;
-
-                portalConditions.Append(condition.CheckRequiredQuests(Player) ? 1 : 0);
-                portalConditions.Append(requiredLevel);
-                portalConditions.Append(condition.CheckRequiredLevels(Player) ? 1 : 0);
-                portalConditions.Append(0); // Subscription Type id
-                portalConditions.Append(0); // Is Subscription required
-                portalConditions.Append(condition.RequiredQuests.Count > 1 ? 1 : 0); // QuestConditionOp
-                portalConditions.Append(condition.RequiredItems.Count > 1 ? 1 : 0); // QuestConditionOp Item
-            }
+                }
+            
+            portalConditions.Append(portalInfos.CheckConditions(Player) ? 1 : 0);
+            portalConditions.Append(condition.RequiredLevel);
+            portalConditions.Append(portalInfos.CheckConditions(Player) ? 1 : 0);
+            portalConditions.Append(portalInfos.ShowPremiumPortal ? 1 : 0); // Subscription Type id
+            portalConditions.Append(portalInfos.ShowPremiumPortal ? 1 : 0); // Is Subscription required
+            portalConditions.Append(condition.QuestConditionOp); // QuestConditionOp
+            portalConditions.Append(condition.ItemConditionOp); // QuestConditionOp Item
         }
 
         SendXt("dp", portalId, levelId, isLockedOrPremium, collectedIdols, newLevelNameId.Key,
-                portalInfos != null ? portalInfos.PortalConditions.Count : 0, portalInfos != null ? portalConditions.ToString() : 0);
+                portalInfos != null ? 1 : 0, portalInfos != null ? portalConditions.ToString() : 0);
     }
 }
