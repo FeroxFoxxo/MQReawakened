@@ -4,7 +4,6 @@ using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Database.Characters;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
-using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models.System;
@@ -21,6 +20,7 @@ public class GiftItemShop : ExternalProtocol
     public CharacterHandler CharacterHandler { get; set; }
     public ILogger<GiftItemShop> Logger { get; set; }
     public ServerRConfig Config { get; set; }
+    public VendorCatalog VendorCatalog { get; set; }
 
     public override void Run(string[] message)
     {
@@ -71,7 +71,7 @@ public class GiftItemShop : ExternalProtocol
         var catalogs = VendorCatalog.GetCurrentCashShop().VendorCatalogIds;
 
         foreach (var catalog in catalogs)
-            if (VendorCatalog.GetVendorItemList(catalog).Contains(item.PrefabName))
+            if (VendorCatalog.GetVendorItemList(catalog).Contains(item.ItemId))
             {
                 valid = true;
                 break;
