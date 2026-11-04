@@ -9,6 +9,7 @@ using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models.System;
 using Server.Reawakened.XMLs.Bundles.Base;
+using Server.Reawakened.XMLs.Bundles.Internal;
 
 namespace Protocols.External._n__NpcHandler;
 
@@ -21,6 +22,8 @@ public class VendorGift : ExternalProtocol
     public CharacterHandler CharacterHandler { get; set; }
     public ILogger<VendorGift> Logger { get; set; }
     public ServerRConfig Config { get; set; }
+    public InternalVendor InternalVendor { get; set; }
+    public VendorCatalog VendorCatalog { get; set; }
 
     public override void Run(string[] message)
     {
@@ -36,6 +39,8 @@ public class VendorGift : ExternalProtocol
             return;
         }
 
+        var vendorId = int.Parse(message[5]);
+        
         var isOnline = true;
         var friendName = message[6];
         var messageDesc = message[7];
@@ -73,7 +78,7 @@ public class VendorGift : ExternalProtocol
         {
             var items = VendorCatalog.GetVendorItemList(vendor.CatalogId);
 
-            if (items.Contains(item.PrefabName))
+            if (items.Contains(item.ItemId))
                 valid = true;
         }
 
