@@ -101,8 +101,7 @@ public class RoomUpdate : ExternalProtocol
 
         if (Player.Character.Pets.TryGetValue(Player.Character.PetItemId.ToString(), out var pet) && pet != null)
         {
-            // not sure why we have this line
-            //pet.ItemId = Player.Character.PetItemId.ToString();
+            pet.ItemId = Player.Character.PetItemId.ToString();
 
             if (PetAbilities.PetAbilityData.TryGetValue(int.Parse(pet.ItemId), out var petAbility))
                 Player.EquipPet(pet.ItemId, petAbility, ItemCatalog, WorldStatistics, ServerRConfig, ItemRConfig);
