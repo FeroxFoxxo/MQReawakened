@@ -1,6 +1,7 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
 using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Abstractions;
+using Server.Reawakened.Entities.Components.Characters.Controllers.Base.States;
 
 namespace Server.Reawakened.Entities.Components.Characters.Controllers.Drake.States;
 public class AIStateDrakeAttackComp : BaseAIState<AIStateDrakeAttack, AI_State_DrakeAttack>
@@ -17,9 +18,11 @@ public class AIStateDrakeAttackComp : BaseAIState<AIStateDrakeAttack, AI_State_D
     private readonly vector3 _dampingVelocity = new(0f, 0f, 0f);
 
     // TODO!!!
-    public static vector3 PlacementPosition => new(0f, 0f, 0f);
+    public vector3 PlacementPosition = new(0f, 0f, 0f);
     // TODO!!!
-    public static vector3 TargetPosition => new(0f, 0f, 0f);
+    public vector3 TargetPosition = new(0f, 0f, 0f);
+    
+    private float _endTime = 0f;
 
     public override AI_State_DrakeAttack GetInitialAIState() => new (
         [
@@ -37,9 +40,19 @@ public class AIStateDrakeAttackComp : BaseAIState<AIStateDrakeAttack, AI_State_D
             PlacementPosition.x.ToString(), PlacementPosition.y.ToString(), PlacementPosition.z.ToString(),
             TargetPosition.x.ToString(), TargetPosition.y.ToString(), TargetPosition.z.ToString()
         ];
+    
+    public override void InitializeComponent()
+    {
+        base.InitializeComponent();
+        _endTime = -1;
+    }
 
-    public override void OnAIStateIn() =>
+    public override void OnAIStateIn()
+    {
+        _endTime = Room.Time + 7f;
+        
         State.Init(Position.ToVector3(), PlacementPosition, TargetPosition);
+    }
 
     public override void Execute()
     {
@@ -57,6 +70,12 @@ public class AIStateDrakeAttackComp : BaseAIState<AIStateDrakeAttack, AI_State_D
 
             Position.SetPosition(dampenedPosition);
             StateMachine.SetForceDirectionX(State.Direction);
+        }
+        
+        if (Room.Time >= _endTime)
+        {
+            AddNextState<AIStateMoveComp>();
+            GoToNextState();
         }
     }
 

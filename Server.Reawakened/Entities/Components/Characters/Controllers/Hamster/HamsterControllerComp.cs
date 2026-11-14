@@ -21,6 +21,8 @@ public class HamsterControllerComp : DamagableAiStateMachine<HamsterControllerMQ
     public bool StartIdle => ComponentData.StartIdle;
     public float TimeToDirtFXInStunOut => ComponentData.TimeToDirtFXInStunOut;
 
+    public bool IsImmune = false;
+    
     private AIStatePatrolComp _patrol;
     
     private bool _hasStarted = false;
@@ -29,7 +31,7 @@ public class HamsterControllerComp : DamagableAiStateMachine<HamsterControllerMQ
     {
         SetupStateVariables();
 
-        Room.GetCollidersById(Id).FirstOrDefault()?.Active = false;
+        IsImmune = true;
         
         if (StartIdle)
             AddNextState<AIStateIdleComp>();
@@ -70,7 +72,7 @@ public class HamsterControllerComp : DamagableAiStateMachine<HamsterControllerMQ
                 AddNextState<AIStatePatrolComp>();
                 GoToNextState();
                 
-                Room.GetCollidersById(Id).FirstOrDefault()?.Active = false;
+                IsImmune = true;
             }
         }
         

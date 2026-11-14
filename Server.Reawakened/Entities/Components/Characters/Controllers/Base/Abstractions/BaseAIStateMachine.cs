@@ -87,6 +87,8 @@ public abstract class BaseAIStateMachine<T> : Component<T>, IAIStateMachine
         if (Room == null || Room.IsObjectKilled(Id))
             return;
 
+        var time = Room.Time;
+        
         foreach (var state in CurrentStates)
         {
             Logger.LogTrace(
@@ -97,8 +99,6 @@ public abstract class BaseAIStateMachine<T> : Component<T>, IAIStateMachine
             state.StopState();
         }
 
-        var time = Room.Time;
-        
         var syncEvent2 = new AiStateSyncEvent()
         {
             InStates = GetGameComponents(CurrentStates, 0),

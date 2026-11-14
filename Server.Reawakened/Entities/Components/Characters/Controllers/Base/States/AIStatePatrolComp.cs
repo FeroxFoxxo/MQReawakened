@@ -1,5 +1,8 @@
 ﻿using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Abstractions;
+using Server.Reawakened.Entities.Components.Characters.Controllers.Drake.States;
+using Server.Reawakened.Entities.Components.Characters.Controllers.Hamster;
 using Server.Reawakened.Entities.Components.Characters.Controllers.Hamster.States;
+using Server.Reawakened.Entities.Components.Characters.Controllers.Spiker;
 using Server.Reawakened.Entities.Components.Characters.Controllers.Spiker.States;
 using Server.Reawakened.Players;
 using Server.Reawakened.Rooms.Extensions;
@@ -106,11 +109,11 @@ public class AIStatePatrolComp : BaseAIState<AIStatePatrol, AI_State_Patrol>
         MathUtils.CriticallyDampedSpring1D(springK, inPosition.x, currentPosition.x, ref _dampingVelocity.x, ref dampenedPosition.x, Room.DeltaTime);
         MathUtils.CriticallyDampedSpring1D(springK, inPosition.y, currentPosition.y, ref _dampingVelocity.y, ref dampenedPosition.y, Room.DeltaTime);
         MathUtils.CriticallyDampedSpring1D(springK, inPosition.z, currentPosition.z, ref _dampingVelocity.z, ref dampenedPosition.z, Room.DeltaTime);
-        
-        Position.SetPosition(dampenedPosition);
     
-        StateMachine.SetForceDirectionX(State.GetDirection());
+        Position.SetPosition(dampenedPosition);
 
+        StateMachine.SetForceDirectionX(State.GetDirection());
+        
         if (DetectionAiState == null)
             return;
 
@@ -135,12 +138,17 @@ public class AIStatePatrolComp : BaseAIState<AIStatePatrol, AI_State_Patrol>
 
             switch (attackComp)
             {
-                case AIStateHamsterAttackComp comp:
-                    Room.GetCollidersById(Id).FirstOrDefault()?.Active = true;
-                    comp.TargetPosition = player.TempData.Position.ToVector3();
+                case AIStateHamsterAttackComp hamster:
+                    if (hamster.StateMachine is HamsterControllerComp hamsterState)
+                        hamsterState.IsImmune = false;
+                    hamster.TargetPosition = player.TempData.Position.ToVector3();
                     break;
-                case AIStateSpikerAttackComp:
-                    Room.GetCollidersById(Id).FirstOrDefault()?.Active = true;
+                case AIStateSpikerAttackComp spiker:
+                    if (spiker.StateMachine is SpikerComponentComp spikerState)
+                        spikerState.IsImmune = false;
+                    break;
+                case AIStateDrakePlacementComp drake:
+                    drake.PlacementPosition = player.TempData.Position.ToVector3();
                     break;
             }
         }

@@ -1,6 +1,7 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
 using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Abstractions;
+using Server.Reawakened.Entities.Components.Characters.Controllers.Base.States;
 
 namespace Server.Reawakened.Entities.Components.Characters.Controllers.Drake.States;
 public class AIStateDrakePlacementComp : BaseAIState<AIStateDrakePlacement, AI_State_DrakePlacement>
@@ -16,7 +17,7 @@ public class AIStateDrakePlacementComp : BaseAIState<AIStateDrakePlacement, AI_S
     private readonly vector3 _dampingVelocity = new (0f, 0f, 0f);
 
     // TODO!!!
-    public readonly vector3 PlacementPosition = new (0f, 0f, 0f);
+    public vector3 PlacementPosition = new (0f, 0f, 0f);
 
     public override AI_State_DrakePlacement GetInitialAIState() => new(
         [
@@ -61,5 +62,25 @@ public class AIStateDrakePlacementComp : BaseAIState<AIStateDrakePlacement, AI_S
         (StateMachine as DrakeEnemyControllerComp).IsSpinning = true;
     }
 
-    public void AttackLoop() => Logger.LogTrace("AttackLoop called for {StateName} on {PrefabName}", StateName, PrefabName);
+    public void AttackLoop()
+    {
+        Logger.LogTrace("AttackLoop called for {StateName} on {PrefabName}", StateName, PrefabName);
+
+        var attack = Room.GetEntityFromId<AIStateDrakeAttackComp>(Id);
+        var patrol = Room.GetEntityFromId<AIStatePatrolComp>(Id);
+        
+        if (patrol != null && patrol.GetClosestPlayer() != null)
+        {
+            attack.PlacementPosition = PlacementPosition;
+            attack.TargetPosition = patrol.GetClosestPlayer().TempData.Position.ToVector3();
+            
+            AddNextState<AIStateDrakeAttackComp>();
+            GoToNextState();
+        }
+        else
+        {
+            AddNextState<AIStateMoveComp>();
+            GoToNextState();
+        }
+    }
 }

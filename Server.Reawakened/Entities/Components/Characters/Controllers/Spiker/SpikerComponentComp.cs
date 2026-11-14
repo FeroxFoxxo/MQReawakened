@@ -19,6 +19,8 @@ public class SpikerComponentComp : DamagableAiStateMachine<SpikerControllerMQR>
     public bool StartIdle => ComponentData.StartIdle;
     public float TimeToDirtFXInTaunt => ComponentData.TimeToDirtFXInTaunt;
 
+    public bool IsImmune = false;
+    
     private AIStatePatrolComp _patrol;
 
     private bool _hasStarted = false;
@@ -27,7 +29,7 @@ public class SpikerComponentComp : DamagableAiStateMachine<SpikerControllerMQR>
     {
         SetupStateVariables();
 
-        Room.GetCollidersById(Id).FirstOrDefault()?.Active = false;
+        IsImmune = true;
         
         if (StartIdle)
             AddNextState<AIStateIdleComp>();
@@ -59,7 +61,7 @@ public class SpikerComponentComp : DamagableAiStateMachine<SpikerControllerMQR>
                 AddNextState<AIStateIdleComp>();
                 GoToNextState();
                 
-                Room.GetCollidersById(Id).FirstOrDefault()?.Active = false;
+                IsImmune = true;
             }
         }
         
