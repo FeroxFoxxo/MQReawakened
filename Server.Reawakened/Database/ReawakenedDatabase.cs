@@ -7,6 +7,7 @@ using Server.Reawakened.Database.Users;
 using Server.Reawakened.Players.Models.Character;
 using Server.Reawakened.Players.Models.Misc;
 using Server.Reawakened.Players.Models.Pets;
+using Server.Reawakened.Players.Models.Protocol;
 using Server.Reawakened.Players.Models.System;
 
 namespace Server.Reawakened.Database;
@@ -51,5 +52,6 @@ public class ReawakenedDatabase(DbContextOptions<ReawakenedDatabase> options) : 
         modelBuilder.Entity<CharacterDbEntry>().Property(e => e.CurrentCollectedDailies).HasConversion(new CustomConverter<Dictionary<string, DailiesModel>>());
         modelBuilder.Entity<CharacterDbEntry>().Property(e => e.CurrentQuestDailies).HasConversion(new CustomConverter<Dictionary<string, DailiesModel>>());
         modelBuilder.Entity<CharacterDbEntry>().Property(e => e.Pets).HasConversion(new CustomConverter<Dictionary<string, PetModel>>());
+        modelBuilder.Entity<CharacterDbEntry>().Property(e => e.ChatFavorites).HasConversion(new CustomConverter<Dictionary<int, SentenceModel>>());
     }
 }
