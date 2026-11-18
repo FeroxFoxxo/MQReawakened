@@ -15,7 +15,7 @@ namespace Server.Reawakened.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "8.0.6");
+            modelBuilder.HasAnnotation("ProductVersion", "10.0.11");
 
             modelBuilder.Entity("Server.Reawakened.Database.Characters.CharacterDbEntry", b =>
                 {
@@ -48,6 +48,9 @@ namespace Server.Reawakened.Migrations
                         .HasColumnType("REAL");
 
                     b.Property<string>("CharacterName")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ChatFavorites")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("CollectedIdols")

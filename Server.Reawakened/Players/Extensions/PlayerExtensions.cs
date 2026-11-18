@@ -2,6 +2,8 @@
 using ICSharpCode.SharpZipLib.Zip.Compression;
 using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 using Microsoft.Extensions.Logging;
+using Server.Base.Accounts.Extensions;
+using Server.Base.Logging;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Core.Enums;
 using Server.Reawakened.Database.Characters;
@@ -512,5 +514,69 @@ public static class PlayerExtensions
     {
         player.Character.Write.Allegiance = tribe;
         player.SendXt("cC", (int)tribe, player.Character.Id);
+    }
+
+    public static void SendCannedChat(this Player player, CannedChatChannel channelType, int chatPhraseId, int secondaryPhraseId, int itemId, string recipientName, ItemCatalog itemCatalog, ILogger<CannedChatDictionary> logger, ServerRConfig config, CannedChatDictionary cannedChatDict)
+    {
+        if (!config.Chat)
+        {
+            player.SendWarningMessage("chat");
+            return;
+        }
+
+        if (player.Account.IsMuted())
+        {
+            player.Chat(CannedChatChannel.Tell, "Console", "You are muted" + player.Account.FormatMuteTime() + ".");
+            return;
+        }
+
+        var sb = new SeparatedStringBuilder(' ');
+
+        if (!string.IsNullOrEmpty(cannedChatDict.GetDialogById(chatPhraseId)))
+            sb.Append(cannedChatDict.GetDialogById(chatPhraseId));
+
+        if (!string.IsNullOrEmpty(cannedChatDict.GetDialogById(secondaryPhraseId)))
+            sb.Append(cannedChatDict.GetDialogById(secondaryPhraseId));
+
+        if (itemCatalog.GetItemFromId(itemId) != null)
+            sb.Append(itemCatalog.GetItemFromId(itemId).ItemName);
+
+        switch (channelType)
+        {
+            case CannedChatChannel.Speak:
+                player.Room.Chat(channelType, player.Character.CharacterName, sb.ToString());
+                break;
+
+            case CannedChatChannel.Group:
+                foreach (
+                    var client in
+                        from client in player.TempData.Group.GetMembers()
+                        select client
+                    )
+                    client.Chat(channelType, player.Character.CharacterName, sb.ToString());
+                break;
+
+            case CannedChatChannel.Trade:
+                if (player.Room.LevelInfo.Type == LevelType.City || player.Room.LevelInfo.Type == LevelType.Highway ||
+                    player.Room.LevelInfo.Type == LevelType.HighwayHub)
+                    player.Room.Chat(channelType, player.Character.CharacterName, sb.ToString());
+                break;
+
+            case CannedChatChannel.Tell:
+            case CannedChatChannel.Reply:
+                if (!string.IsNullOrEmpty(recipientName))
+                {
+                    var recipient = player.PlayerContainer.GetPlayerByName(recipientName);
+
+                    if (recipient != null && !recipient.Character.Blocked.Contains(player.CharacterId))
+                        player.Chat(channelType, player.Character.CharacterName, sb.ToString(), recipientName);
+                }
+                break;
+
+            default:
+                logger.LogError("No chat handler found for {ChannelType} to '{Recipient}' for '{Message}'",
+                    channelType, recipientName, sb.ToString());
+                break;
+        }
     }
 }

@@ -3,6 +3,7 @@ using Server.Base.Core.Models;
 using Server.Reawakened.Players.Models.Character;
 using Server.Reawakened.Players.Models.Misc;
 using Server.Reawakened.Players.Models.Pets;
+using Server.Reawakened.Players.Models.Protocol;
 using Server.Reawakened.Players.Models.System;
 
 namespace Server.Reawakened.Database.Characters;
@@ -85,6 +86,7 @@ public class CharacterDbEntry : PersistantData
     public int AbilityPower { get; set; }
     public Dictionary<string, ReportModel> Reports { get; set; }
     public int Tokens { get; set; }
+    public Dictionary<int, SentenceModel> ChatFavorites { get; set; }
 
     // Character Model
     public Dictionary<int, List<int>> CollectedIdols { get; set; }
@@ -160,6 +162,7 @@ public class CharacterDbEntry : PersistantData
         Muted = [];
         Reports = [];
         Tokens = 5;
+        ChatFavorites = [];
 
         // Character Model
         CollectedIdols = [];

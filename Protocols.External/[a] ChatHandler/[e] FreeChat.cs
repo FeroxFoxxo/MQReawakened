@@ -65,10 +65,14 @@ public class FreeChat : ExternalProtocol
                 break;
 
             case CannedChatChannel.Trade:
-                Player.Room.Chat(channelType, Player.Character.CharacterName, chatMessage);
+                if (Player.Room.LevelInfo.Type == LevelType.City || Player.Room.LevelInfo.Type == LevelType.Highway ||
+                    Player.Room.LevelInfo.Type == LevelType.HighwayHub)
+                {
+                    Player.Room.Chat(channelType, Player.Character.CharacterName, chatMessage);
 
-                // Sends a chat message to Discord
-                DiscordHandler.SendMessage(DiscordRwConfig.GlobalChannelId, Player.Character.CharacterName, chatMessage);
+                    // Sends a chat message to Discord
+                    DiscordHandler.SendMessage(DiscordRwConfig.GlobalChannelId, Player.Character.CharacterName, chatMessage);
+                }
                 break;
 
             case CannedChatChannel.Tell:
