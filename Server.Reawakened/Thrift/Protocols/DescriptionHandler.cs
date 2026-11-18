@@ -44,7 +44,7 @@ public class DescriptionHandler(ILogger<DescriptionHandler> logger, WorldGraph w
 
         var portalConditions = new List<A2m.Server.Protocol.PortalCondition>();
 
-        if (portalInfo != null)
+        if (portalInfo != null && newLevel.UseconditionID != 87)
         {
             var requiredQuestNames = new List<int>();
             var requiredItemNames = new List<int>();

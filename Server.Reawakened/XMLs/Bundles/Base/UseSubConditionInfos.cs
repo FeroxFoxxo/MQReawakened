@@ -67,6 +67,9 @@ public class UseSubConditionInfos : UseSubConditionInfoXML, IBundledXml
     public bool IsSatisfied(Player player, UseSubConditionInfo useSubConditionInfo)
     {
         var canUsePortal = CheckRequiredLevels(player, useSubConditionInfo);
+
+        if (useSubConditionInfo.SubConditionID == 87)
+            return true;
         
         if (canUsePortal)
             canUsePortal = CheckRequiredItems(player, useSubConditionInfo);
