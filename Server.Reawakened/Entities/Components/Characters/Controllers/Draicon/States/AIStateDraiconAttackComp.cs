@@ -1,6 +1,8 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
 using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Abstractions;
+using Server.Reawakened.Rooms.Models.Planes;
+using UnityEngine;
 using static AIStateDraiconAttack;
 
 namespace Server.Reawakened.Entities.Components.Characters.Controllers.Draicon.States;
@@ -20,8 +22,22 @@ public class AIStateDraiconAttackComp : BaseAIState<AIStateDraiconAttack, AI_Sta
     private readonly vector3 _dampingVelocity = new(0f, 0f, 0f);
 
     public vector3 TargetPosition = new(0f, 0f, 0f);
+    
+    private float _projectileAmount = 0;
 
-    public override AI_State_DraiconAttack GetInitialAIState() => new(
+    public float EndTime;
+
+    public override AI_State_DraiconAttack GetInitialAIState()
+    {
+        _projectileAmount = ProjectileAmount switch
+        {
+            ProjectilePatternType.Projectile8 => 8,
+            ProjectilePatternType.Projectile12 => 12,
+            ProjectilePatternType.Projectile16 => 16,
+            _ => _projectileAmount
+        };
+        
+        return new AI_State_DraiconAttack(
         [
             new AIDataEvent(0f, "Aggro"),
             new AIDataEvent(DelayBeforeFiring, "Attack"),
@@ -30,14 +46,22 @@ public class AIStateDraiconAttackComp : BaseAIState<AIStateDraiconAttack, AI_Sta
             new AIDataEvent(0f, "Flee"),
             new AIDataEvent(ReloadDuration, "Reload")
         ], MovementSpeed);
+    }
 
     public override ExtLevelEditor.ComponentSettings GetSettings() => [
         Position.X.ToString(), Position.Y.ToString(), Position.Z.ToString(),
         TargetPosition.x.ToString(), TargetPosition.y.ToString(), TargetPosition.z.ToString()
     ];
 
-    public override void OnAIStateIn() =>
+    public override void OnAIStateIn()
+    {
+        var moveDuration = (TargetPosition - Position.ToVector3()).GetLength() / MovementSpeed;
+        var fleeDuration = (TargetPosition - Position.ToVector3()).GetLength() / MovementSpeed;
+        
+        EndTime = Room.Time + moveDuration + DelayBeforeFiring + ReloadDuration + AttackRecoveryDuration + fleeDuration;
+        
         State.Init(Position.ToVector3(), TargetPosition);
+    }
 
     public override void Execute()
     {
@@ -67,6 +91,25 @@ public class AIStateDraiconAttackComp : BaseAIState<AIStateDraiconAttack, AI_Sta
         Logger.LogTrace("Fire called for {StateName} on {PrefabName}", StateName, PrefabName);
 
         (StateMachine as DraiconEnemyControllerComp).IsImmune = false;
+        
+        var firstAngleOffset = 2f;
+        var angleOffset = 45f;
+        
+        for (var i = 0; i < _projectileAmount; i++)
+        {
+            var currentAngle = firstAngleOffset + i * angleOffset;
+            var angleInRadians = currentAngle * Mathf.Deg2Rad;
+
+            var facingDir = StateMachine.GetForceDirectionX();
+            var projectileDirection = new Vector2(
+                Mathf.Cos(angleInRadians) * facingDir,
+                Mathf.Sin(angleInRadians)
+            );
+
+            var projectileSpeed = projectileDirection * ProjectileSpeed;
+
+            EnemyController.FireProjectile(Position, projectileSpeed, false);
+        }
     }
 
     public void Resolution() => Logger.LogTrace("Resolution called for {StateName} on {PrefabName}", StateName, PrefabName);

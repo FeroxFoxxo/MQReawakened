@@ -216,7 +216,7 @@ public abstract class BaseEnemy : IDestructible
         var bottomY = offset.y * EnemyController.Scale.Y;
 
         // Checks if the enemy is a ceiling enemy and adjusts hitbox accordingly
-        var rect = Status.Scale.Y < 0
+        var rect = Status.Scale.Y < 0 && PrefabName.Contains("Ceiling")
             ? new RectModel(bottomX - width/2, bottomY - height, width, height)
             : new RectModel(bottomX - width/2, bottomY, width, height);
 
@@ -287,7 +287,7 @@ public abstract class BaseEnemy : IDestructible
                     Damage(player, damage);
                     break;
                 case ItemEffectType.StunStatusEffect:
-                    StartActing(ActingStateType.Stunned, itemEffects.Find(x => x.Type == ItemEffectType.StunStatusEffect).Duration);
+                    StartActing(ActingStateType.Stunned, itemEffect.Duration);
                     break;
                 case ItemEffectType.Invalid:
                 case ItemEffectType.Unknown:

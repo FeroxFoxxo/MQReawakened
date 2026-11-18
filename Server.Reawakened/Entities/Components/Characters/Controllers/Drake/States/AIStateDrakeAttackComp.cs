@@ -22,7 +22,7 @@ public class AIStateDrakeAttackComp : BaseAIState<AIStateDrakeAttack, AI_State_D
     // TODO!!!
     public vector3 TargetPosition = new(0f, 0f, 0f);
     
-    private float _endTime = 0f;
+    public float EndTime = 0f;
 
     public override AI_State_DrakeAttack GetInitialAIState() => new (
         [
@@ -44,12 +44,12 @@ public class AIStateDrakeAttackComp : BaseAIState<AIStateDrakeAttack, AI_State_D
     public override void InitializeComponent()
     {
         base.InitializeComponent();
-        _endTime = -1;
+        EndTime = -1;
     }
 
     public override void OnAIStateIn()
     {
-        _endTime = Room.Time + 7f;
+        EndTime = Room.Time + AttackOutAnimDuration + StunDuration + TauntAnimDuration + 2f;
         
         State.Init(Position.ToVector3(), PlacementPosition, TargetPosition);
     }
@@ -70,12 +70,6 @@ public class AIStateDrakeAttackComp : BaseAIState<AIStateDrakeAttack, AI_State_D
 
             Position.SetPosition(dampenedPosition);
             StateMachine.SetForceDirectionX(State.Direction);
-        }
-        
-        if (Room.Time >= _endTime)
-        {
-            AddNextState<AIStateMoveComp>();
-            GoToNextState();
         }
     }
 

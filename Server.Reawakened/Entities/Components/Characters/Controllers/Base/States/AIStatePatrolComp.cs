@@ -1,4 +1,5 @@
 ﻿using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Abstractions;
+using Server.Reawakened.Entities.Components.Characters.Controllers.Draicon.States;
 using Server.Reawakened.Entities.Components.Characters.Controllers.Drake.States;
 using Server.Reawakened.Entities.Components.Characters.Controllers.Hamster;
 using Server.Reawakened.Entities.Components.Characters.Controllers.Hamster.States;
@@ -44,10 +45,10 @@ public class AIStatePatrolComp : BaseAIState<AIStatePatrol, AI_State_Patrol>
 
     public override void DelayedComponentInitialization()
     {
-        base.InitializeComponent();
+        base.DelayedComponentInitialization();
 
-        _spawnX = Position.X;
-        _spawnY = Position.Y;
+        _spawnX = Position.X + StartPatrol2.x;
+        _spawnY = Position.Y + StartPatrol2.y;
         _spawnZ = Position.Z;
     }
 
@@ -139,16 +140,19 @@ public class AIStatePatrolComp : BaseAIState<AIStatePatrol, AI_State_Patrol>
             switch (attackComp)
             {
                 case AIStateHamsterAttackComp hamster:
-                    if (hamster.StateMachine is HamsterControllerComp hamsterState)
+                    if (StateMachine is HamsterControllerComp hamsterState)
                         hamsterState.IsImmune = false;
                     hamster.TargetPosition = player.TempData.Position.ToVector3();
                     break;
-                case AIStateSpikerAttackComp spiker:
-                    if (spiker.StateMachine is SpikerComponentComp spikerState)
+                case AIStateSpikerAttackComp:
+                    if (StateMachine is SpikerComponentComp spikerState)
                         spikerState.IsImmune = false;
                     break;
                 case AIStateDrakePlacementComp drake:
                     drake.PlacementPosition = player.TempData.Position.ToVector3();
+                    break;
+                case AIStateDraiconAttackComp draicon:
+                    draicon.TargetPosition = player.TempData.Position.ToVector3();
                     break;
             }
         }

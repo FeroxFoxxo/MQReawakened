@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Abstractions;
 using Server.Reawakened.Entities.DataComponentAccessors.Spiderling.States;
+using Server.Reawakened.Rooms.Models.Planes;
 using UnityEngine;
 
 namespace Server.Reawakened.Entities.Components.Characters.Controllers.Spiderling.States;
@@ -71,7 +72,10 @@ public class AIStateSpiderlingAttackComp : BaseAIState<AIStateSpiderlingAttackMQ
 
             var projectileSpeed = projectileDirection * ProjectileSpeed;
 
-            EnemyController.FireProjectile(Position, projectileSpeed, true);
+            EnemyController.FireProjectile(
+                new Vector3Model(Position.X, Position.Y + 1, Position.Z),
+                projectileSpeed,
+                true);
         }
         
         _prjTime = -1;

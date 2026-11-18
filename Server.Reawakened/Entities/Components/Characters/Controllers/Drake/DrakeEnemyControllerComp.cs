@@ -16,7 +16,7 @@ public class DrakeEnemyControllerComp : DamagableAiStateMachine<DrakeEnemyContro
      * AIStateStunned
     */
 
-    public bool IsImmune = false;
+    public bool IsImmune = true;
     public bool IsSpinning = false;
     
     private AIStatePatrolComp _patrol;
@@ -28,8 +28,6 @@ public class DrakeEnemyControllerComp : DamagableAiStateMachine<DrakeEnemyContro
         SetupStateVariables();
 
         AddNextState<AIStatePatrolComp>();
-        
-        IsImmune = true;
     }
 
     public override void Update()
@@ -37,10 +35,10 @@ public class DrakeEnemyControllerComp : DamagableAiStateMachine<DrakeEnemyContro
         if (Room == null)
             return;
 
-        if (CurrentStates.Length <= 0)
+        if (CurrentState == null)
             GoToNextState();
 
-        else if (!_hasStarted && CurrentStates.Any(state => state is AIStatePatrolComp) && _patrol is not null)
+        else if (!_hasStarted && CurrentState is AIStatePatrolComp && _patrol is not null)
         {
             if (_patrol.GetClosestPlayer() is not null)
             {
@@ -49,11 +47,29 @@ public class DrakeEnemyControllerComp : DamagableAiStateMachine<DrakeEnemyContro
             }
         }
 
-        else if (CurrentStates.OfType<AIStateMoveComp>().FirstOrDefault() is AIStateMoveComp move)
+        else if (CurrentState is AIStateDrakeAttackComp attack)
+        {
+            if (Room.Time >= attack.EndTime)
+            {
+                AddNextState<AIStateMoveComp>();
+                GoToNextState();
+            }
+        }
+        
+        else if (CurrentState is AIStateMoveComp move)
         {
             if (Room.Time >= move.EndTime)
             {
                 AddNextState<AIStatePatrolComp>();
+                GoToNextState();
+            }
+        }
+        
+        else if (CurrentState is AIStateStunnedComp stunned)
+        {
+            if (Room.Time >= stunned.WaitTime)
+            {
+                AddNextState<AIStateMoveComp>();
                 GoToNextState();
             }
         }
@@ -77,7 +93,7 @@ public class DrakeEnemyControllerComp : DamagableAiStateMachine<DrakeEnemyContro
         if (isDead)
             return;
 
-        if (CurrentStates.Any(state => state is AIStatePatrolComp) && _patrol is not null &&
+        if (CurrentState is AIStatePatrolComp && _patrol is not null &&
             Room.Time - _patrol.DetectionStartTime >= _patrol.MinimumTimeBeforeDetection)
             _patrol.StartDetectedState();
     }

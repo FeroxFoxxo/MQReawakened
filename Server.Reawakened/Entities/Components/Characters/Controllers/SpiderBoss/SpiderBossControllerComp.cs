@@ -91,7 +91,7 @@ public class SpiderBossControllerComp : BaseAIStateMachine<SpiderBossController>
         if (isDead || Room == null || Teaser)
             return;
 
-        if (CurrentStates.Any(s => s is AIStateSpiderPhaseTransComp))
+        if (CurrentState is AIStateSpiderPhaseTransComp)
             return;
 
         if (EnemyData == null || EnemyData.MaxHealth <= 0)
@@ -134,7 +134,7 @@ public class SpiderBossControllerComp : BaseAIStateMachine<SpiderBossController>
 
     private bool ShouldTriggerTeaserRetreat()
     {
-        if (CurrentStates.Any(s => s is AIStateSpiderTeaserRetreatComp))
+        if (CurrentState is AIStateSpiderTeaserRetreatComp)
             return false;
 
         if (_teaserStartTime >= 0 && TeaserEndTimeLimit > 0 && Room.Time - _teaserStartTime >= TeaserEndTimeLimit)
