@@ -4,6 +4,7 @@ using Server.Base.Timers.Services;
 using Server.Reawakened.Chat.Commands.Item;
 using Server.Reawakened.Database.Characters;
 using Server.Reawakened.Players.Helpers;
+using Server.Reawakened.Players.Models.Protocol;
 using Server.Reawakened.Rooms.Models.Timers;
 using Server.Reawakened.XMLs.Bundles.Base;
 
@@ -56,6 +57,7 @@ public class CharacterDataModel(CharacterDbEntry entry, GameVersion version) : C
     public int AbilityPower => Write.AbilityPower;
     public Dictionary<string, ReportModel> Reports => Write.Reports;
     public int Tokens => Write.Tokens;
+    public Dictionary<int, SentenceModel> ChatFavorites => Write.ChatFavorites;
 
     public void SetPlayerData(Player player)
     {

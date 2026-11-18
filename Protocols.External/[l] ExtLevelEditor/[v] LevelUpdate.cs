@@ -67,6 +67,9 @@ public class RoomUpdate : ExternalProtocol
                 Player.Character.QuestLog.All(q => q.Id != Player.Character.ActiveQuestId))
                 Player.Character.Write.ActiveQuestId = 0;
             
+            // Chat Favorites
+            SendXt("as", GetAllFavorites());
+            
             Player.TempData.FirstLogin = false;
         }
         else
@@ -214,5 +217,22 @@ public class RoomUpdate : ExternalProtocol
             
             TopScoresHandler.Create(gameId, (int)leaderboardScore, 0, DateTime.UtcNow, Player.Character.Id, ScoreType.AllTime);
         }
+    }
+
+    private string GetAllFavorites()
+    {
+        var sb = new SeparatedStringBuilder('#');
+
+        foreach (var favorite in Player.Character.ChatFavorites)
+        {
+            var sb2 = new SeparatedStringBuilder('$');
+            
+            sb2.Append(favorite.Key);
+            sb2.Append(favorite.Value.ToString());
+            
+            sb.Append(sb2.ToString());
+        }
+        
+        return sb.ToString();
     }
 }
