@@ -350,37 +350,6 @@ $env:DEFAULT_DOB = $DefaultDOB
 $env:SERVER_ADDRESS = $ServerAddress
 $env:GAME_PORT = $GamePort
 
-# --- NATIVE SIGNAL DEFINITION ---
-$SigHandler = Add-Type -MemberDefinition @'
-    [DllImport("kernel32.dll")]
-    public static extern bool GenerateConsoleCtrlEvent(uint dwCtrlEvent, uint dwProcessGroupId);
-'@ -Name "Kernel32" -Namespace "Win32" -PassThru
-
-# --- UPDATED LAUNCH LOOP ---
-Write-Host "`n===============================================" -ForegroundColor Cyan
-Write-Host " SERVER IS RUNNING" -ForegroundColor Green
-Write-Host " PRESS [ENTER] IN THIS WINDOW TO SHUTDOWN" -ForegroundColor Yellow
-Write-Host "===============================================" -ForegroundColor Cyan
-
 # Start the server
 $ServerProcess = Start-Process -FilePath "dotnet" -ArgumentList "Init.dll" `
                  -WorkingDirectory $BuildOutputDir -PassThru -NoNewWindow
-
-while (!$ServerProcess.HasExited) {
-    if ([Console]::KeyAvailable) {
-        $key = [Console]::ReadKey($true)
-		if ($key.Key -eq 'Enter') {
-            Write-Host "`n[shutdown] Stopping..." -ForegroundColor Cyan
-            [Win32.Kernel32]::GenerateConsoleCtrlEvent(0, 0) | Out-Null
-            
-            if (!$ServerProcess.WaitForExit(5000)) {
-                taskkill /PID $ServerProcess.Id /F /T | Out-Null
-            }
-
-            Write-Host "[success] Done. Closing..." -ForegroundColor Green
-            Start-Sleep -Seconds 2
-            [System.Diagnostics.Process]::GetCurrentProcess().Kill()
-        }
-    }
-    Start-Sleep -Milliseconds 200
-}
