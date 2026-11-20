@@ -13,7 +13,7 @@ public class SaveFavorite : ExternalProtocol
         var specificId = int.Parse(message[6]);
 
         if (Player.Character.ChatFavorites == null)
-            Player.Character.Write.ChatFavorites = new Dictionary<int, SentenceModel>();
+            Player.Character.Write.ChatFavorites = [];
         
         if (Player.Character.ChatFavorites != null && Player.Character.ChatFavorites.Count < 9)
         {
