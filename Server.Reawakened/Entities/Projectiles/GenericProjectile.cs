@@ -3,6 +3,11 @@ using Microsoft.Extensions.Logging;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Core.Enums;
 using Server.Reawakened.Entities.Colliders;
+using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Abstractions;
+using Server.Reawakened.Entities.Components.Characters.Controllers.Draicon;
+using Server.Reawakened.Entities.Components.Characters.Controllers.Drake;
+using Server.Reawakened.Entities.Components.Characters.Controllers.Hamster;
+using Server.Reawakened.Entities.Components.Characters.Controllers.Spiker;
 using Server.Reawakened.Entities.Projectiles.Abstractions;
 using Server.Reawakened.Players;
 using Server.Reawakened.Rooms.Extensions;
@@ -59,9 +64,17 @@ public class GenericProjectile : BaseProjectile
     {
         var hit = new ProjectileHit_SyncEvent(new SyncEvent(_gameObjectId, SyncEvent.EventType.ProjectileHit, Room.Time));
 
+        var enemy = Room.GetEntityFromId<IAIStateMachine>(hitGoID);
+        var immune = enemy switch
+        {
+            DrakeEnemyControllerComp drake => drake.IsImmune,
+            DraiconEnemyControllerComp draicon => draicon.IsImmune,
+            _ => false
+        };
+        
         hit.EventDataList.Add(int.Parse(ProjectileId));
         hit.EventDataList.Add(hitGoID);
-        hit.EventDataList.Add(0);
+        hit.EventDataList.Add(immune ? 1 : 0);
         hit.EventDataList.Add(Position.X);
         hit.EventDataList.Add(Position.Y);
 

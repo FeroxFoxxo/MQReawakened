@@ -19,6 +19,8 @@ public class SpikerComponentComp : DamagableAiStateMachine<SpikerControllerMQR>
     public bool StartIdle => ComponentData.StartIdle;
     public float TimeToDirtFXInTaunt => ComponentData.TimeToDirtFXInTaunt;
 
+    public bool IsImmune = false;
+    
     private AIStatePatrolComp _patrol;
 
     private bool _hasStarted = false;
@@ -27,7 +29,7 @@ public class SpikerComponentComp : DamagableAiStateMachine<SpikerControllerMQR>
     {
         SetupStateVariables();
 
-        Room.GetCollidersById(Id).FirstOrDefault()?.Active = false;
+        IsImmune = true;
         
         if (StartIdle)
             AddNextState<AIStateIdleComp>();
@@ -40,10 +42,10 @@ public class SpikerComponentComp : DamagableAiStateMachine<SpikerControllerMQR>
         if (Room == null)
             return;
 
-        if (CurrentStates.Length <= 0)
+        if (CurrentState == null)
             GoToNextState();
 
-        else if (!_hasStarted && CurrentStates.Any(state => state is AIStateIdleComp) && _patrol is not null)
+        else if (!_hasStarted && CurrentState is AIStateIdleComp && _patrol is not null)
         {
             if (_patrol.GetClosestPlayer() is not null)
             {
@@ -52,18 +54,18 @@ public class SpikerComponentComp : DamagableAiStateMachine<SpikerControllerMQR>
             }
         }
 
-        else if (CurrentStates.OfType<AIStateWaitComp>().FirstOrDefault() is AIStateWaitComp wait)
+        else if (CurrentState is AIStateWaitComp wait)
         {
             if (Room.Time >= wait.WaitTime)
             {
                 AddNextState<AIStateIdleComp>();
                 GoToNextState();
                 
-                Room.GetCollidersById(Id).FirstOrDefault()?.Active = false;
+                IsImmune = true;
             }
         }
         
-        else if (CurrentStates.OfType<AIStateStunnedComp>().FirstOrDefault() is AIStateStunnedComp stunned)
+        else if (CurrentState is AIStateStunnedComp stunned)
         {
             if (Room.Time >= stunned.WaitTime)
             {
@@ -72,7 +74,7 @@ public class SpikerComponentComp : DamagableAiStateMachine<SpikerControllerMQR>
             }
         }
         
-        else if (CurrentStates.OfType<AIStateIdleComp>().FirstOrDefault() is AIStateIdleComp idle)
+        else if (CurrentState is AIStateIdleComp idle)
         {
             if (Room.Time >= idle.WaitTime)
             {
@@ -100,7 +102,7 @@ public class SpikerComponentComp : DamagableAiStateMachine<SpikerControllerMQR>
         if (isDead)
             return;
 
-        if (CurrentStates.Any(state => state is AIStateIdleComp or AIStatePatrolComp) && _patrol is not null &&
+        if (CurrentState is AIStateIdleComp or AIStatePatrolComp && _patrol is not null &&
             Room.Time - _patrol.DetectionStartTime >= _patrol.MinimumTimeBeforeDetection)
             _patrol.StartDetectedState();
     }

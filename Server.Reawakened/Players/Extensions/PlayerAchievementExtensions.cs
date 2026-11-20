@@ -1,5 +1,6 @@
 ﻿using Achievement.CharacterData;
 using Achievement.StaticData;
+using Server.Reawakened.Core.Enums;
 using Server.Reawakened.Database.Characters;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.XMLs.Abstractions.Extensions;
@@ -13,6 +14,9 @@ public static class PlayerAchievementExtensions
     public static void CheckAchievement(this Player player, AchConditionType achType, string[] toValidateOn,
         InternalAchievement internalAchievement, Microsoft.Extensions.Logging.ILogger logger, int count = 1)
     {
+        if (internalAchievement.ItemCatalog.Config.GameVersion <= GameVersion.vEarly2013)
+            return;
+        
         var shouldCheckDefault = true;
 
         foreach (var value in toValidateOn)

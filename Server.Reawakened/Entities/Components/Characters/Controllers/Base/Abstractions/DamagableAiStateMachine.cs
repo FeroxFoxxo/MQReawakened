@@ -5,19 +5,10 @@ public abstract class DamagableAiStateMachine<T> : BaseAIStateMachine<T>, IAIDam
 {
     public virtual void EnemyDamaged(bool isDead)
     {
+        if (isDead)
+            return;
+        
         AddNextState<AIStateStunnedComp>();
-
-        if (!isDead)
-        {
-            foreach (var aiState in CurrentStates)
-            {
-                if (typeof(AIStateStunnedComp).IsInstanceOfType(aiState))
-                    continue;
-
-                AddNextState(aiState.GetType());
-            }
-        }
-
         GoToNextState();
     }
 }

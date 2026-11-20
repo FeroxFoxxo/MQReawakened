@@ -7,6 +7,7 @@ using Server.Reawakened.Entities.Components.GameObjects.NPC;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Helpers;
+using Server.Reawakened.Players.Models.Protocol;
 using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
@@ -223,6 +224,9 @@ public class RoomUpdate : ExternalProtocol
     {
         var sb = new SeparatedStringBuilder('#');
 
+        if (Player.Character.ChatFavorites == null)
+            Player.Character.Write.ChatFavorites = [];
+        
         foreach (var favorite in Player.Character.ChatFavorites)
         {
             var sb2 = new SeparatedStringBuilder('$');

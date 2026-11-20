@@ -24,9 +24,9 @@ public class AIStateMoveComp : BaseAIState<AIStateMoveMQR, AI_State_Move>
 
     public override void OnAIStateIn()
     {
-        EndTime = Room.Time + 1f;
+        EndTime = Room.Time + (TargetPosition - Position.ToVector3()).GetLength() / MovementSpeed;
         
-        StateMachine.SetForceDirectionX(Convert.ToInt32(TargetPosition.x - Position.X));
+        StateMachine.SetForceDirectionX(Math.Sign(TargetPosition.x - Position.X));
         State.Init(Position.ToVector3(), TargetPosition);
     }
 

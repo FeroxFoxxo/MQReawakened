@@ -7,6 +7,10 @@ using Server.Base.Timers.Services;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Entities.Colliders;
 using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Abstractions;
+using Server.Reawakened.Entities.Components.Characters.Controllers.Draicon;
+using Server.Reawakened.Entities.Components.Characters.Controllers.Drake;
+using Server.Reawakened.Entities.Components.Characters.Controllers.Hamster;
+using Server.Reawakened.Entities.Components.Characters.Controllers.Spiker;
 using Server.Reawakened.Entities.Components.GameObjects.Hazards.Abstractions;
 using Server.Reawakened.Entities.Components.GameObjects.InterObjs;
 using Server.Reawakened.Entities.Components.GameObjects.InterObjs.Interfaces;
@@ -212,7 +216,7 @@ public abstract class BaseEnemy : IDestructible
         var bottomY = offset.y * EnemyController.Scale.Y;
 
         // Checks if the enemy is a ceiling enemy and adjusts hitbox accordingly
-        var rect = Status.Scale.Y < 0
+        var rect = Status.Scale.Y < 0 && PrefabName.Contains("Ceiling")
             ? new RectModel(bottomX - width/2, bottomY - height, width, height)
             : new RectModel(bottomX - width/2, bottomY, width, height);
 
@@ -225,12 +229,25 @@ public abstract class BaseEnemy : IDestructible
     {
         if (Room.IsObjectKilled(Id))
             return;
-
+        
+        var enemy = Room.GetEntityFromId<IAIStateMachine>(Id);
+        var immune = enemy switch
+        {
+            DrakeEnemyControllerComp drake => drake.IsImmune,
+            DraiconEnemyControllerComp draicon => draicon.IsImmune,
+            HamsterControllerComp hamster => hamster.IsImmune,
+            SpikerComponentComp spiker => spiker.IsImmune,
+            _ => false
+        };
+        
         // var resistance = GameFlow.StatisticData.GetValue(ItemEffectType.Defence, WorldStatisticsGroup.Enemy, Level);
 
         if (damage <= 0)
             damage = 1;
-
+        
+        if (immune)
+            damage = 0;
+        
         Health -= damage;
 
         Room.SendSyncEvent(new AiHealth_SyncEvent(Id.ToString(), Room.Time, Health, damage, 0,
@@ -270,7 +287,7 @@ public abstract class BaseEnemy : IDestructible
                     Damage(player, damage);
                     break;
                 case ItemEffectType.StunStatusEffect:
-                    StartActing(ActingStateType.Stunned, itemEffects.Find(x => x.Type == ItemEffectType.StunStatusEffect).Duration);
+                    StartActing(ActingStateType.Stunned, itemEffect.Duration);
                     break;
                 case ItemEffectType.Invalid:
                 case ItemEffectType.Unknown:
@@ -340,6 +357,16 @@ public abstract class BaseEnemy : IDestructible
         if (Room.IsObjectKilled(Id) || player == null)
             return;
 
+        var enemy = Room.GetEntityFromId<IAIStateMachine>(Id);
+        var immune = enemy switch
+        {
+            DrakeEnemyControllerComp drake => drake.IsImmune,
+            DraiconEnemyControllerComp draicon => draicon.IsImmune,
+            HamsterControllerComp hamster => hamster.IsImmune,
+            SpikerComponentComp spiker => spiker.IsImmune,
+            _ => false
+        };
+        
         if (player == null || !player.Character.Pets.TryGetValue(player.GetItemIdOfEquippedPet(), out var pet))
         {
             Logger.LogError("Could not find pet that damaged {PrefabName}! Returning...", PrefabName);
@@ -355,7 +382,10 @@ public abstract class BaseEnemy : IDestructible
         
         var damageValue = (int)(Mathf.Ceil(ratio / 10f) * 10f);
 
-        Room.SendSyncEvent(new AiHealth_SyncEvent(Id.ToString(), Room.Time, Health -= damageValue, damageValue, 1, 1, player.CharacterName, false, true));
+        if (immune)
+            damageValue = 0;
+        
+        Room.SendSyncEvent(new AiHealth_SyncEvent(Id.ToString(), Room.Time, Health -= damageValue, damageValue, defense, 1, player.CharacterName, false, true));
 
         NotifyDamaged(player);
     }
@@ -464,6 +494,17 @@ public abstract class BaseEnemy : IDestructible
     public virtual void OnCollideWithPlayer(Player player)
     {
         if (player.TempData.IsKnockedOut)
+            return;
+        
+        var enemy = Room.GetEntityFromId<IAIStateMachine>(Id);
+        var immune = enemy switch
+        {
+            HamsterControllerComp hamster => hamster.IsImmune,
+            SpikerComponentComp spiker => spiker.IsImmune,
+            _ => false
+        };
+
+        if (immune)
             return;
         
         if (Room.ContainsEnemy(Id))
