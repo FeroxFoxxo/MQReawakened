@@ -224,7 +224,7 @@ public class RoomUpdate : ExternalProtocol
     {
         var sb = new SeparatedStringBuilder('#');
 
-        if (Player.Character.ChatFavorites != null)
+        if (Player.Character.ChatFavorites == null)
             Player.Character.Write.ChatFavorites = [];
         
         foreach (var favorite in Player.Character.ChatFavorites)
