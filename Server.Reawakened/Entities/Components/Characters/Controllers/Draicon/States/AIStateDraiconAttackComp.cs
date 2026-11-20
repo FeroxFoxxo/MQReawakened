@@ -1,7 +1,6 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
 using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Abstractions;
-using Server.Reawakened.Rooms.Models.Planes;
 using UnityEngine;
 using static AIStateDraiconAttack;
 
@@ -25,7 +24,7 @@ public class AIStateDraiconAttackComp : BaseAIState<AIStateDraiconAttack, AI_Sta
     
     private float _projectileAmount = 0;
 
-    public float EndTime;
+    public float EndTime = 0f;
 
     public override AI_State_DraiconAttack GetInitialAIState()
     {
@@ -55,10 +54,7 @@ public class AIStateDraiconAttackComp : BaseAIState<AIStateDraiconAttack, AI_Sta
 
     public override void OnAIStateIn()
     {
-        var moveDuration = (TargetPosition - Position.ToVector3()).GetLength() / MovementSpeed;
-        var fleeDuration = (TargetPosition - Position.ToVector3()).GetLength() / MovementSpeed;
-        
-        EndTime = Room.Time + moveDuration + DelayBeforeFiring + ReloadDuration + AttackRecoveryDuration + fleeDuration;
+        EndTime = 0f;
         
         State.Init(Position.ToVector3(), TargetPosition);
     }
@@ -114,5 +110,10 @@ public class AIStateDraiconAttackComp : BaseAIState<AIStateDraiconAttack, AI_Sta
 
     public void Resolution() => Logger.LogTrace("Resolution called for {StateName} on {PrefabName}", StateName, PrefabName);
 
-    public void Flee() => Logger.LogTrace("Flee called for {StateName} on {PrefabName}", StateName, PrefabName);
+    public void Flee()
+    {
+        Logger.LogTrace("Flee called for {StateName} on {PrefabName}", StateName, PrefabName);
+        
+        EndTime = Room.Time + 2f;
+    }
 }

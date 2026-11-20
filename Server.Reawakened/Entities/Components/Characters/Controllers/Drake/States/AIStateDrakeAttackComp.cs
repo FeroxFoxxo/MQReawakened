@@ -1,7 +1,6 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
 using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Abstractions;
-using Server.Reawakened.Entities.Components.Characters.Controllers.Base.States;
 
 namespace Server.Reawakened.Entities.Components.Characters.Controllers.Drake.States;
 public class AIStateDrakeAttackComp : BaseAIState<AIStateDrakeAttack, AI_State_DrakeAttack>
@@ -34,22 +33,15 @@ public class AIStateDrakeAttackComp : BaseAIState<AIStateDrakeAttack, AI_State_D
             new AIDataEvent(TauntAnimDuration, "Taunt")
         ], FleeSpeed, RamSpeed);
 
-    public override ExtLevelEditor.ComponentSettings GetSettings() =>
-        [
-            Position.X.ToString(), Position.Y.ToString(), Position.Z.ToString(),
-            PlacementPosition.x.ToString(), PlacementPosition.y.ToString(), PlacementPosition.z.ToString(),
-            TargetPosition.x.ToString(), TargetPosition.y.ToString(), TargetPosition.z.ToString()
-        ];
+    public override ExtLevelEditor.ComponentSettings GetSettings() => [
+        Position.X.ToString(), Position.Y.ToString(), Position.Z.ToString(),
+        PlacementPosition.x.ToString(), PlacementPosition.y.ToString(), PlacementPosition.z.ToString(),
+        TargetPosition.x.ToString(), TargetPosition.y.ToString(), TargetPosition.z.ToString()
+    ];
     
-    public override void InitializeComponent()
-    {
-        base.InitializeComponent();
-        EndTime = -1;
-    }
-
     public override void OnAIStateIn()
     {
-        EndTime = Room.Time + AttackOutAnimDuration + StunDuration + TauntAnimDuration + 2f;
+        EndTime = 0f;
         
         State.Init(Position.ToVector3(), PlacementPosition, TargetPosition);
     }
@@ -94,5 +86,10 @@ public class AIStateDrakeAttackComp : BaseAIState<AIStateDrakeAttack, AI_State_D
         (StateMachine as DrakeEnemyControllerComp).IsImmune = true;
     }
 
-    public void Taunt() => Logger.LogTrace("Taunt called for {StateName} on {PrefabName}", StateName, PrefabName);
+    public void Taunt()
+    {
+        Logger.LogTrace("Taunt called for {StateName} on {PrefabName}", StateName, PrefabName);
+        
+        EndTime = Room.Time + 2f;
+    }
 }

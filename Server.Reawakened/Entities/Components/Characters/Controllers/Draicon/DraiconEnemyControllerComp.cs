@@ -46,13 +46,31 @@ public class DraiconEnemyControllerComp : DamagableAiStateMachine<DraiconEnemyCo
         
         else if (CurrentState is AIStateDraiconAttackComp attack)
         {
-            if (Room.Time >= attack.EndTime)
+            if (attack.EndTime != 0f && Room.Time >= attack.EndTime)
+            {
+                AddNextState<AIStateWaitComp>();
+                GoToNextState();
+            }
+        }
+        
+        else if (CurrentState is AIStateWaitComp wait)
+        {
+            if (Room.Time >= wait.WaitTime)
             {
                 AddNextState<AIStatePatrolComp>();
                 GoToNextState();
                 
                 _hasStarted = false;
                 IsImmune = true;
+            }
+        }
+        
+        else if (CurrentState is AIStateStunnedComp stunned)
+        {
+            if (Room.Time >= stunned.WaitTime)
+            {
+                AddNextState<AIStateWaitComp>();
+                GoToNextState();
             }
         }
 

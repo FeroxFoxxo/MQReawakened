@@ -49,7 +49,7 @@ public class DrakeEnemyControllerComp : DamagableAiStateMachine<DrakeEnemyContro
 
         else if (CurrentState is AIStateDrakeAttackComp attack)
         {
-            if (Room.Time >= attack.EndTime)
+            if (attack.EndTime != 0f && Room.Time >= attack.EndTime)
             {
                 AddNextState<AIStateMoveComp>();
                 GoToNextState();
@@ -62,6 +62,8 @@ public class DrakeEnemyControllerComp : DamagableAiStateMachine<DrakeEnemyContro
             {
                 AddNextState<AIStatePatrolComp>();
                 GoToNextState();
+
+                _hasStarted = false;
             }
         }
         

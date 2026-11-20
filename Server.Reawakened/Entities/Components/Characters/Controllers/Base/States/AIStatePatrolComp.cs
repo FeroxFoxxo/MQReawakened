@@ -152,7 +152,7 @@ public class AIStatePatrolComp : BaseAIState<AIStatePatrol, AI_State_Patrol>
                     drake.PlacementPosition = player.TempData.Position.ToVector3();
                     break;
                 case AIStateDraiconAttackComp draicon:
-                    draicon.TargetPosition = player.TempData.Position.ToVector3();
+                    draicon.TargetPosition = new vector3(_spawnX, _spawnY, _spawnZ);
                     break;
             }
         }
